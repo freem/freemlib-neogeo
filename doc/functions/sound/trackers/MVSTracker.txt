@@ -1,0 +1,233 @@
+MVSTracker data and playback
+================================================================================
+Header: "MVS0"
+
+Length fields (2 bytes)
+	BYTE LenHi, LenLo;
+	int MusicLen = GetModuleSize() - 6;		// GetModuleSize() = 7+(32*NumInstr)+129+(patterns*1024)
+	LenHi = MusicLen >> 8;
+	LenLo = (BYTE)MusicLen;
+	fWrite->Write(&LenLo, 1);
+	fWrite->Write(&LenHi, 1);
+
+Number of Instruments (1 byte; maximum value is 32)
+
+Instrument List
+	Instrument Data (data is natively 25 bytes; padded to 32 bytes in list)
+
+Song Length
+	Song Length (1 byte, represents number of orders)
+	Pattern Order (64 bytes)
+
+Padding (64 bytes)
+
+Patterns
+	Pattern Data (1024 bytes "BUILTPATSIZE")
+
+--------------------------------------------------------------------------------
+Pattern Data
+
+for(rows=0,64)				// fixed/maximum 64 rows
+	for(channels=0,4)		// FM channels only
+		Get Note
+		if channel is inactive, blank note.
+		\
+		convert between note formats:
+			NOTE_BLANK, NOTE_END	ConvNote = 0
+			default					ConvNote = Note+1 // ModPlay has Note 0 (No Sound)
+		/
+
+		Get Octave
+		\
+		if octave is -1, write 0 to the pattern.
+		else:
+			if ConvNote == 1, Oct--.
+			write ConvNote | (Oct << 4) to the pattern.
+		/
+
+		Write instrument/voice number
+
+		\
+		if Note == NOTE_END
+			write FX_SETVOL (12) and 0 to the pattern. // note end => fx volume = 0
+		else
+			write effect and value to the pattern.
+		/
+	end
+end
+
+================================================================================
+Playback
+
+The playback routine studied for this document is modplay_ng.asm and its helper
+files: common_func.inc, common_macro.inc, and common_vars.inc.
+
+--------------------------------------------------------------------------------
+IRQ: "Used for keeping the music going"
+
+The core of the IRQ happens in the UpdateTicks macro:
+
+.MACRO UpdateTicks
+	ld a, (TempoCount)
+	inc a
+	ld (TempoCount), a
+	ld d, a
+	ld a, (Tempo)
+	cp d
+	jr nz, IRQ_1\@
+
+	xor a
+	ld (TempoCount), a
+	Call UpdateTune
+
+IRQ_1\@
+	ld de, 273fh		; restart timers
+	sendDEPortA
+.ENDM
+
+UpdateTune is found in common_func.inc.
+
+* GetTuneAddress
+* UpdateChan1, UpdateChan2, UpdateChan3, UpdateChan4
+* formerly known as UT_UpdatePattern
+* UT_CheckSong
+* UT_NextPat
+* ret
+
+--------------------------------------------------------------------------------
+NMI: "Used for inter-processor comms"
+
+* Read command from 68K
+* Check if FM command and NMI_ProcessFM if so
+* Check if ADPCM command and NMI_ProcessADPCM if so
+* Write to port $C
+
+NMI_ProcessFM
+* mask out FM/ADPCM command bit
+* call ProcessCommand.
+
+NMI_ProcessADPCM
+Despite the name, this also handles the Neo-Geo required commands.
+* Check for Command 1 (Slot Switch) and run Init1 if found.
+* Check for Command 3 (Soft Reset) and run Init3 if found.
+* Check for Command $7F (Silence All Samples) and run ADPCM_Silence if found.
+* If none of the above, jump to Process_Sample.
+
+--------------------------------------------------------------------------------
+ProcessCommand
+
+* Compare commands, and if the command didn't change, do nothing and exit.
+* Check command ID
+ * CMD_PLAY_ONCE	$1, goes to Play if found.
+ * CMD_PLAY_LOOP	$2, goes to Play if found.
+ * Otherwise, Silence.
+
+Play:
+	set b = 1
+	call InitSong
+	jump to ProcessCommand_End
+
+Silence:
+	call StopSong
+	update MusicPlaying
+
+ProcessCommand_End:
+	put Command in a
+	put a in PreviousCmd
+
+--------------------------------------------------------------------------------
+ProcessSample
+This function handles the processing of ADPCM samples.
+It's currently beyond me what everything does exactly.
+
+--------------------------------------------------------------------------------
+InitSong
+Clears variables and sets up the first pattern.
+
+(Params)
+b			TuneNumber (1-based)
+
+ * find start of song
+ * GetTuneAddress
+ * set tune data vars
+
+IS_NextTune:
+ * CheckHeader
+ * get offset to next tune
+ * keep getting next tune until b = 0
+ * get number of instruments
+ * store instrument start position
+ * find start of tune data
+ * initialization
+  * SongLen
+  * SongPos
+  * TempoCount
+  * PatternBreak
+  * CurInstr 1-4
+ * call InitialiseNewPattern
+ * set MusicPlaying
+
+--------------------------------------------------------------------------------
+InitialiseNewPattern
+Sets up the PatternPos pointer and PatternCnt
+
+--------------------------------------------------------------------------------
+GetInstrOffset
+Returns the pointer to the specified instrument number's data.
+
+(Params)
+a			Instrument Number (0-31)
+(Outputs)
+iy			Pointer to Instrument Data
+
+--------------------------------------------------------------------------------
+LoadVoice1, LoadVoice2, LoadVoice3, LoadVoice4
+Loads the instrument data for the specified voice.
+
+(Params)
+iy			Pointer to instrument data
+
+ * turn off voice ($280x to ports 4/5)
+ * load InstrAddr1/InstrAddr2 table as needed into ix
+ * set up loop for 25 bytes
+
+LV*_1:
+ * load address from ix into a->d
+ * load data from iy into a->e
+ * send port data to ports 4/5
+ * increment ix and iy
+ * decrement loop counter and jump if not zero
+
+--------------------------------------------------------------------------------
+StopSong
+Ends up stopping the four FM channels via writing address $28.
+
+--------------------------------------------------------------------------------
+UpdateChan1, UpdateChan2, UpdateChan3, UpdateChan4
+Handles updating the FM channels.
+
+ * call ReadChannelInfo
+ * if Freq is 0, nothing to do. go to UT_Process*.
+ * However, if the frequency is nonzero, call ProcessEffect.
+
+UT_Process*:
+ * check if we have to load a new instrument. if not, go to UT_Process*_1.
+
+UT_Process*_1:
+ * call ProcessEffect
+ * play voice
+  * send $280x then $28Fx through ports 4/5
+  * assemble and send frequency (write to $A5/$A6 then $A1/$A2)
+
+--------------------------------------------------------------------------------
+ReadChannelInfo
+Handles playing the Pattern data
+
+--------------------------------------------------------------------------------
+ProcessEffect
+Processes effect value
+
+(Params)
+a			Channel Number (1-4)
+(Outputs)
+carry		Silence (don't play note)

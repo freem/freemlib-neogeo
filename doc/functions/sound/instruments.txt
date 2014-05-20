@@ -1,0 +1,124 @@
+Instrument Documentation
+================================================================================
+[Instrument Format]
+Offset		Description
+--------------------------------------------------------------------------------
+$00			Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<FM Instruments>
+Offset		Description
+--------------------------------------------------------------------------------
+$01			Feedback/Algorithm
+$02			Initial Left/Right Output; AM and PM values
+$03			LFO Frequency Control
+$04			Number of Operators (1-4)
+
+Operator data is defined in port order (each operator's values for a specific
+control). This is similar to the .EIF, .INS, and .TYI formats.
+
+Offset		Description
+--------------------------------------------------------------------------------
+$05-$08		Detune/Multiple for Ops 1-4
+$09-$0C		Total Level for Ops 1-4
+$0D-$10		Key Scale/Attack for Ops 1-4
+$11-$14		AM On/Decay for Ops 1-4
+$15-$18		Sustain for Ops 1-4
+$19-$1C		Sustain Level/Release for Ops 1-4
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<SSG Instruments>
+Offset		Description
+--------------------------------------------------------------------------------
+$01			SSG Instrument Type (0=Pulse, 1=Noise)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(SSG Pulse)
+Offset		Description
+--------------------------------------------------------------------------------
+$02			Initial Volume and Mode
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(SSG Noise)
+Offset		Description
+--------------------------------------------------------------------------------
+$02			Noise Tone (0-7)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<ADPCM-A Instruments>
+Offset		Description
+--------------------------------------------------------------------------------
+$01			Initial Volume and Left/Right Output (1 byte)
+$02,$03		Sample Start Address/256 (2 bytes)
+$04,$05		Sample End Address/256 (2 bytes)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<ADPCM-B Instruments>
+Offset		Description
+--------------------------------------------------------------------------------
+$01			Initial Left/Right Output (1 byte)
+$02,$03		Sample Start Address/256 (2 bytes)
+$04,$05		Sample End Address/256 (2 bytes)
+$06,$07		Delta-N Sampling Rate (2 bytes)
+
+================================================================================
+[Full Examples]
+
+<SSG Pulse Instrument>
+Offset		Description
+--------------------------------------------------------------------------------
+$00=1		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
+$01=0		SSG Instrument Type (0=Pulse, 1=Noise)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<SSG Noise Instrument>
+Offset		Description
+--------------------------------------------------------------------------------
+$00=1		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
+$01=1		SSG Instrument Type (0=Pulse, 1=Noise)
+$02			Noise Tone (0-7)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<4-op FM Instrument>
+Offset		Description
+--------------------------------------------------------------------------------
+$00=0		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
+$01			Feedback (FB)/Algorithm (ALGO)
+$02			Initial Left/Right Output; AM and PM values
+$03			LFO Frequency Control
+$04=4		Number of Operators (1-4)
+$05-$08		Detune (DT)/Multiple (MULT) for Ops 1-4
+$09-$0C		Total Level (TL) for Ops 1-4
+$0D-$10		Key Scale (KS)/Attack Rate (AR) for Ops 1-4
+$11-$14		AM On (AM)/Decay Rate (DR) for Ops 1-4
+$15-$18		Sustain Rate (SR) for Ops 1-4
+$19-$1C		Sustain Level (SL)/Release Rate (RR) for Ops 1-4
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<ADPCM-A Instrument>
+Offset		Description
+--------------------------------------------------------------------------------
+$00=2		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
+$01			Initial Volume and Left/Right Output (1 byte)
+$02,$03		Sample Start Address/256 (2 bytes)
+$04,$05		Sample End Address/256 (2 bytes)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<ADPCM-B Instrument>
+Offset		Description
+--------------------------------------------------------------------------------
+$00=3		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
+$01			Initial Left/Right Output (1 byte)
+$02,$03		Sample Start Address/256 (2 bytes)
+$04,$05		Sample End Address/256 (2 bytes)
+$06,$07		Delta-N Sampling Rate (2 bytes)

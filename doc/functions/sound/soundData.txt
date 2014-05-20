@@ -1,0 +1,190 @@
+Sound Data Documentation
+================================================================================
+Reference Notes
+
+NoiseTracker/Soundtracker/Protracker formats
+	http://www.aes.id.au/modformat.html
+	http://battleofthebits.org/lyceum/View/amigamod%20%28format%29
+
+For others, see doc/functions/sound/
+
+================================================================================
+[Instruments]
+In-depth info can be found in instruments.txt.
+
+SSG instruments are a small collection of variables.
+ADPCM samples are a medium amount of variables.
+FM instruments are a large collection of variables.
+
+* Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
+
+<SSG Instrument (Type 1)>
+SSG Frequency = Master Clock / (64*fv)
+for both pulse and noise
+
+SSG Pulse:
+ * Volume and Mode
+
+SSG Noise:
+ * Noise Period Control ($06; 1 byte)
+
+<ADPCM-A Instrument (Type 2)>
+* Volume and Left/Right Output
+* Sample Start Address/256 (2 bytes)
+* Sample End Address/256 (2 bytes)
+
+<ADPCM-B Instrument (Type 3)>
+* Initial Left/Right Output (1 byte)
+* Sample Start Address/256 (2 bytes)
+* Sample End Address/256 (2 bytes)
+* Delta-N Sampling Rate (2 bytes)
+* Initial Volume (1 byte)
+
+<FM Instrument (Type 0)>
+FM Instruments are of variable size due to the number of things that can be changed.
+
+* Algorithm (0-7)
+* Feedback
+* Left/Right output
+* AM change
+* PM change
+* Number of Operators (1-4)
+
+Operator Data
+* Detune
+* Multiple
+* Total Level
+* Key Scale
+* Attack
+* Decay
+* AM ON
+* Sustain
+* Sustain Level
+* Release
+
+================================================================================
+[Song Data]
+* Channel Use flags (2 bytes)
+* Song Tempo (0-511)
+* Instrument collection (size and pointers)
+
+================================================================================
+[Patterns]
+* Data for each channel (16 channels max)
+
+CTRL | FM1 | FM2 | FM3 | FM4 | PCMA1 | PCMA2 | PCMA3 | PCMA4 | PCMA5 | PCMA6 | PCMB | SSGA | SSGB | SSGC | SSGN 
+-----+-----+-----+-----+-----+-------+-------+-------+-------+-------+-------+------+------+------+------+------
+
+CTRL			Control Channel
+FM1-FM4			FM Channels
+PCMA1-PCMA6		ADPCM-A Channels
+PCMB			ADPCM-B Channel
+SSGA-SSGC		SSG Pulse Channels
+SSGN			SSG Noise Channel
+
+================================================================================
+[Pattern Data]
+Currently trying to think of a way to deal with this, as different channels need
+different lengths of data.
+
+General breakdown>
+* Note Value
+* Instrument
+* Volume
+* (Specific Channel Data; optional)
+* Effect(s)
+---------------------------------------------
+SSG>
+
+Overall>
+* Volume Envelope Period (Coarse and Fine)
+* Volume Envelope Shape
+
+SSG A-C channels>
+* Note Value (Note+Octave) -> Tone Period (0-4095)
+* Volume
+* Mode (Normal Volume or Envelope Generator)
+
+SSG Noise channel>
+* Note Value (Note+Octave) -> Noise Period
+
+---------------------------------------------
+FM channels>
+
+per-Channel>
+* Note Value (Note+Octave) -> F-Numbers and Block (11 bits and 3 bits; F-Nums 0-2047; Full Range 0-16383?)
+* Volume
+
+---------------------------------------------
+ADPCM-A channels>
+
+Overall>
+* Total Volume
+
+per-Channel>
+* Note Value (Note+Octave) -> ADPCM-A Sample Number
+* Volume
+--------------------
+* Left/Right output
+--------------------
+* Effects?
+
+---------------------------------------------
+ADPCM-B channel>
+* Note Value (Note+Octave) -> ADPCM-B Sample Number
+* Volume
+--------------------
+* Sampling Rate
+* Start/Repeat/Reset
+* Left/Right output
+--------------------
+* Effects?
+
+---------------------------------------------
+Control Channel>
+This one operates a bit differently from the other channels.
+
+================================================================================
+[Effects]
+Content moved to soundEffects.txt.
+
+================================================================================
+[F-Numbers]
+http://www.phy.mtu.edu/~suits/notefreqs.html
+
+The algorithm for deriving a F-Number is as follows:
+
+F-Number = (144 * fnote * 2^20 / M) / 2^B-1
+
+ fnote: pronounciation frequency (in Hertz)
+ M: master clock (8MHz = 8*10^6 = 8000000)
+ B: block data
+
+Example: 440Hz (A4)
+F-Number(A4) = (144 * 440 * 2^20 / 8*10^6) / 2^4-1
+F-Number(A4) = (144 * 440 * 1048576 / 8000000) / 2^3
+F-Number(A4) = (8304.72192) / 8
+F-Number(A4) = 1038.09024 (rounded up to 1038.1)
+
+Example: 261.63Hz (C4, "Middle C")
+F-Number(C4) = (144 * 261.63 * 2^20 / 8*10^6) / 2^4-1
+F-Number(C4) = (144 * 261.63 * 1048576 / 8000000) / 2^3
+F-Number(C4) = (4938.1) / 8
+F-Number(C4) = 617.26261248
+
+so octave 4 may be (fnote * 2.359296)??
+
+Note       | Hertz   -> F-Number           | Dec.    Hex
+-----------+-------------------------------+---------------
+C4		   | 261.63Hz -> 617.26261248 f    | 617	0x269
+C#4/Db4	   | 277.18Hz -> 653.94966528 f    | 654	0x28E
+D4		   | 293.66Hz -> 692.83086336 f    | 693	0x2B5
+D#4/Eb4	   | 311.13Hz -> 734.04776448 f    | 734	0x2DE
+E4		   | 329.63Hz -> 777.69474048 f    | 777	0x309
+F4		   | 349.23Hz -> 823.93694208 f    | 824	0x338
+F#4/Gb4	   | 369.99Hz -> 872.91592704 f    | 873	0x369
+G4		   | 392.00Hz -> 924.844032 f      | 925	0x39D
+G#4/Ab4	   | 415.30Hz -> 979.8156288 f     | 980	0x3D3
+A4		   | 440.00Hz -> 1038.09024 f      | 1038	0x40E
+A#4/Bb4	   | 466.16Hz -> 1099.80942336 f   | 1100	0x44B
+B4		   | 493.88Hz -> 1165.20910848 f   | 1165	0x48D

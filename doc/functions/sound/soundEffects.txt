@@ -1,0 +1,278 @@
+Music Driver Effects
+================================================================================
+What effects are available depend on what effects exist and what has to be done
+to implement them.
+
+(Uncategorized)
+* Arpeggio
+* Portamento (Pitch Slide Up/Down)
+* Vibrato
+* Tremolo
+* Panning (if the hardware supports it)
+* Volume Slide
+
+(Playback Related)
+* Position Jump (Change position of playback cursor)
+* Pattern Break (Continue at next pattern)
+* Pattern Loop?
+* Stop Song
+
+================================================================================
+--{Effects from Other Trackers}--
+This section is a reference of what other trackers have in terms of effects.
+
+(Protracker)
+<MOD Effect Commands>
+0xy			Arpeggio
+1xx			Portamento Up
+2xx			Portamento Down
+3xx			Tone Portamento
+4xy			Vibrato
+5xy			Volume Slide+Tone Portamento
+6xy			Volume Slide+Vibrato
+7xy			Tremolo
+8xx			Set Panning
+9xx			Sample Offset
+A0x			Volume Slide Down
+Ax0			Volume Slide Up
+Bxx			Position Jump
+Cxx			Set Volume
+Dxx			Pattern Break
+E1x			Fine Portamento Up
+E2x			Fine Portamento Down
+E3x			Glissando Control
+E4x			Vibrato Waveform
+E5x			Set Finetune
+E60			Pattern Loop Start
+E6x			Pattern Loop
+E7x			Tremolo Waveform
+E8x			Set Panning
+E9x			Retrigger
+EAx			Fine Volume Slide Up
+EBx			Fine Volume Slide Down
+ECx			Note Cut
+EDx			Note Delay
+EEx			Pattern Delay
+EFx			Invert Loop
+Fxx			Set Speed/Tempo
+
+--------------------------------------------------------------------------------
+(XM/Extended Module)
+Standard Effects
+0xy			Arpeggio
+1xx			Portamento up
+2xx			Portamento down
+3xx			Tone Portamento
+4xy			Vibrato
+5xy			Tone Portamento + Volume Slide
+6xy			Vibrato + Volume Slide
+7xy			Tremolo
+8xx			Set panning
+9xx			Sample offset
+A0x			Volume Slide Down
+Ax0			Volume Slide Up
+Bxx			Position jump
+Cxx			Set volume
+Dxx			Pattern break
+E1x			Fine Portamento up
+E2x			Fine Portamento down
+E3x			Set Glissando control
+E4x			Set Vibrato control
+E5x			Set Finetune
+E6x			Set Loop Begin/Loop
+E7x			Set Tremolo Control
+E9x			Retrigger Note
+EAx			Fine Volume slide up
+EBx			Fine Volume slide down
+ECx			Note cut
+EDx			Note delay
+EEx			Pattern delay
+Fxx			Set Tempo/BPM
+Gxx			Set Global volume
+Hxx			Global volume slide
+Kxx			Key off
+Lxx			Set envelope position
+Pxx			Panning slide
+Rxy			Multi retrigger note
+Txy			Tremor
+X1x			Extra fine portamento up
+X2x			Extra fine portamento down
+
+<"This is not an original Fasttracker 2 effect."> OpenMPT
+X5x			Panbrello Waveform
+X6x			Fine Pattern Delay
+X9x			Sound Control
+XAx			High Offset
+Yxy			Panbrello
+Zxx			MIDI Macro
+\xx			Smooth MIDI Macro
+
+--------------------------------------------------------------------------------
+(MVSTracker)
+12 (C)		Volume
+15 (F)		Tempo
+13 (D)		Pattern Break
+
+--------------------------------------------------------------------------------
+(FamiTracker)
+<Normal>
+0xy			Arpeggio
+1xx			Pitch slide up
+2xx			Pitch slide down
+3xx			Auto Portamento
+4xy			Vibrato
+7xy			Tremolo
+Axy			Volume Slide
+Bxx			Jump to frame xx
+Cxx			Halt (Stop song)
+Dxx			Skip to next frame, start at row xx
+[Exx		deprecated volume setting]
+Fxx			Speed (01-1F) and Tempo (20-FF)
+Gxx			Note delay (xx = frames to wait)
+Hxy			Hardware sweep up
+Ixy			Hardware sweep down
+Pxx			Fine pitch
+Qxy			Note slide up
+Rxy			Note slide down
+Sxx			Delayed note cut (xx = frames to wait)
+Vxx			Square duty/noise mode
+<DPCM>
+W0x			DPCM pitch
+Xxx			DPCM retrigger (xx = frames to wait)
+Yxx			DPCM sample offset (each step adds 64 bytes)
+Zzz			DPCM delta counter
+<FDS>
+Hxx			Modulation depth (00-3F)
+Ixx			Modulation speed (Hi; 00-0F)
+Jxx			Modulation speed (Lo; 00-FF)
+
+--------------------------------------------------------------------------------
+(DefleMask)
+<Standard>
+0xy			Arpeggio
+1xx			Portamento up
+2xx			Portamento down
+3xx			Portamento to note
+4xy			Vibrato
+5xy			Portamento to note and volume slide
+6xy			Vibrato and volume slide
+7xy			Tremolo
+8xx			Panning
+9xx			Set Speed Value 1
+Axy			Volume Slide
+Bxx			Position Jump
+Cxx			Retrig
+Dxx			Pattern Break
+Exx			Extended Commands
+ E1xy		Note Slide Up
+ E2xy		Note Slide Down
+ E3xx		Set Vibrato Mode
+ E4xx		Set Fine Vibrato Dpth
+ E5xx		Set Fine Tune/Pitch
+ EBxx		Set Samples Bank
+ ECxx		Note Cut
+ EDxx		Note Delay
+ EFxx		Set Global Fine Tune
+Fxx			Set Speed Value 2
+
+<Genesis>
+10xy		LFO Control
+11xx		Feedback Control
+12xx		TL Operator 1 Control
+13xx		TL Operator 2 Control
+14xx		TL Operator 3 Control
+15xx		TL Operator 4 Control
+16xy		MULT Control
+17xx		DAC Enable
+19xx		Global AR Control
+1Axx		AR Operator 1 Control
+1Bxx		AR Operator 2 Control
+1Cxx		AR Operator 3 Control
+1Dxx		AR Operator 4 Control
+
+--------------------------------------------------------------------------------
+(IT/Impulse Tracker)
+Jxy			Arpeggio
+Fxx			Portamento Up
+Exx			Portamento Down
+Gxx			Tone Portamento
+Hxy			Vibrato (Speed x, Depth y)
+Lxy			Volume Slide+Tone Portamento
+Kxy			Volume Slide+Vibrato
+Rxy			Tremolo
+Xxx			Set Panning
+Oxx			Sample Offset
+Dxx			Volume Slide
+Bxx			Jump to Order
+Cxx			Break to Row
+Qxy			Retrigger
+Axx			Set Tempo
+Txx			Set Tempo ($20-$FF)
+Ixy			Tremor (Ontime x, Offtime y)
+Vxx			Set Global volume
+Wxx			Global volume slide
+Uxy			Fine Vibrato (Speed x, Depth y)
+Yxy			Panbrello
+Pxx			Panning Slide Right
+Zxx			MIDI Macro
+
+Mxx			Set Channel Volume
+Nxx			Channel volume slide
+
+S00			Repeat last S** effect executed on channel
+S1x			Glissando Control
+S3x			Set Vibrato Waveform
+S4x			Tremolo Waveform
+S5x			Panbrello Waveform
+S6x			Fine Pattern Delay
+S70			Past Note Cut
+S71			Past Note Off
+S72			Past Note Fade
+S73			New Note Action: Note Cut
+S74			New Note Action: Note Continue
+S75			New Note Action: Note Off
+S76			New Note Action: Note Fade
+S77			Volume Envelope Off
+S78			Volume Envelope On
+S79			Pan Envelope Off
+S7A			Pan Envelope On
+S7B			Pitch Envelope Off
+S7C			Pitch Envelope On
+S8x			Set Panning
+S9x			Sound Control
+SAx			High Offset
+SB0			Pattern Loop Start
+SBx			Pattern Loop
+SCx			Note Cut
+SDx			Note Delay
+SEx			Pattern Delay
+SFx			Set Active Macro
+
+---------------------------------------
+Specific Command Examples
+FFx			Fine Portamento Up
+FEx			Extra Fine Portamento Up
+EFx			Fine Portamento Down
+EEx			Extra Fine Portamento Down
+
+D0x			Volume Slide Up
+Dx0			Volume Slide Down
+DFx			Fine Volume Slide Up
+DxF			Fine Volume Slide Down
+
+P0x			Panning Slide Right
+Px0			Panning Slide Left
+PFx			Fine Panning Slide Right
+PxF			Fine Panning Slide Left
+
+T0x			Decrease Tempo
+T1x			Increase Tempo
+Txx			Set Tempo ($20-$FF)
+
+(Schism Tracker)
+/* extra non-IT effects:
+ *         '!' = volume '$' = keyoff
+ *         '&' = setenvposition
+ *         '('/')' = noteslide up/down (IMF) */
+static const char effects[] =     ".JFEGHLKRXODB!CQATI?SMNVW$UY?P&Z()?";	// IT
+static const char ptm_effects[] = ".0123456789ABCDRFFT????GHK?YXPLZ()?";	// Protracker

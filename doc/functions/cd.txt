@@ -1,0 +1,4 @@
+freemlib for Neo-Geo - CD System functionality
+==============================================
+This is currently a catch-all and may be split out later.
+It will still be separate from the cart system stuff, though.

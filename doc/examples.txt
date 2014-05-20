@@ -1,0 +1,60 @@
+future examples
+
+[Fix Layer]
+* Making your own MESS_OUT
+
+--------------------------------------------------------------------------------
+(Expert)
+* Fix Bankswitching (NEO-CMC 42 and 50)
+
+================================================================================
+[Sprites]
+* Backgrounds
+* "Zooming" sprites
+
+================================================================================
+[Palette]
+(Intermediate)
+* Palette Effects
+
+--------------------------------------------------------------------------------
+(Expert)
+* Mid-frame Palette Changes
+* Faking Blending?
+
+================================================================================
+[Input]
+(Intermediate)
+* Input Registers
+* Mahjong Controller
+
+--------------------------------------------------------------------------------
+(Expert)
+* Trackball
+* Link Play
+* 4-Player (a la Kizuna Encounter)
+
+================================================================================
+[Sound]
+(Intermediate)
+* Introduction to Neo-Geo sound hardware
+ * SSG
+ * ADPCM
+ * FM
+* MVSTracker
+
+--------------------------------------------------------------------------------
+(Expert)
+* Writing a sound driver
+
+================================================================================
+[MVS]
+* MVS Backup RAM
+* Testing in a multi-slot configuration
+
+================================================================================
+[Home/AES]
+
+================================================================================
+[Development]
+* The Debug BIOS and You

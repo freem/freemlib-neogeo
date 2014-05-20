@@ -1,0 +1,240 @@
+excerpted from http://www.aes.id.au/modformat.html
+
+"I would normally give bytes as hex values, but it is easier to understand a consistent notation."
+
+Effects:
+Effects are written as groups of 4 bits, eg. 1871 = 7 * 256 + 4 * 16 +
+15 = [7][4][15]. The high nibble (4 bits) usually determines the effect,
+but if it is [14], then the second nibble is used as well.
+
+[0]: Arpeggio
+     Where [0][x][y] means "play note, note+x semitones, note+y
+     semitones, then return to original note". The fluctuations are
+     carried out evenly spaced in one pattern division. They are usually
+     used to simulate chords, but this doesn't work too well. They are
+     also used to produce heavy vibrato. A major chord is when x=4, y=7.
+     A minor chord is when x=3, y=7.
+
+[1]: Slide up
+     Where [1][x][y] means "smoothly decrease the period of current
+     sample by x*16+y after each tick in the division". The
+     ticks/division are set with the 'set speed' effect (see below). If
+     the period of the note being played is z, then the final period
+     will be z - (x*16 + y)*(ticks - 1). As the slide rate depends on
+     the speed, changing the speed will change the slide. You cannot
+     slide beyond the note B3 (period 113).
+
+[2]: Slide down
+     Where [2][x][y] means "smoothly increase the period of current
+     sample by x*16+y after each tick in the division". Similar to [1],
+     but lowers the pitch. You cannot slide beyond the note C1 (period
+     856).
+
+[3]: Slide to note
+     Where [3][x][y] means "smoothly change the period of current sample
+     by x*16+y after each tick in the division, never sliding beyond
+     current period". Any note in this channel's division is not played,
+     but changes the "remembered" note - it can be thought of as a
+     parameter to this effect. Sliding to a note is similar to effects
+     [1] and [2], but the slide will not go beyond the given period, and
+     the direction is implied by that period. If x and y are both 0,
+     then the old slide will continue.
+
+[4]: Vibrato
+     Where [4][x][y] means "oscillate the sample pitch using a
+     particular waveform with amplitude y/16 semitones, such that (x *
+     ticks)/64 cycles occur in the division". The waveform is set using
+     effect [14][4]. By placing vibrato effects on consecutive
+     divisions, the vibrato effect can be maintained. If either x or y
+     are 0, then the old vibrato values will be used.
+
+[5]: Continue 'Slide to note', but also do Volume slide
+     Where [5][x][y] means "either slide the volume up x*(ticks - 1) or
+     slide the volume down y*(ticks - 1), at the same time as continuing
+     the last 'Slide to note'". It is illegal for both x and y to be
+     non-zero. You cannot slide outside the volume range 0..64. The
+     period-length in this channel's division is a parameter to this
+     effect, and hence is not played.
+
+[6]: Continue 'Vibrato', but also do Volume slide
+     Where [6][x][y] means "either slide the volume up x*(ticks - 1) or
+     slide the volume down y*(ticks - 1), at the same time as continuing
+     the last 'Vibrato'". It is illegal for both x and y to be non-zero.
+     You cannot slide outside the volume range 0..64.
+
+[7]: Tremolo
+     Where [7][x][y] means "oscillate the sample volume using a
+     particular waveform with amplitude y*(ticks - 1), such that (x *
+     ticks)/64 cycles occur in the division". If either x or y are 0,
+     then the old tremolo values will be used. The waveform is set using
+     effect [14][7]. Similar to [4].
+
+[8]: (Set panning position)
+     This command is unused by the vast majority of trackers, but one
+     tracker for the PC (called DMP) uses this for setting the panning
+     state of the channel. As this is very useful, I am documenting it
+     here. The effect [8][x][y] means "set channel to panning position
+     x*16 + y". Position 0 is left, 64 is centre, 128 is right.
+     Interestingly, position 164 is defined as "surround". 
+
+[9]: Set sample offset
+     Where [9][x][y] means "play the sample from offset x*4096 + y*256".
+     The offset is measured in words. If no sample is given, yet one is
+     still playing on this channel, it should be retriggered to the new
+     offset using the current volume.
+
+[10]: Volume slide
+     Where [10][x][y] means "either slide the volume up x*(ticks - 1) or
+     slide the volume down y*(ticks - 1)". If both x and y are non-zero,
+     then the y value is ignored (assumed to be 0). You cannot slide
+     outside the volume range 0..64.
+
+[11]: Position Jump
+     Where [11][x][y] means "stop the pattern after this division, and
+     continue the song at song-position x*16+y". This shifts the
+     'pattern-cursor' in the pattern table (see above). Legal values for
+     x*16+y are from 0 to 127.
+
+[12]: Set volume
+     Where [12][x][y] means "set current sample's volume to x*16+y".
+     Legal volumes are 0..64.
+
+[13]: Pattern Break
+     Where [13][x][y] means "stop the pattern after this division, and
+     continue the song at the next pattern at division x*10+y" (the 10
+     is not a typo). Legal divisions are from 0 to 63.
+
+[14][0]: Set filter on/off
+     Where [14][0][x] means "set sound filter ON if x is 0, and OFF is x
+     is 1". This is a hardware command for some Amigas, so if you don't
+     understand it, it is better not to use it.
+
+[14][1]: Fineslide up
+     Where [14][1][x] means "decrement the period of the current sample
+     by x". The incrementing takes place at the beginning of the
+     division, and hence there is no actual sliding. This type of
+     sliding cannot be continued with effect [5]. You cannot slide
+     beyond the note B3 (period 113).
+
+[14][2]: Fineslide down
+     Where [14][2][x] means "increment the period of the current sample
+     by x". Similar to [14][1] but shifts the pitch down. You cannot
+     slide beyond the note C1 (period 856).
+
+[14][3]: Set glissando on/off
+     Where [14][3][x] means "set glissando ON if x is 1, OFF if x is 0".
+     Used in conjunction with [3] ('Slide to note'). If glissando is on,
+     then 'Slide to note' will slide in semitones, otherwise will
+     perform the default smooth slide.
+
+[14][4]: Set vibrato waveform
+     Where [14][4][x] means "set the waveform of succeeding 'vibrato'
+     effects to wave #x". [4] is the 'vibrato' effect.  Possible values
+     for x are:
+          0 - sine (default)      /\    /\     (2 cycles shown)
+          4  (without retrigger)     \/    \/
+
+          1 - ramp down          | \   | \
+          5  (without retrigger)     \ |   \ |
+
+          2 - square             ,--,  ,--,
+          6  (without retrigger)    '--'  '--'
+
+          3 - random: a random choice of one of the above.
+          7  (without retrigger)
+     If the waveform is selected "without retrigger", then it will not
+     be retriggered from the beginning at the start of each new note.
+
+[14][5]: Set finetune value
+     Where [14][5][x] means "sets the finetune value of the current
+     sample to the signed nibble x". x has legal values of 0..15,
+     corresponding to signed nibbles 0..7,-8..-1 (see start of text for
+     more info on finetune values).
+
+[14][6]: Loop pattern
+     Where [14][6][x] means "set the start of a loop to this division if
+     x is 0, otherwise after this division, jump back to the start of a
+     loop and play it another x times before continuing". If the start
+     of the loop was not set, it will default to the start of the
+     current pattern. Hence 'loop pattern' cannot be performed across
+     multiple patterns. Note that loops do not support nesting, and you
+     may generate an infinite loop if you try to nest 'loop pattern's.
+
+[14][7]: Set tremolo waveform
+     Where [14][7][x] means "set the waveform of succeeding 'tremolo'
+     effects to wave #x". Similar to [14][4], but alters effect [7] -
+     the 'tremolo' effect.
+
+[14][8]: -- Unused --
+
+[14][9]: Retrigger sample
+     Where [14][9][x] means "trigger current sample every x ticks in
+     this division". If x is 0, then no retriggering is done (acts as if
+     no effect was chosen), otherwise the retriggering begins on the
+     first tick and then x ticks after that, etc.
+
+[14][10]: Fine volume slide up
+     Where [14][10][x] means "increment the volume of the current sample
+     by x". The incrementing takes place at the beginning of the
+     division, and hence there is no sliding. You cannot slide beyond
+     volume 64.
+
+[14][11]: Fine volume slide down
+     Where [14][11][x] means "decrement the volume of the current sample
+     by x". Similar to [14][10] but lowers volume. You cannot slide
+     beyond volume 0.
+
+[14][12]: Cut sample
+     Where [14][12][x] means "after the current sample has been played
+     for x ticks in this division, its volume will be set to 0". This
+     implies that if x is 0, then you will not hear any of the sample.
+     If you wish to insert "silence" in a pattern, it is better to use a
+     "silence"-sample (see above) due to the lack of proper support for
+     this effect.
+
+[14][13]: Delay sample
+     Where [14][13][x] means "do not start this division's sample for
+     the first x ticks in this division, play the sample after this".
+     This implies that if x is 0, then you will hear no delay, but
+     actually there will be a VERY small delay. Note that this effect
+     only influences a sample if it was started in this division.
+
+[14][14]: Delay pattern
+     Where [14][14][x] means "after this division there will be a delay
+     equivalent to the time taken to play x divisions after which the
+     pattern will be resumed". The delay only relates to the
+     interpreting of new divisions, and all effects and previous notes
+     continue during delay.
+
+[14][15]: Invert loop
+     Where [14][15][x] means "if x is greater than 0, then play the
+     current sample's loop upside down at speed x". Each byte in the
+     sample's loop will have its sign changed (negated). It will only
+     work if the sample's loop (defined previously) is not too big. The
+     speed is based on an internal table.
+
+[15]: Set speed
+     Where [15][x][y] means "set speed to x*16+y". Though it is nowhere
+     near that simple. Let z = x*16+y. Depending on what values z takes,
+     different units of speed are set, there being two: ticks/division
+     and beats/minute (though this one is only a label and not strictly
+     true). If z=0, then what should technically happen is that the
+     module stops, but in practice it is treated as if z=1, because
+     there is already a method for stopping the module (running out of
+     patterns). If z<=32, then it means "set ticks/division to z"
+     otherwise it means "set beats/minute to z" (convention says that
+     this should read "If z<32.." but there are some composers out there
+     that defy conventions). Default values are 6 ticks/division, and
+     125 beats/minute (4 divisions = 1 beat). The beats/minute tag is
+     only meaningful for 6 ticks/division. To get a more accurate view
+     of how things work, use the following formula:
+                             24 * beats/minute
+          divisions/minute = -----------------
+                              ticks/division
+     Hence divisions/minute range from 24.75 to 6120, eg. to get a value
+     of 2000 divisions/minute use 3 ticks/division and 250 beats/minute.
+     If multiple "set speed" effects are performed in a single division,
+     the ones on higher-numbered channels take precedence over the ones
+     on lower-numbered channels. This effect has a large number of
+     different implementations, but the one described here has the
+     widest usage.

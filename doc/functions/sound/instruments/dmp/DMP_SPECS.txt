@@ -1,0 +1,105 @@
+Delek @ 2013. Demartino Leonardo.
+
+Specs for DMP (DefleMask Preset, for DefleMask 9 and above)
+
+I wrote this text file looking at the source code, there could be some mistakes.
+If you think so, please contact me at:
+- http://www.delek.com.ar/forum
+- http://www.facebook.com/Delek.Page
+- http://www.twitter.com/_Delek
+- http://www.soundcloud.com/Delek_Music
+- deeleek@gmail.com
+
+------------------------------------------------------------------------------------------------
+
+"//" means a comment line, not actual information of the format.
+
+//START OF DMP FORMAT
+
+	1 Byte:   FILE_VERSION, must be 8 for DefleMask 9c (@06/09/13)
+	1 Byte:   Instrument Mode (1=FM, 0=STANDARD)
+	//PER INSTRUMENT MODE DATA
+		//IF INSTRUMENT MODE IS STANDARD ( = 0)
+			//VOLUME MACRO
+			1 Byte: ENVELOPE_SIZE (0 - 127)
+			Repeat this ENVELOPE_SIZE times
+				4 Bytes: ENVELOPE_VALUE
+			1 Byte: LOOP_POSITION (-1 = NO LOOP)
+
+			//ARPEGGIO MACRO
+			1 Byte: ENVELOPE_SIZE (0 - 127)
+			Repeat this ENVELOPE_SIZE times
+				4 Bytes: ENVELOPE_VALUE
+			1 Byte: LOOP_POSITION (-1 = NO LOOP)
+			1 Byte: ARPEGGIO MACRO MODE (0 = Normal, 1 = Fixed)
+
+			//DUTY/NOISE MACRO
+			1 Byte: ENVELOPE_SIZE (0 - 127)
+			Repeat this ENVELOPE_SIZE times
+				4 Bytes: ENVELOPE_VALUE
+			1 Byte: LOOP_POSITION (-1 = NO LOOP)
+
+
+			//WAVETABLE MACRO
+			1 Byte: ENVELOPE_SIZE (0 - 127)
+			Repeat this ENVELOPE_SIZE times
+				4 Bytes: ENVELOPE_VALUE
+			1 Byte: LOOP_POSITION (-1 = NO LOOP)
+
+			//PER SYSTEM DATA
+				//IF SYSTEM IS C64
+					1 Byte: Triangle Wave Enabled
+					1 Byte: Saw Wave Enabled
+					1 Byte: Pulse Wave Enabled
+					1 Byte: Noise Wave Enabled
+					1 Byte: Attack
+					1 Byte: Decay
+					1 Byte: Sustain
+					1 Byte: Release
+					1 Byte: Pulse Width
+					1 Byte: Ring Modulation Enabled
+					1 Byte: Sync Modulation Enabled
+					1 Byte: To Filter
+					1 Byte: Volume Macro To Filter Cutoff Enabled
+					1 Byte: Use Filter Values From Instrument
+					//FILTER GLOBALS
+					1 Byte: Filter Resonance
+					1 Byte: Filter Cutoff
+					1 Byte: Filter High Pass
+					1 Byte: Filter Low Pass
+					1 Byte: Filter CH2 Off
+		//IF INSTRUMENT MODE IS FM ( = 1)
+			1 Byte: TOTAL_OPERATORS (0 = 2 OPERATORS, 1 = 4 OPERATORS)
+			1 Byte: LFO (FMS on SEGA Genesis)
+			1 Byte: FB
+			1 Byte: ALG
+			
+			//PER SYSTEM DATA
+				//IF SYSTEM IS GENESIS
+					1 Byte: LFO2
+
+			Repeat this TOTAL_OPERATORS times
+				1 Byte: MULT
+				1 Byte: TL
+				1 Byte: AR
+				1 Byte: DR
+				1 Byte: SL
+				1 Byte: RR
+				1 Byte: AM
+				
+				//PER SYSTEM DATA
+				//IF SYSTEM IS YMU759
+					1 Byte: WS
+					1 Byte: KSL
+					1 Byte: VIB
+					1 Byte: EGT
+					1 Byte: SUS
+					1 Byte: KSR
+					1 Byte: DVB
+					1 Byte: DAM
+				//IF SYSTEM IS GENESIS
+					1 Byte: KSR
+					1 Byte: DT
+					1 Byte: D2R
+					1 Byte: SSGEG_Enabled <<3 | SSGEG
+//END OF DMP FORMAT

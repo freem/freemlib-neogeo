@@ -1,0 +1,24 @@
+Designing Fix Tiles
+===================
+For the most part, it's similar to designing 8x8 tiles on other systems.
+You just need to be aware that the fix layer will display over everything, and
+that the 8x16 functionality of MESS_OUT requires a specific layout:
+
+[8x16 MESS_OUT output]
+The 8x16 tiles for MESS_OUT are laid out like so:
+
+(page n) Top Half
+(page n+1) Top Half
+
+Command 8 with the upper byte set as $01, and data of "0123", writing to $7010:
+	+-------+-------+-------+-------+
+Addr| $7010 | $7030 | $7050 | $7070 |
+Data| $0130 | $0131 | $0132 | $0133 |
+	+-------+-------+-------+-------+
+Addr| $7011 | $7031 | $7051 | $7071 |
+Data| $0230 | $0231 | $0232 | $0233 |
+	+-------+-------+-------+-------+
+
+If you think this sucks, you have two options:
+1) Write 8x16 messages yourself using 8x8 output
+2) Write your own version of MESS_OUT :p

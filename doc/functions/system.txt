@@ -1,0 +1,95 @@
+freemlib for Neo-Geo - System functionality
+===========================================
+The system functionality section of the freemlib deals with system-related items.
+This includes dealing with the hardware and software dipswitches (MVS only),
+the memory card, and BIOS functionality.
+
+================================================================================
+[Hardware Dipswitches]
+The hardware dipswitches are only found on MVS systems. For the most part,
+they're consistent between hardware and BIOS versions, though some games may
+have a different configuration.
+
+* Does Pop'n Bounce have different dips?
+
+<Default Hard Dips>
+76543210
+||||||||
+|||||||+- Test Mode
+||||||+-- Coin Slot config
+|||||+--- Mahjong Controller
+|||++---- Multiplayer Link Cabinet Number
+||+------ Enable Communication
+|+------- Freeplay
++-------- Freeze
+
+<The Irritating Maze Hard Dips>
+76543210
+||||||||
+|||||||+- Test Mode
+||||||+-- (unlabeled in test mode)
+|||||+--- Card Dispenser
+|||++---- Multiplayer Link Cabinet Number
+||+------ Enable Communication
+|+------- Freeplay
++-------- Freeze
+
+================================================================================
+[Software Dipswitches]
+SETTING UP THE SOFT DIP.
+Of course, these will change by game.
+
+Special Options:
+1&2) Time (max 29:59?)
+3) 1-99
+4) Without, 1-99, Infinite
+
+Over the years, there's been some standardization of settings; here's a list of
+what I can think of off the top of my head:
+
+Difficulty			"Level 1"-"Level 8"
+(integer counter)	0-99
+
+* Read value of software dip
+
+================================================================================
+[Debug Dipswitches]
+Keep in mind the location of the debug dips is pointed to in the cart header.
+
+You get two bytes worth of values.
+
+Debug Dip 1
+76543210
+||||||||
+xxxxxxxx
+
+Debug Dip 2
+76543210
+||||||||
+xxxxxxxx
+
+Possibly a set of macros for debug dipswitch related stuff?
+
+* Read value of debug dip
+
+================================================================================
+[MVS Calendar]
+Yeah you're not gonna be able to do this on a home system unless you manage to
+add a RTC chip on a cart.
+
+Art of Fighting 3 takes advantage of this, though.
+
+* Get current date
+* Get current time
+
+================================================================================
+[MVS Backup RAM]
+Basically, anything your game would need to store between sessions.
+
+================================================================================
+[Memory Cards]
+User data storage! Neo-Geo did it first :v
+
+================================================================================
+[BIOS]
+The Neo-Geo BIOS is considered a part of the system :p

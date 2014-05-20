@@ -1,0 +1,53 @@
+The PLAYER_START subroutine and You
+===================================
+The PLAYER_START subroutine is called by the BIOS if one of the start buttons
+are pressed while the corresponding player has enough credits or when the time
+runs out while the game's title is being displayed.
+
+The player who pressed Start is noted in the BIOS_START_FLAG (10FDD2H, B):
+76543210
+||||||||
+xxxx|||+- Player 1
+xxxx||+-- Player 2
+xxxx|+--- Player 3
+xxxx+---- Player 4
+
+This subroutine needs to leave these bits to "1" if the game can be started,
+or clear them if not. When the game is started, it has to set to "1" the
+corresponding bytes for each player:
+
+	10FDB6.b for P1 (BIOS_PLAYER1_MODE)
+	10FDB7.b for P2 (BIOS_PLAYER2_MODE)
+	10FDB8.b for P3 (BIOS_PLAYER3_MODE)
+	10FDB9.b for P4 (BIOS_PLAYER4_MODE)
+
+After returning, the BIOS deducts credits according to BIOS_START_FLAG.
+
+SNK docs:
+A call is made when the system instructs the game to begin. (When starting the
+game from its own judgment, use the system subroutines CREDIT_CHECK and
+CREDIT_DOWN, described later.) With the START_FLAG, basically only the bit
+representing the player whose start button has been pressed becomes 1. For
+during the MVS demo (the USER_MODE at "1"), the following shows how it works:"
+
+COUNTRY_CODE		START_FLAG Lower 4 Bits
+(10FD83H,B)			P1 Start	P2 Start
+-------------------------------------------
+0=Japan				0001		0011
+1=U.S.A.			0001		0010
+2=Europe			0001		0011
+
+"This means: On pressing the P2 START key, Japanese and European
+specifications allow the two players to start the game simultaneously, while
+the U.S. specifications allow only player 2 to start the game. Therefore, for
+such games as sports  games, where participation in the middle of a game is not
+possible, the U.S. specifications require preselection of the two-player game
+(refer  to  the sample program for these specifications). When the game is in
+progress, an extension of play time or the addition of lives is available at
+the player's option, and participation from the middle of play should be
+available. If these options are not possible, or if it is a game like Mah-Jong,
+which allows only one player to play, return after changing the applicable bit
+to "0."
+If any of the START FLAG bits is returned with 1, the system deducts credit.
+Therefore, be sure to perform the start processing, etc. Furthermore, be sure to
+keep the USER MODE at 2, or the game may be switched to another game."

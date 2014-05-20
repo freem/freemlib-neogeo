@@ -1,0 +1,3 @@
+Using freemlib for Neo-Geo
+==========================
+... some shit about how some files should be edited and others shouldn't.

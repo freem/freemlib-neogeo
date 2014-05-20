@@ -1,0 +1,24 @@
+freemlib for Neo-Geo - Files
+============================
+Starting from the main folder:
+
+doc\				Documentation
+examples\			Examples
+src\				Source Code
+================================================================================
+[doc\]
+Documentation of the freemlib.
+
+================================================================================
+[examples\]
+This directory contains a number of examples that use the freemlib.
+
+In order to build them correctly, they rely on being in the folders they are
+currently in (e.g. a path of "..\..\src\" from an example will go to the main
+src directory).
+
+================================================================================
+[src\]
+This directory contains the actual code and includes that make up the freemlib.
+
+================================================================================

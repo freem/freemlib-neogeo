@@ -1,0 +1,90 @@
+freemlib for Neo-Geo - Fix Layer functionality
+==============================================
+The Fix layer displays over everything else.
+Most fix layer writing is done with MESS_OUT and the system buffer.
+
+How do we position text?
+1) Default raw VRAM addresses (do most games do this?) ($7000-$74FF)
+2) X and Y cells (Puzzle de Pon! does this)
+
+There's also the idea of rewriting MESS_OUT.
+
+Note: The fix layer can only use the first 16 palettes.
+Note: None of these functions take fix bankswitching into account.
+
+================================================================================
+[fix_changeTile]
+Change the tile number of a fix map location.
+
+xxxx0000 00000000
+
+================================================================================
+[fix_changePal]
+Change the palette index of a fix map location.
+
+0000xxxx xxxxxxxx
+
+================================================================================
+[fix_Draw8x16]
+Draws "normal" 8x16 text to the screen.
+
+Whereas the 8x16 functions of MESS_OUT require your characters to be on different
+pages,  fix_Draw8x16 lets you stack them right on top of each other, as they're
+meant to be seen in game.
+
+================================================================================
+[fix_Draw16x16]
+Draws "normal" 16x16 text to the screen.
+
+What fix_Draw8x16 does for 8x16 fonts, this does for 16x16 fonts.
+
+================================================================================
+[fix_DrawRegion]
+Draws a rectangular region of tiles.
+
+================================================================================
+[MESS_OUT Helpers]
+It might also be cool to provide helpers for MESS_OUT, like macros or something.
+
+<Command 1>
+* Data in Bytes/Words
+* End Code or Data Size
+-----------------------
+* Argument value (depends on what was chosen)
+
+<Command 2>
+* Auto-increment value
+
+<Command 3>
+* New vram address
+
+<Command 4>
+* pointer to data
+
+<Command 5>
+* Value to add to vram address
+
+<Command 6>
+Will probably just be labeled "resume"
+
+<Command 7>
+Direct data. Something about handling the padding.
+
+<Commands 8 and 9>
+* Upper byte (Palette, Tileset)
+
+<Command A>
+* Pointer to sub-command list
+
+<Command B>
+End sub-command list
+
+<Command C>
+Repeat output
+* How many times
+* Word value to repeat
+
+<Command D>
+Repeat and increment
+* How many times
+* Word value to repeat and increment

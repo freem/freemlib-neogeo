@@ -1,0 +1,56 @@
+freemlib for Neo-Geo - Palette functionality
+============================================
+Palette data. I finally understand it enough.
+
+Something going through my head is the idea of a MESS_OUT-like system for
+palettes, where you can either throw in pointers to data or raw commands.
+This is then processed every vblank.
+
+Note: The fix layer can only use the first 16 palettes.
+
+* Fading (Would probably need precalculated tables?)
+* Single color manipulation? (e.g. change only Red, Green, Blue)
+* Brighten/Darken (+/- 1 or so for each channel)
+* Soft Shadow (0.5x color)
+* Soft Bright (1.5x color)
+* Desaturate/Black and White
+
+================================================================================
+<Palette Buffers>
+The actual values will need to be written to palette RAM during VBlank.
+
+* Current bank buffer	0x2000		(Values written to the Palette RAM)
+* Misc. palette buffer	0x2000		(Palette work area)
+
+================================================================================
+[pal_LoadSet]
+Load a single palette set (16 colors).
+
+Params:
+* Address of data to load from
+* Palette set to load data into ($00-$FF)
+
+================================================================================
+[pal_LoadData]
+Load raw colors into the palettes.
+
+Params:
+* Number of color entries
+* Address of data to load from
+* Beginning palette address to load data into
+
+================================================================================
+[pal_SetColor]
+Set the value of a single color.
+
+Params:
+* $0iSS (Palette Index, Palette Set)
+* New color value
+
+If I was an insane person I could fit the entire thing into a single register:
+
+FEDCBA98 76543210 | FEDCBA98 76543210
+|||||||| ||||||||   |||||||| ||||||||
+xxxx|||| ||||||||   ++++++++-++++++++-- New color value ($0000-$FFFF)
+    |||| ++++++++---------------------- Palette Set ($00-$FF)
+    ++++------------------------------- Color Index ($00-$0F)

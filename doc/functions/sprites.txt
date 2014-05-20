@@ -1,0 +1,43 @@
+freemlib for Neo-Geo - Sprite functionality
+===========================================
+I'm still not 100% sure of required sprite functionality.
+I haven't studied the sprite lists at $8600-$86FF yet.
+
+There should probably be some sort of metasprite functionality, though the
+sticky bit takes care of a lot of that...
+
+{SCB1}
+SCB1 holds the tilemaps, palette, auto-animation, and flip bits.
+
+Tile number				0000|00000000
+Palette					00000000
+Auto-anim modes			2-bit/3-bit, one bit for each
+HFlip, VFlip			one bit each
+
+{SCB2}
+SCB2 holds the shrinking coefficients
+Horiz. Size				0000
+Vert.  Size				00000000
+
+{SCB3}
+SCB3 holds the vertical positions, sticky bit, and sprite tile size.
+Y Position				000000000
+Sticky Bit				one bit
+Sprite Size				000000
+
+{SCB4}
+SCB4 has the horizontal position only.
+X position				000000000
+
+<Functions>
+(Loading)
+* spr_Load				Load a single sprite
+* spr_LoadData			Load multiple sprites
+
+(Manipulation)
+* spr_xPos				Change sprite X position
+* spr_yPos				Change sprite Y position
+* spr_Pal				Change sprite palette
+* spr_hFlip				Change sprite Horiz. flip
+* spr_vFlip				Change sprite Vert. flip
+================================================================================
