@@ -1,0 +1,3 @@
+# mercurial-related
+.hg/
+.hgignore
