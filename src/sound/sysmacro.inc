@@ -1,5 +1,15 @@
 ; freemlib for Neo-Geo: Sound Driver System Macros
 ;==============================================================================;
+; Shorthand macros for write_45 and write_67
+	macro	write45
+	rst		$18
+	endm
+
+	macro	write67
+	rst		$20
+	endm
+
+;==============================================================================;
 ; SetBank
 ; A macro for setting one of the Z80 banks.
 ; Params:
