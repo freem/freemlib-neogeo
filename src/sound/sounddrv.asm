@@ -326,6 +326,14 @@ ssg_Silence:
 ; temporary command holding cell.
 ; These will be moved as I figure out what to do later.
 
+;------------------------------------------------------------------------------;
+; command_00
+; Dudley do-nothing.
+
+command_00:
+	ret
+
+;------------------------------------------------------------------------------;
 ; command_01
 ; Handles a slot switch.
 
@@ -367,17 +375,113 @@ command_03:
 ;==============================================================================;
 ; Play ADPCM-A sample
 
+; (Params)
+; d				ADPCM-A Channel Number
+; e				ADPCM-A Sample Number
+
+play_ADPCM_A:
+	; check Status 1 for channel end?
+
+	; set channel volume and left/right output ($08-$0D on ports 6/7)
+	; * default is full volume and both channels
+
+	; start address/256 LSB ($10-$15 on ports 6/7)
+	; start address/256 MSB ($18-$1D on ports 6/7)
+	; end address/256 LSB ($20-$25 on ports 6/7)
+	; end address/256 MSB ($28-$2D on ports 6/7)
+
+	; tell hardware to play channel
+	; * $00xx on ports 6/7
+
+	ret
+
 ;==============================================================================;
 ; Play ADPCM-B sample
 
+; (Params)
+; d				ADPCM-B Sample Number
+
+play_ADPCM_B:
+	; Start/Repeat/Reset ($10 on ports 4/5)
+
+	; Left/Right Output ($11 on ports 4/5)
+
+	; start address/256 LSB ($12 on ports 4/5)
+	; start address/256 MSB ($13 on ports 4/5)
+	; end address/256 LSB ($14 on ports 4/5)
+	; end address/256 MSB ($15 on ports 4/5)
+
+	; Delta-N Sampling Rate LSB ($19 on ports 4/5)
+	; Delta-N Sampling Rate MSB ($1A on ports 4/5)
+	; Channel Volume ($1B on ports 4/5)
+
+	; Start/Repeat/Reset ($10 on ports 4/5)
+	; Flag Control ($1C on ports 4/5)
+
+	ret
+
+;==============================================================================;
+; FM Frequency Table (Calculated from A440)
+
+; F-Number = (144 * fnote * 2^20 / M) / 2^B-1
+
+; . fnote: pronounciation frequency (in Hertz)
+; . M: master clock (8MHz = 8*10^6 = 8000000)
+; . B: block data (octave)
+
+; for the imaginary E#/Fb:
+; (144*339.43*1048576/8000000) / 8
+; (6406.52673024) / 8 = 800.81584128
+
+; for the imaginary B#/Cb:
+; (144*507.74*1048576/8000000) / 8
+; (9583.27160832) / 8 = 1197.90895104
+
+freqTable_FM:
+	word	0x0269			; C4		261.63Hz
+	word	0x028E			; C#4/Db4	277.18Hz
+	word	0x02B5			; D4		293.66Hz
+	word	0x02DE			; D#4/Eb4	311.13Hz
+	word	0x0309			; E4		329.63Hz
+	;word	0x0320			; imaginary E#/Fb
+	word	0x0338			; F4		349.23Hz
+	word	0x0369			; F#4/Gb4	369.99Hz
+	word	0x039D			; G4		392.00Hz
+	word	0x03D3			; G#4/Ab4	415.30Hz
+	word	0x040E			; A4		440.00Hz
+	word	0x044B			; A#4/Bb4	466.16Hz
+	word	0x048D			; B4		493.88Hz
+	;word	0x04AE 			; imaginary B#/Cb
+
 ;==============================================================================;
 ; Instrument Library
+; * FM instruments
+instruments_FM:
+	; 29 bytes per instrument
+
+; * SSG instruments
+instruments_SSG:
+	; 3 bytes per instrument
+
+; * ADPCM-B instruments
+instruments_PCMB:
+	; 5 bytes per instrument
 
 ;==============================================================================;
 ; ADPCM-A Sample Library
+; format: Start and End address/256 in Words.
+
+samples_PCMA:
+	;word	startaddr,endaddr
 
 ;------------------------------------------------------------------------------;
 ; ADPCM-B Sample Library
+; format:
+; 2 words - Start and End address/256
+; 2 words - Delta-N sampling rates
+
+samples_PCMB:
+	;word	startaddr,endaddr,samprateL,samprateH
 
 ;==============================================================================;
 ; RAM defines at $F800-$FFFF

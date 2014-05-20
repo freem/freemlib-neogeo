@@ -122,7 +122,7 @@ Overall>
 * Total Volume
 
 per-Channel>
-* Note Value (Note+Octave) -> ADPCM-A Sample Number
+* ADPCM-A Sample Number
 * Volume
 --------------------
 * Left/Right output
@@ -131,7 +131,7 @@ per-Channel>
 
 ---------------------------------------------
 ADPCM-B channel>
-* Note Value (Note+Octave) -> ADPCM-B Sample Number
+* ADPCM-B Sample Number
 * Volume
 --------------------
 * Sampling Rate
