@@ -1,3 +1,6 @@
 # mercurial-related
 .hg/
 .hgignore
+
+# ignore this ripped data
+doc/functions/sound/instruments/level_complete_0/
