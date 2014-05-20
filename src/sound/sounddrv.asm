@@ -1,4 +1,5 @@
 ; freemlib for Neo-Geo: Sound Driver (ROM)
+; assemble with vasm z80 (oldstyle syntax)
 ;==============================================================================;
 	include "sounddef.inc"
 	include "sysmacro.inc"
@@ -64,8 +65,12 @@ NMI:
 	or		a				; check if Command is 0
 	jp		Z,endNMI		; exit if Command 0
 
-	; do NMI crap/handle communication... I'm not sure what to do yet.
+	; do NMI crap/handle communication...
+	ld		(curCommand),a	; update curCommand
 
+	; I'm not fully sure what to do yet.
+
+	out		(0xC),a			; write something to 68k
 endNMI:
 	; restore registers
 	pop		hl
@@ -100,7 +105,7 @@ endIRQ:
 
 	; enable interrupts and return
 	ei
-	reti
+	ret						; was "reti", see note below.
 
 ; note:
 ; "In an IRQ, RETI is only useful if you have something like a Z80 PIO to support
@@ -138,13 +143,13 @@ EntryPoint:
 
 	; Reset timers ($27,$30 to ports 4 and 5)
 	ld		de,#0x2730
-	call	write_45
+	write45					; write to ports 4 and 5
 	; Reset ADPCM-B ($10,$01 to ports 4 and 5)
 	ld		de,#0x1001
-	call	write_45
+	write45					; write to ports 4 and 5
 	; Unmask ADPCM-A and B flag controls ($1C,$00 to ports 4 and 5)
 	ld		de,#0x1C00
-	call	write_45
+	write45					; write to ports 4 and 5
 
 	; Initialize more variables
 
@@ -153,7 +158,7 @@ EntryPoint:
 
 	; More Timers ($27,$3F to ports 4 and 5)
 	ld		de,#0x273F
-	call	write_45
+	write45					; write to ports 4 and 5
 
 	; Enable NMIs
 	ld		a,#1
@@ -269,13 +274,13 @@ fm_Silence:
 	; then the data bytes in succession, since I read it in the datasheet.
 
 	ld		de,#0x2801		; FM Channel 1
-	call	write_45
+	write45					; write to ports 4 and 5
 	ld		de,#0x2802		; FM Channel 2
-	call	write_45
+	write45					; write to ports 4 and 5
 	ld		de,#0x2805		; FM Channel 3
-	call	write_45
+	write45					; write to ports 4 and 5
 	ld		de,#0x2806		; FM Channel 4
-	call	write_45
+	write45					; write to ports 4 and 5
 	ret
 
 ; "However, if you're accessing the same address multiple times, you may write
@@ -308,13 +313,13 @@ fm_Silence2:
 
 ssg_Silence:
 	ld		de,#0x0800		; SSG Channel A Volume/Mode
-	call	write_45
+	write45					; write to ports 4 and 5
 	ld		de,#0x0900		; SSG Channel B Volume/Mode
-	call	write_45
+	write45					; write to ports 4 and 5
 	ld		de,#0x0A00		; SSG Channel C Volume/Mode
-	call	write_45
+	write45					; write to ports 4 and 5
 	ld		de,#0x070F		; Disable all SSG channels
-	call	write_45
+	write45					; write to ports 4 and 5
 	ret
 
 ;==============================================================================;
@@ -327,10 +332,11 @@ ssg_Silence:
 command_01:
 	di
 	xor		a
-	out		(0xC),a
-	out		(0),a
+	out		(0xC),a			; Write to port 0xC (Reply to 68K)
+	out		(0),a			; Reset sound code
 
 	; ...do bank initialization, etc...
+	call	SetDefaultBanks
 
 	; shut the damn sounds up.
 
@@ -354,9 +360,25 @@ command_03:
 	di
 	ld		a,#0
 	out		(0xC),a			; Write to port 0xC (Reply to 68K)
-	out		(0),a
+	out		(0),a			; Reset sound code
 	ld		sp,#0xFFFF
 	jp		Start			; Go back to the top.
 
 ;==============================================================================;
+; Play ADPCM-A sample
+
+;==============================================================================;
+; Play ADPCM-B sample
+
+;==============================================================================;
+; Instrument Library
+
+;==============================================================================;
+; ADPCM-A Sample Library
+
+;------------------------------------------------------------------------------;
+; ADPCM-B Sample Library
+
+;==============================================================================;
+; RAM defines at $F800-$FFFF
 	include "soundram.inc"
