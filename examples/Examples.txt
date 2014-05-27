@@ -1,5 +1,9 @@
 freemlib for Neo-Geo Examples
 =============================
+A number of example projects for the Neo-Geo freemlib are included.
+The projects uses relative paths to the freemlib source files, which means you'll
+want to edit those paths if you're working on them in a different place. Sorry!
+
 [00_skeleton]
 A skeleton setup for future projects.
 
