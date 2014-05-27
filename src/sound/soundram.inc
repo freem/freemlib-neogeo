@@ -14,6 +14,7 @@ prevCommand			ds 1		; Previous command handled
 commandBuffer		ds 96		; 96 byte command buffer (todo: is this enough?)
 
 dataMode			ds 1		; (0=normal, 1=send to 68k, 2=receive from 68k)
+dataBuffer			ds 64		; buffer for data transfer
 
 ;------------------------------------------------------------------------------;
 ; Channel Playback
@@ -28,6 +29,7 @@ pcmToggle			ds 1		; Specific ADPCM channel toggles
 ;------------------------------------------------------------------------------;
 ; Song Attributes/Playback
 curSong				ds 1		; Current Song number
+curSpeed			ds 1		; Current Song Speed (0x00-0x1F)
 curTempo			ds 2		; Current Song Tempo (0-511, for now...)
 
 songLoops			ds 1		; Does the song loop?
@@ -40,6 +42,9 @@ loopPoint			ds 2		; Pointer to loop point (shared between channels for now)
 ; SSG Channel A
 ; SSG Channel B
 ; SSG Channel C
+
+;------------------------------------------------------------------------------;
+; Pattern Playback
 
 ;==============================================================================;
 ; YM2610 Section
