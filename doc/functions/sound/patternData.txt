@@ -1,0 +1,91 @@
+Pattern Data Overview
+================================================================================
+This document is written as though pattern data is uncompressed.
+When stored, it might be compressed. I don't know.
+
+Section Sizes:
+* Control Channel		3 to 11 bytes
+* FM Channel (x4)		??? bytes
+* SSG Channels A-C		5 to 11 bytes per channel
+* ADPCM-A Channel (x6)	3 to 9 bytes per channel
+* ADPCM-B Channel		6 to 12 bytes
+
+Minimum Possible Row:	? bytes
+------------------------------------------------
+ * Control Chan.		3 bytes
+ * FM Chan. (x4)		? bytes
+ * SSG Chan. A-C		5 bytes x3 (15 bytes)
+ * SSG Noise Chan.		3 bytes
+ * ADPCM-A Chans. (x6)	3 bytes x6 (18 bytes)
+ * ADPCM-B Chan.		6 bytes
+
+================================================================================
+Control Channel (CTRL) row = {
+
+$00			Number of commands in this row (0x00-0x04 = 1-5)
+$01,$02		Command 1
+$03,$04		Command 2 (optional)
+$05,$06		Command 3 (optional)
+$07,$08		Command 4 (optional)
+$09,$0A		Command 5 (optional)
+
++----+
+| 00 | <- Number of commands in this row (0x00-0x04 = 1-5); hidden from user
++-------+-------+-------+-------+-------+
+| 00 00 | 00 00 | 00 00 | 00 00 | 00 00 |
++-------+-------+-------+-------+-------+
+ Commd.1 Commd.2 Commd.3 Commd.4 Commd.5
+
+}
+
+uncompressed CTRL Channel Nop = 0x00,0x00,0x00 (num commands: 1; "No Command")
+compressed CTRL Channel Nop = 0x80 (high bit, 1 command)?
+================================================================================
+FM Channel (FM 1-4) row = {
+
+$00,$01		Octave, Note Value (Block (3 bits) and F-Numbers (11 bits))
+$02			Instrument ID
+$03			Volume Channel ("Total Level": 7 bits, 0-127)
+--------------------------------------------
+(Channel-Specific Data)
+--------------------------------------------
+Number of Effects (0-3)
+Effects Data
+
+}
+================================================================================
+SSG Channel (SSG A-C) row = {
+
+$00,$01		Octave, Note Value (Tone Period Control: 12 bits, 0-4095)
+$02			Instrument ID
+$03			Volume Channel (4 bits, 0-15)
+--------------------------------------------
+(Channel-Specific Data)
+--------------------------------------------
+$04			Number of Effects (0-3)
+$05...$0A	Effects Data
+
+}
+================================================================================
+ADPCM-A Channel (ADPCMA 1-6) row = {
+
+$00			ADPCM-A Sample Number
+$01			Volume Channel (6 bits, 0-63)
+$02			Number of Effects (0-3)
+$03...$08	Effects Data
+
+}
+================================================================================
+ADPCM-B Channel (ADPCMB) row = {
+
+$00			ADPCM-B Sample Number
+$01			Instrument ID
+$02			Volume Channel (5 bits, 0-31)
+--------------------------------------------
+(Channel-Specific Data)
+$03,$04		Delta-T Sampling Rate (16-bits)
+--------------------------------------------
+$05			Number of Effects (0-3)
+$06...$0B	Effects Data
+
+}
