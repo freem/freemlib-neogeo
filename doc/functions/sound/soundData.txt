@@ -64,23 +64,24 @@ Operator Data
 
 ================================================================================
 [Song Data]
-* Channel Use flags (2 bytes)
-* Song Tempo (0-511)
-* Instrument collection (size and pointers)
+* Channel Use flags (2 bytes: FM1-4 & PCMA1-4; PCMA5,6 & PCMB & SSGA-C)
+* Initial Song Tempo (0-511)
+* Instrument Collection (Number of Instruments and pointers to instruments)
+* Number of Patterns in Song
+* Song Pattern Data
 
 ================================================================================
 [Patterns]
-* Data for each channel (16 channels max)
+* Data for each channel (15 channels max)
 
-CTRL | FM1 | FM2 | FM3 | FM4 | PCMA1 | PCMA2 | PCMA3 | PCMA4 | PCMA5 | PCMA6 | PCMB | SSGA | SSGB | SSGC | SSGN 
------+-----+-----+-----+-----+-------+-------+-------+-------+-------+-------+------+------+------+------+------
+CTRL | FM1 | FM2 | FM3 | FM4 | PCMA1 | PCMA2 | PCMA3 | PCMA4 | PCMA5 | PCMA6 | PCMB | SSGA | SSGB | SSGC |
+-----+-----+-----+-----+-----+-------+-------+-------+-------+-------+-------+------+------+------+------+
 
 CTRL			Control Channel
 FM1-FM4			FM Channels
 PCMA1-PCMA6		ADPCM-A Channels
 PCMB			ADPCM-B Channel
-SSGA-SSGC		SSG Pulse Channels
-SSGN			SSG Noise Channel
+SSGA-SSGC		SSG Channels
 
 ================================================================================
 [Pattern Data]
@@ -91,22 +92,28 @@ General breakdown>
 * Note Value
 * Instrument
 * Volume
-* (Specific Channel Data; optional)
-* Effect(s)
+* (Channel-Specific Data; optional)
+* Number of Effects (0-3)
+* Effects Data
+
+Note Inst. Vol.  CSD   FX1 >
+-----------------------------
+C-4   1     FF   ...   ...
+
 ---------------------------------------------
 SSG>
 
-Overall>
-* Volume Envelope Period (Coarse and Fine)
-* Volume Envelope Shape
+The problem with SSG is that I was thinking about it all wrong.
+This extends to instruments, RAM, everywhere.
 
 SSG A-C channels>
 * Note Value (Note+Octave) -> Tone Period (0-4095)
 * Volume
-* Mode (Normal Volume or Envelope Generator)
+* Mode (Normal Volume or Envelope Generator) <- instrument and/or effect
 
 SSG Noise channel>
 * Note Value (Note+Octave) -> Noise Period
+* Noise Mode (/Enable channel)
 
 ---------------------------------------------
 FM channels>
@@ -117,9 +124,6 @@ per-Channel>
 
 ---------------------------------------------
 ADPCM-A channels>
-
-Overall>
-* Total Volume
 
 per-Channel>
 * ADPCM-A Sample Number
@@ -143,10 +147,44 @@ ADPCM-B channel>
 ---------------------------------------------
 Control Channel>
 This one operates a bit differently from the other channels.
+See soundControl.txt for more information.
+
+* Number of Commands in this row (0-4 = 1-5)
+--------------------
+* Command Number
+* Command Input
+--------------------
 
 ================================================================================
 [Effects]
 Content moved to soundEffects.txt.
+
+================================================================================
+[SSG Channel Frequency]
+12 bits
+
+fT = (M/16TP)
+ fT: oscillation frequency
+ M: SSG master clock (1000000?)
+ TP: Register TP (tone period)
+
+Frequency = Clock / (16 * Period)
+Period = Clock / (16 * Frequency) 
+
+Example: A 440hz
+
+period = 1000000 / (16*440)
+period = 1000000 / 7040
+period = 142.05454?
+
+--------------------------------------------------------------------------------
+[SSG Noise Frequency]
+5 bits
+
+fN = (M/16NP)
+ fN: noise frequency
+ M: SSG master clock (1000000?)
+ NP: Register NP (noise period) 
 
 ================================================================================
 [F-Numbers]

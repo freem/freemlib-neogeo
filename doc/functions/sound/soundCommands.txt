@@ -1,4 +1,4 @@
-freemlib Sound Engine System Command Documentation
+﻿freemlib Sound Engine System Command Documentation
 ================================================================================
 (Command sketchpad)
 * Still unsure about the ADPCM-A part.
@@ -7,7 +7,7 @@ freemlib Sound Engine System Command Documentation
 Commands marked with a * are used by the BIOS and are therefore out of my hands.
 Commands marked with @ are in slots that are compatible with SNK drivers.
 
-$00			No command
+$00			No Command
 $01			*Slot change
 $02			*Play eyecatch BGM (typically $5F)
 $03			*Soft reset
@@ -19,7 +19,7 @@ $08			@ Enable Music
 $09			@ Enable Sounds
 $0A			Disable/Silence SSG (equiv. to SNK Command $0F)
 $0B			Disable/Silence FM
-$0C			Stop ADPCM-A sample [1 arg; sound to stop]
+$0C			Stop ADPCM-A sample [1 arg; sound(/channel?) to stop]
 $0D			Stop ADPCM-B sample
 $0E			@ Tempo Change 1 [1 arg; $00-$FF = 0-255bpm]
 $0F			  Tempo Change 2 [1 arg; $00-$FF = 256-511bpm]
@@ -32,9 +32,9 @@ $15			(Start ADPCM-A sample 3?)
 $16			Start ADPCM-B sample [1 arg; sound to play]
 $17			Write Address/Data 1 (Ports 4/5) [2 args; address and data values]
 $18			Write Address/Data 2 (Ports 6/7) [2 args; address and data values]
-$19			
-$1A			
-$1B			
+$19			(Play Song? [1 arg; song number])
+$1A			(Play Sound Effect? [1 arg; effect number])
+$1B			(VBlank Notification?)
 $1C			(Data Collect (Z80 -> 68K)?)
 $1D			(Data Transfer (68K -> Z80)?)
 $1E			
@@ -51,13 +51,14 @@ General Tasks:
  * SSG
  * FM
  * ADPCM-A/B
+* Reset banks
 * Set up infinite loop in RAM
 * Jump to infinite loop in RAM
 
 ================================================================================
 [System Command $02: Play Eyecatch Music] (Required by all BIOS)
-this is the song
-that plays at boot
+♫ this is the song
+that plays at boot ♫
 
 The value of the eyecatch music sound code is 0x5F in SNK drivers.
 
@@ -77,14 +78,16 @@ Sets musicToggle and soundToggle to nonzero values.
 Disables music playback.
 
 (Internal Details)
-Sets musicToggle to a nonzero value.
+* Sets musicToggle to a nonzero value.
+* Silences all music channels.
 
 ================================================================================
 [System Command $06: Disable Sounds] (Shares slot with SNK drivers)
 Disables sound effect playback.
 
 (Internal Details)
-Sets soundToggle to a nonzero value.
+* Sets soundToggle to a nonzero value.
+* Silences all sound effect channels.
 
 ================================================================================
 [System Command $07: Enable All (Music & Sounds)] (Shares slot with SNK drivers)
@@ -92,6 +95,7 @@ Enables both sound and music playback.
 
 (Internal Details)
 Sets musicToggle and soundToggle to 0.
+You will have to send sound commands to play sounds/music again??
 
 ================================================================================
 [System Command $08: Enable Music] (Shares slot with SNK drivers)
@@ -99,6 +103,7 @@ Enables music playback.
 
 (Internal Details)
 Sets musicToggle to 0.
+You will have to send sound commands to play music again??
 
 ================================================================================
 [System Command $09: Enable Sounds] (Shares slot with SNK drivers)
@@ -106,6 +111,7 @@ Enables sound effect playback.
 
 (Internal Details)
 Sets soundToggle to 0.
+You will have to send sound commands to play sounds again??
 
 ================================================================================
 [System Command $0A: Disable/Silence SSG] (Equiv. to SNK driver command $0F)
@@ -120,7 +126,7 @@ Stops playback of all FM channels.
 Stops the playback of the specified ADPCM-A sample.
 
 (Params)
-1 byte			Sample number to stop
+1 byte			Sample number to stop... or is this the channel?
 
 ================================================================================
 [System Command $0D: Stop ADPCM-B sample]
@@ -182,6 +188,15 @@ Writes data to ports 6 and 7.
 (Params)
 1 byte			Address value (port 6)
 1 byte			Data value (port 7)
+
+================================================================================
+[System Command $19: ]
+
+================================================================================
+[System Command $1A: ]
+
+================================================================================
+[System Command $1B: ]
 
 ================================================================================
 [System Command $1C: Data Collect]

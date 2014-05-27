@@ -10,9 +10,9 @@ codes for 68K<->Z80 comms.
 SNK drivers consider the following codes to be used for audio data:
 * $20-$5F	Music (64 songs; $5F reserved for eyecatch)
 * $60-$FF	Sound (160 sounds; $7F reserved for coin sound)
- * $60-$7F	SSG effects
- * $80-$BF	ADPCM-B samples
- * $C0-$FF	ADPCM-A samples
+ * $60-$7F	SSG effects (32 sounds)
+ * $80-$BF	ADPCM-B samples (64 sounds)
+ * $C0-$FF	ADPCM-A samples (64 sounds)
 
 <SNK System Commands>
 This list isn't 100% finalized yet, as I need to figure out what the SNK drivers
@@ -62,7 +62,7 @@ The sound driver's total functionality depends on the hardware.
 
 The YM2610 gives us:
 * Timers	(2 timers, A and B)
-* SSG		(3 square wave channels + 1 noise channel)
+* SSG		(3 channels)
 * FM		(4 channels)
 * ADPCM-A	(6 channels, 18.5kHz sampling rate)
 ------------------------------------------------------
@@ -87,12 +87,13 @@ $27			Control/Flags/etc.
 Writes to ports $04 (addr) and $05 (data)
 
 Overall Operation:
-$07			/EN flags for A,B,C, and noise.
+$06			Noise channel period	> 5 bits
+$07			/EN flags for A,B,C, and noise A,B,C. (CBA order)
 $0B			Volume envelope period fine tune
 $0C			Volume envelope period coarse tune
 $0D			Volume envelope shape
 
-Square Wave channels
+per-Channel (all channels listed)
 $00			Channel A fine tune		\ 12 bits
 $01			Channel A coarse tune	/
 $02			Channel B fine tune		\ 12 bits
@@ -102,9 +103,6 @@ $05			Channel C coarse tune	/
 $08			Channel A Mode/Volume
 $09			Channel B Mode/Volume
 $0A			Channel C Mode/Volume
-
-Noise channel
-$06			Noise channel control	> 5 bits
 
 Reading SSG ports
 $04			Timer A and B flags + Busy
