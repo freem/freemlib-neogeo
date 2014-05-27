@@ -141,24 +141,24 @@ EntryPoint:
 
 	; continue setting up the hardware, etc.
 
-	ld		de,#0x2730		; Reset Timer flags, Disable Timer IRQs
+	; Reset timers ($27,$30 to ports 4 and 5)
+	ld		de,#0x2730
 	write45					; write to ports 4 and 5
-	ld		de,#0x1001		; Reset ADPCM-B
+	; Reset ADPCM-B ($10,$01 to ports 4 and 5)
+	ld		de,#0x1001
 	write45					; write to ports 4 and 5
-	ld		de,#0x1C00		; Unmask ADPCM-A and B flag controls
+	; Unmask ADPCM-A and B flag controls ($1C,$00 to ports 4 and 5)
+	ld		de,#0x1C00
 	write45					; write to ports 4 and 5
 
 	; Initialize more variables
 
-	call	SetDefaultBanks	; Set default program banks
+	; Set default program banks
+	call	SetDefaultBanks
 
-	; Start Timers ($27,$3F to ports 4 and 5)
-	ld		de,#0x273F		; Reset Timer flags, Enable Timer IRQs, Load Timers
+	; More Timers ($27,$3F to ports 4 and 5)
+	ld		de,#0x273F
 	write45					; write to ports 4 and 5
-
-	; ADPCM-A shared volume max
-	ld		de,#0x013F		; ADPCM-A volume Max
-	write67					; write to ports 6 and 7
 
 	; Enable NMIs
 	ld		a,#1
@@ -206,14 +206,14 @@ write_67:
 
 ;------------------------------------------------------------------------------;
 ; portWriteDelayPart2
-; Part 2 of the write delay for ports (address port 2/2). (burn 17 cycles on YM2610)
+; Part 2 of the write delay for ports. (burn 17 cycles on YM2610)
 
 portWriteDelayPart2:
 	ret
 
 ;------------------------------------------------------------------------------;
 ; portWriteDelayPart4
-; Part 4 of the write delay for ports (data port 2/2). (burn 83 cycles on YM2610)
+; Part 4 of the write delay for ports. (burn 83 cycles on YM2610)
 
 portWriteDelayPart4:
 	push	bc
@@ -269,17 +269,16 @@ SetDefaultBanks:
 ; fm_Silence
 ; Silences FM channels.
 
-; Normal version you find in a few Neo-Geo sound drivers:
 fm_Silence:
+	; todo: something about being able to write the address byte once and
+	; then the data bytes in succession, since I read it in the datasheet.
+
 	ld		de,#0x2801		; FM Channel 1
 	write45					; write to ports 4 and 5
-	;----------------------------------------------;
 	ld		de,#0x2802		; FM Channel 2
 	write45					; write to ports 4 and 5
-	;----------------------------------------------;
 	ld		de,#0x2805		; FM Channel 3
 	write45					; write to ports 4 and 5
-	;----------------------------------------------;
 	ld		de,#0x2806		; FM Channel 4
 	write45					; write to ports 4 and 5
 	ret
@@ -290,23 +289,19 @@ fm_Silence:
 
 fm_Silence2:
 	push	af
-	ld		a,#0x28			; Slot and Key On/Off
+	ld		a,#0x28
 	out		(4),a			; write to port 4 (address 1)
 	rst		8				; Write delay 1 (17 cycles)
-	;---------------------------------------------------;
-	ld		a,#0x01			; FM Channel 1
+	ld		a,#0x01
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
-	;---------------------------------------------------;
-	ld		a,#0x02			; FM Channel 2
+	ld		a,#0x02
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
-	;---------------------------------------------------;
-	ld		a,#0x05			; FM Channel 3
+	ld		a,#0x05
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
-	;---------------------------------------------------;
-	ld		a,#0x06			; FM Channel 4
+	ld		a,#0x06
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	pop		af
@@ -319,19 +314,16 @@ fm_Silence2:
 ssg_Silence:
 	ld		de,#0x0800		; SSG Channel A Volume/Mode
 	write45					; write to ports 4 and 5
-	;-------------------------------------------------;
 	ld		de,#0x0900		; SSG Channel B Volume/Mode
 	write45					; write to ports 4 and 5
-	;-------------------------------------------------;
 	ld		de,#0x0A00		; SSG Channel C Volume/Mode
 	write45					; write to ports 4 and 5
-	;-------------------------------------------------;
-	ld		de,#0x070F		; Disable all? SSG channels (top two noise bits still there)
+	ld		de,#0x070F		; Disable all SSG channels
 	write45					; write to ports 4 and 5
 	ret
 
 ;==============================================================================;
-; temporary system command holding cell.
+; temporary command holding cell.
 ; These will be moved as I figure out what to do later.
 
 ;------------------------------------------------------------------------------;
@@ -355,10 +347,6 @@ command_01:
 	call	SetDefaultBanks
 
 	; shut the damn sounds up.
-	call	fm_Silence
-	call	ssg_Silence
-	;call	adpcmA_Silence
-	;call	adpcmB_Silence
 
 	; set up infinite loop in RAM
 	ld		hl,#0xFFFD
@@ -466,7 +454,7 @@ freqTable_FM:
 	;word	0x04AE 			; imaginary B#/Cb
 
 ;==============================================================================;
-; Instrument Data
+; Instrument Library
 ; * FM instruments
 instruments_FM:
 	; 29 bytes per instrument
@@ -480,14 +468,14 @@ instruments_PCMB:
 	; 5 bytes per instrument
 
 ;==============================================================================;
-; ADPCM-A Sample Data
+; ADPCM-A Sample Library
 ; format: Start and End address/256 in Words.
 
 samples_PCMA:
 	;word	startaddr,endaddr
 
 ;------------------------------------------------------------------------------;
-; ADPCM-B Sample Data
+; ADPCM-B Sample Library
 ; format:
 ; 2 words - Start and End address/256
 ; 2 words - Delta-N sampling rates
@@ -496,17 +484,5 @@ samples_PCMB:
 	;word	startaddr,endaddr,samprateL,samprateH
 
 ;==============================================================================;
-; Sound Effects Library
-library_Effects:
-	; pointers to sound effect data
-
-;==============================================================================;
-; Music Library
-library_Music:
-	; pointers to music data
-
-;==============================================================================;
 ; RAM defines at $F800-$FFFF
 	include "soundram.inc"
-;==============================================================================;
-; Anything after this point requires explicit bankswitching, I believe.
