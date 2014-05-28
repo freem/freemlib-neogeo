@@ -37,6 +37,8 @@ of a few tracker programs:
 todo:
 * TriloTracker (for SSG/PSG)
   http://trilobyte-msx.com/TriloTracker/index.php/Effects
+* Arkos Tracker
+  http://www.grimware.org/doku.php/documentations/software/arkos.tracker/start
 
 NOTE: Some effects that are "missing" may be found in soundControl.txt.
 For some reason, I decided that having a "Control" channel handle the various

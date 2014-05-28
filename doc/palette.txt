@@ -5,7 +5,7 @@ Sprites can use all 256 palettes.
 
 There are two special colors:
 * first color ($400000) is the reference color for the video output.
-	It has to be $8000 (black).
+	It has to be $8000 (black with dark bit).
 * last color  ($401FFE) is the backdrop color (backmost layer on the screen).
 
 Color format
