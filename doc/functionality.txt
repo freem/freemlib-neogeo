@@ -28,6 +28,7 @@ Things I haven't fully considered:
 	[1] Write the transparency character (e.g. 0020H) into the VRAM
 		address 0 to 3FH.
 	[2] Write 0000H into VRAM address 8200H."
+Essentially, clear SCB1 and SCB? for Sprite 0.
 
 * Required AES/MVS functionality (I have stubs for some things)
 Not sure what is 100% required... Has to do with responding to request codes?
@@ -84,8 +85,8 @@ Interesting patterns of note:
 * Noise Factory is at least consistent about it. They might have inherited it from the Sengoku team?
 
 Input things:
-* trackball (SIT board)
-* mahjong controller
-* kizuna multiplayer (NEO-FTC1B)
+* Trackball (SIT board)
+* Mahjong Controller (note differences between MVS [1p only] and Home)
+* Kizuna multiplayer (NEO-FTC1B)
 
-other parts to be determined after i write my input tester
+other parts to be determined after I finish writing my input tester
