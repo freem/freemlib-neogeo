@@ -163,32 +163,52 @@ Content moved to soundEffects.txt.
 [SSG Channel Frequency]
 12 bits
 
-fT = (M/16TP)
- fT: oscillation frequency
- M: SSG master clock (1000000?)
+Algorithm from http://hardchord.org/yamaha_ym2608
+
+Hz = (M/64TP)
+ M: YM2610 Master Clock (8000000)
  TP: Register TP (tone period)
 
-Frequency = Clock / (16 * Period)
-Period = Clock / (16 * Frequency) 
+Calculating TP from Hertz:
+TP = (M/64)/Hz
 
-Example: A 440hz
+Example: A 440Hz
 
-period = 1000000 / (16*440)
-period = 1000000 / 7040
-period = 142.05454?
+Hz = (8000000/64)/440
+Hz = 125000/440
+Hz = 284.090909
 
 --------------------------------------------------------------------------------
 [SSG Noise Frequency]
 5 bits
 
-fN = (M/16NP)
- fN: noise frequency
- M: SSG master clock (1000000?)
- NP: Register NP (noise period) 
+Algorithm from http://hardchord.org/yamaha_ym2608
+
+Hz = (M/64NP)
+ M: YM2610 Master Clock (8000000)
+ NP: Register NP (noise period)
+
+Calculating NP from Hertz:
+NP = (M/64)/Hz
+
+--------------------------------------------------------------------------------
+[SSG Envelope Frequency]
+16 bits
+
+Algorithm from http://hardchord.org/yamaha_ym2608
+
+Hz = (M/1024EP)
+ M: YM2610 Master Clock (8000000)
+ EP: Register EP (envelope period)
+
+"The actual frequency of the generated envelope will be 1/32 of the envelope
+repetition period, meaning the Hz above represents 32 repetitions of the
+envelope shape."
 
 ================================================================================
 [F-Numbers]
 http://www.phy.mtu.edu/~suits/notefreqs.html
+https://en.wikipedia.org/wiki/Piano_key_frequencies
 
 The algorithm for deriving a F-Number is as follows:
 
@@ -226,3 +246,53 @@ G#4/Ab4	   | 415.30Hz -> 979.8156288 f     | 980	0x3D3
 A4		   | 440.00Hz -> 1038.09024 f      | 1038	0x40E
 A#4/Bb4	   | 466.16Hz -> 1099.80942336 f   | 1100	0x44B
 B4		   | 493.88Hz -> 1165.20910848 f   | 1165	0x48D
+
+================================================================================
+[Note Data]
+By default, there are 12 values in the note chart per octave.
+Values for non-existent D#/Eb and B#/Cb are commented out.
+
+(Reserved Values)
+$00 - nop/"Do Nothing"
+$FF - Cut Note/Rest
+
+(Example Notes)
+$01		A-0
+$02		Bb0
+$03		B-0
+-----------		Octave Switch
+$04		C-1
+$05		C#1
+$06		D-1
+$07		Eb1
+$08		E-1
+$09		F-1
+$0A		F#1
+$0B		G-1
+$0C		G#1
+$0D		A-1
+$0E		Bb1
+$0F		B-1
+-----------		Octave Switch
+$10		C-2
+etc...
+
+(FM Values)
+* Block ranges from 0-7, giving us 8 total octaves.
+* The frequency number is 11 bits, giving us values of 0-2047.
+ * It seemingly works best with a set of pre-calculated values that shouldn't
+   change between octaves, if you want to believe ...SEGA? Look into this.
+
+(SSG Square Values)
+The frequency number is 12 bits in total, giving us values of 0-4095.
+
+Hertz Range:	30.525030Hz (4095) - 125000Hz (1)
+
+$03/B-0 is the lowest valid note that can be used.
+
+(SSG Noise Values)
+The frequency number is 5 bits in total, giving us values of 0-31.
+
+Hertz Range:	4032.258064516129032Hz (31) - 125000Hz (1)
+
+Note values will wrap around every 32 notes.
