@@ -65,10 +65,9 @@ NMI:
 	or		a				; check if Command is 0
 	jp		Z,endNMI		; exit if Command 0
 
-	; do NMI crap/handle communication...
+	; do NMI crap/handle communication... I'm not fully sure what to do yet.
 	ld		(curCommand),a	; update curCommand
-
-	; I'm not fully sure what to do yet.
+	call	HandleCommand
 
 	out		(0xC),a			; write something to 68k
 endNMI:
@@ -117,15 +116,15 @@ endIRQ:
 ; The entry point for the sound driver.
 
 EntryPoint:
-	ld		sp,#0xFFFC		; Set stack pointer ($FFFD-$FFFE is used for other purposes)
+	ld		sp,0xFFFC		; Set stack pointer ($FFFD-$FFFE is used for other purposes)
 	im		1				; Set Interrupt Mode 1 (IRQ at $38)
 	xor		a				; make value in A = 0
 
 	; Clear $F800-$FFFF
 	ld		(0xF800),a		; set $F800 = 0
-	ld		hl,#0xF800		; 00 value is at $F800
-	ld		de,#0xF801		; write sequence begins at $F801
-	ld		bc,#0x7FF		; end at $FFFF
+	ld		hl,0xF800		; 00 value is at $F800
+	ld		de,0xF801		; write sequence begins at $F801
+	ld		bc,0x7FF		; end at $FFFF
 	ldir					; clear out memory
 
 	; Initialize variables
@@ -136,16 +135,16 @@ EntryPoint:
 	call	ssg_Silence
 
 	; write 1 to port $C0 (what is the purpose?)
-	ld		a,#1
+	ld		a,1
 	out		(0xC0),a
 
 	; continue setting up the hardware, etc.
 
-	ld		de,#0x2730		; Reset Timer flags, Disable Timer IRQs
+	ld		de,0x2730		; Reset Timer flags, Disable Timer IRQs
 	write45					; write to ports 4 and 5
-	ld		de,#0x1001		; Reset ADPCM-B
+	ld		de,0x1001		; Reset ADPCM-B
 	write45					; write to ports 4 and 5
-	ld		de,#0x1C00		; Unmask ADPCM-A and B flag controls
+	ld		de,0x1C00		; Unmask ADPCM-A and B flag controls
 	write45					; write to ports 4 and 5
 
 	; Initialize more variables
@@ -153,15 +152,15 @@ EntryPoint:
 	call	SetDefaultBanks	; Set default program banks
 
 	; Start Timers ($27,$3F to ports 4 and 5)
-	ld		de,#0x273F		; Reset Timer flags, Enable Timer IRQs, Load Timers
+	ld		de,0x273F		; Reset Timer flags, Enable Timer IRQs, Load Timers
 	write45					; write to ports 4 and 5
 
 	; ADPCM-A shared volume max
-	ld		de,#0x013F		; ADPCM-A volume Max
+	ld		de,0x013F		; ADPCM-A volume Max
 	write67					; write to ports 6 and 7
 
 	; Enable NMIs
-	ld		a,#1
+	ld		a,1
 	out		(8),a			; Write to Port 8 (Enable NMI)
 
 ;------------------------------------------------------------------------------;
@@ -232,7 +231,7 @@ doCmd01:
 	ld		a,#0
 	out		(0xC),a			; write to port 0xC (Respond to 68K)
 	out		(0),a			; write to port 0 (Clear sound code)
-	ld		sp,#0xFFFC		; set stack pointer
+	ld		sp,0xFFFC		; set stack pointer
 
 	; call Command 01
 	ld		hl,#command_01
@@ -244,10 +243,10 @@ doCmd01:
 ; Performs setup work for Command $03 (Soft Reset).
 
 doCmd03:
-	ld		a,#0
+	ld		a,0
 	out		(0xC),a			; write to port 0xC (Respond to 68K)
 	out		(0),a			; write to port 0 (Clear sound code)
-	ld		sp,#0xFFFC		; set stack pointer
+	ld		sp,0xFFFC		; set stack pointer
 
 	; call Command 03
 	ld		hl,#command_03
@@ -271,16 +270,16 @@ SetDefaultBanks:
 
 ; Normal version you find in a few Neo-Geo sound drivers:
 fm_Silence:
-	ld		de,#0x2801		; FM Channel 1
+	ld		de,0x2801		; FM Channel 1
 	write45					; write to ports 4 and 5
 	;----------------------------------------------;
-	ld		de,#0x2802		; FM Channel 2
+	ld		de,0x2802		; FM Channel 2
 	write45					; write to ports 4 and 5
 	;----------------------------------------------;
-	ld		de,#0x2805		; FM Channel 3
+	ld		de,0x2805		; FM Channel 3
 	write45					; write to ports 4 and 5
 	;----------------------------------------------;
-	ld		de,#0x2806		; FM Channel 4
+	ld		de,0x2806		; FM Channel 4
 	write45					; write to ports 4 and 5
 	ret
 
@@ -290,23 +289,23 @@ fm_Silence:
 
 fm_Silence2:
 	push	af
-	ld		a,#0x28			; Slot and Key On/Off
+	ld		a,0x28			; Slot and Key On/Off
 	out		(4),a			; write to port 4 (address 1)
 	rst		8				; Write delay 1 (17 cycles)
 	;---------------------------------------------------;
-	ld		a,#0x01			; FM Channel 1
+	ld		a,0x01			; FM Channel 1
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	;---------------------------------------------------;
-	ld		a,#0x02			; FM Channel 2
+	ld		a,0x02			; FM Channel 2
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	;---------------------------------------------------;
-	ld		a,#0x05			; FM Channel 3
+	ld		a,0x05			; FM Channel 3
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	;---------------------------------------------------;
-	ld		a,#0x06			; FM Channel 4
+	ld		a,0x06			; FM Channel 4
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	pop		af
@@ -317,18 +316,31 @@ fm_Silence2:
 ; Silences SSG channels.
 
 ssg_Silence:
-	ld		de,#0x0800		; SSG Channel A Volume/Mode
+	ld		de,0x0800		; SSG Channel A Volume/Mode
 	write45					; write to ports 4 and 5
 	;-------------------------------------------------;
-	ld		de,#0x0900		; SSG Channel B Volume/Mode
+	ld		de,0x0900		; SSG Channel B Volume/Mode
 	write45					; write to ports 4 and 5
 	;-------------------------------------------------;
-	ld		de,#0x0A00		; SSG Channel C Volume/Mode
+	ld		de,0x0A00		; SSG Channel C Volume/Mode
 	write45					; write to ports 4 and 5
 	;-------------------------------------------------;
-	ld		de,#0x070F		; Disable all? SSG channels (top two noise bits still there)
+	ld		de,0x070F		; Disable all? SSG channels (top two noise bits still there)
 	write45					; write to ports 4 and 5
 	ret
+
+;==============================================================================;
+; HandleCommand
+; Handles any command that isn't already dealt with separately (e.g. $01, $03).
+
+HandleCommand:
+	ld		a,(curCommand)	; get current command
+
+HandleCommand_end:
+	ret
+
+;------------------------------------------------------------------------------;
+; Relevant command pointers go here
 
 ;==============================================================================;
 ; temporary system command holding cell.
@@ -361,12 +373,12 @@ command_01:
 	;call	adpcmB_Silence
 
 	; set up infinite loop in RAM
-	ld		hl,#0xFFFD
-	ld		(hl),#0xC3		; Set 0xFFFD = 0xC3 ($C3 is opcode for "jp")
-	ld		(#0xFFFE),hl	; Set 0xFFFE = 0xFFFD (making "jp $FFFD")
-	ld		a,#1
+	ld		hl,0xFFFD
+	ld		(hl),0xC3		; Set 0xFFFD = 0xC3 ($C3 is opcode for "jp")
+	ld		(0xFFFE),hl	; Set 0xFFFE = 0xFFFD (making "jp $FFFD")
+	ld		a,1
 	out		(0xC),a			; Write to port 0xC (Reply to 68K)
-	jp		#0xFFFD			; jump to infinite loop in RAM
+	jp		0xFFFD			; jump to infinite loop in RAM
 
 ;------------------------------------------------------------------------------;
 ; command_02
@@ -378,10 +390,10 @@ command_01:
 
 command_03:
 	di
-	ld		a,#0
+	ld		a,0
 	out		(0xC),a			; Write to port 0xC (Reply to 68K)
 	out		(0),a			; Reset sound code
-	ld		sp,#0xFFFF
+	ld		sp,0xFFFF
 	jp		Start			; Go back to the top.
 
 ;==============================================================================;
