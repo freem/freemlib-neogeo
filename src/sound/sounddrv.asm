@@ -454,11 +454,11 @@ play_ADPCM_B:
 ; . B: block data (octave)
 
 ; for the imaginary E#/Fb:
-; (144*339.43*1048576/8000000) / 8
+; (144 * 339.43 * 1048576 / 8000000) / 8
 ; (6406.52673024) / 8 = 800.81584128
 
 ; for the imaginary B#/Cb:
-; (144*507.74*1048576/8000000) / 8
+; (144 * 507.74 * 1048576 / 8000000) / 8
 ; (9583.27160832) / 8 = 1197.90895104
 
 freqTable_FM:
@@ -467,7 +467,7 @@ freqTable_FM:
 	word	0x02B5			; D4		293.66Hz
 	word	0x02DE			; D#4/Eb4	311.13Hz
 	word	0x0309			; E4		329.63Hz
-	;word	0x0320			; imaginary E#/Fb
+	;word	0x0320			; imaginary E#/Fb (339.43Hz)
 	word	0x0338			; F4		349.23Hz
 	word	0x0369			; F#4/Gb4	369.99Hz
 	word	0x039D			; G4		392.00Hz
@@ -475,7 +475,7 @@ freqTable_FM:
 	word	0x040E			; A4		440.00Hz
 	word	0x044B			; A#4/Bb4	466.16Hz
 	word	0x048D			; B4		493.88Hz
-	;word	0x04AE 			; imaginary B#/Cb
+	;word	0x04AE 			; imaginary B#/Cb (507.74Hz)
 
 ;==============================================================================;
 ; Instrument Data
