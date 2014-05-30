@@ -1,3 +1,19 @@
 Using freemlib for Neo-Geo
 ==========================
 ... some shit about how some files should be edited and others shouldn't.
+
+The best examples of generally using the freemlib for Neo-Geo are in the
+examples directory. However, that doesn't cover what you should do to set up
+your environment so you can actually use the freemlib in the first place.
+
+Files to Copy (or Symlink) and Leave Alone
+------------------------------------------
+* inc/neogeo.inc			Defines for Neo-Geo hardware.
+* inc/ram_bios.inc			Defines for the BIOS RAM locations.
+
+Files to Copy and Change
+------------------------
+* header_68k.inc			68000 Vectors and such at $0.
+* header_cart.inc			Neo-Geo program header at $100.
+* header_cd.inc				(doesn't exist yet.)
+* ram_user.inc				User RAM defines.
