@@ -325,7 +325,7 @@ ssg_Silence:
 	ld		de,0x0A00		; SSG Channel C Volume/Mode
 	write45					; write to ports 4 and 5
 	;-------------------------------------------------;
-	ld		de,0x070F		; Disable all? SSG channels (top two noise bits still there)
+	ld		de,0x073F		; Disable all SSG channels (Tone and Noise)
 	write45					; write to ports 4 and 5
 	ret
 
@@ -341,6 +341,8 @@ HandleCommand_end:
 
 ;------------------------------------------------------------------------------;
 ; Relevant command pointers go here
+sysCmdPointers:
+	
 
 ;==============================================================================;
 ; temporary system command holding cell.
