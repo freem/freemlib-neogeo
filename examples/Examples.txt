@@ -4,8 +4,11 @@ A number of example projects for the Neo-Geo freemlib are included.
 The projects uses relative paths to the freemlib source files, which means you'll
 want to edit those paths if you're working on them in a different place. Sorry!
 
+Examples are meant to be as short as possible, while trying to show enough
+possibilities of what can be done. Graphics and sound are provided for you.
+
 [00_skeleton]
-A skeleton setup for future projects.
+A skeleton setup for the other examples.
 
 [01_helloFix]
 "Hello World" as a demonstration of various Fix layer capabilities.

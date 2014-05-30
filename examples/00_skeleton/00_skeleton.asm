@@ -13,14 +13,83 @@
 ; Needs to perform actions according to the value in BIOS_USER_REQUEST.
 ; Must jump back to SYSTEM_RETURN at the end so the BIOS can have control.
 
-; (Typically differs from project to project?)
+; (Example skeleton setup follows)
+USER:
+	move.b	d0,REG_DIPSW		; kick watchdog
+	move.w	#0,LSPC_MODE		;
+	move.w	#7,LSPC_IRQ_ACK		; ack. all IRQs
+
+	move.w	#$2000,sr			; Enable VBlank interrupt, go Supervisor
+
+	; Handle user request
+	clr.l	d0
+	move.b	(BIOS_USER_REQUEST).l,d0
+	lsl.b	#2,d0				; shift value left to get offset into table
+	lea		cmds_USER_REQUEST,a0
+	movea.l	(a0,d0),a0
+	jsr		(a0)
+
+;------------------------------------------------------------------------------;
+; BIOS_USER_REQUEST commands
+cmds_USER_REQUEST:
+	dc.l	userReq_StartupInit	; Command 0 (Initialize)
+	dc.l	userReq_Eyecatch	; Command 1 (Custom eyecatch)
+	dc.l	userReq_Game		; Command 2 (Demo Game/Game)
+	dc.l	userReq_Game		; Command 3 (Title Display)
+
+;------------------------------------------------------------------------------;
+; userReq_StartupInit
+; Initialize the backup work area.
+
+userReq_StartupInit:
+	move.b	d0,REG_DIPSW		; kick watchdog
+	jmp		SYSTEM_RETURN
+
+;------------------------------------------------------------------------------;
+; userReq_Eyecatch
+; Only to be fully coded if your game uses its own eyecatch (value at $114 is 1).
+; Otherwise, jmp to SYSTEM_RETURN.
+
+userReq_Eyecatch:
+	move.b	d0,REG_DIPSW		; kick watchdog
+	jmp		SYSTEM_RETURN
+
+;------------------------------------------------------------------------------;
+; userReq_Game
+; This is the complex one. You might want to have BIOS_USER_REQUEST commands 2
+; and 3 do different things. I'm not really sure.
+
+userReq_Game:
+	move.b	d0,REG_DIPSW		; kick watchdog
+
+	; perform your initialization
+
+	; set up palettes
+
+; execution continues into main loop.
+;------------------------------------------------------------------------------;
+; mainLoop
+; The game's main loop. This is where you run the actual game part.
+
+mainLoop:
+	move.b	d0,REG_DIPSW		; kick the watchdog
+
+	; do things like:
+	; Check Input
+	jsr		WaitVBlank			; wait for the vblank
+	; and other things that would normally happen in a game's main loop.
+
+	jmp		mainLoop
 
 ;==============================================================================;
 ; PLAYER_START
 ; Called by the BIOS if one of the Start buttons is pressed while the player
 ; has enough credits (or if the the time runs out on the title menu?).
 
-; (Typically differs from project to project?)
+; (Example skeleton stub follows)
+PLAYER_START:
+	move.b	d0,REG_DIPSW		; kick the watchdog
+	rts
 
 ;==============================================================================;
 ; DEMO_END
@@ -86,3 +155,6 @@ WaitVBlank:
 	bne.s	.waitLoop
 
 	rts
+
+;==============================================================================;
+; and now you can put your code and data here.
