@@ -8,14 +8,14 @@
 							; $00100000 = 16Mbits/1MB
 							; etc.
 	dc.l	$00108000		; pointer to backup RAM block (first two bytes are debug dips)
-	dc.w	$0000			; game save size in bytes
+	dc.w	$0000			; game save size in bytes (maximum $1000/4096 bytes)
 
 	dc.b	$00				; Eye catcher anim flag (0=BIOS,1=game,2=nothing)
-	dc.b	$00				; Sprite bank for eyecatch if done by BIOS
+	dc.b	$00				; Sprite bank for eyecatch
 
 	dc.l	softDips_Japan	; Software dips for Japan
 	dc.l	softDips_USA	; Software dips for USA
-	dc.l	softDips_Europe	; Software dips for Europe
+	dc.l	softDips_Europe	; Software dips for Europe/World
 
 	jmp		USER			; $122
 	jmp		PLAYER_START	; $128

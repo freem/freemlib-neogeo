@@ -16,6 +16,7 @@
 ; (Example skeleton setup follows)
 USER:
 	move.b	d0,REG_DIPSW		; kick watchdog
+	lea		BIOS_WORKRAM,sp		; set stack pointer to BIOS_WORKRAM
 	move.w	#0,LSPC_MODE		;
 	move.w	#7,LSPC_IRQ_ACK		; ack. all IRQs
 
