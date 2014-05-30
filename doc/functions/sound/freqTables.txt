@@ -3,6 +3,7 @@ Frequency Tables
 [References]
 http://www.phy.mtu.edu/~suits/notefreqs.html
 https://en.wikipedia.org/wiki/Piano_key_frequencies
+https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies
 ================================================================================
 [FM]
 The algorithm for deriving a F-Number is as follows:
