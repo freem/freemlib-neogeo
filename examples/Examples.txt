@@ -4,8 +4,10 @@ A number of example projects for the Neo-Geo freemlib are included.
 The projects uses relative paths to the freemlib source files, which means you'll
 want to edit those paths if you're working on them in a different place. Sorry!
 
-Examples are meant to be as short as possible, while trying to show enough
-possibilities of what can be done. Graphics and sound are provided for you.
+Aside from the freemlib files, each project is meant to be self-contained.
+
+The examples are meant to be short, while trying to show enough possibilities of
+what can be done.
 
 [00_skeleton]
 A skeleton setup for the other examples.
