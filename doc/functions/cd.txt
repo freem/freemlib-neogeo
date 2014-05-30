@@ -2,3 +2,20 @@ freemlib for Neo-Geo - CD System functionality
 ==============================================
 This is currently a catch-all and may be split out later.
 It will still be separate from the cart system stuff, though.
+
+BIOS calls that go to RTS:
+ * SYSTEM_INT2
+ * READ_CALENDAR
+ * SETUP_CALENDAR
+ * HOW_TO_PLAY
+ * Calculate checksum
+
+New BIOS calls:
+$C004DA				HBlank handler
+$C004E0-$C004F2		"$FF0000 range register operations and RTEs"
+$C00546				BIOSF_UPLOAD		(Upload data to DRAM)
+$C00522				BIOSF_LOADFILE		(Load file from CD, with animation)
+$C0055E				BIOSF_CDPLAYER		(Reset to CD Player)
+$C00564				BIOSF_LOADFILEX?	(Load file from CD, no animation)
+$C0056A				BIOSF_CDDACMD		(Issue CDDA command)
+$C00570				BIOSF_VIDEOEN		(Enable/Disable video layers)

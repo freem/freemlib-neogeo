@@ -8,7 +8,7 @@ This is then processed every vblank.
 
 Note: The fix layer can only use the first 16 palettes.
 
-* Fading (Would probably need precalculated tables?)
+* Fading (Would use precalculated tables)
 * Single color manipulation? (e.g. change only Red, Green, Blue)
 * Brighten/Darken (+/- 1 or so for each channel)
 * Soft Shadow (0.5x color)
@@ -26,26 +26,26 @@ The actual values will need to be written to palette RAM during VBlank.
 [pal_LoadSet]
 Load a single palette set (16 colors).
 
-Params:
-* Address of data to load from
-* Palette set to load data into ($00-$FF)
+(Input)
+d?				Palette set to load data into ($00-$FF)
+a?				Address to load palette data from
 
 ================================================================================
 [pal_LoadData]
-Load raw colors into the palettes.
+Load raw color data into the palettes.
 
-Params:
-* Number of color entries
-* Address of data to load from
-* Beginning palette address to load data into
+(Input)
+d?				Number of color entries
+a?				Address to load palette data from
+a?				Beginning palette address to load data into ($400000-$401FFE)
 
 ================================================================================
 [pal_SetColor]
 Set the value of a single color.
 
-Params:
-* $0iSS (Palette Index, Palette Set)
-* New color value
+(Input)
+d?				Palette Index, Palette Set ($0iSS, where i=$0-$F and SS=$00-$FF)
+d?				New color value
 
 If I was an insane person I could fit the entire thing into a single register:
 

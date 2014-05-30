@@ -15,7 +15,7 @@ Auto-anim modes			2-bit/3-bit, one bit for each
 HFlip, VFlip			one bit each
 
 {SCB2}
-SCB2 holds the shrinking coefficients
+SCB2 holds the shrinking coefficients.
 Horiz. Size				0000
 Vert.  Size				00000000
 
@@ -29,6 +29,10 @@ Sprite Size				000000
 SCB4 has the horizontal position only.
 X position				000000000
 
+{Sprite List (Even Scanlines)}	$8600-$867F
+{Sprite List (Odd Scanlines)}	$8680-$86FF
+I'm not sure how data gets into these two sections.
+
 <Functions>
 (Loading)
 * spr_Load				Load a single sprite
@@ -40,4 +44,76 @@ X position				000000000
 * spr_Pal				Change sprite palette
 * spr_hFlip				Change sprite Horiz. flip
 * spr_vFlip				Change sprite Vert. flip
+================================================================================
+[Metasprite Data]
+Metasprites are a collection of Sprites. On the Neo-Geo, it's a bit easier to
+make metasprites, compared to other consoles. SCB3's Sprite height and Sticky
+bit go a long way in making metasprites easier to deal with.
+
+Commands have "mspr" prefix.
+
+* Number of Sprites in Metasprite
+* Beginning Sprite index
+* Pointers to Sprite data
+* $00000000 end code
+
+--------------------------------------------------------------------------------
+[Sprite Data]
+Overall, Sprites are a combination of the values in SCB1, SCB2, SCB3, and SCB4.
+
+Commands have "spr" prefix.
+
+* Sprite Index/Metasprite Sprite Index Offset
+* Sprite Height (Tiles)
+-----------------------
+SCB1{
+* Tile Number
+* Palette
+* Auto-Animation
+* Flip Bytes
+}
+-----------------------
+SCB2{
+* Horizontal Shrink (0-F)
+* Vertical Shrink (00-FF)
+}
+
+SCB3{
+* Y position
+* Sticky bit
+* Sprite size (0-33)
+}
+
+SCB4{
+* X position
+}
+
+
+================================================================================
+[Tilemap Data for SCB1]
+Each sprite in SCB1 has 64 values (32 possible "sub-sprites").
+Each spot in a sprite's SCB1 block is two values.
+
+* Tile Number LSB		16 bits > byte 1
+-------------------------------
+* Palette				8 bits \
+* Tile Number MSB		4 bits | byte 2
+* Auto-Anim Flags		2 bits |
+* V/H Flip Flags		2 bits /
+
+Tile index is 20 bits (values 0-1048575/$00000-$FFFFF).
+
+Converting a value of $12345 to SCB1:
+
+LSB = ($12345 & $0FFFF) -> SCB1
+MSB = (($12345 & $F0000)>>12) | SCB2
+
+SCB1 Macro would take the following values:
+* Tile Number ($00000-$FFFFF)
+--------------------------------
+* Palette Index ($00-$FF)
+* Auto-Anim (4/2-bit or 8/3-bit)
+* Vertical Flip
+* Horizontal Flip
+
 ================================================================================

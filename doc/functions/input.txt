@@ -3,4 +3,5 @@ freemlib for Neo-Geo - Input functionality
 For most purposes, a call to SYSTEM_IO is used and values are read from there.
 However, there's also the option of reading the input from the registers...
 
-In any case, I need to experiment with the input system more.
+In any case, I need to experiment with the input system more before I can truly
+say what I really need.

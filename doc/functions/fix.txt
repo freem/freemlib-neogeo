@@ -5,12 +5,38 @@ Most fix layer writing is done with MESS_OUT and the system buffer.
 
 How do we position text?
 1) Default raw VRAM addresses (do most games do this?) ($7000-$74FF)
-2) X and Y cells (Puzzle de Pon! does this)
+2) X and Y cells (Puzzle de Pon! does this, do other games?)
+ * The fix map is 40x32 cells in total size; visible area depends on NTSC/PAL.
 
-There's also the idea of rewriting MESS_OUT.
+0, 0 = $7000
+0, 1 = $7001
+0, 2 = $7002
+...........
+0,15 = $700F
+0,16 = $7010
+...........
+0,31 = $701F
+...........
+1, 0 = $7020
+etc.
+
+The functions COULD be dual-compatible... If the first value is $7x, then it's a
+raw VRAM address, otherwise it's cell numbers.
 
 Note: The fix layer can only use the first 16 palettes.
 Note: None of these functions take fix bankswitching into account.
+
+Looking for another project? You could always rewrite MESS_OUT... ;)
+
+================================================================================
+[fix_updateTile]
+Change the tile number and palette index of a fix map location.
+
+ppppTTTT tttttttt
+
+(Input)
+d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1				New palette index (pppp) and tile number (TTTT tttttttt)
 
 ================================================================================
 [fix_changeTile]
@@ -18,11 +44,19 @@ Change the tile number of a fix map location.
 
 xxxx0000 00000000
 
+(Input)
+d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1				New tile number
+
 ================================================================================
 [fix_changePal]
 Change the palette index of a fix map location.
 
 0000xxxx xxxxxxxx
+
+(Input)
+d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1				New palette number
 
 ================================================================================
 [fix_Draw8x16]
@@ -32,59 +66,112 @@ Whereas the 8x16 functions of MESS_OUT require your characters to be on differen
 pages,  fix_Draw8x16 lets you stack them right on top of each other, as they're
 meant to be seen in game.
 
+Tile Layout:
+A B C D
+A B C D
+
+So the assumption is if you have:
+$10,$11,$12,$13
+the line below it will be:
+$20,$21,$22,$23
+
+(Input)
+d?				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d?				Palette index and tile number MSB
+a?				Pointer to string to draw
+
 ================================================================================
 [fix_Draw16x16]
 Draws "normal" 16x16 text to the screen.
 
 What fix_Draw8x16 does for 8x16 fonts, this does for 16x16 fonts.
 
+Tile Layout:
+AA BB CC DD
+AA BB CC DD
+
+(Input)
+d?				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d?				Palette index and tile number MSB
+a?				Pointer to string to draw
+
 ================================================================================
 [fix_DrawRegion]
 Draws a rectangular region of tiles.
 
+(Input)
+d?				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d?				Combined rows/columns size
+d?				Palette index and tile number MSB
+a?				Pointer to data to draw
+
 ================================================================================
 [MESS_OUT Helpers]
-It might also be cool to provide helpers for MESS_OUT, like macros or something.
+Macros for more semantic use of MESS_OUT are found in src/inc/mess_macro.inc.
 
-<Command 1>
-* Data in Bytes/Words
-* End Code or Data Size
------------------------
-* Argument value (depends on what was chosen)
+A reference is included here. Numbered values beginning with '\' are macro
+parameters; these get passed to the macro.
 
-<Command 2>
-* Auto-increment value
+In order to use the macros, you just call them and pass the parameters like you
+would any other assembly command:
 
-<Command 3>
-* New vram address
+	messmac_Format		0,$03FF		; bytes, upper byte $03, end code $FF
+	messmac_SetIncr		$20			; VRAM Auto-Increment = $20 (horizontal)
 
-<Command 4>
-* pointer to data
+Some macros don't require any parameters; these can just be called on their own:
 
-<Command 5>
-* Value to add to vram address
+	messmac_OutData					; Begin output data
+	dc.b	'Wow',$FF
+	messmac_EndSub					; end Sub-Command list
 
-<Command 6>
-Will probably just be labeled "resume"
+--------------------------------------------------------------------------------
+messmac_Format (Command 1: Set Data Format)
+\1		flags (0=bytes+end code, 1=bytes+length, 2=word+end code, 3=word+length)
+\2		data (depends on what flags you set)
 
-<Command 7>
-Direct data. Something about handling the padding.
+--------------------------------------------------------------------------------
+messmac_SetIncr (Command 2: Set VRAM Increment)
+\1		New VRAM increment
 
-<Commands 8 and 9>
-* Upper byte (Palette, Tileset)
+--------------------------------------------------------------------------------
+messmac_SetAddr (Command 3: Set VRAM Address)
+\1		New VRAM address
 
-<Command A>
-* Pointer to sub-command list
+--------------------------------------------------------------------------------
+messmac_OutPtr (Command 4: Pointer to data)
+\1		Pointer to Commands
 
-<Command B>
-End sub-command list
+--------------------------------------------------------------------------------
+messmac_AddAddr (Command 5: Add to VRAM Address)
+\1		Value to add to VRAM address
 
-<Command C>
-Repeat output
-* How many times
-* Word value to repeat
+--------------------------------------------------------------------------------
+messmac_Continue (Command 6: Continue output)
 
-<Command D>
-Repeat and increment
-* How many times
-* Word value to repeat and increment
+--------------------------------------------------------------------------------
+messmac_OutData (Command 7: Direct output)
+
+--------------------------------------------------------------------------------
+messmac_Out8x16 (Command 8: 8x16 output)
+\1		VRAM output upper byte
+
+--------------------------------------------------------------------------------
+messmac_Out8x16J (Command 9: 8x16 voiced Japanese text)
+\1		VRAM output upper byte
+
+--------------------------------------------------------------------------------
+messmac_CallSub (Command A: Call sub-command list)
+\1		Pointer to command list (must end with command B)
+
+--------------------------------------------------------------------------------
+messmac_EndSub (Command B: Return to calling command list)
+
+--------------------------------------------------------------------------------
+messmac_Repeat (Command C: Repeat output)
+\1		Times to repeat
+\2		Value to write
+
+--------------------------------------------------------------------------------
+messmac_RepIncr (Command D: Repeat and increment output)
+\1		Times to repeat and increment
+\2		Value to write (lower byte gets incremented)
