@@ -1,4 +1,4 @@
-; 68000 Header
+; 68000 Header (set up for cart development)
 	; Note: You must modify the "$????????" sections for your game.
 	dc.l	$0010F300		; Initial Supervisor Stack Pointer (SSP)
 	dc.l	$00C00402		; Initial PC			(BIOS $C00402)
@@ -25,8 +25,8 @@
 	dc.l	$00C00426		; Reserved
 	dc.l	$00C00426		; Reserved
 	dc.l	$00C00432		; Spurious Interrupt
-	dc.l	VBlank			; Level 1 interrupt (VBlank)
-	dc.l	IRQ2			; Level 2 interrupt (HBlank)
+	dc.l	VBlank			; Level 1 interrupt (VBlank) \ Remember to swap these two
+	dc.l	IRQ2			; Level 2 interrupt (HBlank) / addrs when dev'ing for CD!
 	dc.l	$????????		; Level 3 interrupt
 	dc.l	$????????		; Level 4 interrupt
 	dc.l	$????????		; Level 5 interrupt
