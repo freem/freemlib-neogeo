@@ -7,3 +7,7 @@ doc/functions/sound/instruments/level_complete_0/
 
 # ignore binary sound drivers
 src/sound/*.m1
+
+# ignore any relevant binaries in the examples folder
+examples/*/*.p
+examples/*/*.p1
