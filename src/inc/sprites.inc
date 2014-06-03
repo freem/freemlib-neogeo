@@ -30,8 +30,66 @@
 
 ;==============================================================================;
 ; [Sprites]
+;------------------------------------------------------------------------------;
+; spr_Load
+; Loads a sprite into the VRAM.
+
+; (Params)
+; d*			Sprite index
+; a*			Pointer to Sprite Data Block
+
+spr_Load:
+	; convert sprite index into locations for SCB1-4
+	; write those locations into d?-d?.
+
+	; start reading from sprite data block
+	; $00		sprite height
+
+	; $02-05	pointer to SCB1 tilemap data
+	;jsr	spr_ParseSCB1
+
+	; $06		SCB2 data
+	; $08,$0A	SCB3 data
+	; $0C		SCB4 data
+
+	rts
+
+;------------------------------------------------------------------------------;
+; spr_ParseSCB1
+; Internal function for parsing SCB1 tilemap data.
+
+; (Params)
+; d?			Number of Sprites to parse
+
+spr_ParseSCB1:
+	; 1) Tile Number LSB
+
+	; 2-1) Palette
+	; 2-2) Tile Number MSB
+	; 2-3) Auto-Animation flags
+	; 2-4) V/H flip flags
+
+	rts
 
 ;==============================================================================;
 ; [Metasprites]
+;------------------------------------------------------------------------------;
+; msp_Load
+; Loads a Metasprite into the VRAM.
+
+; (Params)
+; d*			Metasprite starting index
+; a*			Pointer to Metasprite Data Block
+
+msp_Load:
+	; $00		number of sprites in metasprite
+
+; metasprite sprite loading loop:
+	; load pointer to sprite data
+	; set sprite index and data pointer
+	;jsr spr_Load
+	; loop until finished
+
+	rts
 
 ;==============================================================================;

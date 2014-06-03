@@ -32,10 +32,12 @@ X position				000000000
 {Sprite List (Even Scanlines)}	$8600-$867F
 {Sprite List (Odd Scanlines)}	$8680-$86FF
 I'm not sure how data gets into these two sections.
+Is it manual? Does the system handle it?
 
-<Functions>
+================================================================================
+<Function Sketchpad>
+
 (Loading)
-* spr_Load				Load a single sprite
 * spr_LoadData			Load multiple sprites
 
 (Manipulation)
@@ -44,6 +46,7 @@ I'm not sure how data gets into these two sections.
 * spr_Pal				Change sprite palette
 * spr_hFlip				Change sprite Horiz. flip
 * spr_vFlip				Change sprite Vert. flip
+
 ================================================================================
 [Metasprite Data]
 Metasprites are a collection of Sprites. On the Neo-Geo, it's a bit easier to
@@ -52,10 +55,10 @@ bit go a long way in making metasprites easier to deal with.
 
 Commands have "mspr" prefix.
 
-* Number of Sprites in Metasprite
-* Beginning Sprite index
-* Pointers to Sprite data
-* $00000000 end code
+<Metasprite Data Block>
+$00			Number of Sprites in Metasprite		(word)
+$02...		Pointers to Sprite data				(long)
+...end		$00000000 end code					(long)
 
 --------------------------------------------------------------------------------
 [Sprite Data]
@@ -63,7 +66,6 @@ Overall, Sprites are a combination of the values in SCB1, SCB2, SCB3, and SCB4.
 
 Commands have "spr" prefix.
 
-* Sprite Index/Metasprite Sprite Index Offset
 * Sprite Height (Tiles)
 -----------------------
 SCB1{
@@ -88,6 +90,15 @@ SCB4{
 * X position
 }
 
+<Sprite Data Block>
+$00			Sprite Height (tiles)				(word)
+$02-$05		pointer to SCB1 tilemap data		(long)
+$06			SCB2 data, native format			(word)
+$08,$0A		SCB3 data, native format			(word x2)
+$0C			SCB4 data, native format			(word)
+
+SCB1 data is stored in native format and is limited based on the value of
+Sprite Height. Real length of SCB1 data is 2x Sprite Height.
 
 ================================================================================
 [Tilemap Data for SCB1]
@@ -103,7 +114,7 @@ Each spot in a sprite's SCB1 block is two values.
 
 Tile index is 20 bits (values 0-1048575/$00000-$FFFFF).
 
-Converting a value of $12345 to SCB1:
+Converting a tile index value of $12345 to SCB1:
 
 LSB = ($12345 & $0FFFF) -> SCB1
 MSB = (($12345 & $F0000)>>12) | SCB2
