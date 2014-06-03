@@ -64,8 +64,8 @@ BIOS_P4REPEAT			equ $10FDAA	; (byte) Auto-repeat flag
 BIOS_P4TIMER			equ $10FDAB	; (byte) Input repeat timer
 ;-----------------------------------;
 ; INPUT_S
-BIOS_STATCURNT			equ $10FDAC	; (byte)
-BIOS_STATCHANGE			equ $10FDAD	; (byte)
+BIOS_STATCURNT			equ $10FDAC	; (byte) Start and Select from current frame (Select bits = 0 on MVS)
+BIOS_STATCHANGE			equ $10FDAD	; (byte) Start and Select active-edge input (Select bits = 0 on MVS)
 ;-----------------------------------;
 BIOS_USER_REQUEST		equ $10FDAE	; (byte) Command for USER ($122)
 BIOS_USER_MODE			equ $10FDAF	; (byte) Current game status
