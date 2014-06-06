@@ -15,10 +15,18 @@
 ;==============================================================================;
 ; Calculating X position:
 ; FEDCBA9876543210
-; 000000000xxxxxxx
+; 000000000-------
 ; |||||||||
 ; +++++++++- 9-bit X position, relative to left border of screen. (0-511)
 ; xPos = (x<<7)
+
+; utilmac_CalcSprX
+; Calculates a Sprite's X value (for SCB4).
+
+; \1
+
+utilmac_CalcSprX:	macro
+	endm
 
 ;------------------------------------------------------------------------------;
 ; Calculating Y position:
@@ -27,6 +35,12 @@
 ; |||||||||
 ; +++++++++- 9-bit Y position; Position is 496-Y from top border of the screen.
 ; yPos = ((496-y)<<7)
+
+; utilmac_CalcSprY
+; Calculates a Sprite's Y value (for SCB3).
+
+utilmac_CalcSprY:	macro
+	endm
 
 ;==============================================================================;
 ; [Sprites]
@@ -59,6 +73,7 @@ spr_Load:
 ; Internal function for parsing SCB1 tilemap data.
 
 ; (Params)
+; d?			Sprite index (carried over from spr_Load or msp_Load)
 ; d?			Number of Sprites to parse
 
 spr_ParseSCB1:
@@ -70,6 +85,42 @@ spr_ParseSCB1:
 	; 2-4) V/H flip flags
 
 	rts
+
+;==============================================================================;
+; Sprite Macros
+;------------------------------------------------------------------------------;
+; sprmac_SCB1Data
+; Writes a single SCB1 data entry into the binary.
+; This macro converts normal values to their SCB1 equivalents.
+; You will want to use this macro multiple times for Sprites with Height > 1.
+
+; \1			Tile Number				(long) 20 bits; SCB1 even, SCB1 odd (bits 4-7)
+; \2			Palette Number			(word) 8 bits; SCB1 odd (bits 8-15)
+; \3			Auto-Animation (0,2,3)	(byte) 2 bits; SCB1 odd (bits 2,3)
+; \4			Vertical Flip			(byte) 1 bit; SCB1 odd (bit 1)
+; \5			Horizontal Flip			(byte) 1 bit; SCB1 odd (bit 0)
+
+sprmac_SCB1Data:	macro
+	endm
+
+;------------------------------------------------------------------------------;
+; sprmac_SpriteData
+; Writes Sprite data into the binary.
+; This macro converts normal values to their SCB* section equivalents.
+; (Aside from SCB1 tilemaps, which are handled with the sprmac_SCB1Data macro.)
+
+; The point of this macro is to be user-friendly, so that they don't need to
+; handle all the crap required to create the SCB data.
+
+; \1			Sprite Height (in tiles)		(word) (bottom 6 bits of SCB3)
+; \2			X position						(word) 9 bits (SCB4); X<<7
+; \3			Y position						(word) 9 bits (SCB3); convert to (496-Y)<<7
+; \4			Pointer to SCB1 tilemap data	(long)
+; \5			Horizontal Shrink (0-F)			(byte)
+; \6			Vertical Shrink (00-FF)			(byte)
+
+sprmac_SpriteData:	macro
+	endm
 
 ;==============================================================================;
 ; [Metasprites]
