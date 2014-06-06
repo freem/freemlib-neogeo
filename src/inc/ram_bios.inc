@@ -85,7 +85,7 @@ BIOS_MESS_POINT			equ $10FDBE	; (dword) pointer to buffer
 BIOS_MESS_BUSY			equ $10FDC2	; (word) 0=run MESS_OUT, 1=skip MESS_OUT
 ;-----------------------------------;
 BIOS_CARD_COMMAND		equ $10FDC4	; (byte) Command to execute
-BIOS_CARD_MODE			equ $10FDC5	; (byte)
+BIOS_CARD_MODE			equ $10FDC5	; (byte) "command error job mode"
 BIOS_CARD_ANSWER		equ $10FDC6	; (byte) answer code for command; set by BIOS
 BIOS_CARD_START			equ $10FDC8	; (long) Pointer to start of card data
 BIOS_CARD_SIZE			equ $10FDCC	; (word) Size of data
