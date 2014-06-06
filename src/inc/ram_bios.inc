@@ -84,13 +84,13 @@ BIOS_PLAYER4_MODE		equ $10FDB9	; (byte)
 BIOS_MESS_POINT			equ $10FDBE	; (dword) pointer to buffer
 BIOS_MESS_BUSY			equ $10FDC2	; (word) 0=run MESS_OUT, 1=skip MESS_OUT
 ;-----------------------------------;
-BIOS_CARD_COMMAND		equ $10FDC4
-BIOS_CARD_MODE			equ $10FDC5
-BIOS_CARD_ANSWER		equ $10FDC6
-BIOS_CARD_START			equ $10FDC8
-BIOS_CARD_SIZE			equ $10FDCC
-BIOS_CARD_FCB			equ $10FDCE
-BIOS_CARD_SUB			equ $10FDD0
+BIOS_CARD_COMMAND		equ $10FDC4	; (byte) Command to execute
+BIOS_CARD_MODE			equ $10FDC5	; (byte)
+BIOS_CARD_ANSWER		equ $10FDC6	; (byte) answer code for command; set by BIOS
+BIOS_CARD_START			equ $10FDC8	; (long) Pointer to start of card data
+BIOS_CARD_SIZE			equ $10FDCC	; (word) Size of data
+BIOS_CARD_FCB			equ $10FDCE	; (word) Game NGH number
+BIOS_CARD_SUB			equ $10FDD0	; (byte/word) Game sub number (0-15)
 ;-----------------------------------;
 ; DATE_TIME
 BIOS_YEAR				equ $10FDD2
