@@ -16,7 +16,8 @@ SNK drivers consider the following codes to be used for audio data:
 
 <SNK System Commands>
 This list isn't 100% finalized yet, as I need to figure out what the SNK drivers
-actually do with various commands.
+actually do with various commands. Also, what version of the music driver does
+this match up with?
 
 Commands marked with a * are used by the BIOS.
 

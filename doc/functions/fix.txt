@@ -3,9 +3,9 @@ freemlib for Neo-Geo - Fix Layer functionality
 The Fix layer displays over everything else.
 Most fix layer writing is done with MESS_OUT and the system buffer.
 
-How do we position text?
+When it comes to positioning items on the Fix layer, there's two formats:
 1) Default raw VRAM addresses (do most games do this?) ($7000-$74FF)
-2) X and Y cells (Puzzle de Pon! does this, do other games?)
+2) X and Y cells (Puzzle de Pon!, Art of Fighting, other games?)
  * The fix map is 40x32 cells in total size; visible area depends on NTSC/PAL.
 
 0, 0 = $7000
@@ -20,8 +20,11 @@ How do we position text?
 1, 0 = $7020
 etc.
 
-The functions COULD be dual-compatible... If the first value is $7x, then it's a
-raw VRAM address, otherwise it's cell numbers.
+The functions are dual-compatible thanks to a helper macro (fixmac_CalcVRAMAddr).
+If the first value is >= $7000, then it's a raw VRAM address, otherwise it's a
+combined cell location.
+
+Combined cell location format: $XXYY, where XX=$0-$27,YY=$00-$1F
 
 Note: The fix layer can only use the first 16 palettes.
 Note: None of these functions take fix bankswitching into account.
@@ -29,32 +32,32 @@ Note: None of these functions take fix bankswitching into account.
 Looking for another project? You could always rewrite MESS_OUT... ;)
 
 ================================================================================
-[fix_updateTile]
+[fix_UpdateTile]
 Change the tile number and palette index of a fix map location.
 
 ppppTTTT tttttttt
 
-(Input)
+(Params)
 d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				New palette index (pppp) and tile number (TTTT tttttttt)
 
 ================================================================================
-[fix_changeTile]
+[fix_ChangeTile]
 Change the tile number of a fix map location.
 
 xxxx0000 00000000
 
-(Input)
+(Params)
 d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				New tile number
 
 ================================================================================
-[fix_changePal]
+[fix_ChangePal]
 Change the palette index of a fix map location.
 
 0000xxxx xxxxxxxx
 
-(Input)
+(Params)
 d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				New palette number
 
@@ -75,7 +78,7 @@ $10,$11,$12,$13
 the line below it will be:
 $20,$21,$22,$23
 
-(Input)
+(Params)
 d?				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d?				Palette index and tile number MSB
 a?				Pointer to string to draw
@@ -90,7 +93,7 @@ Tile Layout:
 AA BB CC DD
 AA BB CC DD
 
-(Input)
+(Params)
 d?				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d?				Palette index and tile number MSB
 a?				Pointer to string to draw
@@ -99,7 +102,7 @@ a?				Pointer to string to draw
 [fix_DrawRegion]
 Draws a rectangular region of tiles.
 
-(Input)
+(Params)
 d?				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d?				Combined rows/columns size
 d?				Palette index and tile number MSB

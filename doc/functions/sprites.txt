@@ -39,6 +39,8 @@ Is it manual? Does the system handle it?
 
 (Loading)
 * spr_LoadData			Load multiple sprites
+Is there any situation where you'd want to do this without having it be a
+metasprite of some sort?
 
 (Manipulation)
 * spr_xPos				Change sprite X position
@@ -92,7 +94,7 @@ SCB4{
 
 <Sprite Data Block>
 $00			Sprite Height (tiles)				(word)
-$02-$05		pointer to SCB1 tilemap data		(long)
+$02-$05		Pointer to SCB1 tilemap data		(long)
 $06			SCB2 data, native format			(word)
 $08,$0A		SCB3 data, native format			(word x2)
 $0C			SCB4 data, native format			(word)

@@ -91,9 +91,7 @@ Basically, anything your game would need to store between sessions.
 
 ================================================================================
 [Memory Cards]
-User data storage! Neo-Geo did it first :v
-
-* memCard_getUserName	Get user's stored name
+See memcard.txt
 
 ================================================================================
 [BIOS]

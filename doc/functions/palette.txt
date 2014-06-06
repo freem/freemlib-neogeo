@@ -26,7 +26,7 @@ The actual values will need to be written to palette RAM during VBlank.
 [pal_LoadSet]
 Load a single palette set (16 colors).
 
-(Input)
+(Params)
 d?				Palette set to load data into ($00-$FF)
 a?				Address to load palette data from
 
@@ -34,7 +34,7 @@ a?				Address to load palette data from
 [pal_LoadData]
 Load raw color data into the palettes.
 
-(Input)
+(Params)
 d?				Number of color entries
 a?				Address to load palette data from
 a?				Beginning palette address to load data into ($400000-$401FFE)
@@ -43,14 +43,29 @@ a?				Beginning palette address to load data into ($400000-$401FFE)
 [pal_SetColor]
 Set the value of a single color.
 
-(Input)
-d?				Palette Index, Palette Set ($0iSS, where i=$0-$F and SS=$00-$FF)
+(Params)
+d?				Palette Set, Palette Index ($SS0i, where SS=$00-$FF and i=$0-$F)
 d?				New color value
 
-If I was an insane person I could fit the entire thing into a single register:
+If I was an insane person I could fit the entire thing into a single register,
+but I don't think I'm going to do that.
 
-FEDCBA98 76543210 | FEDCBA98 76543210
-|||||||| ||||||||   |||||||| ||||||||
-xxxx|||| ||||||||   ++++++++-++++++++-- New color value ($0000-$FFFF)
-    |||| ++++++++---------------------- Palette Set ($00-$FF)
-    ++++------------------------------- Color Index ($00-$0F)
+================================================================================
+pal_SoftShadow
+Halves the color values of the specified color in the palette buffer.
+
+================================================================================
+pal_SoftBright
+Doubles the color values of the specified color in the palette buffer.
+
+================================================================================
+pal_SetSingleRed
+Modify the Red channel of the specified color in the palette buffer.
+
+================================================================================
+pal_SetSingleGreen
+Modify the Green channel of the specified color in the palette buffer.
+
+================================================================================
+pal_SetSingleBlue
+Modify the Blue channel of the specified color in the palette buffer.

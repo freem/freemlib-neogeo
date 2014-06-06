@@ -1,0 +1,72 @@
+freemlib for Neo-Geo - Memory Card functionality
+================================================
+User data storage! Neo-Geo did it first :v
+Technically this is a part of the system, but it's kind of important enough to
+have its own file.
+
+The CD system doesn't support memory cards, but it has 8KB of battery-backed RAM
+on-board. Otherwise, the functionality is the same? (With an 8KB limit)
+
+"The SP-S2 BIOS can handle memory cards up to 16KiB" - NeoGeoDev Wiki
+What is the maximum size of JEIDA v3 cards??
+
+Original SNK memory cards are 2KB.
+
+Third-party memory cards exist. Both seem to share a similar design?
+NeoSaveMasta (banked 2x16KB)
+http://neogeofanclub.com/project/neosavemasta/
+
+Le Cortex (2x16KB banked? Card says "32KB", but has a switch like NeoSaveMasta)
+http://www.lecortex.com/CPHD/images/MemoryCardProto.png
+Has an LED, which I assume is lit when the card is being accessed/written to.
+================================================================================
+[Card Commands]
+$00		Format Card
+$01		Data Search
+$02		Load Data
+$03		Save Data
+$04		Delete Data
+$05		Read Data Title
+$06		User Name Save
+$07		User Name Load
+
+[Card Error Codes]
+$00		Command OK
+$80		No card inserted
+$81		Card isn't formatted
+$82		Data doesn't exist
+$83		FAT error
+$84		Memory card is full
+$85		Write disable or ROM card
+
+Results are based on sp-s2 BIOS.
+
+Command			Error				Result
+-----------------------------------------------------------------------
+$2 Load Data	$81 Not Formatted	Display "NO DATA FOR THIS GAME."
+$2 Load Data	$83 FAT error		Display "ERROR ON MEMORY CARD."
+$2 Load Data	$85 Write Disabled	Display "NO DATA FOR THIS GAME."
+$3 Save Data	$81 Not Formatted	Format the card.
+$3 Save Data	$83 FAT error		Format the card.
+$3 Save Data	$84 Card is full	Bring up a menu to delete saves
+$3 Save Data	$85 Write Disabled	Display "MEMORY CARD WRITE PROTECTED."
+$4 Delete Data	$85 Write Disabled	Display "MEMORY CARD WRITE PROTECTED."
+$6 Uname Save	$81 Not Formatted	Format the card.
+$6 Uname Save	$85 Write Disabled	Display "MEMORY CARD WRITE PROTECTED."
+$7 Uname Delete	$81 Not Formatted	Display "NO DATA FOR THIS GAME."
+$7 Uname Delete	$85 Write Disabled	Display "NO DATA FOR THIS GAME."
+================================================================================
+[Relevant BIOS RAM Locations]
+$10FDC4		BIOS_CARD_COMMAND		Command to execute
+$10FDC6		BIOS_CARD_ANSWER		answer code for command; set by BIOS
+$10FDC8		BIOS_CARD_START			Pointer to start of card data
+$10FDCC		BIOS_CARD_SIZE			Size of data
+$10FDCE		BIOS_CARD_FCB			Game NGH number
+$10FDD0		BIOS_CARD_SUB			Game sub number (0-15)
+================================================================================
+[Card Header]
+$80 bytes long.
+================================================================================
+; command sketchpad
+* memCard_getUserName	Get user's stored name
+================================================================================
