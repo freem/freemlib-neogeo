@@ -4,9 +4,9 @@
 	dc.l	$00C00408		; Bus error/Monitor		(BIOS $C00408)
 	dc.l	$00C0040E		; Address error			(BIOS $C0040E)
 	dc.l	$00C00414		; Illegal Instruction	(BIOS $C00414)
-	dc.l	$00C0041A		; Divide by 0
-	dc.l	$00C0041A		; CHK Instruction
-	dc.l	$00C0041A		; TRAPV Instruction
+	dc.l	$00C00426		; Divide by 0
+	dc.l	$00C00426		; CHK Instruction
+	dc.l	$00C00426		; TRAPV Instruction
 	dc.l	$00C0041A		; Privilege Violation	(BIOS $C0041A)
 	dc.l	$00C00420		; Trace					(BIOS $C00420)
 	dc.l	$00C00426		; Line 1010 Emulator
