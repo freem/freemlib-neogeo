@@ -1,6 +1,6 @@
 ; Neo-Geo CD Header (currently untested)
 	dc.b	"NEO-GEO"
-	dc.b	$00				; System Version (0,1,2?)
+	dc.b	$00				; System Version (0,1,2? CDDA flag?)
 
 	dc.w	$0FFF			; NGH number ($0000 is prohibited)
 	dc.l	$00080000		; game prog size in bytes
@@ -22,7 +22,7 @@
 	jmp		DEMO_END		; $12E
 	jmp		COIN_SOUND		; $134
 
-	dc.w	$8000			; Z80 RAM address for CDDA commands
+	dc.w	$8000			; $13A: Z80 RAM address for CDDA commands
 
 	dc.w	$FFFF
 	dc.l	$FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
@@ -33,12 +33,6 @@
 
 	;org $00000182
 	dc.l	TRAP_CODE		;pointer to TRAP_CODE
-
-	; these next three are from Art of Fighting...
-	;dc.l	0
-	;dc.l	1
-	;dc.l	softDips_Spain	; Software dips for Spain
-	; not sure if they're official or what, though.
 
 TRAP_CODE:
 	dc.l	$76004A6D,$0A146600,$003C206D,$0A043E2D
