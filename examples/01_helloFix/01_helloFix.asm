@@ -3,7 +3,6 @@
 	; defines
 	include "../../src/inc/neogeo.inc"
 	include "../../src/inc/ram_bios.inc"
-	include "ram_user.inc"
 ;------------------------------------------------------------------------------;
 	; headers
 	include "header_68k.inc"
@@ -351,3 +350,5 @@ paletteData:
 	dc.w	$0000
 	dc.w	$0000
 	dc.w	$0000
+;==============================================================================;
+	include "ram_user.inc"

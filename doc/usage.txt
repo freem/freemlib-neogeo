@@ -1,6 +1,10 @@
 Using freemlib for Neo-Geo
 ==========================
-... some shit about how some files should be edited and others shouldn't.
+The freemlib is comprised of two types of files:
+1) Files to Copy (or Symlink) and Leave Alone
+2) Files to Copy and Change
+
+The files in Category 2 are the ones that will change per-game.
 
 The best examples of generally using the freemlib for Neo-Geo are in the
 examples directory. However, that doesn't cover what you should do to set up
@@ -17,3 +21,85 @@ Files to Copy and Change
 * header_cart.inc			Neo-Geo program header at $100.
 * header_cd.inc				(doesn't exist yet.)
 * ram_user.inc				User RAM defines.
+
+header_68k.inc
+--------------
+This file contains the 68000 vectors, spanning from $00-$FF.
+By default, this file won't compile.
+Yes, I want you to think about what you're doing here.
+
+"Note: You must modify the "$????????" sections for your game."
+
+$????????		; Divide by 0
+$????????		; CHK Instruction
+$????????		; TRAPV Instruction
+$????????		; Line 1010 Emulator
+$????????		; Line 1111 Emulator
+$????????		; Level 3 interrupt
+$????????		; Level 4 interrupt
+$????????		; Level 5 interrupt
+$????????		; Level 6 interrupt
+$????????		; Level 7 interrupt (NMI)
+
+Thing is, you might actually be using some of these for features in your game.
+I can't tell ahead of time. However, I'm sure you'd like to have some example
+values for things to get started.
+
+$00C00426		; Divide by 0
+$00C00426		; CHK Instruction
+$00C00426		; TRAPV Instruction
+$00C00426		; Line 1010 Emulator
+$00C00426		; Line 1111 Emulator
+When any of these are triggered, the system will be reset.
+
+$00000000		; Level 3 interrupt
+$00000000		; Level 4 interrupt
+$00000000		; Level 5 interrupt
+$00000000		; Level 6 interrupt
+$00000000		; Level 7 interrupt (NMI)
+This is what I use in a few of the examples. It may not the the best choice.
+Some games also use $00C00426 here. I am unsure if you can fully take advantage
+of the other interrupts on the Neo-Geo anyways.
+
+header_cart.inc
+---------------
+This file handles the data starting at $100, also known as the Neo-Geo header.
+
+You'll want to change the NGH number. I haven't left you in the cold this time,
+but the game ID you get by default is 0FFF. You'll probably want to change that.
+
+* Game program size
+
+The pointer to backup RAM block is at $10E. The first two bytes at the location
+pointed to hold the debug dipswitches.
+
+* Game save size (in bytes)
+* Eyecatch-related
+
+The software dip pointers start at $116 and map out like so:
+$116		Japan
+$11A		USA
+$11E		Europe/Asia
+
+These next four are very important, so pay attention!
+$122		jmp USER
+$128		jmp PLAYER_START
+$12E		jmp DEMO_END
+$134		jmp COIND_SOUND
+
+You will need to have functions matching these names (unless you change them,
+which I really don't recommend).
+
+header_cd.inc
+-------------
+header_cd.inc is a currently untested hack of header_cart.inc, so please see that
+section for more information.
+
+ram_user.inc
+------------
+ram_user.inc holds the RAM for your program. Currently, the state of affairs in
+here is terrible, and I wish there was a better way of handling it.
+
+Alas, until I do, you'll have to make do with equ.
+The 01_helloFix example uses org $100000, but it's the only one so far, as I
+don't like the idea of having RAM variables be appended to the binary...
