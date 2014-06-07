@@ -158,4 +158,7 @@ WaitVBlank:
 	rts
 
 ;==============================================================================;
+; include freemlib function files (if you're going to use them.)
+
+;==============================================================================;
 ; and now you can put your code and data here.
