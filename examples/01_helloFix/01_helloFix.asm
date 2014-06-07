@@ -232,7 +232,7 @@ Display_MessOut:
 	move.w	#$0003,(a0)+
 	move.w	#$7046,(a0)+		; VRAM address $7046
 
-	; 8x8 text
+	; 8x8 text (via sub-command list)
 	move.w	#$000A,(a0)+
 	move.l	#string_HelloMess8,(a0)+
 
@@ -240,7 +240,7 @@ Display_MessOut:
 	move.w	#$0005,(a0)+
 	move.w	#$0022,(a0)+
 
-	; 8x16 text
+	; 8x16 text (via sub-command list)
 	move.w	#$000A,(a0)+
 	move.l	#string_HelloMess16,(a0)+
 
@@ -248,7 +248,7 @@ Display_MessOut:
 	move.w	#$0005,(a0)+
 	move.w	#$0022,(a0)+
 
-	; Japanese text
+	; Japanese text (via sub-command list)
 	move.w	#$000A,(a0)+
 	move.l	#string_HelloMessJP,(a0)+
 
