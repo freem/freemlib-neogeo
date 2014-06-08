@@ -21,7 +21,7 @@ USER:
 	move.w	#$2000,sr			; Enable VBlank interrupt, go Supervisor
 
 	; Handle user request
-	clr.l	d0
+	moveq	#0,d0
 	move.b	(BIOS_USER_REQUEST).l,d0
 	lsl.b	#2,d0				; shift value left to get offset into table
 	lea		cmds_USER_REQUEST,a0
@@ -271,7 +271,7 @@ string_HelloMess16:
 
 string_HelloMessJP:
 	dc.w	$3109				; command 09: 8x16 output (Japanese)
-	dc.b	$D9,$EA,$F9,$EB,$F9,$E8,$6E,$FF
+	dc.b	$D9,$EA,$F9,$EB,$F9,$E8,$6E," (8X16 MESS OUT ",$95,$9D,$AD,$04,")",$FF,$00
 	dc.w	$000B				; return to command list
 
 ;==============================================================================;
