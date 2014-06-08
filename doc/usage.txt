@@ -12,14 +12,24 @@ your environment so you can actually use the freemlib in the first place.
 
 Files to Copy (or Symlink) and Leave Alone
 ------------------------------------------
+(Addresses, Registers)
 * inc/neogeo.inc			Defines for Neo-Geo hardware.
 * inc/ram_bios.inc			Defines for the BIOS RAM locations.
+* inc/mvs_bram.inc			Defines for MVS Backup RAM.
+
+(freemlib Functionality)
+* inc/fix.inc				Fix layer-related functions.
+* inc/memcard.inc			Memory Card-related functions.
+* inc/mess_macro.inc		Macros for use with MESS_OUT.
+* inc/palette.inc			Palette-related functions.
+* inc/sprites.inc			Sprite-related functions.
+* inc/system.inc			System-related functions.
 
 Files to Copy and Change
 ------------------------
 * header_68k.inc			68000 Vectors and such at $0.
 * header_cart.inc			Neo-Geo program header at $100.
-* header_cd.inc				(doesn't exist yet.)
+* header_cd.inc				WIP program header for CD consoles.
 * ram_user.inc				User RAM defines.
 
 header_68k.inc
@@ -58,6 +68,8 @@ $00000000		; Level 5 interrupt
 $00000000		; Level 6 interrupt
 $00000000		; Level 7 interrupt (NMI)
 This is what I use in a few of the examples. It may not the the best choice.
+For what it's worth, though, Samurai Shodown/Samurai Spirits does the same thing.
+
 Some games also use $00C00426 here. I am unsure if you can fully take advantage
 of the other interrupts on the Neo-Geo anyways.
 

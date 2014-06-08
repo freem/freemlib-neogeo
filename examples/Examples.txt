@@ -14,7 +14,8 @@ A skeleton setup for the other examples.
 
 [01_helloFix]
 "Hello World" as a demonstration of various Fix layer capabilities.
-* Palette introduction
+* Quick palette introduction
+* Manual VRAM writing
 * MESS_OUT
 
 [02_helloSprite]
