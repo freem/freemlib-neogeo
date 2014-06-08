@@ -3,20 +3,30 @@
 BIOS_WORKRAM			equ $10F300
 
 ;SSP_END:					; supervisor stack
-;	ds.b $900
-;	ds.b $180
+;	ds.b $900				; ends up at $10FC00
+;	ds.b $180				; ends up at $10FD80
 
-;$10FD00 ; stack?
+;===================================;
+; $10FCEE ??
+; $10FCF2 ??
 
-;$10FD4C ; (word) debug bios: call code for some shit?
-; $00		Bus Error/Monitor Startup
-; $04		Adddress Error
-; $08		Illegal Instruction
-; $0C		Divide by 0
-; $10		CHK
-; $14		TRAPV
-; $18		Privilege Violation
-; $1C		Trace
+;===================================;
+; $10FD40 ??
+; $10FD44 ??
+; $10FD48 ??
+; $10FD4A ??
+
+DBGBIOS_ERROR_CODE		equ $10FD4C	; (word) Debug BIOS: Error Recovery Code
+	; $00		Bus Error/Monitor Startup
+	; $04		Adddress Error
+	; $08		Illegal Instruction
+	; $0C		Divide by 0
+	; $10		CHK
+	; $14		TRAPV
+	; $18		Privilege Violation
+	; $1C		Trace
+
+; $10FD4E ??
 
 ; $10FD74 ??
 ; $10FD76 ??
@@ -27,9 +37,28 @@ BIOS_WORK0				equ $10FD80	; beginning of actual BIOS work RAM
 
 BIOS_SYSTEM_MODE		equ $10FD80	; (byte) VBL for $00=system,$80=game
 BIOS_SYSRET_STATUS		equ $10FD81	; (byte) Stores function code for SYSTEM_RETURN
-BIOS_MVS_FLAG			equ $10FD82	; (byte) 0=AES,1=MVS
-BIOS_COUNTRY_CODE		equ $10FD83	; (byte) 0=Japan,1=USA,2=Europe (xxx:Korea?)
-BIOS_GAME_DIP			equ $10FD84	; $10FD84-$10FD93
+BIOS_MVS_FLAG			equ $10FD82	; (byte) 0=Home/AES,1=MVS
+BIOS_COUNTRY_CODE		equ $10FD83	; (byte) 0=Japan,1=USA,2=Europe/Export (xxx:Korea?)
+BIOS_GAME_DIP			equ $10FD84	; $10FD84-$10FD93 (all bytes)
+
+; individual game soft dips
+BIOS_GAMEDIP_01			equ $10FD84
+BIOS_GAMEDIP_02			equ $10FD85
+BIOS_GAMEDIP_03			equ $10FD86
+BIOS_GAMEDIP_04			equ $10FD87
+BIOS_GAMEDIP_05			equ $10FD88
+BIOS_GAMEDIP_06			equ $10FD89
+BIOS_GAMEDIP_07			equ $10FD8A
+BIOS_GAMEDIP_08			equ $10FD8B
+BIOS_GAMEDIP_09			equ $10FD8C
+BIOS_GAMEDIP_10			equ $10FD8D
+BIOS_GAMEDIP_11			equ $10FD8E
+BIOS_GAMEDIP_12			equ $10FD8F
+BIOS_GAMEDIP_13			equ $10FD90
+BIOS_GAMEDIP_14			equ $10FD91
+BIOS_GAMEDIP_15			equ $10FD92
+BIOS_GAMEDIP_16			equ $10FD93
+
 ;-----------------------------------;
 ; INPUT_1
 BIOS_P1STATUS			equ $10FD94	; (byte) Controller 1 status
@@ -70,17 +99,20 @@ BIOS_STATCHANGE			equ $10FDAD	; (byte) Start and Select active-edge input (Selec
 BIOS_USER_REQUEST		equ $10FDAE	; (byte) Command for USER ($122)
 BIOS_USER_MODE			equ $10FDAF	; (byte) Current game status
 ;-----------------------------------;
+; Before calling CREDIT_CHECK and CREDIT_DOWN, set num credits here (0 for unjoined).
 BIOS_CREDIT1_DEC		equ $10FDB0	; (byte) Credit decrement Player 1 (BCD)
 BIOS_CREDIT2_DEC		equ $10FDB1	; (byte) Credit decrement Player 2 (BCD)
 BIOS_CREDIT3_DEC		equ $10FDB2	; (byte) Credit decrement Player 3 (BCD)
 BIOS_CREDIT4_DEC		equ $10FDB3	; (byte) Credit decrement Player 4 (BCD)
 ;-----------------------------------;
-BIOS_START_FLAG			equ $10FDB4	; (byte)
-BIOS_PLAYER1_MODE		equ $10FDB6	; (byte)
-BIOS_PLAYER2_MODE		equ $10FDB7	; (byte)
-BIOS_PLAYER3_MODE		equ $10FDB8	; (byte)
-BIOS_PLAYER4_MODE		equ $10FDB9	; (byte)
+BIOS_START_FLAG			equ $10FDB4	; (byte) Player(s) starting the game on PLAYER_START call
+BIOS_PLAYER1_MODE		equ $10FDB6	; (byte) Player 1 Status
+BIOS_PLAYER2_MODE		equ $10FDB7	; (byte) Player 2 Status
+BIOS_PLAYER3_MODE		equ $10FDB8	; (byte) Player 3 Status
+BIOS_PLAYER4_MODE		equ $10FDB9	; (byte) Player 4 Status
+; Status Values: 0=No play, 1=Playing, 2=Continue display, 3=Game Over
 ;-----------------------------------;
+;???					equ $10FDBA	; (long)
 BIOS_MESS_POINT			equ $10FDBE	; (dword) pointer to buffer
 BIOS_MESS_BUSY			equ $10FDC2	; (word) 0=run MESS_OUT, 1=skip MESS_OUT
 ;-----------------------------------;
@@ -135,6 +167,7 @@ BIOS_COIN1_CONT_CRED	equ $10FE14	; (word)
 BIOS_COIN2_CONT_CRED	equ $10FE16	; (word)
 ;-----------------------------------;
 BIOS_SELECT_FREE		equ $10FE18	; (byte)
+;???					equ $10FE19	; (byte)
 BIOS_NON_LIMIT			equ $10FE1A	; (word)
 BIOS_DEMO_SOUND			equ $10FE1C ; (byte)
 BIOS_INIT_MARK			equ $10FE1E	; (word)
@@ -166,8 +199,10 @@ BIOS_IN_TEST			equ $10FEBC	; (byte)
 BIOS_INST_MODE			equ $10FEBD	; (byte)
 BIOS_START_BUSY			equ $10FEBE	; (byte)
 BIOS_BACKUP_MODE		equ $10FEBF	; (byte)
+;-----------------------------------;
 BIOS_INST_RAD			equ $10FEC0	; (dword)
 BIOS_INST_RCO			equ $10FEC4	; (byte)
+;-----------------------------------;
 BIOS_TITLE_MODE			equ $10FEC5	; (byte)
 BIOS_MESS_STACK			equ $10FEC6	; (dword) 5 dwords
 ;-----------------------------------;
@@ -183,19 +218,19 @@ BIOS_INT_OFF			equ $10FEE3	; (byte) "INT_OFF"
 BIOS_INT1_TIMER2		equ $10FEE4	; (word) "INT1_TIMER2"
 ;-----------------------------------;
 ;INPUT_5
-BIOS_P5STATUS			equ $10FEE8	; (byte)
-BIOS_P5PREVIOUS			equ $10FEE9	; (byte)
-BIOS_P5CURRENT			equ $10FEEA	; (byte)
-BIOS_P5CHANGE			equ $10FEEB	; (byte)
-BIOS_P5REPEAT			equ $10FEEC	; (byte)
-BIOS_P5TIMER			equ $10FEED	; (byte)
+BIOS_P5STATUS			equ $10FEE8	; (byte) Input 5 status
+BIOS_P5PREVIOUS			equ $10FEE9	; (byte) Inputs from last frame
+BIOS_P5CURRENT			equ $10FEEA	; (byte) Inputs from current frame
+BIOS_P5CHANGE			equ $10FEEB	; (byte) Active-edge input
+BIOS_P5REPEAT			equ $10FEEC	; (byte) Auto-repeat flag
+BIOS_P5TIMER			equ $10FEED	; (byte) Input repeat timer
 ;-----------------------------------;
 ;INPUT_6
-BIOS_P6STATUS			equ $10FEEE	; (byte)
-BIOS_P6PREVIOUS			equ $10FEEF	; (byte)
-BIOS_P6CURRENT			equ $10FEF0	; (byte)
-BIOS_P6CHANGE			equ $10FEF1	; (byte)
-BIOS_P6REPEAT			equ $10FEF2	; (byte)
-BIOS_P6TIMER			equ $10FEF3	; (byte)
+BIOS_P6STATUS			equ $10FEEE	; (byte) Input 6 status
+BIOS_P6PREVIOUS			equ $10FEEF	; (byte) Inputs from last frame
+BIOS_P6CURRENT			equ $10FEF0	; (byte) Inputs from current frame
+BIOS_P6CHANGE			equ $10FEF1	; (byte) Active-edge input
+BIOS_P6REPEAT			equ $10FEF2	; (byte) Auto-repeat flag
+BIOS_P6TIMER			equ $10FEF3	; (byte) Input repeat timer
 ;-----------------------------------;
 BIOS_MESS_BUFFER		equ $10FF00	; 100 byte buffer

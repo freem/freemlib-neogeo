@@ -2,7 +2,7 @@
 ; In case you want things to be a little more semantic...
 ;==============================================================================;
 ; messmac_Format (Command 1: Set Data Format)
-; \1		flags (0=bytes+end code, 1=bytes+length, 2=word+end code, 3=word+length)
+; \1		flags (0=bytes+end code, 1=bytes+length, 2=words+end code, 3=words+length)
 ; \2		data (depends on what flags you set)
 
 messmac_Format:		macro
