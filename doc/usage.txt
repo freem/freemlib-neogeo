@@ -62,6 +62,9 @@ $00C00426		; Line 1010 Emulator
 $00C00426		; Line 1111 Emulator
 When any of these are triggered, the system will be reset.
 
+Some games handle these differently (I believe Puzzle Bobble actually handles
+TRAPV, but I don't fully remember), so it's really up to you.
+
 $00000000		; Level 3 interrupt
 $00000000		; Level 4 interrupt
 $00000000		; Level 5 interrupt
