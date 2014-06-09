@@ -7,7 +7,11 @@
 ;------------------------------------------------------------------------------;
 	; headers
 	include "header_68k.inc"
+if TARGET_CD
+	include "header_cd.inc"
+else
 	include "header_cart.inc"
+endif
 ;==============================================================================;
 ; USER
 ; Needs to perform actions according to the value in BIOS_USER_REQUEST.
