@@ -23,15 +23,15 @@ PADFLAGS = 524288 255
 # [Makefile Targets]
 
 # cart: compile game for cart (default build target)
-cart: 00_skeleton.asm
-	$(VASM68K) $(VASMFLAGS) -DTARGET_CART -o 00_skeleton.p 00_skeleton.asm
-	$(BYTESWAP) 00_skeleton.p 202-p1.p1
+cart: 01_helloFix.asm
+	$(VASM68K) $(VASMFLAGS) -DTARGET_CART -o 01_helloFix.p 01_helloFix.asm
+	$(BYTESWAP) 01_helloFix.p 202-p1.p1
 	$(PAD) 202-p1.p1 $(PADFLAGS)
 
 # cd: compile game for CD
-cd: 00_skeleton.asm
-	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o 00_skeleton-cd.prg 00_skeleton.asm
-	$(PAD) 00_skeleton-cd.prg $(PADFLAGS)
+cd: 01_helloFix.asm
+	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HelloFix.prg 01_helloFix.asm
+	$(PAD) HelloFix.prg $(PADFLAGS)
 
 .PHONY: clean
 

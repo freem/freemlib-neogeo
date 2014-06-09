@@ -24,13 +24,23 @@
 	dc.l	$00C00426		; Reserved
 	dc.l	$00C00426		; Reserved
 	dc.l	$00C00432		; Spurious Interrupt
-	dc.l	VBlank			; Level 1 interrupt (VBlank)
-	dc.l	IRQ2			; Level 2 interrupt (HBlank)
+
+; Interrupts
+	ifd		TARGET_CD		; (CD systems swap INT2 and INT1)
+		dc.l	IRQ2			; Level 2 interrupt (HBlank)
+		dc.l	VBlank			; Level 1 interrupt (VBlank)
+	else
+		dc.l	VBlank			; Level 1 interrupt (VBlank)
+		dc.l	IRQ2			; Level 2 interrupt (HBlank)
+	endif
+
 	dc.l	$00000000		; Level 3 interrupt
 	dc.l	$00000000		; Level 4 interrupt
 	dc.l	$00000000		; Level 5 interrupt
 	dc.l	$00000000		; Level 6 interrupt
 	dc.l	$00000000		; Level 7 interrupt (NMI)
+
+; Traps
 	dc.l	$FFFFFFFF		; TRAP #0 Instruction
 	dc.l	$FFFFFFFF		; TRAP #1 Instruction
 	dc.l	$FFFFFFFF		; TRAP #2 Instruction
