@@ -11,3 +11,4 @@ src/sound/*.m1
 # ignore any relevant binaries in the examples folder
 examples/*/*.p
 examples/*/*.p1
+examples/*/*.prg
