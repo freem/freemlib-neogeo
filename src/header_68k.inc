@@ -27,13 +27,14 @@
 	dc.l	$00C00432		; Spurious Interrupt
 
 ; Interrupts
-if TARGET_CD				; (Interrupt levels 1 and 2 are swapped on CD hardware.)
-	dc.l	IRQ2			; Level 2 interrupt (HBlank)
-	dc.l	VBlank			; Level 1 interrupt (VBlank)
-else
-	dc.l	VBlank			; Level 1 interrupt (VBlank)
-	dc.l	IRQ2			; Level 2 interrupt (HBlank)
-endif
+	ifd		TARGET_CD		; (Interrupt levels 1 and 2 are swapped on CD systems.)
+		dc.l	IRQ2		; Level 2 interrupt (HBlank)
+		dc.l	VBlank		; Level 1 interrupt (VBlank)
+	else
+		dc.l	VBlank		; Level 1 interrupt (VBlank)
+		dc.l	IRQ2		; Level 2 interrupt (HBlank)
+	endif
+
 	dc.l	$????????		; Level 3 interrupt
 	dc.l	$????????		; Level 4 interrupt
 	dc.l	$????????		; Level 5 interrupt
