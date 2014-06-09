@@ -234,3 +234,13 @@ BIOS_P6REPEAT			equ $10FEF2	; (byte) Auto-repeat flag
 BIOS_P6TIMER			equ $10FEF3	; (byte) Input repeat timer
 ;-----------------------------------;
 BIOS_MESS_BUFFER		equ $10FF00	; 100 byte buffer
+
+;------------------------------------------------------------------------------;
+; CD system-specific
+
+; Upload to DRAM
+BIOS_CD_UPDEST			equ $10FEF4	; (long) destination address (!)
+BIOS_CD_UPSRC			equ $10FEF8	; (long) source address
+BIOS_CD_UPSIZE			equ $10FEFC	; (long) size
+BIOS_CD_UPZONE			equ $10FEDA	; (byte) zone (0=PRG, 1=FIX, 2=SPR, 3=Z80, 4=PCM, 5=PAT)
+BIOS_CD_UPBANK			equ $10FEDB	; (byte) bank

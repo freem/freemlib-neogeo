@@ -64,3 +64,28 @@ PALETTES			equ $400000		; $400000-$401FFF (Bank 0)
 PALETTES2			equ $402000		; $402000-$403FFF (Bank 1)
 PALETTE_BANK0		equ $3A001F		; Palette bank 0
 PALETTE_BANK1		equ $3A000F		; Palette bank 1
+
+;------------------------------------------------------------------------------;
+; CD system-specific
+UPLOAD				equ $E00000		; Upload Zone ($E00000-$EFFFFF)
+
+; Registers ($FF0002-$FF01FE)
+REG_DISABLESPR		equ $FF0111		; (byte) Disable Sprite toggle (1=disable,0=enable)
+REG_DISABLEFIX		equ $FF0115		; (byte) Disable Fix toggle (1=disable,0=enable) 
+REG_ENVIDEO			equ $FF0119		; (byte) Video output toggle (1=enable,0=disable)
+REG_CDCONFIG		equ $FF011C		; (byte) read config
+REG_UPMAPSPR		equ $FF0121		; (byte) Set upload zone to SPR DRAM(?)
+REG_UPMAPPCM		equ $FF0123		; (byte) Set upload zone to PCM DRAM(?)
+REG_UPMAPZ80		equ $FF0127		; (byte) Set upload zone to Z80 DRAM(?)
+REG_UPMAPFIX		equ $FF0129		; (byte) Set upload zone to FIX DRAM(?)
+REG_UPUNMAPSPR		equ $FF0141		; (byte) 
+REG_UPUNMAPPCM		equ $FF0143		; (byte) 
+REG_UPUNMAPZ80		equ $FF0147		; (byte) 
+REG_UPUNMAPFIX		equ $FF0149		; (byte) 
+
+REG_DISABLEIRQ		equ $FF016F		; (byte)
+REG_ENABLEZ80		equ $FF0183		; (byte) Z80 enable/disable(reset)
+
+; https://wiki.neogeodev.org/index.php?title=Reading_CDDA_sound_levels
+REG_CDDALEFTLEV		equ $FF0188		; (word) Read CDDA sound level (Left channel)
+REG_CDDARIGHTTLEV	equ $FF018A		; (word) Read CDDA sound level (Right channel)
