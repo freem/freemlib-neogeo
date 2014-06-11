@@ -5,7 +5,7 @@ I haven't studied the sprite lists at $8600-$86FF yet.
 
 There should probably be some sort of metasprite functionality, though the
 sticky bit takes care of a lot of that...
-
+================================================================================
 {SCB1}
 SCB1 holds the tilemaps, palette, auto-animation, and flip bits.
 
@@ -37,17 +37,25 @@ Is it manual? Does the system handle it?
 ================================================================================
 <Function Sketchpad>
 
-(Loading)
-* spr_LoadData			Load multiple sprites
-Is there any situation where you'd want to do this without having it be a
-metasprite of some sort?
+(Overall)
+Active Sprites (for keeping track)
+VRAM Buffers
+ * background layers
+ * etc.
 
-(Manipulation)
-* spr_xPos				Change sprite X position
-* spr_yPos				Change sprite Y position
-* spr_Pal				Change sprite palette
-* spr_hFlip				Change sprite Horiz. flip
-* spr_vFlip				Change sprite Vert. flip
+(Metasprite)
+Change metasprite X position
+Change metasprite Y position
+Change metasprite Horiz flip
+Change metasprite Vert flip
+
+(Sprite)
+Change sprite X position
+Change sprite Y position
+Change sprite palette
+Change sprite Horiz. flip
+Change sprite Vert. flip
+Change sprite tilemap
 
 ================================================================================
 [Metasprite Data]
@@ -59,8 +67,7 @@ Commands have "mspr" prefix.
 
 <Metasprite Data Block>
 $00			Number of Sprites in Metasprite		(word)
-$02...		Pointers to Sprite data				(long)
-...end		$00000000 end code					(long)
+$02...end	Pointers to Sprite data				(long)
 
 --------------------------------------------------------------------------------
 [Sprite Data]
@@ -70,12 +77,7 @@ Commands have "spr" prefix.
 
 * Sprite Height (Tiles)
 -----------------------
-SCB1{
-* Tile Number
-* Palette
-* Auto-Animation
-* Flip Bytes
-}
+SCB1 (see below)
 -----------------------
 SCB2{
 * Horizontal Shrink (0-F)
@@ -96,8 +98,8 @@ SCB4{
 $00			Sprite Height (tiles)				(word)
 $02-$05		Pointer to SCB1 tilemap data		(long)
 $06			SCB2 data, native format			(word)
-$08,$0A		SCB3 data, native format			(word x2)
-$0C			SCB4 data, native format			(word)
+$08			SCB3 data, native format			(word)
+$0A			SCB4 data, native format			(word)
 
 SCB1 data is stored in native format and is limited based on the value of
 Sprite Height. Real length of SCB1 data is 2x Sprite Height.
