@@ -1,21 +1,34 @@
 ; Neo-Geo hardware definitions
-
+;==============================================================================;
 ; [BIOS thunk calls]
 BIOSROM				equ $C00000		; BIOS ROM begins at $C00000
-SYSTEM_RESET		equ $C00402
-SYSTEM_INT1			equ $C00438
-SYSTEM_RETURN		equ $C00444
-SYSTEM_IO			equ $C0044A
-CREDIT_CHECK		equ $C00450
-CREDIT_DOWN			equ $C00456
-READ_CALENDAR		equ $C0045C
-SETUP_CALENDAR		equ $C00462
-SYS_CARD			equ $C00468
-SYS_CARD_ERROR		equ $C0046E
-FIX_CLEAR			equ $C004C2
-LSP_1st				equ $C004C8
-MESS_OUT			equ $C004CE
+SYSTEM_RESET		equ $C00402		; 
+SYSTEM_INT1			equ $C00438		; System VBlank
+SYSTEM_INT2			equ $C0043E		; System Int2 (Cart systems only)
+SYSTEM_RETURN		equ $C00444		; 
+SYSTEM_IO			equ $C0044A		; Reads player inputs (and cabinet if MVS)
+CREDIT_CHECK		equ $C00450		; Check a player's number of credits
+CREDIT_DOWN			equ $C00456		; Deduct credits
+READ_CALENDAR		equ $C0045C		; Read values from uPD4990 chip (MVS-only)
+SETUP_CALENDAR		equ $C00462		; Sets up uPD4990 chip (MVS-only)
+SYS_CARD			equ $C00468		; Memory Card commands
+SYS_CARD_ERROR		equ $C0046E		; Handle card errors and display message
+FIX_CLEAR			equ $C004C2		; Clear Fix layer
+LSP_1st				equ $C004C8		; Clear SCB2-4, first SCB1 tilemap
+MESS_OUT			equ $C004CE		; Fix layer message output
+CONTROLLER_SETUP	equ $C004D4		; Initializes controllers
 
+;------------------------------------------------------------------------------;
+; [CD systems-only BIOS calls]
+BIOSF_HBLANK		equ $C004DA		; HBlank handler
+BIOSF_UPLOAD		equ $C00546		; Upload data to DRAM
+BIOSF_LOADFILE		equ $C00522		; Load file from CD, with animation
+BIOSF_CDPLAYER		equ $C0055E		; Reset to CD Player
+BIOSF_LOADFILEX		equ $C00564		; Load file from CD, no animation
+BIOSF_CDDACMD		equ $C0056A		; Issue CDDA command
+BIOSF_VIDEOEN		equ $C00570		; Enable/Disable video layers
+
+;==============================================================================;
 ; [I/O Regs]
 REG_P1CNT			equ $300000		; Player 1 Controls (DCBArldu)/Trackball data [active low]
 REG_DIPSW			equ $300001		; Read Hardware DIPs [active low], Kick watchdog (a.k.a. "WATCH_DOG")
