@@ -13,3 +13,6 @@ src/sound/*.z80
 examples/*/*.p
 examples/*/*.p1
 examples/*/*.prg
+
+# ignore any listing files in the examples folder
+examples/*/*.lst
