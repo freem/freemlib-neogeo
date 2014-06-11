@@ -16,11 +16,15 @@ Note: The fix layer can only use the first 16 palettes.
 * Desaturate/Black and White
 
 ================================================================================
+<Scratchpad>
+What about doing tricks with multiple palette banks?
+
+================================================================================
 <Palette Buffers>
 The actual values will need to be written to palette RAM during VBlank.
 
-* Current bank buffer	0x2000		(Values written to the Palette RAM)
-* Misc. palette buffer	0x2000		(Palette work area)
+* Main Palette Buffer	0x2000		(Values written to the Palette RAM)
+* Misc. palette buffer	0x2000		(Palette work area)???
 
 ================================================================================
 [pal_LoadSet]
@@ -54,18 +58,36 @@ but I don't think I'm going to do that.
 pal_SoftShadow
 Halves the color values of the specified color in the palette buffer.
 
+(Params)
+d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+
 ================================================================================
 pal_SoftBright
 Doubles the color values of the specified color in the palette buffer.
+
+(Params)
+d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
 
 ================================================================================
 pal_SetSingleRed
 Modify the Red channel of the specified color in the palette buffer.
 
+(Params)
+d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+d6				New Red channel value
+
 ================================================================================
 pal_SetSingleGreen
 Modify the Green channel of the specified color in the palette buffer.
 
+(Params)
+d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+d6				New Green channel value
+
 ================================================================================
 pal_SetSingleBlue
 Modify the Blue channel of the specified color in the palette buffer.
+
+(Params)
+d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+d6				New Blue channel value

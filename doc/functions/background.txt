@@ -1,0 +1,37 @@
+freemlib for Neo-Geo - Background functionality
+===============================================
+Since everything on the Neo-Geo is sprites, that means the backgrounds are
+sprites too! Therefore, we need functions to handle the background.
+
+Backgrounds are Sprites, so see sprites.txt for more information.
+================================================================================
+(sketchpad)
+
+================================================================================
+[Layers]
+Take note: the number of background layers you use directly effects how many
+other sprites can be shown.
+
+The current concept is to have this setup:
+
+* BG Layer 3	(max 40 sprites?)
+* BG Layer 2	(max 40 sprites?)
+* BG Layer 1	(max 40 sprites?)
+------------------------------------------------
+* MG Layer		(Middleground/Playing Field)
+------------------------------------------------
+* FG Layer		(max 40 sprites?)
+------------------------------------------------
+* Fix Layer
+
+Ideally, this would not be set in stone, so you could use different layer configs.
+However, the MG and Fix layers can not be changed/removed through this system.
+================================================================================
+[Scrolling]
+Scrolling depends on how many layers you have and how they interact.
+
+Horizontal scrolling and Vertical scrolling are different bleh
+
+================================================================================
+[Animation]
+Background animations are a prime candidate for auto-animation.

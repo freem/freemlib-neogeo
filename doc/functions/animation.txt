@@ -1,0 +1,22 @@
+freemlib for Neo-Geo - Animation functionality
+==============================================
+This has to do with foreground animations.
+All background-related stuff is in background.txt.
+================================================================================
+(sketchpad)
+* animation timers
+* states (wtf is states)
+* loops
+* anchoring/alignment
+================================================================================
+[Animations]
+The high concept of an animation is a number of frames played back at a speed.
+For us, a frame consists of a metasprite and a number.
+
+* Frame Count
+* Pointer to Frame Data
+================================================================================
+[Frame Data]
+* Number of frames to display this frame (60 frames = 1 second)
+* Metasprite pointer for this frame
+* Anchor point (pixels, relative to sprite size)
