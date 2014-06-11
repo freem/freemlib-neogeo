@@ -299,7 +299,7 @@ sprite_World_L:		sprmac_SpriteData	1,160,80,sprite_HelloWorldL_SCB1,$0F,$FF
 sprite_World_D:		sprmac_SpriteData	1,160,80,sprite_HelloWorldD_SCB1,$0F,$FF
 sprite_World_Exc:	sprmac_SpriteData	1,160,80,sprite_HelloWorldExc_SCB1,$0F,$FF
 
-sprite_Test:		sprmac_SpriteData	3,160,20,sprite_Test_SCB1,$0F,$FF
+sprite_Test:		sprmac_SpriteData	2,224,96,sprite_Test_SCB1,$0F,$FF
 
 ;-------------------------------------------;
 ; Initial SCB1 data for Hello World sprite. ;
@@ -322,6 +322,9 @@ sprite_HelloWorldD_SCB1:	sprmac_SCB1Data	$00046,0,0,0,0		; D			spr10
 sprite_HelloWorldExc_SCB1:	sprmac_SCB1Data	$00047,0,0,0,0		; !!!		spr11
 
 sprite_Test_SCB1:
+	sprmac_SCB1Data	$00048,0,0,0,0
+	sprmac_SCB1Data	$00048,0,0,0,0
+	sprmac_SCB1Data	$00048,0,0,0,0
 	sprmac_SCB1Data	$00048,0,0,0,0
 	sprmac_SCB1Data	$00048,0,0,0,0
 	sprmac_SCB1Data	$00048,0,0,0,0
