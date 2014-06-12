@@ -67,6 +67,7 @@ palmac_LoadData:	macro
 
 pal_LoadBuf:
 	; todo: load data into PaletteBuffer
+	;lea		PaletteBuffer+d6,a1
 	rts
 
 ; palmac_LoadBuf
@@ -111,7 +112,6 @@ pal_LoadSet:
 pal_SetColor:
 	palmac_PalBufIndex			; get address in palette buffer
 	move.w	d6,(a0)				; write new color value
-
 	rts
 
 ;==============================================================================;
@@ -166,7 +166,10 @@ pal_SetSingleRed:
 	palmac_PalBufIndex			; get address in palette buffer
 
 	move.w	(a0),d5				; get current color value
+
+	; deconstruct passed Red channel value into palette Red
 	; change Red
+
 	move.w	d5,(a0)				; update color value
 
 	rts
@@ -183,7 +186,10 @@ pal_SetSingleGreen:
 	palmac_PalBufIndex			; get address in palette buffer
 
 	move.w	(a0),d5				; get current color value
+
+	; deconstruct passed Green channel value into palette Green
 	; change Green
+
 	move.w	d5,(a0)				; update color value
 
 	rts
@@ -200,7 +206,10 @@ pal_SetSingleBlue:
 	palmac_PalBufIndex			; get address in palette buffer
 
 	move.w	(a0),d5				; get current color value
+
+	; deconstruct passed Blue channel value into palette Blue
 	; change Blue
+
 	move.w	d5,(a0)				; update color value
 
 	rts

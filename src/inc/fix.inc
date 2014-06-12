@@ -74,7 +74,6 @@ fix_ChangeTile:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
 
 	move.w	d0,LSPC_ADDR		; set vram address
-	move.w	#0,LSPC_INCR		; don't increment VRAM address automatically
 	move.w	LSPC_DATA,d2		; get current data
 	andi.w	#$F000,d2			; mask for palette
 	or.w	d2,d1				; OR with new tile data
@@ -93,7 +92,6 @@ fix_ChangePal:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
 
 	move.w	d0,LSPC_ADDR		; set vram address
-	move.w	#0,LSPC_INCR		; don't increment VRAM address automatically
 	move.w	LSPC_DATA,d2		; get current data
 	andi.w	#$0FFF,d2			; mask for tile index
 	or.w	d2,d1				; OR with new palette
@@ -112,7 +110,19 @@ fix_ChangePal:
 fix_Draw8x16:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
 
-.fix_d8x16Loop:
+	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
+
+	; draw top line
+.fix_d8x16_TopLoop:
+	
+
+	; prepare to draw bottom line
+	; (change VRAM address, reset loop vars)
+
+	; draw bottom line
+.fix_d8x16_BotLoop:
+	
+
 	rts
 
 ;==============================================================================;
@@ -127,7 +137,18 @@ fix_Draw8x16:
 fix_Draw16x16:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
 
-.fix_d16x16Loop:
+	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
+
+	; draw top line
+.fix_d16x16_TopLoop:
+	
+
+	; prepare to draw bottom line
+	; (change VRAM address, reset loop vars)
+
+	; draw bottom line
+.fix_d16x16_BotLoop:
+
 	rts
 
 ;==============================================================================;
@@ -136,8 +157,8 @@ fix_Draw16x16:
 
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d?				Combined rows/columns size
-; d?				Palette index and tile number MSB
+; d1				Combined rows/columns size ($XXYY)
+; d2				Palette index and tile number MSB
 ; a0				Pointer to data to draw
 
 ; (Clobbers)
@@ -147,8 +168,33 @@ fix_Draw16x16:
 fix_DrawRegion:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
 
+	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
+	move.w	d0,LSPC_ADDR		; set initial VRAM address
+
+	; get rows
+	move.w	d1,d7
+	andi.w	#$FF00,d7
+	lsr.w	#8,d7				; shift right
+
 	; loop 1 (row/Y)
+fix_DrawRegion_Rows:
+	; get cols
+	move.w	d1,d6
+	andi.w	#$00FF,d6
 
 	; loop 2 (column/X)
+fix_DrawRegion_Cols:
+	; write data
+	move.w	(a0)+,LSPC_DATA
+	; loop cols
+	dbra	d6,fix_DrawRegion_Cols
 
+	; update vram address
+	addi.w	#$20,d0
+	move.w	d0,LSPC_ADDR
+
+	; loop rows
+	dbra	d7,fix_DrawRegion_Rows
+
+fix_DrawRegion_End:
 	rts

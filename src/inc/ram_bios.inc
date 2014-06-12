@@ -113,7 +113,7 @@ BIOS_PLAYER4_MODE		equ $10FDB9	; (byte) Player 4 Status
 ; Status Values: 0=No play, 1=Playing, 2=Continue display, 3=Game Over
 ;-----------------------------------;
 ;???					equ $10FDBA	; (long)
-BIOS_MESS_POINT			equ $10FDBE	; (dword) pointer to buffer
+BIOS_MESS_POINT			equ $10FDBE	; (long) pointer to buffer
 BIOS_MESS_BUSY			equ $10FDC2	; (word) 0=run MESS_OUT, 1=skip MESS_OUT
 ;-----------------------------------;
 BIOS_CARD_COMMAND		equ $10FDC4	; (byte) Command to execute
@@ -125,13 +125,13 @@ BIOS_CARD_FCB			equ $10FDCE	; (word) Game NGH number
 BIOS_CARD_SUB			equ $10FDD0	; (byte/word) Game sub number (0-15)
 ;-----------------------------------;
 ; DATE_TIME
-BIOS_YEAR				equ $10FDD2
-BIOS_MONTH				equ $10FDD3
-BIOS_DAY				equ $10FDD4
-BIOS_WEEKDAY			equ $10FDD5
-BIOS_HOUR				equ $10FDD6
-BIOS_MINUTE				equ $10FDD7
-BIOS_SECOND				equ $10FDD8
+BIOS_YEAR				equ $10FDD2	; (byte) 
+BIOS_MONTH				equ $10FDD3	; (byte) 
+BIOS_DAY				equ $10FDD4	; (byte) 
+BIOS_WEEKDAY			equ $10FDD5	; (byte) 
+BIOS_HOUR				equ $10FDD6	; (byte) 
+BIOS_MINUTE				equ $10FDD7	; (byte) 
+BIOS_SECOND				equ $10FDD8	; (byte) 
 ;-----------------------------------;
 BIOS_SELECT_TIMER		equ $10FDDA	; (byte) "BIOS_COMPULSION_TIMER"
 ;BIOS_START_TEST			equ $10FDDC	; ()
