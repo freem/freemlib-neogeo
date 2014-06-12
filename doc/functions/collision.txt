@@ -1,0 +1,21 @@
+freemlib for Neo-Geo - Collision functionality
+==============================================
+Yeah this is going to be a jerk too.
+
+There are two types of collision boxes, typically named for the colors used to display them:
+1) Blue - Collision hitbox
+2) Red  - Attack hitbox
+there are probably better names but i don't know them offhand sorry
+
+(Defining collision data)
+Collision data is tied to animation frames.
+
+$00			Number of Boxes (byte)
+.....		Collision Box Data
+
+(Collision Box Data)
+$00			Collision Type (word; 0=normal, 1=attack)
+$02			Box X1 (word; start)
+$04			Box Y1 (word; start)
+$06			Box X2 (word; end)
+$08			Box Y2 (word; end)

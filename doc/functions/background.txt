@@ -3,9 +3,10 @@ freemlib for Neo-Geo - Background functionality
 Since everything on the Neo-Geo is sprites, that means the backgrounds are
 sprites too! Therefore, we need functions to handle the background.
 
-Backgrounds are Sprites, so see sprites.txt for more information.
+The background functionality depends on the basic sprite functionality.
 ================================================================================
 (sketchpad)
+* background setup
 
 ================================================================================
 [Layers]

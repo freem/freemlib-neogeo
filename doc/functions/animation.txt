@@ -1,22 +1,46 @@
 freemlib for Neo-Geo - Animation functionality
 ==============================================
-This has to do with foreground animations.
-All background-related stuff is in background.txt.
+"Animations" are the quick term for foreground sprite animations (aka character
+animations). All background-related stuff is found in background.txt.
+
+The animation functionality depends on the basic sprite functionality.
 ================================================================================
 (sketchpad)
 * animation timers
-* states (wtf is states)
-* loops
-* anchoring/alignment
+
+================================================================================
+(Animation Library)
+The Animation Library is created from "proper" use of the Animation IDs. What
+"proper" means is up to the project, but the general guidelines are as follows:
+
+* Primary ID/"Category"
+  Think of this as the overall container for animations of a certain type.
+  For a fighting game, each character would have its own Category/Primary ID.
+
+* Secondary ID
+  The secondary ID can be seen as an action or state number. It can also be used
+  as an element number if you're using the Category to store multiple types of
+  animations.
+
+* Tertiary ID
+  The tertiary ID can be used to store variants of the same animation under the
+  secondary ID. An example in a fighting game would be someone who has multiple
+  fighting styles; their idle stance could be split into multiple tertiary IDs.
+
 ================================================================================
 [Animations]
 The high concept of an animation is a number of frames played back at a speed.
-For us, a frame consists of a metasprite and a number.
 
-* Frame Count
-* Pointer to Frame Data
+* Animation Primary ID/"Category" (word)
+* Animation Secondary ID (word)
+* Animation Tertiary ID (byte)
+* Number of Frames in Animation
+* Pointer to first Animation Frame Data
+
 ================================================================================
-[Frame Data]
+[Animation Frame Data]
 * Number of frames to display this frame (60 frames = 1 second)
 * Metasprite pointer for this frame
 * Anchor point (pixels, relative to sprite size)
+* Pointer to collision data (see collision.txt)
+* Pointer to next displayed frame ($FFFFFFFF if none)

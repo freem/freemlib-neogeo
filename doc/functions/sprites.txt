@@ -1,11 +1,9 @@
 freemlib for Neo-Geo - Sprite functionality
 ===========================================
-I'm still not 100% sure of required sprite functionality.
-I haven't studied the sprite lists at $8600-$86FF yet.
+In order to use Sprites, you need to know how the data is laid out.
+In the VRAM, there are four sections called SCB (Sprite Control Blocks).
+Each SCB section controls a different part of the sprite.
 
-There should probably be some sort of metasprite functionality, though the
-sticky bit takes care of a lot of that...
-================================================================================
 {SCB1}
 SCB1 holds the tilemaps, palette, auto-animation, and flip bits.
 
@@ -29,10 +27,12 @@ Sprite Size				000000
 SCB4 has the horizontal position only.
 X position				000000000
 
+After the SCB sections is the Sprite List. I'm not 100% sure how it operates.
+
 {Sprite List (Even Scanlines)}	$8600-$867F
 {Sprite List (Odd Scanlines)}	$8680-$86FF
-I'm not sure how data gets into these two sections.
-Is it manual? Does the system handle it?
+I think the system throws the sprite numbers into here, but I'm not sure how
+they map to the scanlines or whatever.
 
 ================================================================================
 <Function Sketchpad>
@@ -44,18 +44,20 @@ VRAM Buffers
  * etc.
 
 (Metasprite)
-Change metasprite X position
-Change metasprite Y position
-Change metasprite Horiz flip
-Change metasprite Vert flip
+Functions for dealing with a metasprite
+* Change metasprite X position
+* Change metasprite Y position
+* Change metasprite Horiz flip
+* Change metasprite Vert flip
 
 (Sprite)
-Change sprite X position
-Change sprite Y position
-Change sprite palette
-Change sprite Horiz. flip
-Change sprite Vert. flip
-Change sprite tilemap
+Functions for dealing with a single sprite
+* Change sprite X position
+* Change sprite Y position
+* Change sprite palette
+* Change sprite Horiz. flip
+* Change sprite Vert. flip
+* Change sprite tilemap
 
 ================================================================================
 [Metasprite Data]
@@ -69,7 +71,7 @@ Commands have "mspr" prefix.
 $00			Number of Sprites in Metasprite		(word)
 $02...end	Pointers to Sprite data				(long)
 
---------------------------------------------------------------------------------
+================================================================================
 [Sprite Data]
 Overall, Sprites are a combination of the values in SCB1, SCB2, SCB3, and SCB4.
 

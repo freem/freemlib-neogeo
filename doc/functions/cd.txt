@@ -19,3 +19,4 @@ $C0055E				BIOSF_CDPLAYER		(Reset to CD Player)
 $C00564				BIOSF_LOADFILEX?	(Load file from CD, no animation)
 $C0056A				BIOSF_CDDACMD		(Issue CDDA command)
 $C00570				BIOSF_VIDEOEN		(Enable/Disable video layers)
+
