@@ -19,10 +19,18 @@ A skeleton setup for the other examples.
 * MESS_OUT
 
 [02_helloSprite]
-Basic Sprite demonstration. (Doesn't go over the Sprite List section)
+Basic Sprite demonstration. (Doesn't go over the Sprite List section.)
 
 [03_paletteBasics]
 Neo-Geo palette basics.
 
 [04_inputBasics]
 Introduction to handling input (the easy way).
+
+[05_]
+
+[06_]
+
+[07_]
+
+[08_]
