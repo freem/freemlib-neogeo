@@ -31,7 +31,6 @@ cart: 00_skeleton.asm
 # cd: compile game for CD
 cd: 00_skeleton.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o 00_skeleton-cd.prg 00_skeleton.asm
-	$(PAD) 00_skeleton-cd.prg $(PADFLAGS)
 
 .PHONY: clean
 
