@@ -13,24 +13,29 @@ your environment so you can actually use the freemlib in the first place.
 Files to Copy (or Symlink) and Leave Alone
 ------------------------------------------
 (Addresses, Registers)
-* inc/neogeo.inc			Defines for Neo-Geo hardware.
-* inc/ram_bios.inc			Defines for the BIOS RAM locations.
-* inc/mvs_bram.inc			Defines for MVS Backup RAM.
+* src/inc/neogeo.inc			Defines for Neo-Geo hardware.
+* src/inc/ram_bios.inc			Defines for the BIOS RAM locations.
+* src/inc/mvs_bram.inc			Defines for MVS Backup RAM.
 
 (freemlib Functionality)
-* inc/fix.inc				Fix layer-related functions.
-* inc/memcard.inc			Memory Card-related functions.
-* inc/mess_macro.inc		Macros for use with MESS_OUT.
-* inc/palette.inc			Palette-related functions.
-* inc/sprites.inc			Sprite-related functions.
-* inc/system.inc			System-related functions.
+* src/inc/fix.inc				Fix layer-related functions.
+* src/inc/memcard.inc			Memory Card-related functions.
+* src/inc/mess_macro.inc		Macros for use with MESS_OUT.
+* src/inc/palette.inc			Palette-related functions.
+* src/inc/sprites.inc			Sprite-related functions.
+* src/inc/system.inc			System-related functions.
+
+(CD System-specific Files)
+* cdfiles/ABS.TXT				Abstract file with required data for loading.
+* cdfiles/BIB.TXT				Bibliography file with required data for loading.
+* cdfiles/CPY.TXT				Copyright file with required data for loading.
 
 Files to Copy and Change
 ------------------------
-* header_68k.inc			68000 Vectors and such at $0.
-* header_cart.inc			Neo-Geo program header at $100.
-* header_cd.inc				WIP program header for CD consoles.
-* ram_user.inc				User RAM defines.
+* src/header_68k.inc			68000 Vectors and such at $0.
+* src/header_cart.inc			Neo-Geo program header at $100.
+* src/header_cd.inc				WIP program header for CD consoles.
+* src/ram_user.inc				User RAM defines.
 
 header_68k.inc
 --------------
