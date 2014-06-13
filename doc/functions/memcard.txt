@@ -5,12 +5,12 @@ Technically this is a part of the system, but it's kind of important enough to
 have its own file.
 
 The CD system doesn't support memory cards, but it has 8KB of battery-backed RAM
-on-board. Otherwise, the functionality is the same? (With an 8KB limit)
+on-board. Otherwise, the functionality is the same.
 
 "The SP-S2 BIOS can handle memory cards up to 16KiB" - NeoGeoDev Wiki
 What is the maximum size of JEIDA v3 cards??
 
-Original SNK memory cards are 2KB.
+Original SNK memory cards are 2KB. Default MAME memcard saves are this size.
 
 Third-party memory cards exist. Both seem to share a similar design?
 NeoSaveMasta (banked 2x16KB)
@@ -19,6 +19,9 @@ http://neogeofanclub.com/project/neosavemasta/
 Le Cortex (2x16KB banked? Card says "32KB", but has a switch like NeoSaveMasta)
 http://www.lecortex.com/CPHD/images/MemoryCardProto.png
 Has an LED, which I assume is lit when the card is being accessed/written to.
+
+Interesting note about N@EDOH-LGPETOX:
+the characters that aren't NEO-GEO begin at $40 and go up by $04 each time.
 ================================================================================
 [Card Commands]
 $00		Format Card
@@ -67,6 +70,28 @@ $10FDD0		BIOS_CARD_SUB			Game sub number (0-15)
 [Card Header]
 $80 bytes long.
 ================================================================================
-; command sketchpad
-* memCard_getUserName	Get user's stored name
+(command sketchpad)
+
+Header Info:
+* memCard_GetSize			Get memory card size.
+
+CARD shortcuts:
+* memCard_Format			(cmd $0) Format memory card.
+* memCard_Search			(cmd $1) Find number of save files for game.
+* memCard_Load				(cmd $2) Load specified save file in RAM.
+* memCard_Save				(cmd $3) Save data from RAM to save file.
+* memCard_Delete			(cmd $4) Delete specified file.
+* memCard_ReadTitle			(cmd $5) Read Data title
+* memCard_SetUserName		(cmd $6) Set user's stored name
+* memCard_GetUserName		(cmd $7) Get user's stored name
 ================================================================================
+(Quick Command Overview)
+I'll write the long format descriptions later.
+
+* memCard_Inserted			Check if memory card is inserted.
+* memCard_WriteProtected	Check if memory card is write-protected.
+* memCard_EnableWrite		Pokes CARD_ENABLE_1 and CARD_ENABLE_2.
+* memCard_DisableWrite		Pokes CARD_DISABLE_1 and CARD_DISABLE_2.
+
+Header Info:
+* memCard_GetRegion			Get region of machine memory card was formatted on.
