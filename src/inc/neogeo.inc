@@ -32,14 +32,26 @@ BIOSF_VIDEOEN		equ $C00570		; Enable/Disable video layers
 ; [I/O Regs]
 REG_P1CNT			equ $300000		; Player 1 Controls (DCBArldu)/Trackball data [active low]
 REG_DIPSW			equ $300001		; Read Hardware DIPs [active low], Kick watchdog (a.k.a. "WATCH_DOG")
-REG_STATUS_A		equ $320001
+REG_STATUS_A		equ $320001		; uPD4990 bits, Coin switches [switches active low]
 REG_P2CNT			equ $340000		; Player 2 Controls (DCBArldu) [active low]
-REG_STATUS_B		equ $380000
-REG_POUTPUT			equ $380001
-REG_SLOT			equ $380021
-REG_LEDLATCHES		equ $380031
-REG_LEDDATA			equ $380041
-REG_RTCCTRL			equ $380051
+REG_STATUS_B		equ $380000		; Aux inputs (Start/Select, Memory Card...) [active low]
+
+; (Writes)
+REG_POUTPUT			equ $380001		; Joypad port outputs
+REG_SLOT			equ $380021		; Slot Number (MVS)/REG_POUTPUT mirror (home)
+REG_LEDLATCHES		equ $380031		; LED Latches (latched on 1->0/falling edge transition)
+REG_LEDDATA			equ $380041		; LED Output Data
+REG_RTCCTRL			equ $380051		; Strobe/Clock/DIN for uPD4990
+; currently not included:
+;REG_?????			equ $380061		; Chute 1 coin lockout -> High
+;REG_?????			equ $380063		; Chute 2 coin lockout -> High
+;REG_?????			equ $380065		; Chute 1 coin counter -> High
+;REG_?????			equ $380067		; Chute 2 coin counter -> High
+;REG_?????			equ $3800D1		; Write to RTC
+;REG_?????			equ $3800E1		; Chute 1 coin lockout -> Low
+;REG_?????			equ $3800E3		; Chute 2 coin lockout -> Low
+;REG_?????			equ $3800E5		; Chute 1 coin counter -> Low
+;REG_?????			equ $3800E7		; Chute 2 coin counter -> Low
 
 ; [Sound Reg]
 REG_SOUND			equ $320000		; (Byte) Send command to Z80, Read Z80 reply
@@ -52,7 +64,13 @@ SYS_CARTVEC			equ $3A0013		; Use Cart vectors (a.k.a. "USER_ROM","REG_SWPROM")
 SYS_BIOSFIX			equ $3A000B		; Use BIOS Fix tiles
 SYS_CARTFIX			equ $3A001B		; Use Cart Fix tiles
 
+; [MVS Backup RAM]
+SYS_MVSBRAM_LOCK	equ $3A000D		; Write-protect MVS-only Backup RAM
+SYS_MVSBRAM_UNLOCK	equ $3A001D		; Unprotect MVS-only Backup-RAM
+
 ; [Memory Card]
+MEMCARD_DATA		equ $800000		; Memory Card Data (a.k.a. "IC_MEMORY")
+;-----------------------------------;
 CARD_ENABLE_1		equ $3A0005		; Enable card writes (w/CARD_ENABLE_2). (a.k.a. "REG_CRDUNLOCK1","IC_WRITE_EI1")
 CARD_ENABLE_2		equ $3A0017		; Enable card writes (w/CARD_ENABLE_1). (a.k.a. "REG_CRDUNLOCK2","IC_WRITE_EI2")
 CARD_DISABLE_1		equ $3A0007		; Disable card writes (w/CARD_DISABLE_2). (a.k.a. "REG_CRDLOCK1","IC_WRITE_DI1")
@@ -60,7 +78,6 @@ CARD_DISABLE_2		equ $3A0015		; Disable card writes (w/CARD_DISABLE_1). (a.k.a. "
 CARD_SELECT			equ $3A0009		; Enable card register select
 CARD_NORMAL			equ $3A0019		; Disable card register select
 CARD_BANK			equ $380011		; Memory Card bank select
-MEMCARD_DATA		equ $800000		; Memory Card Data (a.k.a. "IC_MEMORY")
 
 ; [LSPC Regs]
 LSPC_ADDR			equ $3C0000		; VRAM Address
@@ -75,8 +92,8 @@ LSPC_TIMER_STOP		equ $3C000E		; Stop timer for 32 lines in PAL mode? (LSPC2 only
 ; [Palette]
 PALETTES			equ $400000		; $400000-$401FFF (Bank 0)
 PALETTES2			equ $402000		; $402000-$403FFF (Bank 1)
-PALETTE_BANK0		equ $3A001F		; Palette bank 0
 PALETTE_BANK1		equ $3A000F		; Palette bank 1
+PALETTE_BANK0		equ $3A001F		; Palette bank 0
 
 ;------------------------------------------------------------------------------;
 ; CD system-specific

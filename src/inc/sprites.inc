@@ -108,7 +108,7 @@ spr_ParseSCB1:
 	; convert sprite index into starting SCB1 location
 	;(either d0*64 or d0<<6) = SCB1 VRAM location
 	move.w	d0,d2				; copy sprite index (d0) to temp
-	asl.w	#6,d2				; d2 << 6
+	lsl.w	#6,d2				; d2 << 6
 	move.w	d2,LSPC_ADDR		; write new vram address
 
 	; check number of tiles

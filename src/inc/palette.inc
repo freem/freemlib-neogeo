@@ -21,7 +21,7 @@ palmac_PalBufIndex:	macro
 	; d5 = (d7 & $FF00)>>3) (palette set number)
 	move.w	d7,d5
 	andi.w	#$FF00,d5			; d7 & $FF00
-	asr.w	#3,d5				; d7 >> 3
+	lsr.w	#3,d5				; d7 >> 3
 
 	; d4 = d7 & $0F (index inside of palette set)
 	move.w	d7,d4
@@ -90,7 +90,7 @@ palmac_LoadBuf:		macro
 
 pal_LoadSet:
 	; calculate starting address in palette buffer
-	asl.w	#5,d7				; (d7<<5)
+	lsl.w	#5,d7				; (d7<<5)
 	addi.l	#PaletteBuffer,d7	; add palette buffer location
 	movea.l	d7,a1
 
