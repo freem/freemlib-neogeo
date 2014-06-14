@@ -1,5 +1,5 @@
 future examples
-
+================================================================================
 [Fix Layer]
 * Making your own MESS_OUT
 
@@ -10,6 +10,7 @@ future examples
 ================================================================================
 [Sprites]
 * Backgrounds
+* Animations
 * "Zooming" sprites
 
 ================================================================================
@@ -19,7 +20,7 @@ future examples
 
 --------------------------------------------------------------------------------
 (Expert)
-* Mid-frame Palette Changes (hblank? pochi to nyaa title screen)
+* Mid-frame Palette Changes (hblank? also check Pochi to Nyaa's title screen)
 * Faking Blending?
  * Careful usage of colors + fake transparency
 
@@ -32,8 +33,8 @@ future examples
 --------------------------------------------------------------------------------
 (Expert)
 * Trackball
-* Link Play
 * 4-Player (a la Kizuna Encounter)
+* Link Play
 
 ================================================================================
 [Sound]
@@ -62,3 +63,4 @@ future examples
 ================================================================================
 [Development]
 * The Debug BIOS and You
+* MAME/MESS Debugger
