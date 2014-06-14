@@ -1,4 +1,4 @@
-; freemlib for Neo-Geo - Sprite Functions
+; freemlib for Neo-Geo - (General) Sprite Functions
 ;==============================================================================;
 ; todo: a lot of things need to exist here.
 
@@ -165,8 +165,8 @@ sprmac_SCB1Data:	macro
 ; Major Note: This does not handle the sticky bit in SCB3.
 
 ; \1			Sprite Height (in tiles)		(word) (bottom 6 bits of SCB3)
-; \2			X position						(word) 9 bits (SCB4); X<<7
-; \3			Y position						(word) 9 bits (SCB3); convert to (496-Y)<<7
+; \2			X position						(word) 9 bits (SCB4); converted to X<<7
+; \3			Y position						(word) 9 bits (SCB3); converted to (496-Y)<<7
 ; \4			Pointer to SCB1 tilemap data	(long)
 ; \5			Horizontal Shrink (0-F)			(byte)
 ; \6			Vertical Shrink (00-FF)			(byte)
