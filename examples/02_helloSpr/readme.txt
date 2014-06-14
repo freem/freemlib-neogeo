@@ -47,8 +47,8 @@ I've provided are pretty simple.
 
 <Fix Layer>
 Remember how I said the fix layer displays over everything else? Well, with this
-example, we can prove it. However, that requires being able to move the sprite
-around, and for that, we need... input.
+example, we can prove it. However, to properly display that, we need to be able
+to move the sprite around... Time to take a crash course in input.
 
 <Input>
 Much like writing to the fix layer, there's two ways of handling input.
