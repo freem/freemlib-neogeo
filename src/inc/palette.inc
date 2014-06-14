@@ -88,7 +88,7 @@ palmac_LoadBuf:		macro
 ; d7				Palette set to load data into ($00-$FF)
 ; a0				Address to load palette data from
 
-pal_LoadSet:
+pal_LoadSetBuf:
 	; calculate starting address in palette buffer
 	lsl.w	#5,d7				; (d7<<5)
 	addi.l	#PaletteBuffer,d7	; add palette buffer location

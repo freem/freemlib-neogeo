@@ -1,47 +1,87 @@
 freemlib for Neo-Geo - Palette functionality
 ============================================
 Palette data. I finally understand it enough.
-
-Something going through my head is the idea of a MESS_OUT-like system for
-palettes, where you can either throw in pointers to data or raw commands.
-This is then processed every vblank.
-
 Note: The fix layer can only use the first 16 palettes.
 
-* Fading (Would use precalculated tables)
-* Single color manipulation? (e.g. change only Red, Green, Blue)
-* Brighten/Darken (+/- 1 or so for each channel)
-* Soft Shadow (0.5x color)
-* Soft Bright (1.5x color)
-* Desaturate/Black and White
+* Fading (Would probably use precalculated tables)
+* Brighten/Darken (+/- 1 or so for each channel) <- ???
+* Desaturate (single color or palset)
+* Black and White (palset)
 
 ================================================================================
 <Scratchpad>
-What about doing tricks with multiple palette banks?
+* Tricks with multiple palette banks?
 
 ================================================================================
 <Palette Buffers>
 The actual values will need to be written to palette RAM during VBlank.
 
 * Main Palette Buffer	0x2000		(Values written to the Palette RAM)
-* Misc. palette buffer	0x2000		(Palette work area)???
+* Pal. Action Buffer	0x0400		(Actions to run on VBlank)
 
 ================================================================================
-[pal_LoadSet]
-Load a single palette set (16 colors).
+<Palette Actions>
+Palette actions are in charge of handling effects for sections of the palette.
 
-(Params)
-d?				Palette set to load data into ($00-$FF)
-a?				Address to load palette data from
+* Stop Actions
+  Stops all actions.
+
+* Palette Index Cycling (palsetNum, startIdx, numColors, frameTime, animTime)
+  Create a color cycling effect.
+  * palsetNum		Palette set number (0-255/$00-$FF)
+  * startIdx		Starting index (1-15/$1-$F)
+  * numColors		Number of colors in cycle (2-15)
+  * frameTime		Frames before switching colors
+  * animTime		Time to loop palette cycling. (0=loop forever?)
+
+* Color Animation (palsetNum, startIdx, colorAnimPtr)
+  Play back a set of colors, similar to an animation.
+  * palsetNum		Palette set number (0-255/$00-$FF)
+  * startIdx		Starting index (1-15/$1-$F)
+  * colorAnimPtr	Color animation pointer
+
+(actions scratchpad)
+* Color Shifting (0->1->|0)
+* Color Ramp (0->1|0)
+
+================================================================================
+<Color Animations>
+(Main Data)
+$00				(byte) Number of colors in animation frame (1-15)
+$01				(byte) Frame Count (0-255)
+
+(Frame Data)
+Repeat as many times as requested by Frame Count above.
+$00				(word)	Number of frames to display this frame
+$02				(word)	Color data 1
+$04				(word)	Color data 2
+....................................
+$1E				(word)	Color data 15
 
 ================================================================================
 [pal_LoadData]
-Load raw color data into the palettes.
+Load raw color data into the palette RAM.
 
 (Params)
-d?				Number of color entries
-a?				Address to load palette data from
-a?				Beginning palette address to load data into ($400000-$401FFE)
+d7				Number of color entries-1
+a0				Address to load palette data from
+a1				Beginning palette address to load data into ($400000-$401FFE)
+
+================================================================================
+[pal_LoadBuf]
+Load raw color data into the palette buffer.
+
+d7				Number of color entries-1
+d6				Beginning buffer index to load data into ($0-$1FFE?)
+a0				Address to load palette data from
+
+================================================================================
+[pal_LoadSetBuf]
+Load a single palette set (16 colors) into the palette buffer.
+
+(Params)
+d7				Palette set to load data into ($00-$FF)
+a0				Address to load palette data from
 
 ================================================================================
 [pal_SetColor]
@@ -55,21 +95,21 @@ If I was an insane person I could fit the entire thing into a single register,
 but I don't think I'm going to do that.
 
 ================================================================================
-pal_SoftShadow
+[pal_SoftShadow]
 Halves the color values of the specified color in the palette buffer.
 
 (Params)
 d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
 
 ================================================================================
-pal_SoftBright
+[pal_SoftBright]
 Doubles the color values of the specified color in the palette buffer.
 
 (Params)
 d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
 
 ================================================================================
-pal_SetSingleRed
+[pal_SetSingleRed]
 Modify the Red channel of the specified color in the palette buffer.
 
 (Params)
@@ -77,7 +117,7 @@ d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
 d6				New Red channel value
 
 ================================================================================
-pal_SetSingleGreen
+[pal_SetSingleGreen]
 Modify the Green channel of the specified color in the palette buffer.
 
 (Params)
@@ -85,7 +125,7 @@ d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
 d6				New Green channel value
 
 ================================================================================
-pal_SetSingleBlue
+[pal_SetSingleBlue]
 Modify the Blue channel of the specified color in the palette buffer.
 
 (Params)
