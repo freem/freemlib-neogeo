@@ -2,6 +2,9 @@
 ;==============================================================================;
 ; Even though it says "Memory Card" above, these functions are also meant to
 ; work on the Neo-Geo CD's internal save memory.
+
+; IMPORTANT NOTE: It's up to you to ensure the memory card is inserted on cart
+; systems before issuing most of these commands.
 ;==============================================================================;
 ; memCard_Inserted
 ; Check if the memory card is inserted. Always true on CD systems.
@@ -15,6 +18,7 @@ memCard_Inserted:
 	else
 		move.b	REG_STATUS_B,d0	; load REG_STATUS_B
 		andi.b	#$30,d0			; mask for "card inserted"
+		; "Card Inserted" bits are actually 0 when the card is inserted.
 		eor.i	#$30,d0			; flip meaning of the card inserted bits
 	endif
 
@@ -55,7 +59,7 @@ memCard_DisableWrite:
 ; Return the region of the machine that formatted the card.
 
 ; (Outputs)
-; d0			Region (0=Japan, 1=USA, 2=Europe)
+; d0			Region (byte; 0=Japan, 1=USA, 2=Europe)
 
 memCard_GetRegion:
 	move.b	MEMCARD_DATA+$30,d0
@@ -65,7 +69,11 @@ memCard_GetRegion:
 ; memCard_GetSize
 ; Returns the size of the memory card (as stored on the card itself).
 
+; (Outputs)
+; d0			Memory card size (word)
+
 memCard_GetSize:
+	move.w	MEMCARD_DATA+$A,d0
 	rts
 
 ;==============================================================================;
