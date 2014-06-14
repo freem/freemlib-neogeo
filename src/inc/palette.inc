@@ -76,12 +76,12 @@ pal_LoadBuf:
 palmac_LoadBuf:		macro
 	move.l	#\1,d7
 	move.w	#\2,d6
-	lea		\3,a1
+	lea		\3,a0
 	jsr		pal_LoadBuf
 	endm
 
 ;==============================================================================;
-; pal_LoadSet
+; pal_LoadSetBuf
 ; Load a single palette set (16 colors) into the palette buffer.
 
 ; (Params)
