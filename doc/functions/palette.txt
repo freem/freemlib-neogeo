@@ -85,7 +85,7 @@ a0				Address to load palette data from
 
 ================================================================================
 [pal_SetColor]
-Set the value of a single color.
+Set the value of a single color in the palette buffer.
 
 (Params)
 d?				Palette Set, Palette Index ($SS0i, where SS=$00-$FF and i=$0-$F)
