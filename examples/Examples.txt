@@ -13,7 +13,7 @@ what can be done.
 A skeleton setup for the other examples.
 
 [01_helloFix]
-"Hello World" as a demonstration of various Fix layer capabilities.
+"Hello World" on the Fix layer.
 * Quick palette introduction
 * Manual VRAM writing
 * MESS_OUT
@@ -27,7 +27,8 @@ Neo-Geo palette basics.
 [04_inputBasics]
 Introduction to handling input (the easy way).
 
-[05_]
+[05_fixFuncs]
+Exploring the Fix functionality of the freemlib.
 
 [06_]
 
