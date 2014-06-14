@@ -39,12 +39,6 @@ Not sure what is 100% required... Has to do with responding to request codes?
 
 ================================================================================
 [Input]
-Typically, input is handled by reading values from BIOS RAM after calling
-SYSTEM_IO once every 1/60th of a second.
-
-However, I can't help but shake the feeling that this shouldn't be the only way
-of doing it...
-
 From the "Known Issues" page on the UNIVERSE BIOS homepage
 http://unibios.free.fr/knownissues.html
 
@@ -83,10 +77,3 @@ Interesting patterns of note:
 * Visco's first and second to last Neo games were the only ones to do this...
 * 2/3rds of Technos games do it. (Double Dragon doesn't?)
 * Noise Factory is at least consistent about it. They might have inherited it from the Sengoku team?
-
-Input things:
-* Trackball (SIT board)
-* Mahjong Controller (note differences between MVS [1p only] and Home)
-* Kizuna multiplayer (NEO-FTC1B)
-
-other parts to be determined after I finish writing my input tester

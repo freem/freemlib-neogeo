@@ -2,20 +2,32 @@ freemlib for Neo-Geo - Files
 ============================
 Starting from the main folder:
 
+cdfiles\			Required Files for CD games
 doc\				Documentation
 examples\			Examples
 src\				Source Code
+
+================================================================================
+[cdfiles\]
+Files required on every Neo-Geo CD game in order to boot.
+IPL.TXT is not provided, as it will differ for each game/project.
+
+ABS.TXT			Abstract
+BIB.TXT			Bibliography
+CPY.TXT			Copyright
+
 ================================================================================
 [doc\]
-Documentation of the freemlib.
+freemlib documentation lives here. Right now, it's kind of a mess.
 
 ================================================================================
 [examples\]
 This directory contains a number of examples that use the freemlib.
+Examples.txt gives a quick overview of each example, while the readme.txt in
+each example's directory gives a longer description.
 
-In order to build them correctly, they rely on being in the folders they are
-currently in (e.g. a path of "..\..\src\" from an example will go to the main
-src directory).
+The examples rely on being set up as they are in order to build correctly.
+(e.g. a path of "..\..\src\" from an example will go to the main src directory.)
 
 ================================================================================
 [src\]
