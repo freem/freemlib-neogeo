@@ -32,9 +32,9 @@ Used on first time starting up on a MVS system.
 * any game initialization crap?
 
 SNK docs:
-"Initialize only the part defined (by the address 10EH-113H) as the backup area
+"Initialize only the part defined by the address $10E-$113 as the backup area
 of the work area used for the game. Normally, use this area for high scores,
-rankings, etc. On the MVS, this command is called only once: when the cassette
+rankings, etc. On the MVS, this command is called only once: when the cartridge
 is inserted into the main board for the first time. Initialize the work area, 
 excluding the backup area, screen displays, and I/O, etc. every time USER is
 entered."
@@ -42,6 +42,7 @@ entered."
 USER_REQUEST Command 1 (EyeCatcher)
 -----------------------------------
 Shows the game's boot logo animation if the Eye catcher anim flag ($114) is 1.
+Apparently not checked on the MVS, only home?
 
 (todo: find out more information, like what games use command 1)
 
@@ -51,11 +52,6 @@ Games that use Command 1:
 
 Questionable:
 * Do GIGA POWER games use Command 1?
-
-SNK docs:
-"A request is made only when the address 114H is 1. The call is not made at any
-other time, nor with the MVS. Only one request is to be made right after the
-home system is turned on."
 
 USER_REQUEST Command 2 (Game)
 -----------------------------
@@ -74,7 +70,7 @@ On MVS systems, this is called when a coin is inserted.
 
 SNK docs:
 "Only the game title is displayed. This command is requested only in the mode
-with the MVS-forced start. At this point, the SELECT_TIMER (10FDDAH, B) gives
+with the MVS-forced start. At this point, the SELECT_TIMER ($10FDDA, B) gives
 the remaining time in BCD, so please display this on the screen. When the time
 runs out, instructions come from the system to start the game. Therefore, there
 is no need for the game side to return to the SYSTEM_RETURN. Everything else is
