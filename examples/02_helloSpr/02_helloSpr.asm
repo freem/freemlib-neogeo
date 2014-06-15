@@ -180,7 +180,7 @@ WaitVBlank:
 ;==============================================================================;
 ; include freemlib function files
 	include "../../src/func/sprites.inc"
-	include "../../src/func/input.inc"
+	include "../../src/inc/input.inc"
 
 ;==============================================================================;
 ; CreateDisplay
