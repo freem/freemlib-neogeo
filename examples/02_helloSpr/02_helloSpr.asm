@@ -68,7 +68,7 @@ userReq_Game:
 
 	; set up movable sprite variables
 	move.w	#0,curSprPalette	; Initial palette
-	move.w	#224,spriteX		; Initial X position
+	move.w	#152,spriteX		; Initial X position
 	move.w	#96,spriteY			; Initial Y position
 
 	; set up palettes
@@ -298,7 +298,7 @@ sprite_World_L:		sprmac_SpriteData	1,160,80,sprite_HelloWorldL_SCB1,$0F,$FF
 sprite_World_D:		sprmac_SpriteData	1,160,80,sprite_HelloWorldD_SCB1,$0F,$FF
 sprite_World_Exc:	sprmac_SpriteData	1,160,80,sprite_HelloWorldExc_SCB1,$0F,$FF
 
-sprite_Test:		sprmac_SpriteData	2,224,96,sprite_Test_SCB1,$0F,$FF
+sprite_Test:		sprmac_SpriteData	2,152,96,sprite_Test_SCB1,$0F,$FF
 
 ;-------------------------------------------;
 ; Initial SCB1 data for Hello World sprite. ;
@@ -356,8 +356,12 @@ string_HelloSpr:
 
 CheckInput:
 	; We're only checking Player 1's inputs here.
-	move.b	BIOS_P1CURRENT,d0	; Player 1 repeating input
+	move.b	BIOS_P1CURRENT,d0	; Player 1 current input
 	move.b	BIOS_P1CHANGE,d1	; Player 1 input change
+
+	; do a check to see if any of the buttons we're handling have been pressed
+	cmpi.w	#(INPUT_UP|INPUT_DOWN|INPUT_LEFT|INPUT_RIGHT|INPUT_A),d0
+	beq		CheckInput_End
 
 ;------------------------------------------------------------------------------;
 	; (Directions; current) - Move sprite
