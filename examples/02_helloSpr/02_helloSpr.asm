@@ -369,7 +369,12 @@ CheckInput_Up:
 	; move sprite Up (wrap around from 0 -> 511)
 	move.w	spriteY,d3
 	subi.w	#1,d3
-	; todo: check if we've wrapped under 0
+	; check if we've wrapped under 0
+	cmpi.w	#0,d3
+	bge		CheckInput_UpOK
+
+	; wrapped under 0, reset to 511
+	move.w	#511,d3
 
 CheckInput_UpOK:
 	move.w	d3,spriteY
@@ -385,7 +390,12 @@ CheckInput_Down:
 	; move sprite Down (wrap around from 511 -> 0
 	move.w	spriteY,d3
 	addi.w	#1,d3
-	; todo: check if we've wrapped past 511
+	; check if we've wrapped past 511
+	cmpi.w	#511,d3
+	ble		CheckInput_DownOK
+
+	; wrapped past 511
+	moveq	#0,d3
 
 CheckInput_DownOK:
 	move.w	d3,spriteY
@@ -399,7 +409,12 @@ CheckInput_Left:
 	; move sprite Left (wrap around from 0 -> 511)
 	move.w	spriteX,d3
 	subi.w	#1,d3
-	; todo: check if we've wrapped under 0
+	; check if we've wrapped under 0
+	cmpi.w	#0,d3
+	bge		CheckInput_LeftOK
+
+	; wrapped under 0, reset to 511
+	move.w	#511,d3
 
 CheckInput_LeftOK:
 	move.w	d3,spriteX
@@ -416,6 +431,11 @@ CheckInput_Right:
 	move.w	spriteX,d3
 	addi.w	#1,d3
 	; todo: check if we've wrapped past 511
+	cmpi.w	#511,d3
+	ble		CheckInput_RightOK
+
+	; wrapped past 511
+	moveq	#0,d3
 
 CheckInput_RightOK:
 	move.w	d3,spriteX
