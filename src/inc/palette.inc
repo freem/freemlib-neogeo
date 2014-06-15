@@ -160,7 +160,9 @@ pal_SoftBright:
 
 ; (Params)
 ; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
-; d6				New Red channel value
+; d6				New Red channel value (0011111d)
+
+; Dr__RRRR________
 
 pal_SetSingleRed:
 	palmac_PalBufIndex			; get address in palette buffer
@@ -180,7 +182,9 @@ pal_SetSingleRed:
 
 ; (Params)
 ; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
-; d6				New Green channel value
+; d6				New Green channel value (0011111d)
+
+; D_g_____GGGG____
 
 pal_SetSingleGreen:
 	palmac_PalBufIndex			; get address in palette buffer
@@ -200,7 +204,9 @@ pal_SetSingleGreen:
 
 ; (Params)
 ; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
-; d6				New Blue channel value
+; d6				New Blue channel value (0011111d)
+
+; D__b________BBBB
 
 pal_SetSingleBlue:
 	palmac_PalBufIndex			; get address in palette buffer
