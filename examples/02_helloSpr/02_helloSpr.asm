@@ -66,6 +66,11 @@ userReq_Game:
 
 	; perform your initialization
 
+	; set up movable sprite variables
+	move.w	#0,curSprPalette	; Initial palette
+	move.w	#224,spriteX		; Initial X position
+	move.w	#96,spriteY			; Initial Y position
+
 	; set up palettes
 	move.b	d0,PALETTE_BANK0	; use palette bank 0
 	lea		paletteData,a0
@@ -89,7 +94,7 @@ mainLoop:
 	move.b	d0,REG_DIPSW		; kick the watchdog
 
 	; do things like:
-	; Check Input
+	jsr		CheckInput			; check inputs
 	jsr		WaitVBlank			; wait for the vblank
 	; and other things that would normally happen in a game's main loop.
 
@@ -144,6 +149,7 @@ VBlank:
 .endvbl:
 	jsr		SYSTEM_IO			; "Call SYSTEM_IO every 1/60 second."
 	jsr		MESS_OUT			; Puzzle Bobble calls MESS_OUT just after SYSTEM_IO
+	jsr		UpdateTestSprite	; update test sprite after MESS_OUT.
 	move.b	#0,flag_VBlank		; clear vblank flag so waitVBlank knows to stop
 	movem.l (a7)+,d0-d7/a0-a6	; restore registers
 	rte
@@ -174,6 +180,7 @@ WaitVBlank:
 ;==============================================================================;
 ; include freemlib function files
 	include "../../src/inc/sprites.inc"
+	include "../../src/inc/input.inc"
 
 ;==============================================================================;
 ; CreateDisplay
@@ -190,10 +197,10 @@ CreateDisplay:
 
 Display_Sprite:
 	; tell MESS_OUT we're busy messing with the data, so don't run.
+	bset.b	#0,BIOS_MESS_BUSY
 	; this is more of a safeguard; your program should probably have a flag
 	; called LSPC_BUSY (or GPU_BUSY, VRAM_BUSY, whatever...) that's used in
-	; situations like this instead.
-	bset.b	#0,BIOS_MESS_BUSY
+	; situations like this in addition to BIOS_MESS_BUSY.
 
 	move.w	#1,LSPC_INCR		; set vram increment = 1
 
@@ -244,25 +251,17 @@ Display_Sprite:
 
 	; Draw a random test sprite using freemlib's spr_Load
 	;----------------------------------------------------
-	move.w	#12,d0
+	move.w	#12,d0				; sprite 12
 	lea		sprite_Test,a0
 	jsr		spr_Load
 
 	; draw "World!" sprite with a freemlib metasprite
 	;------------------------------------------------
-	move.w	#6,d0
+	move.w	#6,d0				; starting at sprite 6
 	lea		metaspr_World,a0
 	jsr		mspr_Load
 
-	; sprite  6: W
-	; sprite  7: O
-	; sprite  8: R
-	; sprite  9: L
-	; sprite 10: D
-	; sprite 11: !!!
-
-	; time to put sprite data into the VRAM.
-
+	; and now we're done with all of that.
 	bclr.b	#0,BIOS_MESS_BUSY	; tell MESS_OUT it can run again
 	rts
 
@@ -350,6 +349,132 @@ string_HelloSpr:
 	dc.b	"fix layer text for testing",$FF
 	dc.b	$00
 	dc.w	$0000
+
+;==============================================================================;
+; CheckInput
+; Checks for any inputs and handles them.
+
+CheckInput:
+	; We're only checking Player 1's inputs here.
+	move.b	BIOS_P1CURRENT,d0	; Player 1 repeating input
+	move.b	BIOS_P1CHANGE,d1	; Player 1 input change
+
+;------------------------------------------------------------------------------;
+	; (Directions; current) - Move sprite
+CheckInput_Up:
+	move.b	d0,d2				; operate on a temporary copy
+	andi.b	#INPUT_UP,d2
+	beq		CheckInput_Down
+
+	; move sprite Up (wrap around from 0 -> 511)
+	move.w	spriteY,d3
+	subi.w	#1,d3
+	; todo: check if we've wrapped under 0
+
+CheckInput_UpOK:
+	move.w	d3,spriteY
+
+	bra		CheckInput_Left		; don't bother checking Down
+
+;------------------------------------------------------------------------------;
+CheckInput_Down:
+	move.b	d0,d2
+	andi.b	#INPUT_DOWN,d2
+	beq		CheckInput_Left
+
+	; move sprite Down (wrap around from 511 -> 0
+	move.w	spriteY,d3
+	addi.w	#1,d3
+	; todo: check if we've wrapped past 511
+
+CheckInput_DownOK:
+	move.w	d3,spriteY
+
+;------------------------------------------------------------------------------;
+CheckInput_Left:
+	move.b	d0,d2
+	andi.b	#INPUT_LEFT,d2
+	beq		CheckInput_Right
+
+	; move sprite Left (wrap around from 0 -> 511)
+	move.w	spriteX,d3
+	subi.w	#1,d3
+	; todo: check if we've wrapped under 0
+
+CheckInput_LeftOK:
+	move.w	d3,spriteX
+
+	bra		CheckInput_A		; don't bother checking Right
+
+;------------------------------------------------------------------------------;
+CheckInput_Right:
+	move.b	d0,d2
+	andi.b	#INPUT_RIGHT,d2
+	beq		CheckInput_A
+
+	; move sprite Right (wrap around from 511 -> 0)
+	move.w	spriteX,d3
+	addi.w	#1,d3
+	; todo: check if we've wrapped past 511
+
+CheckInput_RightOK:
+	move.w	d3,spriteX
+
+;------------------------------------------------------------------------------;
+	; (A Button; change) - Change palette
+CheckInput_A:
+	andi.b	#INPUT_A,d1
+	beq		CheckInput_End
+
+	; set next palette index (0,1,2,3)
+	move.w	curSprPalette,d2
+	addi.w	#1,d2
+	andi.w	#$03,d2				; mask so values are 0-3
+	move.w	d2,curSprPalette
+
+;------------------------------------------------------------------------------;
+CheckInput_End:
+	rts
+
+;==============================================================================;
+; UpdateTestSprite
+; Updates the position and palette of the test sprite.
+
+; It's "easy" in this case because the sprite index (12) is hardcoded...
+; A more general update routine would be a bit more involved.
+
+UpdateTestSprite:
+	; update palette (SCB1)
+	move.w	curSprPalette,d0	; get palette index
+	lsl.w	#8,d0				; shift into proper position for SCB1
+	; write to SCB1
+	move.w	#$0301,LSPC_ADDR	; SCB1 sprite 12
+	move.w	#2,LSPC_INCR		; update every other word
+	move.w	d0,LSPC_DATA		; write palette twice,
+	move.w	d0,LSPC_DATA		; since there's two sprites
+
+	move.w	#1,LSPC_INCR		; reset VRAM increment
+
+	; update Y position (part of SCB3)
+	move.w	#496,d0				; Y position is (496-Y)<<7
+	sub.w	spriteY,d0
+	lsl.w	#7,d0				; shift into position for SCB3
+	; get current SCB3 value
+	move.w	#$820C,LSPC_ADDR	; SCB3 sprite 12
+	move.w	LSPC_DATA,d1		; grab current SCB3 value
+	andi.w	#$7F,d1				; mask away Y position from SCB3
+	; combine old SCB3 value with new Y position
+	or.w	d0,d1				; OR SCB3 value with new Y position
+	move.w	d1,LSPC_DATA		; write new SCB3 value
+
+	; update X position (SCB4)
+	move.w	spriteX,d0			; get X position
+	lsl.w	#7,d0				; shift into position for SCB4
+	; Write to SCB4
+	move.w	#$840C,LSPC_ADDR	; SCB4 sprite 12
+	move.w	d0,LSPC_DATA		; write new SCB4 value
+
+	rts
 
 ;==============================================================================;
 ; [Palettes]

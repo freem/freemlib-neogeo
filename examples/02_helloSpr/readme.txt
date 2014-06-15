@@ -73,10 +73,10 @@ $10FD99		BIOS_P1TIMER		(byte) Input repeat timer
 $10FDAC		BIOS_STATCURNT		(byte) Start and Select from current frame
 $10FDAD		BIOS_STATCHANGE		(byte) Start and Select active-edge input
 
-SNK was really nice and gave us a way to handle repeating input (BIOS_P1REPEAT),
-so we're going to use that for moving the sprite. Pressing buttons to do things
-would require a bit more sensitivity, so BIOS_P1CHANGE is the variable for the
-job there.
+While you might think BIOS_P1REPEAT will be the best choice, BIOS_P1CURRENT
+actually provides smoother movement, so we're going to use that for moving the
+sprite. Pressing buttons to do things would require a bit more sensitivity, so
+BIOS_P1CHANGE is the variable for the job there.
 
 <Sprites>
 Sprite data also lives in VRAM; in fact, it takes up most of the VRAM space.
