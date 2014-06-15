@@ -1,6 +1,7 @@
 ; freemlib for Neo-Geo - Animation Functions
 ;==============================================================================;
 ; Animation functions rely on the sprite functions, so be sure to include those.
+
 ; The high concept of an animation is a number of frames, with each frame played
 ; back at a certain speed. We bend this to include collision data as well,
 ; because video games.
@@ -11,6 +12,7 @@
 ; $04		(byte) Tertiary ID
 ; $05		(byte) Number of Frames in Animation
 ; $06		(long) Pointer to first Animation Frame Data
+
 ;------------------------------------------------------------------------------;
 ; (Animation Frame Data)
 ; $00		(word) Number of frames to display frame (60 frames = 1 sec)
@@ -19,6 +21,7 @@
 ; $08		(word) Anchor Point Y
 ; $0A		(long) Pointer to Collision Data (see doc/collision.txt)
 ; $0E		(long) Pointer to next displayed frame ($FFFFFFFF if none)
+
 ;==============================================================================;
 ; animmac_AnimData
 ; Store Animation Data in the binary.
