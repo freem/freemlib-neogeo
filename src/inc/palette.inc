@@ -3,9 +3,11 @@
 ; It should be noted that most of the functions in here modify the palette
 ; buffers, which are written to palette RAM every vblank/int1.
 
-; [Effects?]
+; [Whole-Palette Effects]
 ; * Fade In
 ; * Fade Out
+
+; [Palette Actions]
 ; * Palette Cycling
 ; * Color Pulsing (0->1->0; repeat)
 ; * Color Ramping (0->1, then flatlines to 0; repeat)
@@ -224,3 +226,25 @@ pal_SetSingleBlue:
 	move.w	d5,(a0)				; update color value
 
 	rts
+
+;==============================================================================;
+; palAction_Handler
+; Runs commands in the Palette Action buffer.
+
+palAction_Handler:
+	rts
+
+;palAction_Commands:
+	;dc.l	palAction_Nop
+	;dc.l	palAction_StopAll
+	;dc.l	palAction_IndexCycle
+	;dc.l	palAction_ColorAnim
+
+;==============================================================================;
+; <Palette Actions>
+; The Palette Actions system is used to animate palettes via various methods.
+
+; palAction_Nop
+; palAction_StopAll
+; palAction_IndexCycle
+; palAction_ColorAnim
