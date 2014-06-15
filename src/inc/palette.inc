@@ -94,10 +94,15 @@ pal_LoadSetBuf:
 	addi.l	#PaletteBuffer,d7	; add palette buffer location
 	movea.l	d7,a1
 
-	move.l	#16-1,d6			; 16 colors
-.pal_LoadSetLoop:
-	move.w	(a0)+,(a1)+
-	dbra	d6,.pal_LoadSetLoop
+	; 2 colors x8 times = 16 colors
+	move.l	(a0)+,(a1)+			; color indices $00 and $01
+	move.l	(a0)+,(a1)+			; color indices $02 and $03
+	move.l	(a0)+,(a1)+			; color indices $04 and $05
+	move.l	(a0)+,(a1)+			; color indices $06 and $07
+	move.l	(a0)+,(a1)+			; color indices $08 and $09
+	move.l	(a0)+,(a1)+			; color indices $0A and $0B
+	move.l	(a0)+,(a1)+			; color indices $0C and $0D
+	move.l	(a0)+,(a1)+			; color indices $0E and $0F
 
 	rts
 
