@@ -91,7 +91,7 @@ IRQ:
 	push	ix
 	push	iy
 
-	; do the IRQ crap.
+	; do the things you do in the IRQ.
 
 endIRQ:
 	; restore registers

@@ -20,13 +20,9 @@ FM instruments are a large collection of variables.
 
 <SSG Instrument (Type 1)>
 SSG Frequency = Master Clock / (64*fv)
-for both pulse and noise
 
-SSG Pulse:
- * Volume and Mode
-
-SSG Noise:
- * Noise Period Control ($06; 1 byte)
+* Volume and Mode
+* Noise Period Control ($06; 1 byte)
 
 <ADPCM-A Instrument (Type 2)>
 * Volume and Left/Right Output
