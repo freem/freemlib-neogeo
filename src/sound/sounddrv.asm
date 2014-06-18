@@ -11,10 +11,12 @@ Start:
 	jp		EntryPoint
 ;------------------------------------------------------------------------------;
 	org $0008
+; Port Delay Write for Addresses
 portWriteDelayPart1:
 	jp		portWriteDelayPart2
 ;------------------------------------------------------------------------------;
 	org $0010
+; Port Delay Write for Data
 portWriteDelayPart3:
 	jp		portWriteDelayPart4
 ;------------------------------------------------------------------------------;
@@ -27,6 +29,11 @@ j_write67:
 	jp		write_67
 ;------------------------------------------------------------------------------;
 	;org $0028
+CheckBusyFlag:
+	in		a,(4)			; read Status 0
+	add		a
+	jr		c,CheckBusyFlag
+	ret
 ;------------------------------------------------------------------------------;
 	;org $0030
 ;------------------------------------------------------------------------------;
@@ -35,12 +42,12 @@ j_write67:
 j_IRQ:
 	di
 	jp		IRQ
-;------------------------------------------------------------------------------;
+;==============================================================================;
 	org $0040
 ; driver signature; subject to change.
 driverSig:
 	ascii	"freemlib NG(ROM)SoundDriver v000"
-;------------------------------------------------------------------------------;
+;==============================================================================;
 	org $0066
 ; NMI
 ; Inter-processor communications.
@@ -52,7 +59,7 @@ NMI:
 	push	de
 	push	hl
 
-	in		a,(0)			; Ack. NMI, get command from Port 0 (68K)
+	in		a,(0)			; Ack. NMI, get command from 68K via Port 0
 	ld		b,a				; load value into b for comparisons
 
 	; "Commands $01 and $03 are always expected to be implemented as they
@@ -69,7 +76,7 @@ NMI:
 	ld		(curCommand),a	; update curCommand
 	call	HandleCommand
 
-	out		(0xC),a			; write something to 68k
+	out		(0xC),a			; write something to 68k in the meantime.
 endNMI:
 	; restore registers
 	pop		hl
@@ -79,7 +86,7 @@ endNMI:
 	retn
 
 ;==============================================================================;
-; IRQ
+; IRQ (called from $0038)
 ; Handle an interrupt request.
 
 IRQ:
@@ -92,6 +99,7 @@ IRQ:
 	push	iy
 
 	; do the things you do in the IRQ.
+	; IRQs in SNK drivers are pretty large. (SM1/BIOS, MAKOTO v3.0)
 
 endIRQ:
 	; restore registers
@@ -120,7 +128,7 @@ EntryPoint:
 	im		1				; Set Interrupt Mode 1 (IRQ at $38)
 	xor		a				; make value in A = 0
 
-	; Clear $F800-$FFFF
+	; Clear RAM at $F800-$FFFF
 	ld		(0xF800),a		; set $F800 = 0
 	ld		hl,0xF800		; 00 value is at $F800
 	ld		de,0xF801		; write sequence begins at $F801
@@ -132,6 +140,7 @@ EntryPoint:
 
 	; Silence SSG, FM(, and ADPCM?)
 	call	fm_Silence
+	; "various writes to ports 4/5 and 6/7"
 	call	ssg_Silence
 
 	; write 1 to port $C0 (what is the purpose?)
@@ -151,25 +160,29 @@ EntryPoint:
 
 	call	SetDefaultBanks	; Set default program banks
 
+	; this section subject to further review
+	;{
+	; set timer values??
+
 	; Start Timers ($27,$3F to ports 4 and 5)
 	ld		de,0x273F		; Reset Timer flags, Enable Timer IRQs, Load Timers
 	write45					; write to ports 4 and 5
 
-	; ADPCM-A shared volume max
-	ld		de,0x013F		; ADPCM-A volume Max
+	; (ADPCM-A shared volume)
+	ld		de,0x013F		; Set ADPCM-A volume to Maximum
 	write67					; write to ports 6 and 7
+	;}
 
-	; Enable NMIs
+	; (Enable NMIs)
 	ld		a,1
 	out		(8),a			; Write to Port 8 (Enable NMI)
 
 ;------------------------------------------------------------------------------;
 ; MainLoop
-; The primary code handling the sound driver, or something.
-; I have no idea.
+; The code that handles the command buffer. I have no idea how it's gonna work yet.
 
 MainLoop:
-	; alright, now it's your turn to handle the buffer!!! fuck.
+	; now it's your turn to handle the buffer!!! fuck.
 
 	jp		MainLoop
 
@@ -229,7 +242,7 @@ portWriteDelayPart4:
 
 doCmd01:
 	ld		a,#0
-	out		(0xC),a			; write to port 0xC (Respond to 68K)
+	out		(0xC),a			; write 0 to port 0xC (Respond to 68K)
 	out		(0),a			; write to port 0 (Clear sound code)
 	ld		sp,0xFFFC		; set stack pointer
 
@@ -244,7 +257,7 @@ doCmd01:
 
 doCmd03:
 	ld		a,0
-	out		(0xC),a			; write to port 0xC (Respond to 68K)
+	out		(0xC),a			; write 0 to port 0xC (Respond to 68K)
 	out		(0),a			; write to port 0 (Clear sound code)
 	ld		sp,0xFFFC		; set stack pointer
 
@@ -255,12 +268,12 @@ doCmd03:
 
 ;==============================================================================;
 ; SetDefaultBanks
-; Sets the default program banks.
+; Sets the default program banks. This setup treats the M1 ROM as linear space.
 
 SetDefaultBanks:
-	SetBank	0x1E,8			; Set $F000-$F7FF bank to bank $1E (30 * 2K)
-	SetBank	0xE,9			; Set $E000-$EFFF bank to bank $0E (14 * 4K)
-	SetBank	6,0xA			; Set $C000-$DFFF bank to bank $06 ( 6 * 8K)
+	SetBank	0x1E,8			; Set $F000-$F7FF bank to bank $1E (30 *  2K)
+	SetBank	0xE,9			; Set $E000-$EFFF bank to bank $0E (14 *  4K)
+	SetBank	6,0xA			; Set $C000-$DFFF bank to bank $06 ( 6 *  8K)
 	SetBank	2,0xB			; Set $8000-$BFFF bank to bank $02 ( 2 * 16K)
 	ret
 
@@ -369,6 +382,7 @@ command_01:
 	call	SetDefaultBanks
 
 	; shut the damn sounds up.
+	; xxx: we probably don't want to call routines here, as that takes more cycles.
 	call	fm_Silence
 	call	ssg_Silence
 	;call	adpcmA_Silence

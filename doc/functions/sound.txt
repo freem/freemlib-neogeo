@@ -2,8 +2,15 @@ freemlib for Neo-Geo - Sound Driver
 ===================================
 This will easily take up a lot of time because I have no fucking idea what I'm
 doing, and the public documentation for writing a Neo-Geo sound driver from
-scratch is pretty sparse. Thankfully there's reverse engineering a motherfucker.
+scratch is pretty sparse. On top of that, I've recently learned that the
+MVSTracker driver doesn't work on original hardware:
 
+"For the 'homebrew' scene, we had a very basic sound driver that Ivan (MVS Tracker)
+and myself worked on many years ago. Ivan did a very good job of implementing
+FM music but the driver didn’t work on real hardware."
+src: http://www.archaic.fr/articles/interview-jeff-kurtz-repond-a-nos-questions/3/
+
+--------------------------------------------------------------------------------
 Most of this seems like it'd be on the Z80 end, but I still have to define some
 codes for 68K<->Z80 comms.
 
@@ -16,8 +23,8 @@ SNK drivers consider the following codes to be used for audio data:
 
 <SNK System Commands>
 This list isn't 100% finalized yet, as I need to figure out what the SNK drivers
-actually do with various commands. Also, what version of the music driver does
-this match up with?
+actually do with various commands.
+(Also, what version of the music driver does this match up with?)
 
 Commands marked with a * are used by the BIOS.
 
@@ -71,7 +78,7 @@ The YM2610 gives us:
 * CDDA		(CD audio, 44.1kHz sampling rate); CD systems only
 
 [Overall]
-Reads:
+Port Reads:
 $04			Status 0 (Busy, Timer A and B flags)
 $05			SSG registers
 $06			Status 1 (ADPCM flags for samples reaching end address)
@@ -170,7 +177,8 @@ $FFFD and $FFFE are used for the infinite jump, and the stack's bottom is $FFFC.
 --------------------------------------------------------------------------------
 Driver Stuff
 
-* Commands (current, previous)
+* Current Command
+* Previous Command
 * Command buffer (How many bytes?)
 
 * Channel Enable/Disable Flags
