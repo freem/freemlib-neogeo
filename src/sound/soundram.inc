@@ -4,20 +4,21 @@
 RAM:
 	org $F800
 ;==============================================================================;
-; Sound Driver Section
+; <Sound Driver Section>
 ;==============================================================================;
 dummyByte			ds 1		; dummy byte used for RAM clearing, etc.
 ;------------------------------------------------------------------------------;
-; Commands
+; [Commands]
 curCommand			ds 1		; Current command to handle
 prevCommand			ds 1		; Previous command handled
 commandBuffer		ds 96		; 96 byte command buffer (todo: is this enough?)
 
+; unsure if I'm keeping this idea...
 dataMode			ds 1		; (0=normal, 1=send to 68k, 2=receive from 68k)
 dataBuffer			ds 64		; buffer for data transfer
 
 ;------------------------------------------------------------------------------;
-; Channel Playback
+; [Channel Playback]
 musicToggle			ds 1		; Master Toggle for Music
 soundToggle			ds 1		; Master Toggle for Sound Effects
 
@@ -27,7 +28,7 @@ fmToggle			ds 1		; Specific FM channel toggles
 pcmToggle			ds 1		; Specific ADPCM channel toggles
 
 ;------------------------------------------------------------------------------;
-; Song Attributes/Playback
+; [Song Attributes/Playback]
 curSong				ds 1		; Current Song number
 curSpeed			ds 1		; Current Song Speed (0x00-0x1F)
 curTempo			ds 2		; Current Song Tempo (0-511, for now...)
@@ -47,28 +48,27 @@ loopPoint			ds 2		; Pointer to loop point (shared between channels for now)
 ; Pattern Playback
 
 ;==============================================================================;
-; YM2610 Section
+; <YM2610 Section>
 ;==============================================================================;
-; System variables
+; [System variables]
 ; Status 0 (Timer flags and Busy)
 ; Status 1 (ADPCM A and B status)
 
 ;==============================================================================;
-; Timer variables
+; [Timer variables]
 intTimerControl		ds 1		; ($27) Timer Control and Mode
 intTimerA_Lo		ds 1		; ($24) Timer A value LSB
 intTimerA_Hi		ds 1		; ($25) Timer A value MSB
 intTimerB			ds 1		; ($26) Timer B value
 
 ;==============================================================================;
-; SSG variables (Ports 4/5)
+; [SSG variables] (Ports 4/5)
 intSSG_Enable		ds 1		; ($07) SSG channel enable
 intSSG_EnvPeriodL	ds 1		; ($0B) Envelope Period Fine Tune
 intSSG_EnvPeriodH	ds 1		; ($0C) Envelope Period Coarse Tune
 intSSG_EnvShape		ds 1		; ($0D) Envelope Shape Cycle
+intSSG_Noise		ds 1		; ($06) Noise Period
 
-;------------------------------------------------------------------------------;
-; * SSG Pulse Channels (A,B,C)
 intSSG_A_PeriodL	ds 1		; ($00) Tone Period Fine Tune
 intSSG_A_PeriodH	ds 1		; ($01) Tone Period Coarse Tune
 intSSG_A_Volume		ds 1		; ($08) Volume and Mode
@@ -81,12 +81,8 @@ intSSG_C_PeriodL	ds 1		; ($04) Tone Period Fine Tune
 intSSG_C_PeriodH	ds 1		; ($05) Tone Period Coarse Tune
 intSSG_C_Volume		ds 1		; ($0A) Volume and Mode
 
-;------------------------------------------------------------------------------;
-; * SSG Noise Channel
-intSSG_Noise		ds 1		; ($06) Noise Period
-
 ;==============================================================================;
-; ADPCM-A variables (Ports 6/7)
+; [ADPCM-A variables ](Ports 6/7)
 intPCMA_Dump		ds 1		; ($00) Dump (Key On/Off) and Channel toggle
 intPCMA_MasterVol	ds 1		; ($01) Master Volume
 
@@ -129,7 +125,7 @@ intPCMA6_EndL		ds 1		; ($25) Sample End Address/256 (LSB)
 intPCMA6_EndH		ds 1		; ($2D) Sample End Address/256 (MSB)
 
 ;==============================================================================;
-; ADPCM-B variables (ports 4/5)
+; [ADPCM-B variables] (ports 4/5)
 intPCM_ChanFlags	ds 1		; ($1C) *ADPCM-A and B flags control*
 
 ;------------------------------------------------------------------------------;
@@ -145,7 +141,7 @@ intPCMB_SampRateH	ds 1		; ($1A) Delta-N Sampling Rate (H)
 intPCMB_Volume		ds 1		; ($1B) Channel volume
 
 ;==============================================================================;
-; FM variables
+; [FM variables]
 ;intFM_LSITest		ds 1		; ($21, 4/5) LSI test data
 intFM_LFOFreq		ds 1		; ($22, 4/5) LFO Frequency Control
 intFM_KeyOnOff		ds 1		; ($28, 4/5) Key On/Off, Slot

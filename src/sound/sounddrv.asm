@@ -29,6 +29,9 @@ j_write67:
 	jp		write_67
 ;------------------------------------------------------------------------------;
 	;org $0028
+; Keep checking the busy flag in Status 0 until it's clear.
+; Code from smkdan's example M1 driver (adpcma_demo2/sound_M1.asm)
+
 CheckBusyFlag:
 	in		a,(4)			; read Status 0
 	add		a
@@ -52,6 +55,8 @@ driverSig:
 ; NMI
 ; Inter-processor communications.
 
+; In this driver, the NMI gets the command from the 68K and interprets it.
+
 NMI:
 	; save registers
 	push	af
@@ -59,7 +64,7 @@ NMI:
 	push	de
 	push	hl
 
-	in		a,(0)			; Ack. NMI, get command from 68K via Port 0
+	in		a,(0)			; Acknowledge NMI, get command from 68K via Port 0
 	ld		b,a				; load value into b for comparisons
 
 	; "Commands $01 and $03 are always expected to be implemented as they
@@ -88,6 +93,9 @@ endNMI:
 ;==============================================================================;
 ; IRQ (called from $0038)
 ; Handle an interrupt request.
+
+; In this driver, the IRQ is used for keeping the music playing.
+; At least, as far as I can tell. I'm no expert. :s
 
 IRQ:
 	; save registers
@@ -160,8 +168,8 @@ EntryPoint:
 
 	call	SetDefaultBanks	; Set default program banks
 
-	; this section subject to further review
-	;{
+; this section subject to further review
+;{
 	; set timer values??
 
 	; Start Timers ($27,$3F to ports 4 and 5)
@@ -171,7 +179,7 @@ EntryPoint:
 	; (ADPCM-A shared volume)
 	ld		de,0x013F		; Set ADPCM-A volume to Maximum
 	write67					; write to ports 6 and 7
-	;}
+;}
 
 	; (Enable NMIs)
 	ld		a,1
@@ -375,30 +383,60 @@ command_00:
 command_01:
 	di
 	xor		a
-	out		(0xC),a			; Write to port 0xC (Reply to 68K)
+	out		(0xC),a			; Write 0 to port 0xC (Reply to 68K)
 	out		(0),a			; Reset sound code
 
-	; ...do bank initialization, etc...
-	call	SetDefaultBanks
+	call	SetDefaultBanks	; initialize banks to default config
 
-	; shut the damn sounds up.
-	; xxx: we probably don't want to call routines here, as that takes more cycles.
-	call	fm_Silence
-	call	ssg_Silence
-	;call	adpcmA_Silence
-	;call	adpcmB_Silence
+	; (FM) turn off Left/Right, AM Sense and PM Sense
+	ld		de,#0xB500		; $B500: turn off for channels 1/3
+	write45
+	write67
+	ld		de,#0xB600		; $B600: turn off for channels 2/4
+	write45
+	write67
+
+	; (ADPCM-A, ADPCM-B) Reset ADPCM channels
+	ld		de,#0x00BF		; $00BF: ADPCM-A Dump=1, all channels=1
+	write67
+	ld		de,#0x1001		; $1001: ADPCM-B Reset=1
+	write45
+
+	; (ADPCM-A, ADPCM-B) Poke ADPCM channel flags (write 1, then 0)
+	ld		de,#0x1CBF		; $1CBF: Reset flags for ADPCM-A 1-6 and ADPCM-B
+	write45
+	ld		de,#0x1C00		; $1C00: Enable flags for ADPCM-A 1-6 and ADPCM-B
+	write45
+
+	; silence FM channels
+	ld		de,#0x2801		; FM channel 1 (1/4)
+	write45
+	ld		de,#0x2802		; FM channel 2 (2/4)
+	write45
+	ld		de,#0x2805		; FM channel 5 (3/4)
+	write45
+	ld		de,#0x2806		; FM channel 6 (4/4)
+	write45
+
+	; silence SSG channels
+	ld		de,#0x800		;SSG Channel A
+	write45
+	ld		de,#0x900		;SSG Channel B
+	write45
+	ld		de,#0xA00		;SSG Channel C
+	write45
 
 	; set up infinite loop in RAM
 	ld		hl,0xFFFD
 	ld		(hl),0xC3		; Set 0xFFFD = 0xC3 ($C3 is opcode for "jp")
 	ld		(0xFFFE),hl	; Set 0xFFFE = 0xFFFD (making "jp $FFFD")
 	ld		a,1
-	out		(0xC),a			; Write to port 0xC (Reply to 68K)
+	out		(0xC),a			; Write 1 to port 0xC (Reply to 68K)
 	jp		0xFFFD			; jump to infinite loop in RAM
 
 ;------------------------------------------------------------------------------;
 ; command_02
-; Plays the eyecatch music. (Typically $5F)
+; Plays the eyecatch music. (Typically music code $5F)
 
 ;------------------------------------------------------------------------------;
 ; command_03
@@ -493,7 +531,7 @@ freqTable_FM:
 	word	0x048D			; B4		493.88Hz
 	;word	0x04AE 			; imaginary B#/Cb (507.74Hz)
 
-;==============================================================================;
+;==[begin to edit stuff below this line]======================================;
 ; Instrument Data
 ; * FM instruments
 instruments_FM:
@@ -532,6 +570,8 @@ library_Effects:
 ; Music Library
 library_Music:
 	; pointers to music data
+
+;==[ok you can stop editing now]===============================================;
 
 ;==============================================================================;
 ; RAM defines at $F800-$FFFF

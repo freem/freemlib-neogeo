@@ -95,8 +95,8 @@ $27			Control/Flags/etc.
 Writes to ports $04 (addr) and $05 (data)
 
 Overall Operation:
-$06			Noise channel period	> 5 bits
-$07			/EN flags for A,B,C, and noise A,B,C. (CBA order)
+$06			Noise period			> 5 bits
+$07			/EN flags for A,B,C, and noise A,B,C. (CBA order, noise then tone)
 $0B			Volume envelope period fine tune
 $0C			Volume envelope period coarse tune
 $0D			Volume envelope shape
@@ -300,7 +300,8 @@ Per-Operator>
  * 1 byte Systain Rate
  * 1 byte Sustain Level/Release Rate
  * 1 byte SSG-type Envelope Control
-
+ 
+================================================================================
 (aside: MVSTracker instruments)
 MVSTracker instruments are 25 bytes.
 
