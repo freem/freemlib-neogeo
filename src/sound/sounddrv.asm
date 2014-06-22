@@ -95,7 +95,7 @@ endNMI:
 ; Handle an interrupt request.
 
 ; In this driver, the IRQ is used for keeping the music playing.
-; At least, as far as I can tell. I'm no expert. :s
+; IRQs in SNK drivers (SM1/BIOS, MAKOTO v3.0) are pretty large. I'd like to avoid that.
 
 IRQ:
 	; save registers
@@ -106,8 +106,11 @@ IRQ:
 	push	ix
 	push	iy
 
-	; do the things you do in the IRQ.
-	; IRQs in SNK drivers are pretty large. (SM1/BIOS, MAKOTO v3.0)
+	; send a reply to the 68K
+	xor		a
+	out		(0xC),a			; write 0 to port 0xC (Respond to 68K)
+
+	; keep the music and sound effects going.
 
 endIRQ:
 	; restore registers
