@@ -15,7 +15,7 @@
 USER:
 	move.b	d0,REG_DIPSW		; kick watchdog
 	lea		BIOS_WORKRAM,sp		; set stack pointer to BIOS_WORKRAM
-	move.w	#0,LSPC_MODE		;
+	move.w	#0,LSPC_MODE		; Disable auto-animation, timer interrupts, set auto-anim speed to 0 frames
 	move.w	#7,LSPC_IRQ_ACK		; ack. all IRQs
 
 	move.w	#$2000,sr			; Enable VBlank interrupt, go Supervisor
