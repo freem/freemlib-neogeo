@@ -5,6 +5,17 @@ sprites too! Therefore, we need functions to handle the background.
 
 The background functionality depends on the basic sprite functionality.
 ================================================================================
+[Background Buffer]
+The Background Buffer is a 1280-byte chunk of RAM meant to be used for keeping
+track of the background sprites.
+
+Each entry in the Background Buffer contains:
+* Starting sprite number	(word)
+* Number of sprites wide	(word)
+* Current X position		(word)
+* Current Y position		(word)
+
+================================================================================
 (sketchpad)
 * background setup
 * background scroll
@@ -12,20 +23,9 @@ The background functionality depends on the basic sprite functionality.
 (thinking out loud)
 background_SetupLayers		Set up layer configuration
 background_LoadLayer		Load background from background sprite data into a layer
-background_ScrollLayer		Scroll the selected layer
 
 ================================================================================
 [Layers]
-There are two overall configurations for the Layer system:
-1) Manual (programmer manages layout with sprites)
-2) Use Layers (background system manages layout with layers)
-
-Those who use Manual layers are expected to handle the Metasprites themselves.
-freemlib Layers are meant to be used with an as-of-now unknown
-
-Take note: the number of background layers you use directly effects how many
-other sprites can be shown.
-
 The current concept is to have this setup:
 
 * BG Layer 3	(max 32-40 sprites?)
@@ -40,11 +40,30 @@ The current concept is to have this setup:
 
 Ideally, this would not be set in stone, so you could use different layer configs.
 However, the MG and Fix layers can not be changed/removed through this system.
+
+The Layer system splits up the 1280-byte Background Buffer into a number of sections.
+* 1 BG Layer, no FG Layer		1280 bytes/160 sprites (BG1/Manual mode)
+--------------------------------
+* 1 BG Layer, FG Layer			640 bytes/80 sprites per Layer (BG1,FG)
+* 2 BG Layers, no FG layer		640 bytes/80 sprites per Layer (BG1,BG2)
+--------------------------------
+* 2 BG Layers, FG layer			416 bytes/52 sprites per Layer (BG1,BG2,FG)
+* 3 BG Layers, no FG layer		416 bytes/52 sprites per Layer (BG1,BG2,BG3)
+--------------------------------
+* 3 BG Layers, FG layer			320 bytes/40 sprites per Layer (BG1,BG2,BG3,FG)
+
+Take note: the number of background layers you use directly effects how many
+other sprites can be shown.
 ================================================================================
 [Scrolling]
 Scrolling depends on how many layers you have and how they interact.
 
 Horizontal scrolling and Vertical scrolling are different bleh
+
+background_ScrollBG1		Scroll Background Layer 1
+background_ScrollBG2		Scroll Background Layer 2
+background_ScrollBG3		Scroll Background Layer 3
+background_ScrollFG			Scroll Foreground Layer
 
 ================================================================================
 [Animation]

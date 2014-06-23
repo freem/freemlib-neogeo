@@ -30,7 +30,8 @@ Introduction to handling input (the easy way).
 [05_fixFuncs]
 Exploring the Fix functionality of the freemlib.
 
-[06_]
+[06_bgBasics]
+Background basics.
 
 [07_]
 
