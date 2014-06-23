@@ -1,0 +1,18 @@
+# Sample .mkisofsrc file for Neo-Geo CD images
+# set Abstract, Bibliography, Copyright to the existing files
+ABST=ABS.TXT
+BIBL=BIB.TXT
+COPY=CPY.TXT
+# optional/editable fields (remember to uncomment)
+# Application Identifier (128 chars)
+#APPI=
+# Preparer of CDROM (128 chars)
+#PREP=
+# Publisher of CDROM (128 chars)
+#PUBL=
+# System Identifier (32 chars)
+#SYSI=
+# Volume Identifier (32 chars)
+#VOLI=
+# Volume Set Name (128 chars)
+#VOLS=

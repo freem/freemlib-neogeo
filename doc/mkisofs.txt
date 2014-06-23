@@ -1,0 +1,14 @@
+The mkisofs tool is used to create ISO images.
+https://wiki.neogeodev.org/index.php?title=ISO_generation
+
+The example from the wiki:
+mkisofs -iso-level 1 -o neogeocd.iso -pad -N -V "NGCDTEST" P1.PRG M1.Z80 SPR.SPR S1.FIX V1.PCM IPL.TXT ABS.TXT BIB.TXT CPY.TXT
+
+The setup I prefer is something like this:
+mkisofs -iso-level 1 -o neogeocd.iso -pad -N -V "NGCDTEST" -path-list pathlist.txt
+
+where pathlist.txt is a file containing a list of directories and filenames to be
+added to the filesystem. This way, you don't have to type a bunch of files on the
+command line.
+
+In addition, I have provided an example .mkisofsrc file that can be used/edited.
