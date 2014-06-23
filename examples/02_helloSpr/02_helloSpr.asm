@@ -348,7 +348,7 @@ Display_Message:
 string_HelloSpr:
 	messmac_Format	0,$00FF		; command 01: bytes+end code; top byte $00, end code $FF
 	messmac_SetIncr	$20			; command 02: vram auto-increment $20 (horiz.)
-	messmac_SetAddr	$70EF		; command 03: set vram addr to $70F0
+	messmac_SetAddr	$70EF		; command 03: set vram addr to $70EF
 	messmac_OutData
 	dc.b	"fix layer text for testing",$FF
 	dc.b	$00
