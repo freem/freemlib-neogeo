@@ -5,7 +5,7 @@ Yeah, this is going to be a jerk, too.
 There are 2 types of collision boxes, named for the colors normally used to display them:
 1) Blue/Collision hitbox
 2) Red/Attack hitbox
-there are probably better names but i don't know them offhand sorry
+There are probably better names, but I don't know them offhand, sorry
 ================================================================================
 (Defining collision data)
 Collision data is tied to animation frames.
@@ -22,6 +22,7 @@ $08			Box Y2 (word; end)
 
 ================================================================================
 (sketchpad)
+* function for running collision checks
 * test for (normal -> normal) collision
 * test for (attack -> normal) collision
 * test for (attack -> attack) collision

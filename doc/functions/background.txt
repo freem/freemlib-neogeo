@@ -7,21 +7,34 @@ The background functionality depends on the basic sprite functionality.
 ================================================================================
 (sketchpad)
 * background setup
+* background scroll
+
+(thinking out loud)
+background_SetupLayers		Set up layer configuration
+background_LoadLayer		Load background from background sprite data into a layer
+background_ScrollLayer		Scroll the selected layer
 
 ================================================================================
 [Layers]
+There are two overall configurations for the Layer system:
+1) Manual (programmer manages layout with sprites)
+2) Use Layers (background system manages layout with layers)
+
+Those who use Manual layers are expected to handle the Metasprites themselves.
+freemlib Layers are meant to be used with an as-of-now unknown
+
 Take note: the number of background layers you use directly effects how many
 other sprites can be shown.
 
 The current concept is to have this setup:
 
-* BG Layer 3	(max 40 sprites?)
-* BG Layer 2	(max 40 sprites?)
-* BG Layer 1	(max 40 sprites?)
+* BG Layer 3	(max 32-40 sprites?)
+* BG Layer 2	(max 32-40 sprites?)
+* BG Layer 1	(max 32-40 sprites?)
 ------------------------------------------------
 * MG Layer		(Middleground/Playing Field)
 ------------------------------------------------
-* FG Layer		(max 40 sprites?)
+* FG Layer		(max 32-40 sprites?)
 ------------------------------------------------
 * Fix Layer
 
@@ -36,3 +49,7 @@ Horizontal scrolling and Vertical scrolling are different bleh
 ================================================================================
 [Animation]
 Background animations are a prime candidate for auto-animation.
+This kind of animation is separate from the other animation elements (which are
+recommended for any animations that auto-animation can't reproduce faithfully).
+
+================================================================================

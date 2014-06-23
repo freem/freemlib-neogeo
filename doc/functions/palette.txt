@@ -3,14 +3,28 @@ freemlib for Neo-Geo - Palette functionality
 Palette data. I finally understand it enough.
 Note: The fix layer can only use the first 16 palettes.
 
-* Fading (Would probably use precalculated tables)
-* Brighten/Darken (+/- 1 or so for each channel) <- ???
-* Desaturate (single color or palset)
-* Black and White (palset)
-
 ================================================================================
 <Scratchpad>
 * Tricks with multiple palette banks?
+
+* Fading (Would probably use precalculated tables)
+
+* Brighten/Darken
+More controlled version of Soft Shadow/Soft Bright. Would allow changes of +/- 1.
+
+* Desaturate (single color or palset)
+Involves dropping color information/approaching gray.
+
+* Black and White (palset)
+Possible weights:
+ * Default		???
+ * Red			Weight by Red
+ * Orange		Weight by Red/Green mix
+ * Yellow		Weight by Yellow
+ * Green		Weight by Green
+ * Aqua			Weight by Green/Blue mix
+ * Blue			Weight by Blue
+ * Purple		Weight by Blue/Red mix
 
 ================================================================================
 <Palette Buffers>
@@ -45,7 +59,7 @@ $02		Color Animation
   Play back a set of colors, similar to an animation.
   * palsetNum		Palette set number (0-255/$00-$FF)
   * startIdx		Starting index (1-15/$1-$F)
-  * colorAnimPtr	Color animation pointer
+  * colorAnimPtr	Color animation data pointer
 
 --------------------------------------------------------------------------------
 (actions scratchpad)
