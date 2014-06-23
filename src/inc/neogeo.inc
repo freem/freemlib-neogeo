@@ -90,8 +90,9 @@ LSPC_IRQ_ACK		equ $3C000C		; Interrupt acknowlege
 LSPC_TIMER_STOP		equ $3C000E		; Stop timer for 32 lines in PAL mode? (LSPC2 only, apparently)
 
 ; [Palette]
-PALETTES			equ $400000		; $400000-$401FFF (Bank 0)
-PALETTES2			equ $402000		; $402000-$403FFF (Bank 1)
+PALETTES			equ $400000		; $400000-$401FFF
+PALETTE_REFERENCE	equ $400000		; Reference Color (must be $8000)
+PALETTE_BACKDROP	equ $401FFE		; Backdrop Color
 PALETTE_BANK1		equ $3A000F		; Palette bank 1
 PALETTE_BANK0		equ $3A001F		; Palette bank 0
 
