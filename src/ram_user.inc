@@ -15,6 +15,7 @@ PaletteBuffer		equ $100000	; transferred during VBlank ($2000 bytes)
 PaletteActions		equ $102000	; Palette Action buffer ($400 bytes)
 
 ; (Sprites)
+;BackgroundBuffer	equ $102400	; Background buffer (1280/$500 bytes)
 
 ;==============================================================================;
 ; you'll want to add your own things to this, of course.
