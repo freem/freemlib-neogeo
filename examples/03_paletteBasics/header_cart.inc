@@ -10,7 +10,7 @@
 	dc.l	$00108000		; pointer to backup RAM block (first two bytes are debug dips)
 	dc.w	$0000			; game save size in bytes
 
-	dc.b	$00				; Eye catcher anim flag (0=BIOS,1=game,2=nothing)
+	dc.b	$02				; Eye catcher anim flag (0=BIOS,1=game,2=nothing)
 	dc.b	$00				; Sprite bank for eyecatch if done by BIOS
 
 	dc.l	softDips_Japan	; Software dips for Japan
