@@ -4,7 +4,7 @@
 # executable name for vasm (68k, motorola syntax); change as needed
 VASM68K = vasm68k
 # default flags for vasm (standard binary output, compile for 68000)
-VASMFLAGS = -Fbin -m68000
+VASMFLAGS = -Fbin -m68000 -devpac
 
 # executable name for byteswapping tool
 BYTESWAP = byteswap
