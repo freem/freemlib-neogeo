@@ -30,8 +30,8 @@ cart: 01_helloFix.asm
 
 # cd: compile game for CD
 cd: 01_helloFix.asm
-	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HelloFix.prg 01_helloFix.asm
-	$(PAD) HelloFix.prg $(PADFLAGS)
+	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HELLOFIX.PRG 01_helloFix.asm
+	$(PAD) HELLOFIX.PRG $(PADFLAGS)
 
 .PHONY: clean
 

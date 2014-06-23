@@ -30,8 +30,8 @@ cart: 02_helloSpr.asm
 
 # cd: compile game for CD
 cd: 02_helloSpr.asm
-	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HelloSpr.prg 02_helloSpr.asm
-	$(PAD) HelloSpr.prg $(PADFLAGS)
+	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HELLOSPR.PRG 02_helloSpr.asm
+	$(PAD) HELLOSPR.PRG $(PADFLAGS)
 
 .PHONY: clean
 
