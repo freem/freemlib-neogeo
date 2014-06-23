@@ -5,7 +5,7 @@ BIOSROM				equ $C00000		; BIOS ROM begins at $C00000
 SYSTEM_RESET		equ $C00402		; 
 SYSTEM_INT1			equ $C00438		; System VBlank
 SYSTEM_INT2			equ $C0043E		; System Int2 (Cart systems only)
-SYSTEM_RETURN		equ $C00444		; 
+SYSTEM_RETURN		equ $C00444		; Returns from the game to the BIOS
 SYSTEM_IO			equ $C0044A		; Reads player inputs (and cabinet if MVS)
 CREDIT_CHECK		equ $C00450		; Check a player's number of credits
 CREDIT_DOWN			equ $C00456		; Deduct credits
