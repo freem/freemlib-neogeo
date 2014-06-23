@@ -1,6 +1,6 @@
-; Neo-Geo Cart Header
+; Neo-Geo CD Header
 	dc.b	"NEO-GEO"
-	dc.b	$00				; System Version (0=cart; 1/2 are used for CD games)
+	dc.b	$00				; System Version (0,1,2? CDDA flag?)
 
 	dc.w	$0202			; NGH number ($0202 = surrogate of Puzzle de Pon!)
 	dc.l	$00080000		; game prog size in bytes
@@ -8,25 +8,28 @@
 							; $00100000 = 16Mbits/1MB
 							; etc.
 	dc.l	$00108000		; pointer to backup RAM block (first two bytes are debug dips)
-	dc.w	$0000			; game save size in bytes (maximum $1000/4096 bytes)
+	dc.w	$0000			; game save size in bytes
 
-	dc.b	$02				; Eye catcher anim flag (0=BIOS,1=game,2=nothing)
-	dc.b	$00				; Sprite bank for eyecatch
+	dc.b	$00				; Eye catcher anim flag (0=BIOS,1=game,2=nothing)
+	dc.b	$00				; Sprite bank for eyecatch if done by BIOS
 
 	dc.l	softDips_Japan	; Software dips for Japan
 	dc.l	softDips_USA	; Software dips for USA
-	dc.l	softDips_Europe	; Software dips for Europe/World
+	dc.l	softDips_Europe	; Software dips for Europe
 
 	jmp		USER			; $122
 	jmp		PLAYER_START	; $128
 	jmp		DEMO_END		; $12E
 	jmp		COIN_SOUND		; $134
 
-	dc.l $FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
-	dc.l $FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
-	dc.l $FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
-	dc.l $FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
-	dc.l $FFFFFFFF,$FFFFFFFF
+	dc.w	$8000			; $13A: Z80 RAM address for CDDA commands
+
+	dc.w	$FFFF
+	dc.l	$FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
+	dc.l	$FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
+	dc.l	$FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
+	dc.l	$FFFFFFFF,$FFFFFFFF,$FFFFFFFF,$FFFFFFFF
+	dc.l	$FFFFFFFF
 
 	;org $00000182
 	dc.l	TRAP_CODE		;pointer to TRAP_CODE
