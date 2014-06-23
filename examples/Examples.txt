@@ -33,6 +33,8 @@ Exploring the Fix functionality of the freemlib.
 [06_bgBasics]
 Background basics.
 
-[07_]
+[07_animBasics]
+Animation basics.
 
-[08_]
+[08_collision]
+Dealing with collisions.
