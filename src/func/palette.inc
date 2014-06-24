@@ -176,10 +176,14 @@ pal_SetSingleRed:
 
 	move.w	(a0),d5				; get current color value
 
+	; get values of Green and Blue channels for re-combining
+	move.w	d5,d4				; save copy for other channels
+	andi.w	#$B0FF,d4			; get values for Green and Blue
+
 	; deconstruct passed Red channel value into palette Red
 	; change Red
 
-	move.w	d5,(a0)				; update color value
+	move.w	d5,(a0)				; update color value in palette buffer
 
 	rts
 
@@ -198,10 +202,14 @@ pal_SetSingleGreen:
 
 	move.w	(a0),d5				; get current color value
 
+	; get values of Red and Blue channels for re-combining
+	move.w	d5,d4				; save copy for other channels
+	andi.w	#$DF0F,d4			; get values for Red and Blue
+
 	; deconstruct passed Green channel value into palette Green
 	; change Green
 
-	move.w	d5,(a0)				; update color value
+	move.w	d5,(a0)				; update color value in palette buffer
 
 	rts
 
@@ -220,10 +228,14 @@ pal_SetSingleBlue:
 
 	move.w	(a0),d5				; get current color value
 
+	; get values of Red and Green channels for re-combining
+	move.w	d5,d4				; save copy for other channels
+	andi.w	#$EFF0,d4			; get values for Red and Green
+
 	; deconstruct passed Blue channel value into palette Blue
 	; change Blue
 
-	move.w	d5,(a0)				; update color value
+	move.w	d5,(a0)				; update color value in palette buffer
 
 	rts
 
