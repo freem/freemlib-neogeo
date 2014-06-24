@@ -41,18 +41,21 @@ complex when it comes to the palette.
 The Neo-Geo has two banks of palette RAM, each holding 4096 colors worth of data.
 The system's palette RAM lives at $400000-$401FFF, and the active palette page
 can be swapped by writing to either the PALETTE_BANK0 register ($3A001F) or the
-PALETTE_BANK1 register ($3A000F).
+PALETTE_BANK1 register ($3A000F). Despite the names, values from PALETTE_BANK1
+will appear first in MAME/MESS's palette viewer.
 
-The palette RAM is divided into 256 sets of 16 colors. Of these 256 sets, only
-the first 16 sets can be used with the Fix Layer. Sprites can use any color set.
+The palette RAM is divided into 256 sets of 16 colors (15 real, 1 transparent).
+Of these 256 sets, only the first 16 sets can be used with the Fix Layer.
+Sprites can use any color set.
 
 In this example, we'll only be using 4 sets of palettes with 3 colors each.
 One is considered transparent, and the other two are active colors.
 
 Dealing with the palette colors is a bit complex, but for now, let's just treat
-it as a 12-bit color with values of $0000 to $0FFF. You should read it as $0RGB,
-where R is Red, G is Green, and B is Blue. The palette is explained in further
-detail in Example 03: Palette Basics.
+it as a 12-bit color with values of $0000 to $0FFF.
+This maps to $0RGB, where R is Red, G is Green, and B is Blue.
+
+The palette is explained in further detail in Example 03: Palette Basics.
 
 <Fix Layer>
 We must first understand the Fix Layer before we can draw to it. The Neo-Geo's
@@ -99,7 +102,7 @@ VRAM, you'll want to know how to write to the LSPC registers eventually.
 But that's another story for another time...
 
 When writing to the Fix layer, the value written to LSPC_ADDR will be between
-$7000 and $74FF (unless you're using Fix bankswitching, which we're not).
+$7000 and $73FF (unless you're using Fix bankswitching, which we're not).
 
 LSPC_INCR can be many values, but the two most common are 1 (vertical writes)
 and 0x20 (32 decimal; horizontal writes).
@@ -114,9 +117,17 @@ operates on a set of commands. Explaining MESS_OUT in full is beyond the scope
 of this file; you will want to check the Neo-Geo Development Wiki's page on it:
 https://wiki.neogeodev.org/index.php?title=MESS_OUT
 
-; something about the flags and pointers
+In this example, we are writing directly to the buffer that MESS_OUT reads.
+It's also possible to create a pre-made set of commands and use those as well.
+
+The first thing that's done before we can write data for MESS_OUT is to set
+the BIOS_MESS_BUSY flag. Then, BIOS_MESS_POINT is loaded into a0, which we will
+use for adding data that MESS_OUT reads.
 
 ; writing data
+
+Once we're finished writing the data, we update BIOS_MESS_POINT to point to the
+new value of a0 (after all our additions), then clear the BIOS_MESS_BUSY flag.
 
 ; introduce basic commands
 
