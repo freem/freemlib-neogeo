@@ -1,7 +1,7 @@
 freemlib for Neo-Geo Example 02: Hello World on the Sprite Layer
 ================================================================================
 [Introduction]
-After learning how to manipulate the fix layer, the next thing you'll want to
+After learning how to manipulate the Fix layer, the next thing you'll want to
 learn how to manipulate is sprites. On the Neo-Geo, sprites are pretty much
 everything. There's a number of neat features included in the LSPC chip that I
 can't recall existing on any other early to mid-1990s 2D-focused platform,
