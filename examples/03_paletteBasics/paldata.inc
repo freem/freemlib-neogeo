@@ -1,6 +1,6 @@
 ; [Palette Data]
 
-NUM_PALETTES	equ 4		; used in palette loading loop
+NUM_PALETTES	equ 5		; used in palette loading loop
 
 paletteData:
 	; Palette Set $00 (Fix/Spr)
@@ -74,3 +74,21 @@ paletteData:
 	dc.w	$0030
 	dc.w	$0020
 	dc.w	$0010			; darkest green
+	;--------------------------------------------------------------------------;
+	; Palette Set $04 (Fix/Spr): Color Cycling Example
+	dc.w	$0000			; transparent color
+	dc.w	$30CF			; Color to Cycle 1/4 (00,1C,1F)
+	dc.w	$0000			; Color to Cycle 2/4 (00,18,1C)
+	dc.w	$0000			; Color to Cycle 3/4 (00,14,18)
+	dc.w	$0000			; Color to Cycle 4/4 (00,10,14)
+	dc.w	$0000
+	dc.w	$0000
+	dc.w	$0000
+	dc.w	$0000
+	dc.w	$0000
+	dc.w	$0000
+	dc.w	$0000
+	dc.w	$0000
+	dc.w	$0000
+	dc.w	$0000
+	dc.w	$0000

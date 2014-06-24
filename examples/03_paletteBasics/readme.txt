@@ -58,3 +58,4 @@ http://www.yaronet.com/posts.php?sl=0&s=163491&p=1&h=20#20
 
 ================================================================================
 [Process]
+This example displays a number of sprites with different palettes.

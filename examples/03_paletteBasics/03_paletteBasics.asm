@@ -69,6 +69,7 @@ userReq_Game:
 	move.b	d0,REG_DIPSW		; kick watchdog
 
 	; perform your initialization
+	move.w	#1,curPalSet		; reset current palette set
 
 	; set up palettes
 	move.b	d0,PALETTE_BANK0	; use palette bank 0
@@ -144,6 +145,7 @@ VBlank:
 	move.b	d0,REG_DIPSW		; kick the watchdog
 
 	; do things in vblank
+	jsr		updateSprSwatches
 
 .endvbl:
 	jsr		SYSTEM_IO			; "Call SYSTEM_IO every 1/60 second."
@@ -186,6 +188,9 @@ WaitVBlank:
 ; Creates the display for this demonstration.
 
 CreateDisplay:
+	; Initialize the sprites
+	jsr		initSprSwatches
+
 	; write "Palette Basics" text on fix layer
 	bset.b	#0,BIOS_MESS_BUSY	; tell MESS_OUT we're busy messing with the data
 	movea.l	BIOS_MESS_POINT,a0	; get current message pointer
@@ -201,6 +206,108 @@ string_PaletteBasics:
 	messmac_SetAddr	$7022		; command 03: set vram addr to $7022
 	messmac_OutData
 	dc.b	"Palette Basics",$FF,$00
+
+;------------------------------------------------------------------------------;
+; initSprSwatches
+; Init the sprite layer (16px) swatches. Uses sprites 1-15.
+
+;  SCB |spr1 |spr2 |spr3 |spr4 |spr5 |spr6 |spr7 |spr8 |spr9 |spr10|spr11|spr12|spr13|spr14|spr15
+;------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+------
+; SCB1 |$0040|$0080|$00C0|$0100|$0140|$0180|$01C0|$0200|$0240|$0280|$02C0|$0300|$0320|$0340|$0380
+; SCB2 |$8001|$8002|$8003|$8004|$8005|$8006|$8007|$8008|$8009|$800A|$800B|$800C|$800D|$800E|$800F
+; SCB3 |$8201|$8202|$8203|$8204|$8205|$8206|$8207|$8208|$8209|$820A|$820B|$820C|$820D|$820E|$820F
+; SCB4 |$8401|$8402|$8403|$8404|$8405|$8406|$8407|$8408|$8409|$840A|$840B|$840C|$840D|$840E|$840F
+
+initSprSwatches:
+	lea.l	LSPC_DATA,a6
+
+	; SCB1 ($0000-$6FFF): Tilemaps
+	; Each sprite is 64 words long (sprite 1 starts at $0040)
+	; * sprite tile LSB
+	; * sprite attributes (pppppppp TMSB0000)
+	move.w	#$0040,d2			; begin at SCB1, sprite 1
+	move.w	#1,2(a6)			; vram increment +1
+	move.w	#64,d3				; tile index LSB (modified in loop)
+	move.w	#1,d4				; current palette
+	asl.w	#8,d4				; shift to upper byte
+	move.w	#16-1,d5			; 15 sprites
+
+.initSwatchSCB1:
+	move.w	d2,-2(a6)			; write vram address
+	move.w	d3,(a6)				; write tile index LSB
+	move.w	d4,(a6)				; write tile attributes
+	addi.w	#1,d3				; next tile index
+	addi.w	#$40,d2				; go to next sprite
+	dbra	d5,.initSwatchSCB1
+
+	; SCB2 ($8000-$81FF): Sprite Shrinking ($00-$0F for X, $00-$FF for Y)
+	move.w	#$8001,-2(a6)		; write beginning at SCB2, sprite 1
+	move.w	#1,2(a6)			; vram increment +1
+	move.w	#$0FFF,d0			; just set the thing to $0FFF for full size
+	move.w	#16-1,d1			; 15 sprites
+.initSwatchSCB2:
+	move.w	d0,(a6)
+	dbra	d1,.initSwatchSCB2
+
+	; SCB3 ($8200-$83FF): Vertical position and more flags
+	; The first sprite is going to be the base sprite for this set of swatches.
+	; Sprites 2-15 will have the sticky bit set.
+	; FEDCBA98 76543210
+	; |||||||| ||||||||
+	; |||||||| ||++++++- Sprite Size (in tiles)
+	; |||||||| |+------- Sticky bit (sprites 2-15 are sticky because I'm lazy as shit)
+	; ++++++++-+-------- Y position (496-Y from top border)
+	move.w	#$8201,-2(a6)		; write beginning at SCB3, sprite 1
+	move.w	#1,2(a6)			; vram increment +1
+
+	; set up first tile
+	move.w	#((496-72)<<7)|1,d0
+	move.w	d0,(a6)
+
+	; set up the other 15 tiles
+	move.w	#$0040,d0
+	move.w	#15-1,d1
+.initSwatchSCB3:
+	move.w	d0,(a6)
+	dbra	d1,.initSwatchSCB3
+
+	; SCB4 ($8400-$85FF): Horizontal position
+	; FEDCBA98 76543210
+	; |||||||| |xxxxxxx
+	; ++++++++-+--------X position
+	move.w	#$8401,-2(a6)		; write beginning at SCB4, sprite 1
+	move.w	#1,2(a6)			; vram increment +1
+	; set up first tile
+	move.w	#(24<<7),d0
+	move.w	d0,(a6)
+
+	rts
+
+;==============================================================================;
+; updateSprSwatches
+; Update the sprite layer (16px) swatches. Uses sprites 1-15.
+
+updateSprSwatches:
+	; this code is currently broken, dunno why
+	;bra		.endUpdSprSwatch
+
+	; SCB1: only the palettes need to change ($0xx1)
+	move.w	#$0041,d2			; start at $0041
+	move.w	#$0001,LSPC_INCR	; use auto-increment of $1
+	move.l	#0,d0
+	move.w	curPalSet,d0		; use curPalSet for palette
+	asl.w	#8,d0
+	; do write loop
+	move.w	#16-1,d1			; 15 sprites
+
+.swatchSCB1:
+	move.w	d2,LSPC_ADDR		; set vram address
+	move.w	d0,LSPC_DATA
+	add.w	#$40,d2				; update vram address
+	dbra	d1,.swatchSCB1
+
+.endUpdSprSwatch:
+	rts
 
 ;==============================================================================;
 ; CheckInput
