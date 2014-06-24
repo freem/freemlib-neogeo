@@ -129,7 +129,24 @@ use for adding data that MESS_OUT reads.
 Once we're finished writing the data, we update BIOS_MESS_POINT to point to the
 new value of a0 (after all our additions), then clear the BIOS_MESS_BUSY flag.
 
-; introduce basic commands
+MESS_OUT operates on a set of commands interspersed with data.
+Some important commands that you'll want to know are as follows:
+$0001		Data Format
+$0002		Set VRAM increment			$0002, ($0001,$0020,etc.)
+$0003		Set VRAM address			$0003, ($7000-$73FF)
+$0005		Add to VRAM address			$0005, ($0001,$0020,etc.)
+$0007		8x8 Output
+$0008		8x16 Output
+
+(Command 1: Data Format)
+; todo
+
+(Command 7: 8x8 Output)
+Command $07 writes 8x8 tiles to the Fix layer.
+
+(Command 8: 8x16 Output)
+Command $08 writes 8x16 tiles to the Fix layer. The first tile is determined by
+the index and page given, while the second tile is on the next page after that.
 
 With MESS_OUT, there are two ways of displaying the result:
 1) Doing a manual "jsr MESS_OUT".
