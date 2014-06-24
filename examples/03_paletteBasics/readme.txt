@@ -2,7 +2,8 @@ freemlib for Neo-Geo Example 03: Palette Basics
 ================================================================================
 [Introduction]
 In the first two examples, we've glossed over the palettes, since we weren't
-doing much with them. This example is dedicated to the palette.
+doing much with them. This example is dedicated to the palette, both on the
+technical side and on the freemlib side.
 
 ================================================================================
 [Files]
@@ -21,6 +22,7 @@ sprtiles/
 ../../src/inc/neogeo.inc		Neo-Geo hardware defines
 ../../src/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
 ../../src/inc/mess_macro.inc	Macros for MESS_OUT
+../../src/func/palette.inc		Palette-related Functions and Macros
 ../../src/func/sprites.inc		Sprite-related Functions and Macros
 
 ================================================================================
@@ -55,6 +57,32 @@ Up until recently (2014), emulators and tools treated the Neo-Geo color space as
 a linear, continuous mapping. However, the real console doesn't treat the color
 space in this way. Check this thread on yAronet for more information:
 http://www.yaronet.com/posts.php?sl=0&s=163491&p=1&h=20#20
+
+Through the first three examples, the palette setup has been passed over in terms
+of a thorough explanation. However, each example has had the palette loading code
+in userReq_Game, so let's take a look:
+{
+	; set up palettes
+	move.b	d0,PALETTE_BANK1	; use palette bank 1
+	lea		paletteData,a0
+	lea		PALETTES,a1
+	move.l	#(16*NUM_PALETTES)-1,d7
+.ldpal:
+	move.w	(a0)+,(a1)+
+	dbra	d7,.ldpal
+}
+
+The first thing that's done is to tell the Neo-Geo we're using Palette Bank 1.
+After that, the address of paletteData (defined in paldata.inc) is put into a0,
+and the beginning of the Neo-Geo's Palette RAM is put into a1.
+
+Getting the values into the palette is done with a loop. d7 is the register with
+the loop counter, and it is set to (16*NUM_PALETTES)-1.
+
+NUM_PALETTES is defined in paldata.inc; the value is multiplied by 16 since each
+palette set has 16 colors. This could also be done with a left shift, but I'm lazy.
+Finally, the loop counter is decremented by 1 to provide the necessary 0,n-1
+range for dbra to work properly.
 
 ================================================================================
 [Process]

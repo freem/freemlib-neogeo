@@ -72,7 +72,7 @@ userReq_Game:
 	move.w	#1,curPalSet		; reset current palette set
 
 	; set up palettes
-	move.b	d0,PALETTE_BANK0	; use palette bank 0
+	move.b	d0,PALETTE_BANK1	; use palette bank 1
 	lea		paletteData,a0
 	lea		PALETTES,a1
 	move.l	#(16*NUM_PALETTES)-1,d7
@@ -219,7 +219,7 @@ string_PaletteBasics:
 ; SCB4 |$8401|$8402|$8403|$8404|$8405|$8406|$8407|$8408|$8409|$840A|$840B|$840C|$840D|$840E|$840F
 
 initSprSwatches:
-	lea.l	LSPC_DATA,a6
+	lea.l	LSPC_DATA,a6		; LSPC_DATA is loaded into a6 as shorthand
 
 	; SCB1 ($0000-$6FFF): Tilemaps
 	; Each sprite is 64 words long (sprite 1 starts at $0040)
