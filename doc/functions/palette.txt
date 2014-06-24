@@ -35,50 +35,7 @@ The actual values will need to be written to palette RAM during VBlank.
 
 ================================================================================
 <Palette Actions>
-Palette actions are in charge of handling effects for sections of the palette.
-
-(Command List)
-$00		No Action
-$FF		Stop All Actions
-$01		Palette Index Cycling
-$02		Color Animation
-
---------------------------------------------------------------------------------
-($FF) Stop Actions
-  Stops all actions.
-
-($01) Palette Index Cycling (palsetNum, startIdx, numColors, frameTime, animTime)
-  Create a color cycling effect.
-  * palsetNum		Palette set number (0-255/$00-$FF)
-  * startIdx		Starting index (1-15/$1-$F)
-  * numColors		Number of colors in cycle (2-15)
-  * frameTime		Frames before switching colors
-  * animTime		Time to loop palette cycling. (0=loop forever?)
-
-($02) Color Animation (palsetNum, startIdx, colorAnimPtr)
-  Play back a set of colors, similar to an animation.
-  * palsetNum		Palette set number (0-255/$00-$FF)
-  * startIdx		Starting index (1-15/$1-$F)
-  * colorAnimPtr	Color animation data pointer
-
---------------------------------------------------------------------------------
-(actions scratchpad)
-* Color Shifting (0->1->|0)
-* Color Ramp (0->1|0)
-
-================================================================================
-<Color Animations>
-(Main Data)
-$00				(byte) Number of colors in animation frame (1-15)
-$01				(byte) Frame Count (0-255)
-
-(Frame Data)
-Repeat as many times as requested by Frame Count above.
-$00				(word)	Number of frames to display this frame
-$02				(word)	Color data 1
-$04				(word)	Color data 2
-....................................
-$1E				(word)	Color data 15
+see palette/pal_actions.txt
 
 ================================================================================
 [pal_LoadData]
