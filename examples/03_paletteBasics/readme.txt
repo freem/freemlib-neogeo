@@ -84,6 +84,32 @@ palette set has 16 colors. This could also be done with a left shift, but I'm la
 Finally, the loop counter is decremented by 1 to provide the necessary 0,n-1
 range for dbra to work properly.
 
+While all of this is done manually, there are some freemlib helpers available:
+
+pal_LoadData loads raw color data into the palette RAM. The parameter list is
+provided below; these registers will need to be set before calling pal_LoadData.
+d7		Number of color entries-1
+a0		Address to load palette data from
+a1		Beginning palette address to load data into ($400000-$401FFE)
+
+palmac_LoadData is also available, for even lazier people.
+Macro parameters \1 through \3 are the same as pal_LoadData, so this code:
+
+	palmac_LoadData		(16*NUM_PALETTES)-1,paletteData,PALETTES
+
+would be equivalent to the loop above (assuming you have the palette functions
+included before it's called).
+
 ================================================================================
 [Process]
 This example displays a number of sprites with different palettes.
+
+Since I am lazy, the main sprite setup code (displaying 15 sprites horizontally)
+is taken from my Palette Test Tool, which was written before most of the freemlib
+for Neo-Geo.
+
+; player input palette change
+
+; palette actions from freemlib
+; * color index cycling
+; * color animations
