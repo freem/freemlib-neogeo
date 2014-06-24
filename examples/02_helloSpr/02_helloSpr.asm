@@ -76,7 +76,7 @@ userReq_Game:
 	move.w	#96,spriteY			; Initial Y position
 
 	; set up palettes
-	move.b	d0,PALETTE_BANK0	; use palette bank 0
+	move.b	d0,PALETTE_BANK1	; use palette bank 1
 	lea		paletteData,a0
 	lea		PALETTES,a1
 	move.l	#(16*NUM_PALETTES)-1,d7
