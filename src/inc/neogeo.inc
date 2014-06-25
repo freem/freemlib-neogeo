@@ -117,6 +117,9 @@ REG_UPUNMAPFIX		equ $FF0149		; (byte)
 REG_DISABLEIRQ		equ $FF016F		; (byte)
 REG_ENABLEZ80		equ $FF0183		; (byte) Z80 enable/disable(reset)
 
+REG_UPBANK_SPR		equ $FF01A1		; (byte) Upload zone 1MB SPR DRAM bank selection
+REG_UPBANK_PCM		equ $FF01A3		; (byte) Upload zone 512KB PCM DRAM bank selection
+
 ; https://wiki.neogeodev.org/index.php?title=Reading_CDDA_sound_levels
 REG_CDDALEFTLEV		equ $FF0188		; (word) Read CDDA sound level (Left channel)
 REG_CDDARIGHTTLEV	equ $FF018A		; (word) Read CDDA sound level (Right channel)
