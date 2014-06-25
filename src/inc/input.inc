@@ -1,4 +1,4 @@
-; freemlib for Neo-Geo - Input Functions
+; freemlib for Neo-Geo - Input Defines
 ;==============================================================================;
 ; [Control Defines]
 
@@ -34,5 +34,7 @@ INPUT_STATC_START3		equ $10
 INPUT_STATC_SELECT3		equ $20
 INPUT_STATC_START4		equ $40
 INPUT_STATC_SELECT4		equ $80
+
+; todo: mahjong controller, trackball
 
 ;==============================================================================;
