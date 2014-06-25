@@ -13,17 +13,18 @@ your environment so you can actually use the freemlib in the first place.
 Files to Copy (or Symlink) and Leave Alone
 ------------------------------------------
 (Addresses, Registers)
+* src/inc/input.inc				Defines for Controller inputs.
 * src/inc/neogeo.inc			Defines for Neo-Geo hardware.
 * src/inc/ram_bios.inc			Defines for the BIOS RAM locations.
 * src/inc/mvs_bram.inc			Defines for MVS Backup RAM.
 
 (freemlib Functionality)
-* src/inc/fix.inc				Fix layer-related functions.
-* src/inc/memcard.inc			Memory Card-related functions.
 * src/inc/mess_macro.inc		Macros for use with MESS_OUT.
-* src/inc/palette.inc			Palette-related functions.
-* src/inc/sprites.inc			Sprite-related functions.
-* src/inc/system.inc			System-related functions.
+* src/inc/system.inc			System-related functions. (still WIP)
+* src/func/fix.inc				Fix layer-related functions.
+* src/func/memcard.inc			Memory Card-related functions.
+* src/func/palette.inc			Palette-related functions.
+* src/func/sprites.inc			Sprite-related functions.
 
 (CD System-specific Files)
 * cdfiles/ABS.TXT				Abstract file with required data for loading.
@@ -105,7 +106,7 @@ These next four are very important, so pay attention!
 $122		jmp USER
 $128		jmp PLAYER_START
 $12E		jmp DEMO_END
-$134		jmp COIND_SOUND
+$134		jmp COIN_SOUND
 
 You will need to have functions matching these names (unless you change them,
 which I really don't recommend).
