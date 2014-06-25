@@ -24,6 +24,7 @@ fixtiles/				fix layer tilesets
 sprtiles/
 	202-c1.c1			C ROM 1/2
 	202-c2.c2			C ROM 2/2
+	HELLOFIX.SPR		.SPR file for Neo-Geo CD
 	in.smc				Source of C ROM (SNES format graphics; convert with recode16)
 
 (Included from outside the directory)
