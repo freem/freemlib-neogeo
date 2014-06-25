@@ -10,7 +10,7 @@ There are two special colors:
 
 Color format
 ------------
-RGB5 D(arkness)1
+RGB5 D(ark)1
 
 FEDCBA98 76543210
 xxxxxxxx xxxxxxxx

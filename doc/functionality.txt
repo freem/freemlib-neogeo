@@ -23,12 +23,13 @@ Things I haven't fully considered:
   |+------- Load counter at beginning of HBlank of first VBlank
   +-------- Load counter when it becomes 0
 
-* SNK's note 5 on page 13:
-"The following initialization is also necessary after the CPU is reset.
-	[1] Write the transparency character (e.g. 0020H) into the VRAM
-		address 0 to 3FH.
-	[2] Write 0000H into VRAM address 8200H."
-Essentially, clear SCB1 and SCB? for Sprite 0.
+  The interrupt is triggered when the timer reaches 0. This is something you want
+  to consider on a case-by-case basis, as you might want different effects at
+  different times...
+
+* SNK docs say to perform two steps after reset:
+ 1) Write transparent character (e.g. $0020) into SCB1 of Sprite 0 (VRAM $0000-$003F).
+ 2) Write $0000 into SCB3 for Sprite 0 (VRAM $8200).
 
 * Required AES/MVS functionality (I have stubs for some things)
 Not sure what is 100% required... Has to do with responding to request codes?

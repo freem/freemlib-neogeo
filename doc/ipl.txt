@@ -17,7 +17,7 @@ So far, all IPL.TXT files end with an 0x1A byte.
 
 Last Blade 2's IPL.TXT has filenames in lowercase.
 
-The simplest possible IPL.TXT consists of:
+The simplest possible IPL.TXT (as long as you change the '*') consists of:
 *.FIX,0,0
 *.SPR,0,0
 *.Z80,0,0

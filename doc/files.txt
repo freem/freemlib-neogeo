@@ -32,5 +32,6 @@ The examples rely on being set up as they are in order to build correctly.
 ================================================================================
 [src\]
 This directory contains the actual code and includes that make up the freemlib.
+Trying to document it here would be pointless, as it will change often.
 
 ================================================================================
