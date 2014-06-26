@@ -20,3 +20,9 @@ $C00564				BIOSF_LOADFILEX?	(Load file from CD, no animation)
 $C0056A				BIOSF_CDDACMD		(Issue CDDA command)
 $C00570				BIOSF_VIDEOEN		(Enable/Disable video layers)
 
+DRAM layout:
+* 68K Program		2MB
+* Sprite Tiles		4MB
+* ADPCM Data		1MB
+
+Fix tiles are in 128KB of PSRAM. The Z80 code is in a 64KB RAM block.

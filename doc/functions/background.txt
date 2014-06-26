@@ -6,8 +6,8 @@ sprites too! Therefore, we need functions to handle the background.
 The background functionality depends on the basic sprite functionality.
 ================================================================================
 [Background Buffer]
-The Background Buffer is a 1280-byte chunk of RAM meant to be used for keeping
-track of the background sprites.
+The Background Buffer is a 1280-byte chunk of RAM (160 sprites * 8 bytes)
+meant to be used for keeping track of basic background sprite information.
 
 Each entry in the Background Buffer contains:
 * Starting sprite number	(word)
@@ -58,8 +58,10 @@ other sprites can be shown.
 [Scrolling]
 Scrolling depends on how many layers you have and how they interact.
 
-Horizontal scrolling and Vertical scrolling are different bleh
+Continuous horizontal/vertical scrolling methods are different, bleh
 
+(scroll function sketchpad)
+background_ScrollAll		Scroll All Background Layers (static)
 background_ScrollBG1		Scroll Background Layer 1
 background_ScrollBG2		Scroll Background Layer 2
 background_ScrollBG3		Scroll Background Layer 3
@@ -70,5 +72,7 @@ background_ScrollFG			Scroll Foreground Layer
 Background animations are a prime candidate for auto-animation.
 This kind of animation is separate from the other animation elements (which are
 recommended for any animations that auto-animation can't reproduce faithfully).
+
+Auto-animation can be set to 4 or 8 frames.
 
 ================================================================================
