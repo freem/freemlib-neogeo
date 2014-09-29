@@ -80,22 +80,33 @@ This is what I use in a few of the examples. It may not the the best choice.
 For what it's worth, though, Samurai Shodown/Samurai Spirits does the same thing.
 
 Some games also use $00C00426 here. I am unsure if you can fully take advantage
-of the other interrupts on the Neo-Geo anyways.
+of the other interrupts on the Neo-Geo in any way.
 
 header_cart.inc
 ---------------
 This file handles the data starting at $100, also known as the Neo-Geo header.
 
+I'm unsure of how the "System Version" byte is fully utilized, but unless you're
+making a game for the Neo-Geo CD, you'll probably want to leave it at $00.
+
 You'll want to change the NGH number. I haven't left you in the cold this time,
 but the game ID you get by default is 0FFF. You'll probably want to change that.
+Please note that the NGH number must NOT be 0000, otherwise all other values
+are "valid". SNK only ever used BCD numerals here, as far as I could tell.
 
 * Game program size
+$00080000 = 4Mbits/512KB,
+$00100000 = 16Mbits/1MB,
+and so on.
 
 The pointer to backup RAM block is at $10E. The first two bytes at the location
 pointed to hold the debug dipswitches.
 
 * Game save size (in bytes)
-* Eyecatch-related
+
+The next two bytes are eyecatch-related:
+* animation flag (0=Eyecatch by BIOS, 1=Eyecatch by game, 2=Nothing)
+* sprite bank (if eyecatch done by BIOS)
 
 The software dip pointers start at $116 and map out like so:
 $116		Japan
