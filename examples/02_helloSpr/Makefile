@@ -16,6 +16,11 @@ PAD = pad
 # flags for padding tool
 PADFLAGS = 524288 255
 
+# executable name for mkisofs
+MKISOFS = mkisofs
+# flags for mkisofs
+MKISOFSFLAGS = -iso-level 1 -pad -N
+
 ################################################################################
 # [Output Settings]
 
@@ -31,10 +36,12 @@ cart: 02_helloSpr.asm
 # cd: compile game for CD
 cd: 02_helloSpr.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HELLOSPR.PRG 02_helloSpr.asm
-	$(PAD) HELLOSPR.PRG $(PADFLAGS)
+#	$(PAD) HELLOSPR.PRG $(PADFLAGS)
+	$(MKISOFS) $(MKISOFSFLAGS) -o HelloSpr.iso -V "HELLOSPR" HELLOSPR.PRG fixtiles/HELLOSPR.FIX sprtiles/HELLOSPR.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
+
 
 .PHONY: clean
 
 # remove binaries and intermediates
 clean:
-	rm -f *.p *.p1 *.prg
+	rm -f *.p *.p1 *.prg *.PRG

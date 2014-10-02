@@ -16,6 +16,11 @@ PAD = pad
 # flags for padding tool
 PADFLAGS = 524288 255
 
+# executable name for mkisofs
+MKISOFS = mkisofs
+# flags for mkisofs
+MKISOFSFLAGS = -iso-level 1 -pad -N
+
 ################################################################################
 # [Output Settings]
 
@@ -31,10 +36,10 @@ cart: 03_paletteBasics.asm
 # cd: compile game for CD
 cd: 03_paletteBasics.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o PalBasic.prg 03_paletteBasics.asm
-	$(PAD) PalBasic.prg $(PADFLAGS)
+#	$(PAD) PalBasic.prg $(PADFLAGS)
 
 .PHONY: clean
 
 # remove binaries and intermediates
 clean:
-	rm -f *.p *.p1 *.prg
+	rm -f *.p *.p1 *.prg *.PRG
