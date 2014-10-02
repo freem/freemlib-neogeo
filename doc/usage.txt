@@ -133,5 +133,3 @@ ram_user.inc holds the RAM for your program. Currently, the state of affairs in
 here is terrible, and I wish there was a better way of handling it.
 
 Alas, until I do, you'll have to make do with equ.
-The 01_helloFix example uses org $100000, but it's the only one so far, as I
-don't like the idea of having RAM variables be appended to the binary...
