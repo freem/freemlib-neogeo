@@ -16,6 +16,11 @@ PAD = pad
 # flags for padding tool
 PADFLAGS = 524288 255
 
+# executable name for mkisofs
+MKISOFS = mkisofs
+# flags for mkisofs
+MKISOFSFLAGS = -iso-level 1 -pad -N
+
 ################################################################################
 # [Output Settings]
 
@@ -31,10 +36,11 @@ cart: 01_helloFix.asm
 # cd: compile game for CD
 cd: 01_helloFix.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HELLOFIX.PRG 01_helloFix.asm
-	$(PAD) HELLOFIX.PRG $(PADFLAGS)
+#	$(PAD) HELLOFIX.PRG $(PADFLAGS)
+	$(MKISOFS) $(MKISOFSFLAGS) -o HelloFix.iso -V "HELLOFIX" HELLOFIX.PRG fixtiles/HELLOFIX.FIX sprtiles/HELLOFIX.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
 
 .PHONY: clean
 
 # remove binaries and intermediates
 clean:
-	rm -f *.p *.p1 *.prg
+	rm -f *.p *.p1 *.PRG *.iso
