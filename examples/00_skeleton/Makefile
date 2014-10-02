@@ -16,6 +16,11 @@ PAD = pad
 # flags for padding tool
 PADFLAGS = 524288 255
 
+# executable name for mkisofs
+MKISOFS = mkisofs
+# flags for mkisofs
+MKISOFSFLAGS = -iso-level 1 -pad -N
+
 ################################################################################
 # [Output Settings]
 
@@ -31,6 +36,7 @@ cart: 00_skeleton.asm
 # cd: compile game for CD
 cd: 00_skeleton.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o SKELETON.PRG 00_skeleton.asm
+	# todo: add the mkisofs part
 
 .PHONY: clean
 
