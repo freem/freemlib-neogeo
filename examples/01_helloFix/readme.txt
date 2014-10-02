@@ -153,3 +153,25 @@ With MESS_OUT, there are two ways of displaying the result:
 1) Doing a manual "jsr MESS_OUT".
 2) Having MESS_OUT be called in the vblank/INT1.
 This example uses the second method, so proper handling of the flags is needed.
+
+================================================================================
+[Emulator Compatibility]
+I don't have real hardware to test on, so someone else is going to have to let
+me know how that works out. Please do, if you get a chance.
+
+<Cart>
+In MAME, the game will work as long as you:
+1) Have the game in the software list. An example softlist entry is provided.
+2) Call the game properly:
+	mame64 neogeo 01_helloFix				(Load example 1 in MVS mode)
+	mame64 neogeo -cart1 01_helloFix		(Load example 1 in multi-slot MVS mode)
+	mame64 aes 01_helloFix					(Load example 1 in AES mode)
+
+<CD>
+The ISO for the CD version is known to work on:
+* Raine32 0.63.7-2
+* NeoCD/SDL 0.3.1
+
+MESS and Final Burn Alpha 0.2.97.29 treat the ISO the same; they can't load it.
+Perhaps my image is messed up?
+
