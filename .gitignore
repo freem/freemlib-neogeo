@@ -17,4 +17,4 @@ examples/*/*.PRG
 
 # ignore any listing files in the examples folder
 examples/*/*.lst
-/examples/01_helloFix/*.iso
+examples/*/*.iso
