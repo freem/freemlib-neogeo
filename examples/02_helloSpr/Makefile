@@ -52,4 +52,4 @@ chd: cd
 
 # remove binaries and intermediates
 clean:
-	rm -f *.p *.p1 *.prg *.PRG
+	rm -f *.p *.p1 *.prg *.PRG *.iso *.chd
