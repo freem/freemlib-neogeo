@@ -183,7 +183,7 @@ WaitVBlank:
 
 ;==============================================================================;
 ; include freemlib function files
-	include "../../src/func/sprites.inc"
+	include "../../src/func/sprites.asm"
 	include "../../src/inc/input.inc"
 
 ;==============================================================================;
