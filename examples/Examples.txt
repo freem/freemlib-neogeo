@@ -38,3 +38,6 @@ Animation basics.
 
 [08_collision]
 Dealing with collisions.
+
+[09_sound]
+Introduction to the freemlib's Sound Driver.
