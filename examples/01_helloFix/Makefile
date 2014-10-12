@@ -37,7 +37,7 @@ cart: 01_helloFix.asm
 cd: 01_helloFix.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HELLOFIX.PRG 01_helloFix.asm
 #	$(PAD) HELLOFIX.PRG $(PADFLAGS)
-	$(MKISOFS) $(MKISOFSFLAGS) -o HelloFix.iso -V "HELLOFIX" HELLOFIX.PRG fixtiles/HELLOFIX.FIX sprtiles/HELLOFIX.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
+	$(MKISOFS) $(MKISOFSFLAGS) -o HelloFix.iso -V "HELLOFIX" ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT HELLOFIX.PRG fixtiles/HELLOFIX.FIX sprtiles/HELLOFIX.SPR IPL.TXT
 
 .PHONY: clean
 
