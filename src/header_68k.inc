@@ -18,7 +18,7 @@
 	dc.l	$00C0042C		; Uninitialized Interrupt Vector
 
 	ifd		TARGET_CD
-		dc.l	$00C00522		; Reserved
+		dc.l	$00C00522		; BIOSF_LOADFILE
 		dc.l	$00C00528		; Reserved
 		dc.l	$00C0052E		; Reserved
 		dc.l	$00C00534		; Reserved
