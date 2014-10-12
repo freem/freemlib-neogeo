@@ -49,7 +49,7 @@ j_IRQ:
 	org $0040
 ; driver signature; subject to change.
 driverSig:
-	ascii	"freemlib NG(ROM)SoundDriver v000"
+	ascii	"freemlib NG-ROM SoundDriver v000"
 ;==============================================================================;
 	org $0066
 ; NMI
