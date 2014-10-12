@@ -2,7 +2,7 @@
 	dc.b	"NEO-GEO"
 	dc.b	$00				; System Version (0=cart; 1/2 are used for CD games)
 
-	dc.w	$0202			; NGH number ($0202 = surrogate of Puzzle de Pon!)
+	dc.w	$F001			; NGH number
 	dc.l	$00080000		; game prog size in bytes
 							; $00080000 =  4Mbits/512KB
 							; $00100000 = 16Mbits/1MB
