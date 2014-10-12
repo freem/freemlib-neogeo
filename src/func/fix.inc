@@ -15,18 +15,19 @@
 
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+; (Combined cell location format: $XXYY, where XX=$0-$27,YY=$00-$1F)
 
 ; (Output)
 ; d0				output VRAM address
 
 ; (Clobbers)
-; d6				Used for X coordinate
-; d7				Used for Y coordinate
+; d6				Used for calculating X coordinate
+; d7				Used for calculating Y coordinate
 
 fixmac_CalcVRAMAddr:	macro
 	; 1) do check for vram addr or cell location (d0 >= $7000)
 	cmpi.w	#$7000,d0
-	bge		.fm_CVA_End
+	bge		.fm_CVA_End			; no need to process values $7000 or greater
 
 	; 2) Calculate VRAM address from cell location
 	move.w	d0,d7				; put combined cell location in d7
@@ -102,6 +103,10 @@ fix_ChangePal:
 ; fix_Draw8x16
 ; Draws "normal" 8x16 text to the screen. End code is $FF.
 
+; "normal 8x16 text" means this font layout:
+; A B C D <- top half
+; A B C D <- bottom half
+
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 ; d1				Palette index and tile number MSB
@@ -129,9 +134,13 @@ fix_Draw8x16:
 ; fix_Draw16x16
 ; Draws "normal" 16x16 text to the screen. End code is $FF.
 
+; "normal 16x16 text" means this font layout:
+; A A <- top left/top right
+; A A <- bottom left/bottom right
+
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d?				Palette index and tile number MSB
+; d1				Palette index and tile number MSB
 ; a0				Pointer to string to draw
 
 fix_Draw16x16:
