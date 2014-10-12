@@ -9,6 +9,8 @@ Aside from the freemlib files, each project is meant to be self-contained.
 The examples are meant to be short, while trying to show enough possibilities of
 what can be done.
 
+The examples do not currently support the Neo-Geo CD. I am looking into fixing this.
+
 [00_skeleton]
 A skeleton setup for the other examples.
 
