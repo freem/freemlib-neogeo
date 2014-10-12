@@ -19,7 +19,7 @@ memCard_Inserted:
 		move.b	REG_STATUS_B,d0	; load REG_STATUS_B
 		andi.b	#$30,d0			; mask for "card inserted"
 		; "Card Inserted" bits are actually 0 when the card is inserted.
-		eor.i	#$30,d0			; flip meaning of the card inserted bits
+		eori.b	#$30,d0			; flip meaning of the card inserted bits
 	endif
 
 	rts
