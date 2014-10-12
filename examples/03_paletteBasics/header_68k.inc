@@ -1,5 +1,4 @@
-; 68000 Header (set up for cart development)
-	; Note: You must modify the "$????????" sections for your game.
+; 68000 Header
 	dc.l	$0010F300		; Initial Supervisor Stack Pointer (SSP)
 	dc.l	$00C00402		; Initial PC			(BIOS $C00402)
 	dc.l	$00C00408		; Bus error/Monitor		(BIOS $C00408)
@@ -16,15 +15,28 @@
 	dc.l	$00C00426		; Reserved
 	dc.l	$00C00426		; Reserved
 	dc.l	$00C0042C		; Uninitialized Interrupt Vector
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00432		; Spurious Interrupt
+
+	ifd		TARGET_CD
+		dc.l	$00C00522		; Reserved
+		dc.l	$00C00528		; Reserved
+		dc.l	$00C0052E		; Reserved
+		dc.l	$00C00534		; Reserved
+		dc.l	$00C0053A		; Reserved
+		dc.l	$00C004F2		; Reserved
+		dc.l	$00C004EC		; Reserved
+		dc.l	$00C004E6		; Reserved
+		dc.l	$00C004E0		; Spurious Interrupt
+	else
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00432		; Spurious Interrupt
+	endif
 
 ; Interrupts
 	ifd		TARGET_CD		; (Interrupt levels 1 and 2 are swapped on CD systems.)

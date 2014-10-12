@@ -21,6 +21,11 @@ MKISOFS = mkisofs
 # flags for mkisofs
 MKISOFSFLAGS = -iso-level 1 -pad -N
 
+# executable name for chdman
+CHDMAN = chdman
+# action for chdman
+CHDMANACTION = createcd
+
 ################################################################################
 # [Output Settings]
 

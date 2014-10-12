@@ -21,6 +21,11 @@ MKISOFS = mkisofs
 # flags for mkisofs
 MKISOFSFLAGS = -iso-level 1 -pad -N
 
+# executable name for chdman
+CHDMAN = chdman
+# action for chdman
+CHDMANACTION = createcd
+
 ################################################################################
 # [Output Settings]
 
@@ -39,6 +44,9 @@ cd: 02_helloSpr.asm
 #	$(PAD) HELLOSPR.PRG $(PADFLAGS)
 	$(MKISOFS) $(MKISOFSFLAGS) -o HelloSpr.iso -V "HELLOSPR" HELLOSPR.PRG fixtiles/HELLOSPR.FIX sprtiles/HELLOSPR.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
 
+# chd: create CHD from CD for use with MAME/MESS
+chd: cd
+	$(CHDMAN) $(CHDMANACTION) -i HelloSpr.iso -o HelloSpr.chd
 
 .PHONY: clean
 

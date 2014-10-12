@@ -15,15 +15,28 @@
 	dc.l	$00C00426		; Reserved
 	dc.l	$00C00426		; Reserved
 	dc.l	$00C0042C		; Uninitialized Interrupt Vector
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00426		; Reserved
-	dc.l	$00C00432		; Spurious Interrupt
+
+	ifd		TARGET_CD
+		dc.l	$00C00522		; Reserved
+		dc.l	$00C00528		; Reserved
+		dc.l	$00C0052E		; Reserved
+		dc.l	$00C00534		; Reserved
+		dc.l	$00C0053A		; Reserved
+		dc.l	$00C004F2		; Reserved
+		dc.l	$00C004EC		; Reserved
+		dc.l	$00C004E6		; Reserved
+		dc.l	$00C004E0		; Spurious Interrupt
+	else
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00426		; Reserved
+		dc.l	$00C00432		; Spurious Interrupt
+	endif
 
 ; Interrupts
 	ifd		TARGET_CD		; (CD systems swap INT2 and INT1)

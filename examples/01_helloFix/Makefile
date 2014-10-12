@@ -21,6 +21,11 @@ MKISOFS = mkisofs
 # flags for mkisofs
 MKISOFSFLAGS = -iso-level 1 -pad -N
 
+# executable name for chdman
+CHDMAN = chdman
+# action for chdman
+CHDMANACTION = createcd
+
 ################################################################################
 # [Output Settings]
 
@@ -39,8 +44,12 @@ cd: 01_helloFix.asm
 #	$(PAD) HELLOFIX.PRG $(PADFLAGS)
 	$(MKISOFS) $(MKISOFSFLAGS) -o HelloFix.iso -V "HELLOFIX" ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT HELLOFIX.PRG fixtiles/HELLOFIX.FIX sprtiles/HELLOFIX.SPR IPL.TXT
 
+# chd: create CHD from CD for use with MAME/MESS
+chd: cd
+	$(CHDMAN) $(CHDMANACTION) -i HelloFix.iso -o HelloFix.chd
+
 .PHONY: clean
 
 # remove binaries and intermediates
 clean:
-	rm -f *.p *.p1 *.PRG *.iso
+	rm -f *.p *.p1 *.PRG *.iso *.chd

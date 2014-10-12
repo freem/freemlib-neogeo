@@ -21,6 +21,11 @@ MKISOFS = mkisofs
 # flags for mkisofs
 MKISOFSFLAGS = -iso-level 1 -pad -N
 
+# executable name for chdman
+CHDMAN = chdman
+# action for chdman
+CHDMANACTION = createcd
+
 ################################################################################
 # [Output Settings]
 
@@ -37,6 +42,9 @@ cart: 03_paletteBasics.asm
 cd: 03_paletteBasics.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o PalBasic.prg 03_paletteBasics.asm
 #	$(PAD) PalBasic.prg $(PADFLAGS)
+#	$(MKISOFS) $(MKISOFSFLAGS) -o PalBasic.iso -V "PALBASIC" PalBasic.prg fixtiles/PALBASIC.FIX sprtiles/PALBASIC.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
+
+# chd: create CHD from CD for use with MAME/MESS
 
 .PHONY: clean
 
