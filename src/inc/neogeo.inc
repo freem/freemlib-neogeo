@@ -21,8 +21,8 @@ CONTROLLER_SETUP	equ $C004D4		; Initializes controllers
 ;------------------------------------------------------------------------------;
 ; [CD systems-only BIOS calls]
 BIOSF_HBLANK		equ $C004DA		; HBlank handler
-BIOSF_UPLOAD		equ $C00546		; Upload data to DRAM
 BIOSF_LOADFILE		equ $C00522		; Load file from CD, with animation
+BIOSF_UPLOAD		equ $C00546		; Upload data to DRAM
 BIOSF_CDPLAYER		equ $C0055E		; Reset to CD Player
 BIOSF_LOADFILEX		equ $C00564		; Load file from CD, no animation
 BIOSF_CDDACMD		equ $C0056A		; Issue CDDA command
