@@ -20,7 +20,7 @@ Le Cortex (2x16KB banked? Card says "32KB", but has a switch like NeoSaveMasta)
 http://www.lecortex.com/CPHD/images/MemoryCardProto.png
 Has an LED, which I assume is lit when the card is being accessed/written to.
 
-Interesting note about N@EDOH-LGPETOX:
+Interesting note about "N@EDOH-LGPETOX":
 the characters that aren't NEO-GEO begin at $40 and go up by $04 each time.
 ================================================================================
 [Card Commands]

@@ -94,19 +94,19 @@ AA BB CC DD
 AA BB CC DD
 
 (Params)
-d?				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d?				Palette index and tile number MSB
-a?				Pointer to string to draw
+d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1				Palette index and tile number MSB
+a0				Pointer to string to draw
 
 ================================================================================
 [fix_DrawRegion]
 Draws a rectangular region of tiles.
 
 (Params)
-d?				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d?				Combined rows/columns size
-d?				Palette index and tile number MSB
-a?				Pointer to data to draw
+d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1				Combined rows/columns size
+d2				Palette index and tile number MSB
+a0				Pointer to data to draw
 
 ================================================================================
 [MESS_OUT Helpers]

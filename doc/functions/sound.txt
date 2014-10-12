@@ -62,7 +62,7 @@ $1E				(undocumented)
 $1F				(undocumented)
 
 <freemlib System Commands>
-The data that was here is now in soundCommands.txt.
+The data that was here is now in sound/soundCommands.txt.
 
 ================================================================================
 <Functionality>

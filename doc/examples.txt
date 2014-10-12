@@ -32,8 +32,8 @@ future examples
 --------------------------------------------------------------------------------
 (Expert)
 * Trackball
-* 4-Player (a la Kizuna Encounter)
-* Link Play
+* 4-Player (e.g. Kizuna Encounter)
+* Link Play (e.g. League Bowling, Riding Hero)
 
 ================================================================================
 [Sound]
