@@ -41,7 +41,6 @@ cart: 02_helloSpr.asm
 # cd: compile game for CD
 cd: 02_helloSpr.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HELLOSPR.PRG 02_helloSpr.asm
-#	$(PAD) HELLOSPR.PRG $(PADFLAGS)
 	$(MKISOFS) $(MKISOFSFLAGS) -o HelloSpr.iso -V "HELLOSPR" HELLOSPR.PRG fixtiles/HELLOSPR.FIX sprtiles/HELLOSPR.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
 
 # chd: create CHD from CD for use with MAME/MESS

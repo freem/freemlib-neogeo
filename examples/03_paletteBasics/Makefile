@@ -41,10 +41,11 @@ cart: 03_paletteBasics.asm
 # cd: compile game for CD
 cd: 03_paletteBasics.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o PalBasic.prg 03_paletteBasics.asm
-#	$(PAD) PalBasic.prg $(PADFLAGS)
-#	$(MKISOFS) $(MKISOFSFLAGS) -o PalBasic.iso -V "PALBASIC" PalBasic.prg fixtiles/PALBASIC.FIX sprtiles/PALBASIC.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
+	$(MKISOFS) $(MKISOFSFLAGS) -o PalBasic.iso -V "PALBASIC" PalBasic.prg fixtiles/PALBASIC.FIX sprtiles/PALBASIC.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
 
 # chd: create CHD from CD for use with MAME/MESS
+chd: cd
+	$(CHDMAN) $(CHDMANACTION) -i PalBasic.iso -o PalBasic.chd
 
 .PHONY: clean
 
