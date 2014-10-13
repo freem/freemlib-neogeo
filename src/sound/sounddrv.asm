@@ -28,12 +28,15 @@ j_write45:
 j_write67:
 	jp		write_67
 ;------------------------------------------------------------------------------;
-	;org $0028
+	org $0028
 ; Keep checking the busy flag in Status 0 until it's clear.
-; Code from smkdan's example M1 driver (adpcma_demo2/sound_M1.asm)
+
+; Code from smkdan's example M1 driver (adpcma_demo2/sound_M1.asm), where he
+; uses this instead of portWriteDelayPart2 and portWriteDelayPart4. It's noted
+; that "MAME doesn't care", so I'm currently not using it for the time being.
 
 CheckBusyFlag:
-	in		a,(4)			; read Status 0
+	in		a,(4)			; read Status 0 (busy flag in bit 7)
 	add		a
 	jr		c,CheckBusyFlag
 	ret
@@ -49,7 +52,14 @@ j_IRQ:
 	org $0040
 ; driver signature; subject to change.
 driverSig:
-	ascii	"freemlib NG-ROM SoundDriver v000"
+	asc "freemlib "
+	ifd TARGET_CD
+		asc	"Neo-CD"
+	else
+		asc	"NG-ROM"
+	endif
+
+	asc	" SoundDriver v000"
 ;==============================================================================;
 	org $0066
 ; NMI
@@ -150,10 +160,11 @@ EntryPoint:
 	ld		(dataMode),a	; data mode = 0 (default)
 
 	; Silence SSG, FM(, and ADPCM?)
+	call	ssg_Silence
 	call	fm_Silence
 	; "various writes to ports 4/5 and 6/7"
-	call	ssg_Silence
 
+	;-------------------------------------------;
 	; write 1 to port $C0 (what is the purpose?)
 	ld		a,1
 	out		(0xC0),a
@@ -229,14 +240,16 @@ write_67:
 
 ;------------------------------------------------------------------------------;
 ; portWriteDelayPart2
-; Part 2 of the write delay for ports (address port 2/2). (burn 17 cycles on YM2610)
+; Part 2 of the write delay for ports (address port 2/2).
+; (burns 17 cycles on YM2610)
 
 portWriteDelayPart2:
 	ret
 
 ;------------------------------------------------------------------------------;
 ; portWriteDelayPart4
-; Part 4 of the write delay for ports (data port 2/2). (burn 83 cycles on YM2610)
+; Part 4 of the write delay for ports (data port 2/2).
+; (burns 83 cycles on YM2610)
 
 portWriteDelayPart4:
 	push	bc
@@ -290,7 +303,7 @@ SetDefaultBanks:
 
 ;==============================================================================;
 ; fm_Silence
-; Silences FM channels.
+; Silences all FM channels.
 
 ; Normal version you find in a few Neo-Geo sound drivers:
 fm_Silence:
@@ -307,6 +320,7 @@ fm_Silence:
 	write45					; write to ports 4 and 5
 	ret
 
+;------------------------------------------------------------------------------;
 ; "However, if you're accessing the same address multiple times, you may write
 ; the address first and procceed to write the data register multiple times."
 ; - translated from YM2610 Application Manual, Section 9
@@ -337,7 +351,7 @@ fm_Silence2:
 
 ;==============================================================================;
 ; ssg_Silence
-; Silences SSG channels.
+; Silences all SSG channels.
 
 ssg_Silence:
 	ld		de,0x0800		; SSG Channel A Volume/Mode
@@ -349,9 +363,34 @@ ssg_Silence:
 	ld		de,0x0A00		; SSG Channel C Volume/Mode
 	write45					; write to ports 4 and 5
 	;-------------------------------------------------;
+	; Disable all SSG channels... you may not want this.
 	ld		de,0x073F		; Disable all SSG channels (Tone and Noise)
 	write45					; write to ports 4 and 5
 	ret
+
+;==============================================================================;
+; pcma_Silence
+; Silences all ADPCM-A channels.
+
+pcma_Silence:
+	ret
+
+;==============================================================================;
+; pcmb_Silence
+; Silences the ADPCM-B channel.
+
+pcmb_Silence:
+	;
+	ret
+
+;==============================================================================;
+; all writes to ports 4/5
+; Set all Timer flags (273F)
+; Clear all Timer flags (2700)
+; Reset A/B flags, Load and Enable Timer B (273A)
+; Reset A/B flags, Load and Enable Timer A (2735)
+; Reset Timer A flag, Enable and Load Timers A/B (271F)
+; Reset Timer B flag, Enable and Load Timers A/B (272F)
 
 ;==============================================================================;
 ; HandleCommand
