@@ -25,6 +25,7 @@ readme.txt				This file!
 (Sub-directories)
 fixtiles/				fix layer tilesets
 	202-s1.s1			Fix Layer S ROM
+	HELLOSPR.FIX		.FIX file for CD (same file, just me being lazy)
 sprtiles/
 	202-c1.c1			C ROM 1/2
 	202-c2.c2			C ROM 2/2
