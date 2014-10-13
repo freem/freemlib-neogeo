@@ -28,7 +28,7 @@ PCMA_End1Lo			equ 0x20		; Channel 1 Sample end address/256 (LSB)
 PCMA_End1Hi			equ 0x28		; Channel 1 Sample end address/256 (MSB)
 
 ;==============================================================================;
-; [ADPCM-B address (port 4)]
+; [ADPCM-B address (port 4)] (Only available on cart systems.)
 PCMB_Control		equ 0x10		; ADPCM-B Start/Repeat/Reset
 PCMB_LeftRight		equ 0x11		; ADPCM-B Left/Right output
 PCMB_StartLo		equ 0x12		; Sample start address/256 (LSB)

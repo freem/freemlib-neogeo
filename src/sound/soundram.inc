@@ -125,7 +125,7 @@ intPCMA6_EndL		ds 1		; ($25) Sample End Address/256 (LSB)
 intPCMA6_EndH		ds 1		; ($2D) Sample End Address/256 (MSB)
 
 ;==============================================================================;
-; [ADPCM-B variables] (ports 4/5)
+; [ADPCM-B variables] (ports 4/5) (Only available on cart systems.)
 intPCM_ChanFlags	ds 1		; ($1C) *ADPCM-A and B flags control*
 
 ;------------------------------------------------------------------------------;
