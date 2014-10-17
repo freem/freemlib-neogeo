@@ -1,0 +1,68 @@
+NeoRomFS
+========
+I don't know if the idea of having a filesystem for the cart games is a good idea,
+but I can come up with a few instances of when it would possibly be useful.
+
+sucks that most of those are for my own testing purposes.
+
+* 6502 emulator
+loading source or binary files
+
+* FM/sound sequencer
+loading various on-P ROM board files that I can't think of off the top of my head
+which would probably include various instrument data and other stuff, idk
+
+[Why use this over incbin?]
+really good question, and if you can't think of a reason to use it, then don't.
+save yourself the overhead and keep the bytes for more data.
+
+[What goes into a filesystem?]
+Need to think about this.
+
+references to look at:
+* romfs, which is probably the ideal solution (http://romfs.sourceforge.net/)
+* cramfs, though I could probably do without the compression (except on CD?) (http://sourceforge.net/projects/cramfs/)
+* GBFS by tepples
+* FAT16B (the canonical "FAT16")
+* FAT32
+
+[quick romfs overview]
+
+offset	    content
+
+	+---+---+---+---+
+  0	| - | r | o | m |  \
+	+---+---+---+---+	The ASCII representation of those bytes
+  4	| 1 | f | s | - |  /	(i.e. "-rom1fs-")
+	+---+---+---+---+
+  8	|   full size	|	The number of accessible bytes in this fs.
+	+---+---+---+---+
+ 12	|    checksum	|	The checksum of the FIRST 512 BYTES.
+	+---+---+---+---+
+ 16	| volume name	|	The zero terminated name of the volume,
+	:               :	padded to 16 byte boundary.
+	+---+---+---+---+
+ xx	|     file	|
+	:    headers	:
+
+Every multi byte value (32 bit words/"longwords") must be in big endian order.
+
+The following bytes are now part of the file system; each file header
+must begin on a 16 byte boundary.
+
+offset	    content
+
+	+---+---+---+---+
+  0	| next filehdr|X|	The offset of the next file header
+	+---+---+---+---+	  (zero if no more files)
+  4	|   spec.info	|	Info for directories/hard links/devices
+	+---+---+---+---+
+  8	|     size      |	The size of this file in bytes
+	+---+---+---+---+
+ 12	|   checksum	|	Covering the meta data, including the file
+	+---+---+---+---+	  name, and padding
+ 16	| file name     |	The zero terminated name of the file,
+	:               :	padded to 16 byte boundary
+	+---+---+---+---+
+ xx	| file data	|
+	:		:
