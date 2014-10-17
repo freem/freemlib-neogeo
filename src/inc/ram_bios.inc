@@ -1,5 +1,7 @@
 ; BIOS RAM usage (begins at $10F300)
 ;==============================================================================;
+; todo: Neo-Geo CD uses some ram locations differently
+
 BIOS_WORKRAM			equ $10F300
 
 ;SSP_END:					; supervisor stack
@@ -242,5 +244,5 @@ BIOS_MESS_BUFFER		equ $10FF00	; 100 byte buffer
 BIOS_CD_UPDEST			equ $10FEF4	; (long) destination address (!)
 BIOS_CD_UPSRC			equ $10FEF8	; (long) source address
 BIOS_CD_UPSIZE			equ $10FEFC	; (long) size
-BIOS_CD_UPZONE			equ $10FEDA	; (byte) zone (0=PRG, 1=FIX, 2=SPR, 3=Z80, 4=PCM, 5=PAT)
+BIOS_CD_UPZONE			equ $10FEDA	; (byte) zone (0=PRG/TXT, 1=FIX, 2=SPR, 3=Z80, 4=PCM, 5=PAT, 7=OBJ, 8=A**)
 BIOS_CD_UPBANK			equ $10FEDB	; (byte) bank

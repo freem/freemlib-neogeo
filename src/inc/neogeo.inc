@@ -1,5 +1,7 @@
 ; Neo-Geo hardware definitions
 ;==============================================================================;
+; todo: more Neo-Geo CD stuff
+
 ; [BIOS thunk calls]
 BIOSROM				equ $C00000		; BIOS ROM begins at $C00000
 SYSTEM_RESET		equ $C00402		; 
@@ -23,6 +25,9 @@ CONTROLLER_SETUP	equ $C004D4		; Initializes controllers
 BIOSF_HBLANK		equ $C004DA		; HBlank handler
 BIOSF_LOADFILE		equ $C00522		; Load file from CD, with animation
 BIOSF_UPLOAD		equ $C00546		; Upload data to DRAM
+;$C0054C ? (CDZ)
+;$C00552 ? (CDZ)
+;$C00558 ? (CDZ)
 BIOSF_CDPLAYER		equ $C0055E		; Reset to CD Player
 BIOSF_LOADFILEX		equ $C00564		; Load file from CD, no animation
 BIOSF_CDDACMD		equ $C0056A		; Issue CDDA command
@@ -93,33 +98,60 @@ LSPC_TIMER_STOP		equ $3C000E		; Stop timer for 32 lines in PAL mode? (LSPC2 only
 PALETTES			equ $400000		; $400000-$401FFF
 PALETTE_REFERENCE	equ $400000		; Reference Color (must be $8000)
 PALETTE_BACKDROP	equ $401FFE		; Backdrop Color
-PALETTE_BANK1		equ $3A000F		; Palette bank 1
-PALETTE_BANK0		equ $3A001F		; Palette bank 0
+PALETTE_BANK1		equ $3A000F		; Palette bank 1 register
+PALETTE_BANK0		equ $3A001F		; Palette bank 0 register
 
 ;------------------------------------------------------------------------------;
 ; CD system-specific
 UPLOAD				equ $E00000		; Upload Zone ($E00000-$EFFFFF)
 
 ; Registers ($FF0002-$FF01FE)
+;$FF0002	(word) "NeoRaine load_files, really interrupt mask?"
+;$FF0004	(word) 
+;$FF0006	(word) 
+;$FF0008	(word) 
+;$FF000A	(word) 
+;$FF000E	(byte) 
+;$FF000F	(byte) 
+;$FF0011	(byte) 
+;$FF0017	(byte) 
+;$FF0061	(byte) 
+
+;$FF0064-$FF0073	Registers used by microcode (NeoRaine upload_param)
+;$FF007E-$FF008F	Microcode (16x9bit instructions ?)
+
+;$FF0101	(byte)
+;$FF0103	(byte)
+;$FF0105	(byte)
+;$FF0108	(word)
+;$FF010C	(word)
+
 REG_DISABLESPR		equ $FF0111		; (byte) Disable Sprite toggle (1=disable,0=enable)
 REG_DISABLEFIX		equ $FF0115		; (byte) Disable Fix toggle (1=disable,0=enable) 
 REG_ENVIDEO			equ $FF0119		; (byte) Video output toggle (1=enable,0=disable)
 REG_CDCONFIG		equ $FF011C		; (byte) read config
-REG_UPMAPSPR		equ $FF0121		; (byte) Set upload zone to SPR DRAM(?)
-REG_UPMAPPCM		equ $FF0123		; (byte) Set upload zone to PCM DRAM(?)
-REG_UPMAPZ80		equ $FF0127		; (byte) Set upload zone to Z80 DRAM(?)
-REG_UPMAPFIX		equ $FF0129		; (byte) Set upload zone to FIX DRAM(?)
-REG_UPUNMAPSPR		equ $FF0141		; (byte) 
-REG_UPUNMAPPCM		equ $FF0143		; (byte) 
-REG_UPUNMAPZ80		equ $FF0147		; (byte) 
-REG_UPUNMAPFIX		equ $FF0149		; (byte) 
+REG_UPMAPSPR		equ $FF0121		; (byte) Set upload zone to SPR DRAM
+REG_UPMAPPCM		equ $FF0123		; (byte) Set upload zone to PCM DRAM
+REG_UPMAPZ80		equ $FF0127		; (byte) Set upload zone to Z80 DRAM
+REG_UPMAPFIX		equ $FF0129		; (byte) Set upload zone to FIX DRAM
+REG_UPUNMAPSPR		equ $FF0141		; (byte) Unset SPR DRAM upload zone
+REG_UPUNMAPPCM		equ $FF0143		; (byte) Unset PCM DRAM upload zone
+REG_UPUNMAPZ80		equ $FF0147		; (byte) Unset Z80 DRAM upload zone
+REG_UPUNMAPFIX		equ $FF0149		; (byte) Unset FIX DRAM upload zone
+
+;$FF0161
+;$FF0163
+;$FF0165
+;$FF016D
 
 REG_DISABLEIRQ		equ $FF016F		; (byte)
+;$FF0181	(byte) Enable/Disable (reset) CD assembly
 REG_ENABLEZ80		equ $FF0183		; (byte) Z80 enable/disable(reset)
-
-REG_UPBANK_SPR		equ $FF01A1		; (byte) Upload zone 1MB SPR DRAM bank selection
-REG_UPBANK_PCM		equ $FF01A3		; (byte) Upload zone 512KB PCM DRAM bank selection
 
 ; https://wiki.neogeodev.org/index.php?title=Reading_CDDA_sound_levels
 REG_CDDALEFTLEV		equ $FF0188		; (word) Read CDDA sound level (Left channel)
 REG_CDDARIGHTTLEV	equ $FF018A		; (word) Read CDDA sound level (Right channel)
+
+REG_UPBANK_SPR		equ $FF01A1		; (byte) Upload zone 1MB SPR DRAM bank selection
+REG_UPBANK_PCM		equ $FF01A3		; (byte) Upload zone 512KB PCM DRAM bank selection
+
