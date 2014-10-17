@@ -105,11 +105,9 @@ This extends to instruments, RAM, everywhere.
 SSG A-C channels>
 * Note Value (Note+Octave) -> Tone Period (0-4095)
 * Volume
+* Noise/Tone value
+* Noise Period Control
 * Mode (Normal Volume or Envelope Generator) <- instrument and/or effect
-
-SSG Noise channel>
-* Note Value (Note+Octave) -> Noise Period
-* Noise Mode (/Enable channel)
 
 ---------------------------------------------
 FM channels>

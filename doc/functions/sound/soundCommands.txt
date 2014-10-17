@@ -21,8 +21,8 @@ $0A			Disable/Silence SSG (equiv. to SNK Command $0F)
 $0B			Disable/Silence FM
 $0C			Stop ADPCM-A sample [1 arg; sound(/channel?) to stop]
 $0D			Stop ADPCM-B sample
-$0E			@ Tempo Change 1 [1 arg; $00-$FF = 0-255bpm]
-$0F			  Tempo Change 2 [1 arg; $00-$FF = 256-511bpm]
+$0E			@ Tempo Change LSB [1 arg; $00-$FF = 0-255bpm]
+$0F			  Tempo Change MSB [1 arg; $00-$FF = 256-511bpm]
 $10			Fade Out [1 arg; speed $00-$FF]
 $11			@ Stop Fade In/Out
 $12			Fade In [1 arg; speed $00-$FF]

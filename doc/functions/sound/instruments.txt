@@ -36,21 +36,9 @@ $19-$1C		Sustain Level/Release for Ops 1-4
 <SSG Instruments>
 Offset		Description
 --------------------------------------------------------------------------------
-$01			SSG Instrument Type (0=Pulse, 1=Noise)
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-(SSG Pulse)
-Offset		Description
---------------------------------------------------------------------------------
-$02			Initial Volume and Mode
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-(SSG Noise)
-Offset		Description
---------------------------------------------------------------------------------
-$02			Noise /Enable Value (0-7)
+$01			Initial Volume and Mode
+$02			Noise/Tone Values
+$03			Noise Period Control
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,21 +53,13 @@ $04			Initial Left/Right Output (1 byte)
 ================================================================================
 [Full Examples]
 
-<SSG Pulse Instrument>
+<SSG Instrument>
 Offset		Description
 --------------------------------------------------------------------------------
 $00=1		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
-$01=0		SSG Instrument Type (0=Pulse, 1=Noise)
-$02			Initial Volume and Mode
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-<SSG Noise Instrument>
-Offset		Description
---------------------------------------------------------------------------------
-$00=1		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
-$01=1		SSG Instrument Type (0=Pulse, 1=Noise)
-$02			Noise Tone (0-7)
+$01			Initial Volume and Mode
+$02			Noise/Tone (0-3)
+$03			Noise Period Control
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
