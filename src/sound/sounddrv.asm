@@ -83,7 +83,6 @@ NMI:
 	jp		Z,doCmd01
 	cp		#3				; Command 3 (Soft Reset)
 	jp		Z,doCmd03
-
 	or		a				; check if Command is 0
 	jp		Z,endNMI		; exit if Command 0
 
@@ -384,13 +383,13 @@ pcmb_Silence:
 	ret
 
 ;==============================================================================;
-; all writes to ports 4/5
-; Set all Timer flags (273F)
-; Clear all Timer flags (2700)
-; Reset A/B flags, Load and Enable Timer B (273A)
-; Reset A/B flags, Load and Enable Timer A (2735)
-; Reset Timer A flag, Enable and Load Timers A/B (271F)
-; Reset Timer B flag, Enable and Load Timers A/B (272F)
+; all of these are writes to ports 4/5:
+; Set all Timer flags (0x273F)
+; Clear all Timer flags (0x2700)
+; Reset A/B flags, Load and Enable Timer B (0x273A)
+; Reset A/B flags, Load and Enable Timer A (0x2735)
+; Reset Timer A flag, Enable and Load Timers A/B (0x271F)
+; Reset Timer B flag, Enable and Load Timers A/B (0x272F)
 
 ;==============================================================================;
 ; HandleCommand
