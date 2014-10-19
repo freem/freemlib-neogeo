@@ -106,14 +106,17 @@ PALETTE_BANK0		equ $3A001F		; Palette bank 0 register
 UPLOAD				equ $E00000		; Upload Zone ($E00000-$EFFFFF)
 
 ; Registers ($FF0002-$FF01FE)
+;$FF0000	(word) 
 ;$FF0002	(word) "NeoRaine load_files, really interrupt mask?"
 ;$FF0004	(word) 
 ;$FF0006	(word) 
 ;$FF0008	(word) 
 ;$FF000A	(word) 
+;$FF000D	(byte) 
 ;$FF000E	(byte) 
 ;$FF000F	(byte) 
 ;$FF0011	(byte) 
+;$FF0015	(byte) 
 ;$FF0017	(byte) 
 ;$FF0061	(byte) 
 
@@ -139,10 +142,11 @@ REG_UPUNMAPPCM		equ $FF0143		; (byte) Unset PCM DRAM upload zone
 REG_UPUNMAPZ80		equ $FF0147		; (byte) Unset Z80 DRAM upload zone
 REG_UPUNMAPFIX		equ $FF0149		; (byte) Unset FIX DRAM upload zone
 
-;$FF0161
-;$FF0163
-;$FF0165
-;$FF016D
+;$FF0161	(byte)
+;$FF0163	(byte)
+;$FF0165	(byte)
+;$FF0167	(byte)
+;$FF016D	(byte)
 
 REG_DISABLEIRQ		equ $FF016F		; (byte)
 ;$FF0181	(byte) Enable/Disable (reset) CD assembly
