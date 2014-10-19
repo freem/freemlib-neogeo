@@ -1,0 +1,129 @@
+The fix tile format is 4bpp linear, mixed columns
+----------------------- LR LR LR LR LR LR LR LR
+data 1 x8 (columns 5,4) 54 54 54 54 54 54 54 54
+data 2 x8 (columns 7,6) 76 76 76 76 76 76 76 76
+data 3 x8 (columns 1,0) 10 10 10 10 10 10 10 10
+data 4 x8 (columns 3,2) 32 32 32 32 32 32 32 32
+
+"Left and right nibbles might be swapped!"
+decode8 seems to think so?
+
+column0: data 3, mask 0x0F
+column1: data 3, mask 0xF0
+column2: data 4, mask 0x0F
+column3: data 4, mask 0xF0
+column4: data 1, mask 0x0F
+column5: data 1, mask 0xF0
+column6: data 2, mask 0x0F
+column7: data 2, mask 0xF0
+
+one row of fix data consists of reading the bytes of:
+data 3, data 4, data 1, and data 2, in that order.
+
+byte[] ColDataOffsets = { 0x10,0x18,0x00,0x08 };
+
+  byte: 0x00-0xFF
+ushort: 0x0000-0xFFFF
+
+x,y  source byte   mask value
+=============================
+0,0: data 3:byte 0:mask 0x0F
+1,0: data 3:byte 0:mask 0xF0
+2,0: data 4:byte 0:mask 0x0F
+3,0: data 4:byte 0:mask 0xF0
+4,0: data 1:byte 0:mask 0x0F
+5,0: data 1:byte 0:mask 0xF0
+6,0: data 2:byte 0:mask 0x0F
+7,0: data 2:byte 0:mask 0xF0
+-----------------------------
+0,1: data 3:byte 1:mask 0x0F
+1,1: data 3:byte 1:mask 0xF0
+2,1: data 4:byte 1:mask 0x0F
+3,1: data 4:byte 1:mask 0xF0
+4,1: data 1:byte 1:mask 0x0F
+5,1: data 1:byte 1:mask 0xF0
+6,1: data 2:byte 1:mask 0x0F
+7,1: data 2:byte 1:mask 0xF0
+-----------------------------
+0,2: data 3:byte 2:mask 0x0F
+1,2: data 3:byte 2:mask 0xF0
+2,2: data 4:byte 2:mask 0x0F
+3,2: data 4:byte 2:mask 0xF0
+4,2: data 1:byte 2:mask 0x0F
+5,2: data 1:byte 2:mask 0xF0
+6,2: data 2:byte 2:mask 0x0F
+7,2: data 2:byte 2:mask 0xF0
+-----------------------------
+0,3: data 3:byte 3:mask 0x0F
+1,3: data 3:byte 3:mask 0xF0
+2,3: data 4:byte 3:mask 0x0F
+3,3: data 4:byte 3:mask 0xF0
+4,3: data 1:byte 3:mask 0x0F
+5,3: data 1:byte 3:mask 0xF0
+6,3: data 2:byte 3:mask 0x0F
+7,3: data 2:byte 3:mask 0xF0
+-----------------------------
+0,4: data 3:byte 4:mask 0x0F
+1,4: data 3:byte 4:mask 0xF0
+2,4: data 4:byte 4:mask 0x0F
+3,4: data 4:byte 4:mask 0xF0
+4,4: data 1:byte 4:mask 0x0F
+5,4: data 1:byte 4:mask 0xF0
+6,4: data 2:byte 4:mask 0x0F
+7,4: data 2:byte 4:mask 0xF0
+-----------------------------
+0,5: data 3:byte 5:mask 0x0F
+1,5: data 3:byte 5:mask 0xF0
+2,5: data 4:byte 5:mask 0x0F
+3,5: data 4:byte 5:mask 0xF0
+4,5: data 1:byte 5:mask 0x0F
+5,5: data 1:byte 5:mask 0xF0
+6,5: data 2:byte 5:mask 0x0F
+7,5: data 2:byte 5:mask 0xF0
+-----------------------------
+0,6: data 3:byte 6:mask 0x0F
+1,6: data 3:byte 6:mask 0xF0
+2,6: data 4:byte 6:mask 0x0F
+3,6: data 4:byte 6:mask 0xF0
+4,6: data 1:byte 6:mask 0x0F
+5,6: data 1:byte 6:mask 0xF0
+6,6: data 2:byte 6:mask 0x0F
+7,6: data 2:byte 6:mask 0xF0
+-----------------------------
+0,7: data 3:byte 7:mask 0x0F
+1,7: data 3:byte 7:mask 0xF0
+2,7: data 4:byte 7:mask 0x0F
+3,7: data 4:byte 7:mask 0xF0
+4,7: data 1:byte 7:mask 0x0F
+5,7: data 1:byte 7:mask 0xF0
+6,7: data 2:byte 7:mask 0x0F
+7,7: data 2:byte 7:mask 0xF0
+-----------------------------
+
+A great test is the very first tile of sfix.sfix, which is an all-index 1 tile.
+
+(sfix.sfix)
+11 11 11 11 11 11 11 11		columns 5,4
+11 11 11 11 11 11 11 11		columns 7,6
+11 11 11 11 11 11 11 11		columns 1,0
+11 11 11 11 11 11 11 11		columns 3,2
+
+(sfix.smc) <- converted with decode8
+FF 00 FF 00 FF 00 FF 00		snes bitplane 0
+FF 00 FF 00 FF 00 FF 00		snes bitplane 1
+00 00 00 00 00 00 00 00		snes bitplane 2
+00 00 00 00 00 00 00 00		snes bitplane 3
+
+another good test is tile 0x0010 in sfix.sfix (the left-pointing arrow)
+
+(sfix.sfix)
+22 22 11 11 11 11 11 22		columns 5,4
+22 21 21 21 21 21 21 21		columns 7,6
+22 22 22 22 11 22 22 22		columns 1,0
+22 22 22 11 11 11 22 22		columns 3,2
+
+(sfix.smc) <- converted with decode8
+00 FF 02 FD 0E F1 3E C1		snes bitplane 0
+FE 01 3E C1 0E F1 02 FD		snes bitplane 1
+00 00 00 00 00 00 00 00		snes bitplane 2
+00 00 00 00 00 00 00 00		snes bitplane 3
