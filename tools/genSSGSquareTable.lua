@@ -1,6 +1,7 @@
 -- genSSGSquareTable for Lua 5.1 (code by freem)
 -- Generates a text table of SSG tone periods from a table of hertz values.
 -- usage: lua genSSGSquareTable.lua > outfile.txt
+-- license: public domain/CC0/Unlicense/WTFPL/I explicitly do not give a fuck about my copyright on this code and invite you to feel the same way
 
 -- todo: take inspiration from http://wiki.nesdev.com/w/index.php/APU_period_table
 
