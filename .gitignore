@@ -2,6 +2,10 @@
 .hg/
 .hgignore
 
+# visual studio crap
+*.suo
+*.pdb
+
 # ignore this ripped data
 doc/functions/sound/instruments/level_complete_0/
 
@@ -18,3 +22,8 @@ examples/*/*.PRG
 # ignore any listing files in the examples folder
 examples/*/*.lst
 examples/*/*.iso
+
+# ignore certain files in tools
+tools/yy-chr_plugins/NeoFix_yyplug/NeoFix_yyplug/*.user
+tools/yy-chr_plugins/NeoFix_yyplug/NeoFix_yyplug/bin/*
+tools/yy-chr_plugins/NeoFix_yyplug/NeoFix_yyplug/obj/*
