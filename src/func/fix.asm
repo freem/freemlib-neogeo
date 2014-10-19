@@ -7,6 +7,8 @@
 ; [Notes]
 ; Most of these functions change LSPC_INCR values, so it's up to the caller to
 ; reset LSPC_INCR after calling any function in this file.
+
+; todo: add vram <-> 68k ram routines
 ;==============================================================================;
 ; fixmac_CalcVRAMAddr
 ; This macro is slightly complicated...
