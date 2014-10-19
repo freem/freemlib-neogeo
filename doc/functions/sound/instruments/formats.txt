@@ -1,0 +1,183 @@
+FM Patches exist in many different formats.
+
+<Sources>
+* "DMP_SPECS.txt" by Delek
+* vgm2pre "sub.ym2612.cpp"
+* MVSTracker source code
+
+<Definitions>
+mul			MULtiple
+tl			Total Level
+ar			Attack Rate
+dr			Decay Rate
+sr			Sustain Rate ("d2r" in DefleMask docs)
+rr			Release Rate
+sl			Sustain Level
+am			AM enable
+rs			Rate Scaling ("ksr" in DefleMask docs)
+dt			DeTune
+ssg			SSG envelope generator
+ams			AM Sense
+pms			PM Sense
+feedback	Feedback
+algo		ALGOrithm/connection
+
+DMP (DefleMask Preset)
+----------------------
+[DMP (DefleMask 9 and above)] from "DMP_SPECS.txt"
+$00			DMP version >= 0x08
+$01			Instrument Type (1=FM, 0=standard)
+$02			Total Operators (0=2 operators, 1=4 operators)
+$03			lfo (fms on genesis/megadrive)
+$04			feedback
+$05			algo
+if genesis/megadrive, next byte ($06) is LFO2, otherwise...
+
+per-operator: (increment the offsets by 1 if using LFO2)
+{
+$06...		mul
+$07...		tl
+$08...		ar
+$09...		dr
+$0A...		sl
+$0B...		rr
+$0C...		am
+
+if genesis/megadrive:
+$0D...		rs
+$0E...		dt
+$0F...		sr
+$10...		ssg_enabled << 3 | ssg
+}
+
+[DMP Version 7 (older Deflemask)] from vgm2pre
+$00			DMP version == 0x07
+$01			Instrument Type (1=FM, 0=standard)
+$02			Total Operators (0=2 operators, 1=4 operators)
+$03			pms
+$04			feedback
+$05			algo
+$06			ams
+
+per-operator:
+{
+$07...		mul
+$08...		tl
+$09...		ar
+$0A...		dr
+$0B...		sl
+$0C...		rr
+$0D...		am
+$0E...		rs
+$0F...		detune+3
+$10...		sr
+$11...		ssg
+}
+
+EIF (Echo Instrument File)
+--------------------------
+Data is stored for each operator in a row.
+
+$00			algo | feedback << 3
+$01..$04	mul | dt << 4
+$05..$09	tl
+$0A..$0D	ar | rs << 6
+$0E..$11	dr | am << 7
+$12..$15	sr
+$16..$19	rr | sl << 4
+$1A..$1D	ssg
+
+INS (MVSTracker Instrument)
+---------------------------
+from "InstrEdit.cpp" and other files in MVSTracker source
+
+$00..$03	"MVSI"
+$04			Version number
+$05...		Instrument Name (null-terminated string)
+
+"v" means "varies" (since it depends on how long the instrument name is)
+$v00..$v03	(mul&15) | ((dt&7) << 4)
+$v04..$v07	(tl&127)
+$v08..$v0B	(rs&3)<<6 | (ar&31)
+$v0C..$v0F	(dr&31)
+$v10..$v13	(sr&31)
+$v14..$v17	(sl&15)<<4 | (rr&15)
+$v18		(feedback&7)<<3 | algo&7
+
+TFI (TFM Music Maker Instrument)
+--------------------------------
+$00			algo
+$01			feedback
+
+per-operator:
+{
+$03...		mul
+$04...		detune+3
+$05...		tl
+$06...		rs
+$07...		ar
+$08...		dr
+$09...		sr
+$0A...		rr
+$0B...		sl
+$0C...		ssg
+}
+
+TYI ("Tiido's YM2612 Instrument file")
+--------------------------------------
+Each file is 32 bytes long, containing data for straightforward loading
+into YM2612 registers - very little code reqired to load an instrument.
+
+Each entry except 8 and 9 are for all four operators.
+
+1.  DT/MUL  - 4 - Detune(D6...D4) and multiplicator(D3...D0) value
+2.  TL      - 4 - Total level (D6...D0)
+3.  RS/AR   - 4 - Rate scaling(D7, D6) and Attack rate (D4...D0)
+4.  AM/DR   - 4 - AM enable(D7) and Decay rate (D4...D0)
+5.  SR      - 4 - Sustain rate (D4...D0)
+6.  SL/RR   - 4 - Sustain level (D7...D4) and Release rate (D3...D0)
+7.  SSG-EG  - 4 - SSG-EG value (D3...D0)
+8.  FB/ALGO - 1 - Feedback (D5...D3) and algorithm (D2...D0)
+9.  FMS/AMS - 1 - LFO AM (D5...D4) and FM (D2...D0)sensitivity
+10. STRING  - 2 - "YI", ignored, for padding and optimization ;)
+
+VGI (VGM Music Maker Instrument)
+--------------------------------
+$00			algo
+$01			feedback
+$02			pms | ams<<4
+
+per-operator:
+{
+$03...		mul
+$04...		detune+3
+$05...		tl
+$06...		rs
+$07...		ar
+$08...		dr | am<<7
+$09...		sr
+$0A...		rr
+$0B...		sl
+$0C...		ssg
+}
+
+Y12 (Gens KMod dump)
+--------------------
+per-operator:
+{
+$00...		mul | dt<<4
+$01...		tl
+$02...		ar | rs<<6
+$03...		dr | am<<7 ("AM IS UNUSED")
+$04...		sr
+$05...		rr | sl <<4
+$06...		ssg ("UNUSED")
+$07...		(9 unused bytes, next entry starts on $x0)
+}
+$40			algo
+$41			feedback
+$42			(14 unused bytes)
+$50			("TODO: 16 BYTES FOR NAME")
+$60			"VGM2Pre" ("TODO: 16 BYTES FOR DUMPER")
+$70			("TODO: 16 BYTES FOR GAME")
+
