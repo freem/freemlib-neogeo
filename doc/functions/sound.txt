@@ -356,19 +356,19 @@ Examples from Art of Fighting (MAKOTO v3 driver)
 
 Bank 0:
  * $02 = $8000, original	(16*2=32K, or $8000 raw address)
- * $04 = $8000, second bank	(16*4=64K, or $1???? raw address)
+ * $04 = $8000, second bank	(16*4=64K, or $10000 raw address)
 
 Bank 1:
  * $06 = $C000, original	(8*6=48K, or $C000 raw address)
- * $0A = $C000, second bank	(8*10=80K, or $1???? raw address)
+ * $0A = $C000, second bank	(8*10=80K, or $14000 raw address)
 
 Bank 2:
  * $0E = $E000, original	(4*14=56K, or $E000 raw address)
- * $16 = $E000, second bank	(4*22=88K, or $1???? raw address)
+ * $16 = $E000, second bank	(4*22=88K, or $16000 raw address)
 
 Bank 3:
  * $1E = $F000, original	(2*30=60K, or $F000 raw address)
- * $2E = $F000, second bank	(2*46=92K, or $1???? raw address)
+ * $2E = $F000, second bank	(2*46=92K, or $17000 raw address)
 
 Examples from COUGH NINETY EIGHT
 
@@ -377,41 +377,41 @@ Examples from COUGH NINETY EIGHT
 .db 6			$C000, original		( 8*6=48K,   or $C000 raw address)
 .db 2			$8000, original		(16*2=32K,   or $8000 raw address)
 --------------------------------------------------------------------------------
-.db 0x2E		$F000, second bank	(2*46=92K,   or $xxxxx raw address)
-.db 0x16		$E000, second bank	(4*22=88K,   or $xxxxx raw address)
-.db 0xA			$C000, second bank	(8*10=80K,   or $xxxxx raw address)
-.db 4			$8000, second bank	(16*4=64K,   or $xxxxx raw address)
+.db 0x2E		$F000, second bank	(2*46=92K,   or $17000 raw address)
+.db 0x16		$E000, second bank	(4*22=88K,   or $16000 raw address)
+.db 0xA			$C000, second bank	(8*10=80K,   or $14000 raw address)
+.db 4			$8000, second bank	(16*4=64K,   or $10000 raw address)
 --------------------------------------------------------------------------------
-.db 0x3E		$F000, third bank	(2*62=124K,  or $xxxxx raw address)
-.db 0x1E		$E000, third bank	(4*30=120K,  or $xxxxx raw address)
-.db 0xE			$C000, third bank	(8*14=112K,  or $xxxxx raw address)
-.db 6			$8000, third bank	( 16*6=96K,  or $xxxxx raw address)
+.db 0x3E		$F000, third bank	(2*62=124K,  or $1F000 raw address)
+.db 0x1E		$E000, third bank	(4*30=120K,  or $1E000 raw address)
+.db 0xE			$C000, third bank	(8*14=112K,  or $1C000 raw address)
+.db 6			$8000, third bank	( 16*6=96K,  or $18000 raw address)
 --------------------------------------------------------------------------------
-.db 0x4E		$F000, fourth bank	(2*78=156K,  or $xxxxx raw address)
-.db 0x26		$E000, fourth bank	(4*38=152K,  or $xxxxx raw address)
-.db 0x12		$C000, fourth bank	(8*18=144K,  or $xxxxx raw address)
-.db 8			$8000, fourth bank	(16*8=128K,  or $xxxxx raw address)
+.db 0x4E		$F000, fourth bank	(2*78=156K,  or $27000 raw address)
+.db 0x26		$E000, fourth bank	(4*38=152K,  or $26000 raw address)
+.db 0x12		$C000, fourth bank	(8*18=144K,  or $24000 raw address)
+.db 8			$8000, fourth bank	(16*8=128K,  or $20000 raw address)
 --------------------------------------------------------------------------------
-.db 0x5E		$F000, fifth bank	( 2*94=188K, or $xxxxx raw address)
-.db 0x2E		$E000, fifth bank	( 4*46=184K, or $xxxxx raw address)
-.db 0x16		$C000, fifth bank	( 8*22=176K, or $xxxxx raw address)
-.db 0xA			$8000, fifth bank	(16*10=160K, or $xxxxx raw address)
+.db 0x5E		$F000, fifth bank	( 2*94=188K, or $2F000 raw address)
+.db 0x2E		$E000, fifth bank	( 4*46=184K, or $2E000 raw address)
+.db 0x16		$C000, fifth bank	( 8*22=176K, or $2C000 raw address)
+.db 0xA			$8000, fifth bank	(16*10=160K, or $28000 raw address)
 --------------------------------------------------------------------------------
-.db 0x6E		$F000, sixth bank	(2*110=220K, or $xxxxx raw address)
-.db 0x36		$E000, sixth bank	( 4*54=216K, or $xxxxx raw address)
-.db 0x1A		$C000, sixth bank	( 8*26=208K, or $xxxxx raw address)
-.db 0xC			$8000, sixth bank	(16*12=192K, or $xxxxx raw address)
+.db 0x6E		$F000, sixth bank	(2*110=220K, or $37000 raw address)
+.db 0x36		$E000, sixth bank	( 4*54=216K, or $36000 raw address)
+.db 0x1A		$C000, sixth bank	( 8*26=208K, or $34000 raw address)
+.db 0xC			$8000, sixth bank	(16*12=192K, or $30000 raw address)
 --------------------------------------------------------------------------------
-.db 0x7E		$F000, seventh bank	(2*126=252K, or $xxxxx raw address)
-.db 0x3E		$E000, seventh bank	( 4*62=248K, or $xxxxx raw address)
-.db 0x1E		$C000, seventh bank	( 8*30=240K, or $xxxxx raw address)
-.db 0xE			$8000, seventh bank	(16*14=224K, or $xxxxx raw address)
+.db 0x7E		$F000, seventh bank	(2*126=252K, or $3F000 raw address)
+.db 0x3E		$E000, seventh bank	( 4*62=248K, or $3E000 raw address)
+.db 0x1E		$C000, seventh bank	( 8*30=240K, or $3C000 raw address)
+.db 0xE			$8000, seventh bank	(16*14=224K, or $38000 raw address)
 
 
 ================================================================================
 <Thought Sketchpad>
 
-Channel Mappings, "Normal" -> YM2160
+Channel Mappings, "Normal" (6 channels; YM2608/2612) -> YM2160
 1 -> 1
 2 -> 2
 3 -> 5
