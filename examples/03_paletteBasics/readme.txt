@@ -8,6 +8,14 @@ technical side and on the freemlib side.
 ================================================================================
 [Files]
 (In the directory)
+_c-vasm68k.bat			Batch file for compiling with vasm (68k, mot syntax; executable renamed to "vasm86k")
+03_paletteBasics.asm	Main file
+header_68k.inc			68000 Vectors
+header_cart.inc			Neo-Geo cartridge header
+header_cd.inc			Neo-Geo CD header
+IPL.TXT					Initial Program Load for Neo-Geo CD
+Makefile				GNU Make makefile
+ram_user.inc			User space RAM ($100000-$10F2FF)
 readme.txt				This file!
 
 (Sub-directories)
