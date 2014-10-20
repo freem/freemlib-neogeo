@@ -34,8 +34,8 @@ The high concept of an animation is a number of frames played back at a speed.
 * Animation Primary ID/"Category" (word)
 * Animation Secondary ID (word)
 * Animation Tertiary ID (byte)
-* Number of Frames in Animation
-* Pointer to first Animation Frame Data
+* Number of Frames in Animation (byte)
+* Pointer to first Animation Frame Data (long)
 
 ================================================================================
 [Animation Frame Data]

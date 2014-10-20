@@ -4,8 +4,8 @@ Palette actions are in charge of handling effects for sections of the palette.
 This is different from full-palette effects (e.g. fading).
 
 (Command List)
-$00		No Action
 $FF		Stop All Actions
+$00		No Action
 $01		Palette Index Cycling
 $02		Color Animation
 $03		Color Pulse

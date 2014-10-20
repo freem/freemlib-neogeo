@@ -5,7 +5,7 @@ Note: The fix layer can only use the first 16 palettes.
 
 ================================================================================
 <Scratchpad>
-* Tricks with multiple palette banks?
+* Tricks with switching palette banks?
 
 * Fading (Would probably use precalculated tables)
 

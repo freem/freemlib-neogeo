@@ -109,6 +109,94 @@ d2				Palette index and tile number MSB
 a0				Pointer to data to draw
 
 ================================================================================
+todo: VRAM<->68K RAM routines
+
+"fix_CopyToRAM" for copying Fix tilemaps from VRAM to 68K RAM
+* Starting VRAM location
+* Starting 68K RAM location
+* Length of data to copy (in words)
+* Something about VRAM increment
+
+"fix_WriteFromRAM" for writing Fix tilemaps from 68K RAM to VRAM
+* Starting 68K RAM location
+* Starting VRAM location
+* Length of data to write (in words)
+* Something about VRAM increment
+
+================================================================================
+todo: "nametable" writing
+
+In this case, "nametable" means "mapping of tiles on the Fix layer". The data
+may or may not be compressed, but there should be some sort of RLE because screw
+storing a bunch of the same value in a row, even when Neo ROMs can be so huge.
+
+"fix_WriteNametable"
+* Location of nametable data to write
+* Starting VRAM location
+* Something about VRAM increment
+
+{"Nametable" Data}
+Thinking about this... Do I want to leverage the 68K's ability to read longwords
+at the cost of data possibly ballooning in size?
+
+* Data Length and Config (long)
+00000000 00000000 00000000 00000000
+|||||||| |______| |_______________|
+||||||||     |            |
+||||||||     |            |__________ Data length (word)
+||||||||     |_______________________ (currently unused)
+||||||||_____________________________ ???
+|||||||______________________________ ???
+||||||_______________________________ ???
+|||||________________________________ ???
+||||_________________________________ ???
+|||__________________________________ ???
+||___________________________________ ???
+|____________________________________ ???
+Things to find positions for:
+>> VRAM increment (0=+1, 1=+32)
+>> Uses compression (0=no, 1=yes)
+
+* Data codes
+Still trying to find the best way of storing this information, both compressed
+and uncompressed. I don't want to have to use longs everywhere.
+
+Native Fix VRAM format is
+00000000 00000000
+|__||___________|
+  |       |
+  |       |_______________ Fix tile index
+  |_______________________ Fix palette
+
+
+You could force processing by requiring sequences to be marked, but that has the
+possibility of expanding the data as well.
+
+00000000 00000000
+|__||___________|
+  |       |
+  |       |_______________ Sequence length (0-4095)
+  |_______________________ Command nibble
+
+Commands
+* 0000		Uncompressed data (words)
+* 0001		Repeat next word (sequence length) times
+* 0010		
+* 0011		
+* 0100		
+* 0101		
+* 0110		
+* 0111		
+* 1000		
+* 1001		
+* 1010		
+* 1011		
+* 1100		
+* 1101		
+* 1110		
+* 1111		
+
+================================================================================
 [MESS_OUT Helpers]
 Macros for more semantic use of MESS_OUT are found in src/inc/mess_macro.inc.
 

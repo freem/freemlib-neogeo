@@ -248,15 +248,18 @@ palAction_Handler:
 
 ;palAction_Commands:
 	;dc.l	palAction_Nop
-	;dc.l	palAction_StopAll
 	;dc.l	palAction_IndexCycle
 	;dc.l	palAction_ColorAnim
+	;dc.l	palAction_ColorPulse
+	;dc.l	palAction_ColorRamp
 
 ;==============================================================================;
 ; <Palette Actions>
 ; The Palette Actions system is used to animate palettes via various methods.
 
-; palAction_Nop
 ; palAction_StopAll
+; palAction_Nop
 ; palAction_IndexCycle
 ; palAction_ColorAnim
+; palAction_ColorPulse
+; palAction_ColorRamp

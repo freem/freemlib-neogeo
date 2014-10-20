@@ -72,9 +72,6 @@ $80 bytes long.
 ================================================================================
 (command sketchpad)
 
-Header Info:
-* memCard_GetSize			Get memory card size.
-
 CARD shortcuts:
 * memCard_Format			(cmd $0) Format memory card.
 * memCard_Search			(cmd $1) Find number of save files for game.
@@ -95,3 +92,4 @@ I'll write the long format descriptions later.
 
 Header Info:
 * memCard_GetRegion			Get region of machine memory card was formatted on.
+* memCard_GetSize			Get memory card size.

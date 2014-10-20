@@ -8,7 +8,11 @@
 ; Most of these functions change LSPC_INCR values, so it's up to the caller to
 ; reset LSPC_INCR after calling any function in this file.
 
-; todo: add vram <-> 68k ram routines
+; todo:
+; * finish writing fix_Draw8x16 and fix_Draw16x16
+; * add vram <-> 68k ram routines
+; * routine for taking a "nametable" and writing it to the fix layer
+
 ;==============================================================================;
 ; fixmac_CalcVRAMAddr
 ; This macro is slightly complicated...
