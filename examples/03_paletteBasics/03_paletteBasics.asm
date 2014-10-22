@@ -288,9 +288,6 @@ initSprSwatches:
 ; Update the sprite layer (16px) swatches. Uses sprites 1-15.
 
 updateSprSwatches:
-	; this code is currently broken, dunno why
-	;bra		.endUpdSprSwatch
-
 	; SCB1: only the palettes need to change ($0xx1)
 	move.w	#$0041,d2			; start at $0041
 	move.w	#$0001,LSPC_INCR	; use auto-increment of $1
