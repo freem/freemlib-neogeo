@@ -41,7 +41,7 @@ cart: 01_helloFix.asm
 # cd: compile game for CD
 cd: 01_helloFix.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HELLOFIX.PRG 01_helloFix.asm
-	$(MKISOFS) $(MKISOFSFLAGS) -o HelloFix.iso -V "HELLOFIX" ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT HELLOFIX.PRG fixtiles/HELLOFIX.FIX sprtiles/HELLOFIX.SPR IPL.TXT
+	$(MKISOFS) $(MKISOFSFLAGS) -o HelloFix.iso -V "HELLOFIX" ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT HELLOFIX.PRG fixtiles/HELLOFIX.FIX sprtiles/HELLOFIX.SPR IPL.TXT TITLE_J.SYS TITLE_U.SYS
 
 # chd: create CHD from CD for use with MAME/MESS
 chd: cd
