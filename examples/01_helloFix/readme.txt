@@ -20,6 +20,9 @@ IPL.TXT					Initial Program Load for Neo-Geo CD
 Makefile				GNU Make makefile
 ram_user.inc			User space RAM ($100000-$10F2FF)
 readme.txt				This file!
+TITLE_E.SYS				Title image for European Neo-Geo CDZ systems
+TITLE_J.SYS				Title image for Japanese Neo-Geo CDZ systems
+TITLE_U.SYS				Title image for USA Neo-Geo CDZ systems
 
 (Sub-directories)
 fixtiles/				fix layer tilesets
