@@ -25,6 +25,10 @@ TITLE_J.SYS				Title image for Japanese Neo-Geo CDZ systems
 TITLE_U.SYS				Title image for USA Neo-Geo CDZ systems
 
 (Sub-directories)
+cdztitle/				raw PNG copies of Neo-Geo CDZ title cards
+	TITLE_E.PNG			Title card for European systems
+	TITLE_J.PNG			Title card for Japanese systems
+	TITLE_U.PNG			Title card for United States systems
 fixtiles/				fix layer tilesets
 	202-s1.s1			Fix Layer S ROM (Cart)
 	HELLOFIX.FIX		.FIX file for CD (same file, just me being lazy)

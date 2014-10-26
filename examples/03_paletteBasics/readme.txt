@@ -19,6 +19,10 @@ ram_user.inc			User space RAM ($100000-$10F2FF)
 readme.txt				This file!
 
 (Sub-directories)
+cdztitle/				raw PNG copies of Neo-Geo CDZ title cards
+	TITLE_E.PNG			Title card for European systems
+	TITLE_J.PNG			Title card for Japanese systems
+	TITLE_U.PNG			Title card for United States systems
 fixtiles/				fix layer tilesets
 	202-s1.s1			Fix Layer S ROM
 	PALBASIC.FIX		.FIX file for CD (same file, just me being lazy)
