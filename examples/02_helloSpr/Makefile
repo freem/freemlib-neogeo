@@ -28,6 +28,25 @@ CHDMANACTION = createcd
 
 ################################################################################
 # [Output Settings]
+# image/ISO name
+IMAGENAME = HelloSpr
+
+# disc label (8 characters maximum)
+DISCLABEL = HELLOSPR
+
+# final PRG and P1 output files
+PRG_CART = 202-p1.p1
+PRG_CD = HELLOSPR.PRG
+
+# files to put on the CD
+DISCFILES = \
+	../../cdfiles/ABS.TXT \
+	../../cdfiles/BIB.TXT \
+	../../cdfiles/CPY.TXT \
+	$(PRG_CD) \
+	fixtiles/HELLOSPR.FIX \
+	sprtiles/HELLOSPR.SPR \
+	IPL.TXT
 
 ################################################################################
 # [Makefile Targets]
@@ -35,20 +54,23 @@ CHDMANACTION = createcd
 # cart: compile game for cart (default build target)
 cart: 02_helloSpr.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CART -o 02_helloSpr.p 02_helloSpr.asm
-	$(BYTESWAP) 02_helloSpr.p 202-p1.p1
-	$(PAD) 202-p1.p1 $(PADFLAGS)
+	$(BYTESWAP) 02_helloSpr.p $(PRG_CART)
+	$(PAD) $(PRG_CART) $(PADFLAGS)
 
 # cd: compile game for CD
 cd: 02_helloSpr.asm
-	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HELLOSPR.PRG 02_helloSpr.asm
-	$(MKISOFS) $(MKISOFSFLAGS) -o HelloSpr.iso -V "HELLOSPR" HELLOSPR.PRG fixtiles/HELLOSPR.FIX sprtiles/HELLOSPR.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
+	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o $(PRG_CD) 02_helloSpr.asm
+	$(MKISOFS) $(MKISOFSFLAGS) -o $(IMAGENAME).iso -V "$(DISCLABEL)" $(DISCFILES)
 
 # chd: create CHD from CD for use with MAME/MESS
 chd: cd
-	$(CHDMAN) $(CHDMANACTION) -i HelloSpr.iso -o HelloSpr.chd
+	$(CHDMAN) $(CHDMANACTION) -i $(IMAGENAME).iso -o $(IMAGENAME).chd
 
-.PHONY: clean
+.PHONY: all clean
 
-# remove binaries and intermediates
+# all: create cart, CD, and CHD versions. (CHD makes CD as a part of its build process)
+all: cart chd
+
+# clean: remove binaries and intermediates
 clean:
 	rm -f *.p *.p1 *.prg *.PRG *.iso *.chd
