@@ -28,6 +28,23 @@ CHDMANACTION = createcd
 
 ################################################################################
 # [Output Settings]
+# image/ISO name
+IMAGENAME = skeleton
+
+# disc label (8 characters maximum)
+DISCLABEL = SKELETON
+
+# final PRG and P1 output files
+PRG_CART = 202-p1.p1
+PRG_CD = SKELETON.PRG
+
+# files to put on the CD
+DISCFILES = \
+	../../cdfiles/ABS.TXT \
+	../../cdfiles/BIB.TXT \
+	../../cdfiles/CPY.TXT \
+	$(PRG_CD) \
+	IPL.TXT
 
 ################################################################################
 # [Makefile Targets]
@@ -35,16 +52,23 @@ CHDMANACTION = createcd
 # cart: compile game for cart (default build target)
 cart: 00_skeleton.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CART -o 00_skeleton.p 00_skeleton.asm
-	$(BYTESWAP) 00_skeleton.p 202-p1.p1
-	$(PAD) 202-p1.p1 $(PADFLAGS)
+	$(BYTESWAP) 00_skeleton.p $(PRG_CART)
+	$(PAD) $(PRG_CART) $(PADFLAGS)
 
 # cd: compile game for CD
 cd: 00_skeleton.asm
-	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o SKELETON.PRG 00_skeleton.asm
-	# todo: add the mkisofs part
+	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o $(PRG_CD) 00_skeleton.asm
+	$(MKISOFS) $(MKISOFSFLAGS) -o $(IMAGENAME).iso -V "$(DISCLABEL)" $(DISCFILES)
 
-.PHONY: clean
+# chd: create CHD from CD for use with MAME/MESS
+chd: cd
+	$(CHDMAN) $(CHDMANACTION) -i $(IMAGENAME).iso -o $(IMAGENAME).chd
 
-# remove binaries and intermediates
+.PHONY: all clean
+
+# all: create cart, CD, and CHD versions. (CHD makes CD as a part of its build process)
+all: cart chd
+
+# clean: remove binaries and intermediates
 clean:
 	rm -f *.p *.p1 *.prg *.PRG *.iso *.chd
