@@ -28,6 +28,28 @@ CHDMANACTION = createcd
 
 ################################################################################
 # [Output Settings]
+# image/ISO name
+IMAGENAME = HelloFix
+
+# disc label (8 characters maximum)
+DISCLABEL = HELLOFIX
+
+# final PRG and P1 output files
+PRG_CART = 202-p1.p1
+PRG_CD = HELLOFIX.PRG
+
+# files to put on the CD
+DISCFILES = \
+	../../cdfiles/ABS.TXT \
+	../../cdfiles/BIB.TXT \
+	../../cdfiles/CPY.TXT \
+	$(PRG_CD) \
+	fixtiles/HELLOFIX.FIX \
+	sprtiles/HELLOFIX.SPR \
+	IPL.TXT \
+	TITLE_E.SYS \
+	TITLE_J.SYS \
+	TITLE_U.SYS
 
 ################################################################################
 # [Makefile Targets]
@@ -35,20 +57,23 @@ CHDMANACTION = createcd
 # cart: compile game for cart (default build target)
 cart: 01_helloFix.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CART -o 01_helloFix.p 01_helloFix.asm
-	$(BYTESWAP) 01_helloFix.p 202-p1.p1
-	$(PAD) 202-p1.p1 $(PADFLAGS)
+	$(BYTESWAP) 01_helloFix.p $(PRG_CART)
+	$(PAD) $(PRG_CART) $(PADFLAGS)
 
 # cd: compile game for CD
 cd: 01_helloFix.asm
-	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o HELLOFIX.PRG 01_helloFix.asm
-	$(MKISOFS) $(MKISOFSFLAGS) -o HelloFix.iso -V "HELLOFIX" ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT HELLOFIX.PRG fixtiles/HELLOFIX.FIX sprtiles/HELLOFIX.SPR IPL.TXT TITLE_E.SYS TITLE_J.SYS TITLE_U.SYS
+	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o $(PRG_CD) 01_helloFix.asm
+	$(MKISOFS) $(MKISOFSFLAGS) -o $(IMAGENAME).iso -V "$(DISCLABEL)" $(DISCFILES)
 
 # chd: create CHD from CD for use with MAME/MESS
 chd: cd
-	$(CHDMAN) $(CHDMANACTION) -i HelloFix.iso -o HelloFix.chd
+	$(CHDMAN) $(CHDMANACTION) -i $(IMAGENAME).iso -o $(IMAGENAME).chd
 
 .PHONY: clean
 
-# remove binaries and intermediates
+# all: create cart, CD, and CHD versions. (CHD makes CD as a part of its build process)
+all: cart chd
+
+# clean: remove binaries and intermediates
 clean:
 	rm -f *.p *.p1 *.PRG *.iso *.chd
