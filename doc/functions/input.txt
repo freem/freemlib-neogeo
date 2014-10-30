@@ -8,8 +8,9 @@ of doing it... In any case, I need to experiment with the input system more befo
 I can truly say what I really need.
 ================================================================================
 (sketchpad)
-* input buffers?
+* input buffers? (for things like moves in fighting games, codes, etc.)
 * Trackball (SIT board)
 * Mahjong Controller (note differences between MVS [1p only] and Home)
 * Kizuna 4P multiplayer board (NEO-FTC1B)
+* What the hell is the Keyboard that the wiki keeps talking about?
 ================================================================================

@@ -14,6 +14,7 @@ More controlled version of Soft Shadow/Soft Bright. Would allow changes of +/- 1
 
 * Desaturate (single color or palset)
 Involves dropping color information/approaching gray.
+Might be folded into general Saturation command.
 
 * Black and White (palset)
 Possible weights:
@@ -25,6 +26,10 @@ Possible weights:
  * Aqua			Weight by Green/Blue mix
  * Blue			Weight by Blue
  * Purple		Weight by Blue/Red mix
+
+* Other possible color effects?
+ * Hue/Saturation/Value
+ * Invert
 
 ================================================================================
 <Palette Buffers>

@@ -45,10 +45,13 @@ VRAM Buffers
 
 (Metasprite)
 Functions for dealing with a metasprite
+* Add metasprite to active pool
+* Remove metasprite from active pool
 * Change metasprite X position
 * Change metasprite Y position
 * Change metasprite Horiz flip
 * Change metasprite Vert flip
+* Change metasprite Animation
 
 (Sprite)
 Functions for dealing with a single sprite
@@ -134,3 +137,8 @@ SCB1 Macro would take the following values:
 * Horizontal Flip
 
 ================================================================================
+todo: actual documentation of existing code
+* spr_Load
+* sprmac_SCB1Data
+* sprmac_SpriteData
+* mspr_Load

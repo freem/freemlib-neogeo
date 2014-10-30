@@ -19,15 +19,15 @@ future examples
 
 --------------------------------------------------------------------------------
 (Expert)
-* Mid-frame Palette Changes (hblank? also check Pochi to Nyaa's title screen)
+* Mid-frame Palette Changes (hblank? check Pochi to Nyaa's title screen?)
 * Faking Blending?
  * Careful usage of colors + fake transparency
 
 ================================================================================
 [Input]
 (Intermediate)
-* Input Registers
-* Mahjong Controller
+* Using Input Registers
+* Mahjong Controller (maybe expert?)
 
 --------------------------------------------------------------------------------
 (Expert)
@@ -36,13 +36,18 @@ future examples
 * Link Play (e.g. League Bowling, Riding Hero)
 
 ================================================================================
+[Backgrounds]
+* freemlib Layer System
+* Scrolling backgrounds
+
+================================================================================
 [Sound]
 (Intermediate)
 * Introduction to Neo-Geo sound hardware
- * SSG
- * ADPCM
- * FM
-* MVSTracker
+ * SSG (no external data required)
+ * ADPCM (external data required)
+ * FM (requires FM synthesis programming knowledge, thus the hardest part)
+* MVSTracker (apparently doesn't work on real hardware)
 
 --------------------------------------------------------------------------------
 (Expert)
@@ -58,6 +63,7 @@ future examples
 
 ================================================================================
 [CD]
+* Basic Differences between CD and Cart systems
 * CD-only BIOS calls
 * DRAM uploading
 

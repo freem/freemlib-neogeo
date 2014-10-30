@@ -42,7 +42,7 @@ entered."
 USER_REQUEST Command 1 (EyeCatcher)
 -----------------------------------
 Shows the game's boot logo animation if the Eye catcher anim flag ($114) is 1.
-Apparently not checked on the MVS, only home?
+Apparently not checked on the MVS, only home? <- todo: verify this
 
 (todo: find out more information, like what games use command 1)
 

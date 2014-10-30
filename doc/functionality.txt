@@ -1,6 +1,6 @@
 what the hell do I actually need the freemlib to do?
 ====================================================
-I've started the process of moving this discussion to the functionality folder.
+I've started the process of moving this discussion to the functions folder.
 
 [Overall]
 There's two ways of doing things on the Neo-Geo:

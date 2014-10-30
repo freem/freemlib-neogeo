@@ -22,8 +22,9 @@ Has an LED, which I assume is lit when the card is being accessed/written to.
 
 Interesting note about "N@EDOH-LGPETOX":
 the characters that aren't NEO-GEO begin at $40 and go up by $04 each time.
+
 ================================================================================
-[Card Commands]
+[Existing Card Commands]
 $00		Format Card
 $01		Data Search
 $02		Load Data
@@ -33,7 +34,7 @@ $05		Read Data Title
 $06		User Name Save
 $07		User Name Load
 
-[Card Error Codes]
+[Existing Card Error Codes]
 $00		Command OK
 $80		No card inserted
 $81		Card isn't formatted
@@ -58,6 +59,7 @@ $6 Uname Save	$81 Not Formatted	Format the card.
 $6 Uname Save	$85 Write Disabled	Display "MEMORY CARD WRITE PROTECTED."
 $7 Uname Delete	$81 Not Formatted	Display "NO DATA FOR THIS GAME."
 $7 Uname Delete	$85 Write Disabled	Display "NO DATA FOR THIS GAME."
+
 ================================================================================
 [Relevant BIOS RAM Locations]
 $10FDC4		BIOS_CARD_COMMAND		Command to execute
@@ -66,9 +68,39 @@ $10FDC8		BIOS_CARD_START			Pointer to start of card data
 $10FDCC		BIOS_CARD_SIZE			Size of data
 $10FDCE		BIOS_CARD_FCB			Game NGH number
 $10FDD0		BIOS_CARD_SUB			Game sub number (0-15)
+
 ================================================================================
 [Card Header]
-$80 bytes long.
+$80 bytes long. Some of my names differ from the NeoGeo dev wiki slightly.
+
+$00-$09		0x00 or "SNK ROM "; for 16bit doubled card, $06 is set to $0001.
+$0A			CARD_SIZE (word)
+$0C			0x00 (byte)
+$0D			CARD_FAT1_CHECKSUM (byte)
+$0E			CARD_FAT2_CHECKSUM (byte)
+$0F			CARD_USERNAME_SET (byte) 0=yes, nonzero=no
+$10-$1F		CARD_USERNAME (16 bytes)
+$20-$2F		CARD_MAGIC (16 bytes) the "NEO-GEO" string with interspersed bytes.
+$30			CARD_REGION (byte) 0=Japan, 1=USA, 2=Europe/Asia
+
+[Directory]
+List of saves. The size (32/64/96/128/160/192/224/256 entries) depends on card size.
+
+Each directory entry has this format:
+$00		Game Sub Number (byte) (0-15; $FF if entry is free)
+$01		Game NGH Number (word)
+$03		FAT entry Number (byte) ($00=free, $01=game used, $02=bios reserved)
+
+[FAT1/FAT2]
+A list of used blocks. The size (64/128/192/256 entries) depends on the card size.
+FAT2 is a mirror of FAT1.
+
+[Game Data]
+Typically, games use 64 bytes, but some games might use more than one block.
+Needs research.
+
+First 20 bytes are used for the data title (typically game name and stage name).
+
 ================================================================================
 (command sketchpad)
 
@@ -81,10 +113,16 @@ CARD shortcuts:
 * memCard_ReadTitle			(cmd $5) Read Data title
 * memCard_SetUserName		(cmd $6) Set user's stored name
 * memCard_GetUserName		(cmd $7) Get user's stored name
+
+Other things:
+* Reading card header information
+* Reading the FAT table
+
 ================================================================================
 (Quick Command Overview)
 I'll write the long format descriptions later.
 
+System:
 * memCard_Inserted			Check if memory card is inserted.
 * memCard_WriteProtected	Check if memory card is write-protected.
 * memCard_EnableWrite		Pokes CARD_ENABLE_1 and CARD_ENABLE_2.

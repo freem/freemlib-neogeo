@@ -18,11 +18,15 @@ Each entry in the Background Buffer contains:
 ================================================================================
 (sketchpad)
 * background setup
-* background scroll
+* background scrolling
+* background animation (typically using auto-animation and/or palette cycling, but could be more unique)
+* Distortions/Raster effects?
 
 (thinking out loud)
 background_SetupLayers		Set up layer configuration
 background_LoadLayer		Load background from background sprite data into a layer
+background_ScrollLayer		Scroll/Move a single background layer
+background_ScrollAllLayers	Scroll/Move all background layers at once
 
 ================================================================================
 [Layers]

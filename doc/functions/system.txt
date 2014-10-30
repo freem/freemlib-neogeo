@@ -53,13 +53,23 @@ what I can think of off the top of my head:
 Difficulty			"Level 1"-"Level 8"
 (integer counter)	0-99
 
-* Read value of software dip
+--------------------------------------------------------------------------------
+[macr_GetSoftDipNum]
+Reads the value of the specified software dip.
+
+(Params)
+\1			Soft DIP number to read (0-15)
+
+(Returns)
+d0			Value of requested Soft DIP
 
 ================================================================================
 [Debug Dipswitches]
-Keep in mind: the location of the debug dips is pointed to in the cart header.
+Keep in mind: the location of the debug dips is pointed to in the Neo-Geo header.
 
-You get two bytes worth of values.
+You get two bytes worth of values that are typically only available to people
+using the Debug/Developer BIOS, an emulator that supports memory hacking or
+direct debug dipswitch modification, or possibly an unofficial BIOS.
 
 Debug Dip 1
 76543210
@@ -73,14 +83,18 @@ xxxxxxxx
 
 Possibly a set of macros for debug dipswitch related stuff?
 
-* debugDip_getValue		Read value of debug dip
+* debugDip_getValue		Read value of single debug dip
+* debugDip_setValue		Set value of single debug dip
+* debugDip_getAll		Read values of all debug dips
+* debugDip_setAll		Set values of all debug dips
+* debugDip_reset		Reset all debug dipswitches
 
 ================================================================================
 [MVS Calendar]
 Yeah you're not gonna be able to do this on a home system unless you manage to
-add a RTC chip on a cart.
+add a RTC chip on a cart and find a way to hook up register writes...
 
-Art of Fighting 3 takes advantage of this, though.
+Art of Fighting 3 takes advantage of this, though. Do other games?
 
 * mvsCal_getDate		Get current date
 * mvsCal_getTime		Get current time
@@ -88,6 +102,7 @@ Art of Fighting 3 takes advantage of this, though.
 ================================================================================
 [MVS Backup RAM]
 Basically, anything your game would need to store between sessions.
+The beginning of this is pointed to in the Neo-Geo header as well...
 
 ================================================================================
 [Memory Cards]
@@ -96,3 +111,4 @@ See memcard.txt
 ================================================================================
 [BIOS]
 The Neo-Geo BIOS is considered a part of the system :p
+What's available depends on both the system type and BIOS version.

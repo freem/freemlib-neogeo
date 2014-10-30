@@ -6,6 +6,7 @@ animations). All background-related stuff is found in background.txt.
 The animation functionality depends on the basic sprite functionality.
 ================================================================================
 (sketchpad)
+* current animation state
 * animation timers
 
 ================================================================================
@@ -27,9 +28,13 @@ The Animation Library is created from "proper" use of the Animation IDs. What
   secondary ID. An example in a fighting game would be someone who has multiple
   fighting styles; their idle stance could be split into multiple tertiary IDs.
 
+These are just example guidelines, however.
+How you split up and use the IDs in your project is up to you.
+
 ================================================================================
 [Animations]
 The high concept of an animation is a number of frames played back at a speed.
+This could also be called "Animation Script" or something like that.
 
 * Animation Primary ID/"Category" (word)
 * Animation Secondary ID (word)

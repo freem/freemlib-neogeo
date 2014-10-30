@@ -7,6 +7,8 @@ When it comes to positioning items on the Fix layer, there's two formats:
 1) Default raw VRAM addresses (do most games do this?) ($7000-$74FF)
 2) X and Y cells (Puzzle de Pon!, Art of Fighting, other games?)
  * The fix map is 40x32 cells in total size; visible area depends on NTSC/PAL.
+   Most games cut off the left and right columns for a 38 tile wide area.
+   FIX_CLEAR seems to do this by default.
 
 0, 0 = $7000
 0, 1 = $7001
@@ -25,6 +27,10 @@ If the first value is >= $7000, then it's a raw VRAM address, otherwise it's a
 combined cell location.
 
 Combined cell location format: $XXYY, where XX=$0-$27,YY=$00-$1F
+
+This might anger you slightly if you only want to use one format, as expanding
+the macro each time also expands the code size. You're free to modify the macro
+as you see fit for your own projects, but I'm keeping it like this for now.
 
 Note: The fix layer can only use the first 16 palettes.
 Note: None of these functions take fix bankswitching into account.
@@ -156,6 +162,7 @@ at the cost of data possibly ballooning in size?
 Things to find positions for:
 >> VRAM increment (0=+1, 1=+32)
 >> Uses compression (0=no, 1=yes)
+  > Would there be multiple compression types? Does it really matter?
 
 * Data codes
 Still trying to find the best way of storing this information, both compressed
@@ -238,9 +245,11 @@ messmac_AddAddr (Command 5: Add to VRAM Address)
 
 --------------------------------------------------------------------------------
 messmac_Continue (Command 6: Continue output)
+Data will continue from the last address (typically used after messmac_OutPtr).
 
 --------------------------------------------------------------------------------
 messmac_OutData (Command 7: Direct output)
+Put your data to display after this.
 
 --------------------------------------------------------------------------------
 messmac_Out8x16 (Command 8: 8x16 output)
@@ -256,6 +265,7 @@ messmac_CallSub (Command A: Call sub-command list)
 
 --------------------------------------------------------------------------------
 messmac_EndSub (Command B: Return to calling command list)
+Every command list called with messmac_CallSub needs to end with this.
 
 --------------------------------------------------------------------------------
 messmac_Repeat (Command C: Repeat output)

@@ -10,15 +10,32 @@ There are probably better names, but I don't know them offhand, sorry
 (Defining collision data)
 Collision data is tied to animation frames.
 
-$00			Number of Boxes (byte)
+Everything is a sprite on the Neo, therefore everything that has collision is
+likely to be a sprite, hence being tied to animations.
+
+$00			Number of Boxes [for this frame] (byte)
 .....		Collision Box Data
 
 (Collision Box Data)
-$00			Collision Type (word; 0=normal, 1=attack)
-$02			Box X1 (word; start)
-$04			Box Y1 (word; start)
-$06			Box X2 (word; end)
-$08			Box Y2 (word; end)
+$00			Box00 Collision Type (word; 0=normal, 1=attack; other bytes for future/private expansion)
+$02			Box00 X1 (word; start)
+$04			Box00 Y1 (word; start)
+$06			Box00 X2 (word; end)
+$08			Box00 Y2 (word; end)
+
+$0A			Box01 Collision Type
+$0C			Box01 X1
+$0E			Box01 Y1
+$10			Box01 X2
+$12			Box01 Y2
+
+...however many entries later...
+
+$xx			BoxNN Collision Type
+$xx+2		BoxNN X1
+$xx+4		BoxNN Y1
+$xx+6		BoxNN X2
+$xx+8		BoxNN Y2
 
 ================================================================================
 (sketchpad)

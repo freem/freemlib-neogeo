@@ -83,6 +83,14 @@ When you think of what makes a Neo-Geo ROMset, it comes down to:
 * Voices/Samples (.v1 to .v4 for most sets)
 * Sprite Tiles (.c1 to .c8)
 
+Sometimes there might be a tag like this right after the <part> tag:
+<feature name="slot" value="rom_kof98" />
+Since later games (and some bootlegs) had protection, MAME/MESS needs to know to
+handle it. It's unlikely you'll make anything that requires something like this,
+but if you need more info, please look in neogeo.xml for more slot features.*
+
+(* if you want to take that as a challenge, go right ahead and surprise me. :D)
+
 <dataarea name="maincpu" width="16" endianness="big" size="0x100000">
 This data area represents the P roms. "size" may change, but the others will
 stay the same. Here, "size" represents the overall size of the program area
@@ -158,5 +166,13 @@ is the <part> section.
 Instead of "cart", you have "cdrom". Instead of "neo_cart", there's "neocd_cdrom".
 
 <disk name="bust-a-move (1995)(snk)(jp-us)[!][puzzle bobble]" sha1="e9ae51499f1790b402307c0d1c8a62c2ff0cfea9"/>
-name is the filename.
-sha1 is the SHA-1 checksum of the file.
+* name is the filename.
+* sha1 is the SHA-1 hash of the CHD file as reported internally; It is NOT the
+  SHA-1 hash of the full CHD file.
+
+In order to use your homebrew on MESS, you'll need to convert your ISO to a CHD
+using chdman's createcd option.
+
+chdman createcd -i input.iso -o output.chd
+is the typical command used to create a CHD from an ISO file. chdman has more
+options, so be sure to run it on the command line for more information.

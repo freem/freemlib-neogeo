@@ -8,7 +8,9 @@
 ;------------------------------------------------------------------------------;
 ; macr_GetSoftDipNum
 ; Returns the setting of the specified dip switch number.
+; (Params)
 ; \1			Soft DIP number to read (0-15)
+; (Returns)
 ; d0			Value of requested Soft DIP
 
 macr_GetSoftDipNum:	macro

@@ -1,8 +1,7 @@
-Notes on Using hoot
-===================
+Notes on Using hoot for Neo-Geo Sound
+=====================================
 
 When listening to Neo-Geo music in hoot, "Driver Work" is actually the YM2610
 registers. The first 256 bytes are the writes to ports 4/5, and the second 256
-bytes are the writes to ports 6/7.
-
-
+bytes are the writes to ports 6/7. If you were expecting the engine internals to
+be exposed (like I was), you'll be sorely disappointed.
