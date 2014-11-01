@@ -1,9 +1,9 @@
 <!--
-	MESS software list entry for Neo-Geo freemlib Example 01
+	MESS software list entry for Neo-Geo freemlib Example 03
 	Paste contents in (MESS install dir)/hash/neogeo.xml just before the </softwarelist>
 -->
-<software name="01_helloFix">
-	<description>Neo-Geo freemlib Example 01: Hello World on the Fix Layer</description>
+<software name="03_paletteBasics">
+	<description>Neo-Geo freemlib Example 03: Palette Basics</description>
 	<year>2014</year>
 	<publisher>freemco</publisher>
 	<sharedfeat name="release" value="MVS,AES" />
@@ -11,10 +11,10 @@
 	<part name="cart" interface="neo_cart">
 		<!-- Homebrew, uses Puzzle de Pon as surrogate rom -->
 		<dataarea name="maincpu" width="16" endianness="big" size="0x100000">
-			<rom loadflag="load16_word_swap" name="202-p1.p1" offset="0x000000" size="0x080000" crc="57488a34" sha1="a3a7589bd9ef711dbc44d95a79c7516b50e14165" />
+			<rom loadflag="load16_word_swap" name="202-p1.p1" offset="0x000000" size="0x080000" crc="aa191640" sha1="b1c69a3dcf12f9baf3bb0d3c82e5e96f76bc239d" />
 		</dataarea>
 		<dataarea name="fixed" size="0x040000">
-			<rom offset="0x000000" size="0x020000" name="202-s1.s1" crc="9ecf7b85" sha1="0f02b25f3ed583c1d63532a4222db1f9877b8b04" />
+			<rom offset="0x000000" size="0x020000" name="202-s1.s1" crc="265c7a81" sha1="dbd0b16acdbecf17074adc4747327aafa8fa2407" />
 		</dataarea>
 		<dataarea name="audiocpu" size="0x020000">
 			<rom offset="0x000000" size="0x020000" name="202-m1.m1" crc="9c0291ea" sha1="3fa67c62acba79be6b3a98cc1601e45569fa11ae" />
@@ -23,8 +23,8 @@
 			<rom name="202-v1.v1" offset="0x000000" size="0x080000" crc="debeb8fb" sha1="49a3d3578c087f1a0050168571ef8d1b08c5dc05" />
 		</dataarea>
 		<dataarea name="sprites" size="0x200000">
-			<rom loadflag="load16_byte" name="202-c1.c1" offset="0x000000" size="0x100000" crc="479543cf" sha1="772690c872632320133a799aa41f6e68a8d07a4c" />
-			<rom loadflag="load16_byte" name="202-c2.c2" offset="0x000001" size="0x100000" crc="1f6431d5" sha1="7c90d6ec9df9e6223a066c338b7a7886071370cf" />
+			<rom loadflag="load16_byte" name="202-c1.c1" offset="0x000000" size="0x100000" crc="c1b1bf3e" sha1="5663748db91f946315f9d7c0895b5b4a4dead4e3" />
+			<rom loadflag="load16_byte" name="202-c2.c2" offset="0x000001" size="0x100000" crc="b9f916e7" sha1="d1a12394d0d123110be18c254a3eb2eeed470511" />
 		</dataarea>
 	</part>
 </software>
