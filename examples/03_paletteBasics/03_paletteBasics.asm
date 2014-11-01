@@ -203,7 +203,7 @@ CreateDisplay:
 string_PaletteBasics:
 	messmac_Format	0,$00FF		; command 01: bytes+end code; top byte $00, end code $FF
 	messmac_SetIncr	$20			; command 02: vram auto-increment $20 (horiz.)
-	messmac_SetAddr	$7022		; command 03: set vram addr to $7022
+	messmac_SetAddr	$70A9		; command 03: set vram addr to $7022
 	messmac_OutData
 	dc.b	"Palette Basics",$FF,$00
 
