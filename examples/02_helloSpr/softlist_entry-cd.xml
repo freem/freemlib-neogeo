@@ -1,0 +1,14 @@
+<!--
+	MESS software list entry for Neo-Geo CD freemlib Example 02
+	Paste contents in (MESS install dir)/hash/neocd.xml just before the </softwarelist>
+-->
+<software name="HelloSpr">
+	<description>freemlib Example 02: Hello World on the Sprite Layer</description>
+	<year>2014</year>
+	<publisher>freemco</publisher>
+	<part name="cdrom" interface="neocd_cdrom">
+		<diskarea name="cdrom">
+			<disk name="HelloSpr" sha1="b6f35db2362ce0097bc497c2abe606258d9bc832"/>
+		</diskarea>
+	</part>
+</software>
