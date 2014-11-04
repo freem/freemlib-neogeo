@@ -28,6 +28,25 @@ CHDMANACTION = createcd
 
 ################################################################################
 # [Output Settings]
+# image/ISO name
+IMAGENAME = PalBasic
+
+# disc label (8 characters maximum)
+DISCLABEL = PALBASIC
+
+# final PRG and P1 output files
+PRG_CART = 202-p1.p1
+PRG_CD = PALBASIC.PRG
+
+# files to put on the CD
+DISCFILES = \
+	../../cdfiles/ABS.TXT \
+	../../cdfiles/BIB.TXT \
+	../../cdfiles/CPY.TXT \
+	$(PRG_CD) \
+	fixtiles/PALBASIC.FIX \
+	sprtiles/PALBASIC.SPR \
+	IPL.TXT
 
 ################################################################################
 # [Makefile Targets]
@@ -47,8 +66,11 @@ cd: 03_paletteBasics.asm
 chd: cd
 	$(CHDMAN) $(CHDMANACTION) -i PalBasic.iso -o PalBasic.chd
 
-.PHONY: clean
+.PHONY: all clean
 
-# remove binaries and intermediates
+# all: create cart, CD, and CHD versions. (CHD makes CD as a part of its build process)
+all: cart chd
+
+# clean: remove binaries and intermediates
 clean:
 	rm -f *.p *.p1 *.prg *.PRG *.iso *.chd
