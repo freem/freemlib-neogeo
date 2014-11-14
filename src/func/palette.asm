@@ -1,5 +1,7 @@
 ; freemlib for Neo-Geo - Palette Functions
 ;==============================================================================;
+; todo: palmac_ColorRGBD macro for defining colors easier
+
 ; It should be noted that most of the functions in here modify the palette
 ; buffers, which are written to palette RAM every vblank/int1.
 
@@ -16,8 +18,13 @@
 ; palmac_PalBufIndex
 ; Internal macro for calculating the palette buffer index.
 
+; Trashes: d5, d4
+
 ; (Params)
 ; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+
+; (Returns)
+; a0				Location in palette buffer
 
 palmac_PalBufIndex:	macro
 	; d5 = (d7 & $FF00)>>3) (palette set number)
@@ -40,7 +47,7 @@ palmac_PalBufIndex:	macro
 ; Load raw color data into the palette RAM.
 
 ; (Params)
-; d7				Number of color entries-1
+; d7				Number of color entries-1 (loop counter)
 ; a0				Address to load palette data from
 ; a1				Beginning palette address to load data into ($400000-$401FFE)
 
@@ -63,7 +70,7 @@ palmac_LoadData:	macro
 ; pal_LoadBuf
 ; Load raw color data into the palette buffer.
 
-; d7				Number of color entries-1
+; d7				Number of color entries-1 (loop counter)
 ; d6				Beginning buffer index to load data into ($0-$1FFE?)
 ; a0				Address to load palette data from
 
