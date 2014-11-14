@@ -63,9 +63,9 @@ You should read `doc/usage.txt` for how to setup a project with the freemlib.
 
 License
 -------
-I have not yet decided on an overall license for the library, but I would like
-it to be a permissive one, as well as allow for the ability for others to
-contribute back. Tools may be licensed differently from the main library.
+The freemlib for Neo-Geo is licensed under the [ISC License](http://opensource.org/licenses/ISC).
+Full terms may be found in the "LICENSE" file.
+Tools may be licensed differently from the main library.
 
 Contact
 -------
