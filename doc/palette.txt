@@ -10,7 +10,7 @@ There are two special colors:
 
 Color format
 ------------
-RGB5 D(ark)1
+RGB5 D(ark)1 (RGB6 with each color sharing a least significant bit)
 
 FEDCBA98 76543210
 xxxxxxxx xxxxxxxx
@@ -25,3 +25,22 @@ xxxxxxxx xxxxxxxx
 
 Bit | 15	14	13	12	11	10	9	8	7	6	5	4	3	2	1	0
 Def | Dark	R0	G0	B0	R4	R3	R2	R1	G4	G3	G2	G1	B4	B3	B2	B1
+
+Binary representation of each channel:
+Red		000001
+Green	000001
+Blue	000001
+		|___||
+		  |  |__ shared between all channels (1 when "Dark bit" is 0?)
+		  |_____ unique to each channel
+
+Full range of color values for each channel is 00-3F.
+
+Warning: the following RGB values are approximations due to the fact that a
+resistor network is used to modify the actual color values. See MAME source for
+more information.
+
+RGB #FFFFFF = Neo-Geo $7FFF
+RGB #FEFEFE = Geo-Geo $FFFF
+RGB #FDFDFD = Neo-Geo $0FFF
+RGB #FCFCFC = Neo-Geo $8FFF
