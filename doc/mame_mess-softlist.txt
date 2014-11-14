@@ -7,7 +7,7 @@ replacing some or all of the files in it, and running it through the original
 game's driver. With recent MAME versions supporting multi-slot booting, the
 neogeo driver is able to use the software list in the "hash" directory. You can
 use this to your advantage to avoid having to recompile MAME each time you want
-to add a new test ROM/game/whatever.
+to add a new test ROM/homebrew game/whatever.
 
 It should be noted that this is not a catch-all solution, as the following games
 are not found in the neogeo.xml hash list:
@@ -58,8 +58,8 @@ This is the entry for Puzzle De Pon! as of MAME SVN revision 32691:
 <software name="puzzledp"> is the game definition. "puzzledp" is the rom name,
 so you want to change this to match the ROM name you'll be using.
 
-<description> is just the title of the game/rom.
-<year> is release year.
+<description> is the title of the game/rom, displayed in MAME/MESS.
+<year> is the release year.
 <publisher> is the publisher of the game.
 
 There can be many "sharedfeat" items, but only two of them are ever used in
@@ -95,6 +95,10 @@ but if you need more info, please look in neogeo.xml for more slot features.*
 This data area represents the P roms. "size" may change, but the others will
 stay the same. Here, "size" represents the overall size of the program area
 (all P ROMs added up).
+
+You will want to change the crc and sha1 hashes for each of the values to
+whatever they happen to be for your ROMs. MAME/MESS will gladly tell you what
+the real values are if the values in the XML don't match the file hashes.
 
 	<rom loadflag="load16_word_swap" name="202-p1.p1" offset="0x000000" size="0x080000" crc="2b61415b" sha1="0e3e4faf2fd6e63407425e1ac788003e75aeeb4f" />
 	This tag loads the P ROM.
@@ -170,8 +174,8 @@ Instead of "cart", you have "cdrom". Instead of "neo_cart", there's "neocd_cdrom
 * sha1 is the SHA-1 hash of the CHD file as reported internally; It is NOT the
   SHA-1 hash of the full CHD file.
 
-In order to use your homebrew on MESS, you'll need to convert your ISO to a CHD
-using chdman's createcd option.
+In order to use your homebrew on MESS, you'll need to convert your ISO image
+or CUE sheet to a CHD using chdman's "createcd" option.
 
 chdman createcd -i input.iso -o output.chd
 is the typical command used to create a CHD from an ISO file. chdman has more
