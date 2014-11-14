@@ -4,12 +4,13 @@ https://wiki.neogeodev.org/index.php?title=ISO_generation
 The example from the wiki:
 mkisofs -iso-level 1 -o neogeocd.iso -pad -N -V "NGCDTEST" P1.PRG M1.Z80 SPR.SPR S1.FIX V1.PCM IPL.TXT ABS.TXT BIB.TXT CPY.TXT
 
-The setup I prefer is something like this:
+The setup I would prefer is something like this:
 mkisofs -iso-level 1 -o neogeocd.iso -pad -N -V "NGCDTEST" --path-list pathlist.txt
 
 where pathlist.txt is a file containing a list of directories and filenames to be
 added to the filesystem. This way, you don't have to type a bunch of files on the
-command line.
+command line. However, it doesn't like to work properly for me, so I end up having
+the file list in the Makefile as a multi-line definition.
 
 In addition, I have provided an example .mkisofsrc file that can be used/edited.
 
@@ -18,4 +19,5 @@ in which sortfile.txt includes pairs of filenames and sorted offset weights.
 Files are sorted with the highest weights first and the lowest weights last.
 Weight values are between -2147483647 and 2147483647.
 
-This means you probably want to put any dummy file as -2147483647
+You probably want to put dummy files near the end (-2147483647),
+but I'm not 100% sure on that.

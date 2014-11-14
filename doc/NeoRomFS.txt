@@ -5,7 +5,7 @@ but I can come up with a few instances of when it would possibly be useful.
 
 sucks that most of those are for my own testing purposes.
 
-* 6502 emulator
+* 6502 (or other CPU) emulator
 loading source or binary files
 
 * FM/sound sequencer
@@ -25,6 +25,19 @@ references to look at:
 * GBFS by tepples
 * FAT16B (the canonical "FAT16")
 * FAT32
+
+[Simplest filesystem I can think of]
+Work in progress since this part was written at 4AM one day...
+
+Root Element\
+* Number of Entries
+Entry List\
+repeat for number of entries {
+* Name (null terminated)
+* Type (0=File, 1=Directory, 2=Device?)
+* Size
+* Pointer to Data
+}
 
 [quick romfs overview]
 
