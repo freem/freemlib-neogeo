@@ -38,6 +38,9 @@ sprtiles/
 	202-c2.c2			C ROM 2/2
 	HELLOSPR.SPR		.SPR file for Neo-Geo CD
 	in.smc				Source of C ROM (SNES format graphics; convert with recode16)
+	TITLE_E.*			European Title image related files
+	TITLE_J.*			Japanese Title image related files
+	TITLE_U.*			USA Title image related files
 
 (Included from outside the directory)
 ../../src/inc/neogeo.inc		Neo-Geo hardware defines
