@@ -8,7 +8,7 @@
 	<publisher>freemco</publisher>
 	<part name="cdrom" interface="neocd_cdrom">
 		<diskarea name="cdrom">
-			<disk name="HelloSpr" sha1="b6f35db2362ce0097bc497c2abe606258d9bc832"/>
+			<disk name="HelloSpr" sha1="43d55e7ad669cf4960331b1a04477fd0b1969524"/>
 		</diskarea>
 	</part>
 </software>

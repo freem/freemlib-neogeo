@@ -46,7 +46,10 @@ DISCFILES = \
 	$(PRG_CD) \
 	fixtiles/HELLOSPR.FIX \
 	sprtiles/HELLOSPR.SPR \
-	IPL.TXT
+	IPL.TXT \
+	TITLE_E.SYS \
+	TITLE_J.SYS \
+	TITLE_U.SYS
 
 ################################################################################
 # [Makefile Targets]
