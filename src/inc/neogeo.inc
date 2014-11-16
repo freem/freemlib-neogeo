@@ -37,6 +37,14 @@ BIOSF_VIDEOEN		equ $C00570		; Enable/Disable video layers
 ; [I/O Regs]
 REG_P1CNT			equ $300000		; Player 1 Controls (DCBArldu)/Trackball data [active low]
 REG_DIPSW			equ $300001		; Read Hardware DIPs [active low], Kick watchdog (a.k.a. "WATCH_DOG")
+;$300081
+;00xxxxxx
+;|||____|
+;||  |
+;||  |____ "unused"
+;||_______ Type value; MAME: "If ACTIVE_LOW, MVS-6 slot detected, when ACTIVE_HIGH MVS-1 slot (AES) detected"
+;|________ Test switch (IN01; active low)
+
 REG_STATUS_A		equ $320001		; uPD4990 bits, Coin switches [switches active low]
 REG_P2CNT			equ $340000		; Player 2 Controls (DCBArldu) [active low]
 REG_STATUS_B		equ $380000		; Aux inputs (Start/Select, Memory Card...) [active low]
@@ -142,11 +150,11 @@ REG_UPUNMAPPCM		equ $FF0143		; (byte) Unset PCM DRAM upload zone
 REG_UPUNMAPZ80		equ $FF0147		; (byte) Unset Z80 DRAM upload zone
 REG_UPUNMAPFIX		equ $FF0149		; (byte) Unset FIX DRAM upload zone
 
-;$FF0161	(byte)
-;$FF0163	(byte)
-;$FF0165	(byte)
+;$FF0161	(byte) NeoCDCommsRead Status FIFO 10 values (4 bits) 
+;$FF0163	(byte) NeoCDCommsWrite(byteValue) Command FIFO 10 values (4 bits) 
+;$FF0165	(byte) NeoCDCommsControl(byteValue & 1, byteValue & 2); (clock,send) 
 ;$FF0167	(byte)
-;$FF016D	(byte)
+;$FF016D	(byte) MapVectorTable(!(byteValue == 0xFF)); 
 
 REG_DISABLEIRQ		equ $FF016F		; (byte)
 ;$FF0181	(byte) Enable/Disable (reset) CD assembly
@@ -159,3 +167,6 @@ REG_CDDARIGHTTLEV	equ $FF018A		; (word) Read CDDA sound level (Right channel)
 REG_UPBANK_SPR		equ $FF01A1		; (byte) Upload zone 1MB SPR DRAM bank selection
 REG_UPBANK_PCM		equ $FF01A3		; (byte) Upload zone 512KB PCM DRAM bank selection
 
+;$FF01A7	(byte)
+;$FF01FC	(word)
+;$FF01FE	(word)
