@@ -1,6 +1,13 @@
 ; BIOS RAM usage (begins at $10F300)
 ;==============================================================================;
-; todo: Neo-Geo CD uses some ram locations differently
+; [Quick Glossary]
+; Byte	$00-$FF             (0-255)
+; Word	$0000-$FFFF         (0-65535)
+; Long	$00000000-$FFFFFFFF (0-4294967295)
+;==============================================================================;
+; todo: Neo-Geo CD uses some ram locations differently. Needs research.
+; Anything between $10F300 and $10FD80 is typically unexamined, but double check
+; the NeoGeo dev wiki and existing software/BIOSes first.
 
 BIOS_WORKRAM			equ $10F300
 
@@ -108,6 +115,7 @@ BIOS_CREDIT3_DEC		equ $10FDB2	; (byte) Credit decrement Player 3 (BCD)
 BIOS_CREDIT4_DEC		equ $10FDB3	; (byte) Credit decrement Player 4 (BCD)
 ;-----------------------------------;
 BIOS_START_FLAG			equ $10FDB4	; (byte) Player(s) starting the game on PLAYER_START call
+; $10FDB5??
 BIOS_PLAYER1_MODE		equ $10FDB6	; (byte) Player 1 Status
 BIOS_PLAYER2_MODE		equ $10FDB7	; (byte) Player 2 Status
 BIOS_PLAYER3_MODE		equ $10FDB8	; (byte) Player 3 Status
@@ -121,6 +129,7 @@ BIOS_MESS_BUSY			equ $10FDC2	; (word) 0=run MESS_OUT, 1=skip MESS_OUT
 BIOS_CARD_COMMAND		equ $10FDC4	; (byte) Command to execute
 BIOS_CARD_MODE			equ $10FDC5	; (byte) "command error job mode"
 BIOS_CARD_ANSWER		equ $10FDC6	; (byte) answer code for command; set by BIOS
+; $10FDC7??
 BIOS_CARD_START			equ $10FDC8	; (long) Pointer to start of card data
 BIOS_CARD_SIZE			equ $10FDCC	; (word) Size of data
 BIOS_CARD_FCB			equ $10FDCE	; (word) Game NGH number
@@ -152,7 +161,7 @@ BIOS_CREDIT2			equ $10FE01	; (byte)
 BIOS_CREDIT3			equ $10FE02	; (byte)
 BIOS_CREDIT4			equ $10FE03	; (byte)
 ;-----------------------------------;
-BIOS_SWITCH_STORE		equ $10FE04	; (dword)
+BIOS_SWITCH_STORE		equ $10FE04	; (long)
 ;-----------------------------------;
 BIOS_UNDER_CREDIT1		equ $10FE08	; (byte)
 BIOS_UNDER_CREDIT2		equ $10FE09	; (byte)
@@ -174,7 +183,7 @@ BIOS_NON_LIMIT			equ $10FE1A	; (word)
 BIOS_DEMO_SOUND			equ $10FE1C ; (byte)
 BIOS_INIT_MARK			equ $10FE1E	; (word)
 BIOS_SR_STORE			equ $10FE20	; (word)
-BIOS_VERSION_BASE		equ $10FE22	; (dword)
+BIOS_VERSION_BASE		equ $10FE22	; (long)
 BIOS_GD_STORE			equ $10FE26	; (byte) 32 bytes
 
 ;===================================;
@@ -182,13 +191,13 @@ BIOS_WORK2				equ $10FE80
 
 BIOS_DEVMODE			equ $10FE80	; (byte)
 ;$10FE81-$10FE87 "Power on ID code"??
-BIOS_FRAMECOUNT			equ $10FE88	; (dword) "SYS_INT1_TIMER"
+BIOS_FRAMECOUNT			equ $10FE88	; (long) "SYS_INT1_TIMER"
 BIOS_SYS_STOPPER		equ $10FE8C	; (byte) "system stopper", actually BIOS VBlank flag
 BIOS_Z80_BANK			equ $10FE8D	; (byte)
 BIOS_SYSTEM_MODE2		equ $10FE8E	; (word)
 ;-----------------------------------;
 BIOS_CARD_TIMER			equ $10FE90	; (word)
-BIOS_CARD_START2		equ $10FE92	; (dword)
+BIOS_CARD_START2		equ $10FE92	; (long)
 BIOS_CARD_SIZE2			equ $10FE96	; (word)
 BIOS_CARD_FCB2			equ $10FE98	; (word)
 BIOS_CARD_SUB2			equ $10FE9A	; (word)
@@ -202,22 +211,24 @@ BIOS_INST_MODE			equ $10FEBD	; (byte)
 BIOS_START_BUSY			equ $10FEBE	; (byte)
 BIOS_BACKUP_MODE		equ $10FEBF	; (byte)
 ;-----------------------------------;
-BIOS_INST_RAD			equ $10FEC0	; (dword)
+BIOS_INST_RAD			equ $10FEC0	; (long)
 BIOS_INST_RCO			equ $10FEC4	; (byte)
 ;-----------------------------------;
 BIOS_TITLE_MODE			equ $10FEC5	; (byte)
-BIOS_MESS_STACK			equ $10FEC6	; (dword) 5 dwords
+BIOS_MESS_STACK			equ $10FEC6	; (long) 5 longs
 ;-----------------------------------;
-BIOS_STATCURNT_RAW		equ $10FEDC	; (byte) "INPUT_SS"
-BIOS_STATCHANGE_RAW		equ $10FEDD	; (byte)
+; $10FEDA and $10FEDB are used on CD systems; see below.
+;-----------------------------------;
+BIOS_STATCURNT_RAW		equ $10FEDC	; (byte) "INPUT_SS"; raw version of BIOS_STATCURNT (includes Select on MVS)
+BIOS_STATCHANGE_RAW		equ $10FEDD	; (byte) raw version of BIOS_STATCHANGE (includes Select on MVS)
 BIOS_INPUT_TT1			equ $10FEDE	; (byte)
 BIOS_INPUT_TT2			equ $10FEDF	; (byte)
 
-BIOS_KYOUSEI_MODE		equ $10FEE0	; (byte) "KYOUSEI_MODE"
-BIOS_SYS_STOP			equ $10FEE1	; (byte) "SYS_STOP"
+BIOS_KYOUSEI_MODE		equ $10FEE0	; (byte) "KYOUSEI_MODE" (Game start compulsion?)
+BIOS_SYS_STOP			equ $10FEE1	; (byte) "BIOS_FRAME_SKIP","SYS_STOP"
 BIOS_CS_REMAIN			equ $10FEE2	; (byte) "CS_REMAIN"
-BIOS_INT_OFF			equ $10FEE3	; (byte) "INT_OFF"
-BIOS_INT1_TIMER2		equ $10FEE4	; (word) "INT1_TIMER2"
+BIOS_INT_OFF			equ $10FEE3	; (byte) "BIOS_INT1_SKIP", "INT_OFF"
+BIOS_INT1_TIMER2		equ $10FEE4	; (word) "BIOS_INT1_FRAME_COUNTER", "INT1_TIMER2"
 ;-----------------------------------;
 ;INPUT_5
 BIOS_P5STATUS			equ $10FEE8	; (byte) Input 5 status
@@ -237,12 +248,19 @@ BIOS_P6TIMER			equ $10FEF3	; (byte) Input repeat timer
 ;-----------------------------------;
 BIOS_MESS_BUFFER		equ $10FF00	; 100 byte buffer
 
-;------------------------------------------------------------------------------;
-; CD system-specific
+;==============================================================================;
+; [Cart systems with 4-Player Compatible BIOS only]
 
-; Upload to DRAM
-BIOS_CD_UPDEST			equ $10FEF4	; (long) destination address (!)
-BIOS_CD_UPSRC			equ $10FEF8	; (long) source address
-BIOS_CD_UPSIZE			equ $10FEFC	; (long) size
+BIOS_4P_REQUESTED		equ $10FEF8	; (bios) local copy of hard dip 2 (0=off; 2=on)
+BIOS_4P_MODE			equ $10FEFA	; (bios) Main 4P flag (0=regular; $FF=4P ok)
+BIOS_4P_PLUGGED			equ $10FEFB	; (bios) Is board present? (0=not found; $FF=plugged in)
+
+;==============================================================================;
+; [CD system-specific]
+
+; DRAM Uploading
 BIOS_CD_UPZONE			equ $10FEDA	; (byte) zone (0=PRG/TXT, 1=FIX, 2=SPR, 3=Z80, 4=PCM, 5=PAT, 7=OBJ, 8=A**)
 BIOS_CD_UPBANK			equ $10FEDB	; (byte) bank
+BIOS_CD_UPDEST			equ $10FEF4	; (long) destination address
+BIOS_CD_UPSRC			equ $10FEF8	; (long) source address
+BIOS_CD_UPSIZE			equ $10FEFC	; (long) size
