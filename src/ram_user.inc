@@ -8,7 +8,8 @@ USER_RAM			equ $100000
 ; [freemlib RAM usage]
 ; If you're not using the freemlib in your project, feel free to nuke this part.
 
-flag_VBlank			equ $100000	; vblank flag
+flag_VBlank			equ $100000	; (byte) vblank flag
+flag_HBlank			equ $100001	; (byte) hblank flag
 
 ; <$101000-$10xxxx: Buffers>
 
