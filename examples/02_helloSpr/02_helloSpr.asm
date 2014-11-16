@@ -144,7 +144,7 @@ VBlank:
 
 	; run the game's vblank
 .gamevbl
-	movem.l d0-d7/a0-a6,-(a7)	; save registers
+	movem.l d0-d7/a0-a6,-(sp)	; save registers
 	move.w	#4,LSPC_IRQ_ACK		; acknowledge the vblank interrupt
 	move.b	d0,REG_DIPSW		; kick the watchdog
 
@@ -155,7 +155,7 @@ VBlank:
 	jsr		MESS_OUT			; Puzzle Bobble calls MESS_OUT just after SYSTEM_IO
 	jsr		UpdateTestSprite	; update test sprite after MESS_OUT.
 	move.b	#0,flag_VBlank		; clear vblank flag so waitVBlank knows to stop
-	movem.l (a7)+,d0-d7/a0-a6	; restore registers
+	movem.l (sp)+,d0-d7/a0-a6	; restore registers
 	rte
 
 ;==============================================================================;
