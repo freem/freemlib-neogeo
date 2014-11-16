@@ -27,6 +27,8 @@ DRAM layout:
 
 Fix tiles are in 128KB of PSRAM. The Z80 code is in a 64KB RAM block.
 
+"NeoCD uses custom vectors on IRQ4 to handle various events from the CDC" - ng_aes.c
+
 --------------------------------------------------------------------------------
 * Custom File Loading
 Perhaps there's a way around the BIOS file loading functions...
@@ -40,3 +42,18 @@ Both partial and full would be nice I guess
 * Various other features
 There's still a lot of things I don't know about, as well as emu authors, since
 I can't find any official documentation on the PUPPET microcode.
+
+--------------------------------------------------------------------------------
+Notes to deal with:
+* $110804 is either data written to fix layer, or a pointer to such data.
+* $115A06 has to do with loading filename? Where does $115A06 come from?
+
+--------------------------------------------------------------------------------
+Undetermined CDZ BIOS calls:
+
+$C00576
+$C0057C
+$C00582
+$C00588
+$C0058E
+$C00594

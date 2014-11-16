@@ -41,7 +41,7 @@ DBGBIOS_ERROR_CODE		equ $10FD4C	; (word) Debug BIOS: Error Recovery Code
 ; $10FD76 ??
 ; $10FD78 ??
 
-;===================================;
+;==============================================================================;
 BIOS_WORK0				equ $10FD80	; beginning of actual BIOS work RAM
 
 BIOS_SYSTEM_MODE		equ $10FD80	; (byte) VBL for $00=system,$80=game
@@ -144,7 +144,7 @@ BIOS_HOUR				equ $10FDD6	; (byte)
 BIOS_MINUTE				equ $10FDD7	; (byte) 
 BIOS_SECOND				equ $10FDD8	; (byte) 
 ;-----------------------------------;
-BIOS_SELECT_TIMER		equ $10FDDA	; (byte) "BIOS_COMPULSION_TIMER"
+BIOS_SELECT_TIMER		equ $10FDDA	; (byte?) "BIOS_COMPULSION_TIMER"
 ;BIOS_START_TEST			equ $10FDDC	; ()
 ;BIOS_COIN_LEVER			equ $10FDDE	; ()
 
@@ -153,6 +153,8 @@ BIOS_SELECT_TIMER		equ $10FDDA	; (byte) "BIOS_COMPULSION_TIMER"
 ;START_TEST		ds.w 1
 ;COIN_LEVER		ds.w 1
 
+;-----------------------------------;
+; $10FDE0-$10FDFF ???
 ;===================================;
 BIOS_WORK1				equ $10FE00
 
@@ -257,6 +259,8 @@ BIOS_4P_PLUGGED			equ $10FEFB	; (bios) Is board present? (0=not found; $FF=plugg
 
 ;==============================================================================;
 ; [CD system-specific]
+
+; $10FDE2 (at least CDZ)
 
 ; DRAM Uploading
 BIOS_CD_UPZONE			equ $10FEDA	; (byte) zone (0=PRG/TXT, 1=FIX, 2=SPR, 3=Z80, 4=PCM, 5=PAT, 7=OBJ, 8=A**)
