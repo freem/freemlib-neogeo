@@ -1,12 +1,14 @@
 freemlib for Neo-Geo Example 04: Input Basics
 ================================================================================
 [Introduction]
-In the previous few examples, we've used some quickly hacked together input
-routines, but now it's time to go a little more in depth.
+In the example 2, there was a quickly hacked together input routine, but now
+it's time to go a little more in depth.
 
 Since this is "Input Basics", this example won't cover the Mahjong controller,
 nor will it deal with the Trackball controller from The Irritating Maze, or the
 spinner controller from Pop'n Bounce/Gapporin.
+
+Four-player support is an exercise left to the reader to implement.
 
 ================================================================================
 [Files]
@@ -39,10 +41,15 @@ sprtiles/
 ================================================================================
 [Setup]
 The initialization sequence is similar to the previous three examples.
+Palettes are loaded in a similar fashion to Example 3.
 
-(wip)
+The primary setup routine is InitDisplay, which just throws a bunch of static
+messages up for MESS_OUT. Everything serious will be done in the VBlank between
+the calls to SYSTEM_IO and MESS_OUT.
 
 ================================================================================
 [Process]
+This example is meant to show you the input values from the BIOS, as well as how
+they map to the buttons and directions.
 
 (wip)

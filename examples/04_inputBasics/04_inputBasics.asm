@@ -279,7 +279,7 @@ msg_LabelsSystem:
 	dc.b	"INPUT T2",$FF,$00
 	dc.w	$0000
 
-; Strings for you! (+n means number of bytes for alignment, including end byte)
+; Strings for you!
 
 str_Status:		dc.b "STATUS",$FF,$FF
 str_Previous:	dc.b "PREV.",$FF
@@ -288,26 +288,15 @@ str_Change:		dc.b "CHANGE",$FF,$FF
 str_Repeat:		dc.b "REPEAT",$FF,$FF
 str_Timer:		dc.b "TIMER",$FF
 
-; inputs by themselves...
-; Up arrow +1
-; Down arrow +1
-; Left arrow +1
-; Right arrow +1
-; "A" +1
-; "B" +1
-; "C" +1
-; "D" +1
-
-; stat current/change
-;St1,St2,St3,St4
-;Sl1,Sl2,Sl3,Sl4
-
 ; "Start" +1
 ; "Select" +2
 
 ; (MVS stuff)
 ; hardware dipswitches (REG_DIPSW)
+
 ; test button ($300081 mask $80)
+;str_TestOn:	dc.b "TEST",$FFFF
+;str_TestOff:	dc.b "test",$FFFF
 
 ;==============================================================================;
 ; UpdateIOMirrors
