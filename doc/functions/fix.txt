@@ -210,6 +210,9 @@ Macros for more semantic use of MESS_OUT are found in src/inc/mess_macro.inc.
 A reference is included here. Numbered values beginning with '\' are macro
 parameters; these get passed to the macro.
 
+Note: Currently, all these macros insert data into the ROM. Macros for use in
+code are forthcoming.
+
 In order to use the macros, you just call them and pass the parameters like you
 would any other assembly command:
 

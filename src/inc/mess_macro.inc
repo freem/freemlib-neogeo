@@ -1,5 +1,14 @@
 ; Macros for MESS_OUT
 ; In case you want things to be a little more semantic...
+
+; todo: These only define data ; there should be some in-code macros too.
+;==============================================================================;
+; messmac_End (Command 0: End command list)
+
+messmac_End:		macro
+	dc.w	$0000
+	endm
+
 ;==============================================================================;
 ; messmac_Format (Command 1: Set Data Format)
 ; \1		flags (0=bytes+end code, 1=bytes+length, 2=words+end code, 3=words+length)
