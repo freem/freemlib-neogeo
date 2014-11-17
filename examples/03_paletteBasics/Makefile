@@ -54,13 +54,13 @@ DISCFILES = \
 # cart: compile game for cart (default build target)
 cart: 03_paletteBasics.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CART -o 03_paletteBasics.p 03_paletteBasics.asm
-	$(BYTESWAP) 03_paletteBasics.p 202-p1.p1
+	$(BYTESWAP) 03_paletteBasics.p $(PRG_CART)
 	$(PAD) 202-p1.p1 $(PADFLAGS)
 
 # cd: compile game for CD
 cd: 03_paletteBasics.asm
 	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o PalBasic.prg 03_paletteBasics.asm
-	$(MKISOFS) $(MKISOFSFLAGS) -o PalBasic.iso -V "PALBASIC" PalBasic.prg fixtiles/PALBASIC.FIX sprtiles/PALBASIC.SPR IPL.TXT ../../cdfiles/ABS.TXT ../../cdfiles/BIB.TXT ../../cdfiles/CPY.TXT
+	$(MKISOFS) $(MKISOFSFLAGS) -o PalBasic.iso -V "$(DISCLABEL)" $(DISCFILES)
 
 # chd: create CHD from CD for use with MAME/MESS
 chd: cd
