@@ -1,7 +1,9 @@
 freemlib for Neo-Geo - Fix Layer functionality
 ==============================================
 The Fix layer displays over everything else.
+
 Most fix layer writing is done with MESS_OUT and the system buffer.
+Everything in here is (or should be) handled via raw LSPC reads/writes.
 
 When it comes to positioning items on the Fix layer, there's two formats:
 1) Default raw VRAM addresses (do most games do this?) ($7000-$74FF)
@@ -106,7 +108,7 @@ a0				Pointer to string to draw
 
 ================================================================================
 [fix_DrawRegion]
-Draws a rectangular region of tiles.
+Draws a rectangular region of tiles using a single palette and tile number MSB.
 
 (Params)
 d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
@@ -115,19 +117,21 @@ d2				Palette index and tile number MSB
 a0				Pointer to data to draw
 
 ================================================================================
-todo: VRAM<->68K RAM routines
+[fix_CopyToRAM]
+Copies Fix tilemap data from VRAM to 68K RAM.
 
-"fix_CopyToRAM" for copying Fix tilemaps from VRAM to 68K RAM
-* Starting VRAM location
-* Starting 68K RAM location
-* Length of data to copy (in words)
-* Something about VRAM increment
+(Params)
+a?				Starting 68K RAM location
+d?				Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d?				Copy region size ($XXYY)
 
-"fix_WriteFromRAM" for writing Fix tilemaps from 68K RAM to VRAM
-* Starting 68K RAM location
-* Starting VRAM location
-* Length of data to write (in words)
-* Something about VRAM increment
+================================================================================
+[fix_WriteFromRAM]
+Writes Fix tilemap data from 68K RAM to VRAM.
+
+a?				Starting 68K RAM location
+d?				Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d?				Write region size ($XXYY)
 
 ================================================================================
 todo: "nametable" writing
