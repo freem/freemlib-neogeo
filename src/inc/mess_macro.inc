@@ -1,7 +1,7 @@
 ; Macros for MESS_OUT
 ; In case you want things to be a little more semantic...
 
-; todo: These only define data ; there should be some in-code macros too.
+; todo: These only define data; there should be some in-code macros too.
 ;==============================================================================;
 ; messmac_End (Command 0: End command list)
 

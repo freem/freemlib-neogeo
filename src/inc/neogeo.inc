@@ -2,7 +2,7 @@
 ;==============================================================================;
 ; todo: more Neo-Geo CD stuff
 
-; [BIOS thunk calls]
+; [(mostly) common BIOS thunk calls]
 BIOSROM				equ $C00000		; BIOS ROM begins at $C00000
 SYSTEM_RESET		equ $C00402		; 
 SYSTEM_INT1			equ $C00438		; System VBlank
@@ -21,8 +21,8 @@ MESS_OUT			equ $C004CE		; Fix layer message output
 CONTROLLER_SETUP	equ $C004D4		; Initializes controllers
 
 ;------------------------------------------------------------------------------;
-; [CD systems-only BIOS calls]
-BIOSF_HBLANK		equ $C004DA		; HBlank handler
+; [CD systems-only BIOS thunk calls]
+BIOSF_HBLANK		equ $C004DA		; HBlank handler (replaces SYSTEM_INT2)
 BIOSF_LOADFILE		equ $C00522		; Load file from CD, with animation
 BIOSF_UPLOAD		equ $C00546		; Upload data to DRAM
 ;$C0054C ? (CDZ)
@@ -35,6 +35,8 @@ BIOSF_VIDEOEN		equ $C00570		; Enable/Disable video layers
 
 ;==============================================================================;
 ; [I/O Regs]
+; All I/O registers are bytes, apparently.
+
 REG_P1CNT			equ $300000		; Player 1 Controls (DCBArldu)/Trackball data [active low]
 REG_DIPSW			equ $300001		; Read Hardware DIPs [active low], Kick watchdog (a.k.a. "WATCH_DOG")
 ;$300081
@@ -60,27 +62,36 @@ REG_RTCCTRL			equ $380051		; Strobe/Clock/DIN for uPD4990
 ;REG_?????			equ $380063		; Chute 2 coin lockout -> High
 ;REG_?????			equ $380065		; Chute 1 coin counter -> High
 ;REG_?????			equ $380067		; Chute 2 coin counter -> High
-;REG_?????			equ $3800D1		; Write to RTC
+REG_RTCWRITE		equ $3800D1		; Write to RTC
 ;REG_?????			equ $3800E1		; Chute 1 coin lockout -> Low
 ;REG_?????			equ $3800E3		; Chute 2 coin lockout -> Low
 ;REG_?????			equ $3800E5		; Chute 1 coin counter -> Low
 ;REG_?????			equ $3800E7		; Chute 2 coin counter -> Low
 
+;==============================================================================;
 ; [Sound Reg]
 REG_SOUND			equ $320000		; (Byte) Send command to Z80, Read Z80 reply
 
+;==============================================================================;
 ; [System Regs]
+; Byte writes only.
+
 SYS_NOSHADOW		equ $3A0001		; Normal output (a.k.a. "SHADOW_OFF","REG_NOSHADOW")
 SYS_SHADOW			equ $3A0011		; Darkened output (a.k.a. "SHADOW_ON","REG_SHADOW")
 SYS_BIOSVEC			equ $3A0003		; Use BIOS vectors (a.k.a. "SYSTEM_ROM","REG_SWPBIOS")
 SYS_CARTVEC			equ $3A0013		; Use Cart vectors (a.k.a. "USER_ROM","REG_SWPROM")
 SYS_BIOSFIX			equ $3A000B		; Use BIOS Fix tiles
 SYS_CARTFIX			equ $3A001B		; Use Cart Fix tiles
+SYS_CDFIX			equ $3A001B		; Use CD Fix tiles (alias for other lazy people)
 
+;==============================================================================;
 ; [MVS Backup RAM]
+; Byte writes only.
+
 SYS_MVSBRAM_LOCK	equ $3A000D		; Write-protect MVS-only Backup RAM
 SYS_MVSBRAM_UNLOCK	equ $3A001D		; Unprotect MVS-only Backup-RAM
 
+;==============================================================================;
 ; [Memory Card]
 MEMCARD_DATA		equ $800000		; Memory Card Data (a.k.a. "IC_MEMORY")
 ;-----------------------------------;
@@ -92,7 +103,11 @@ CARD_SELECT			equ $3A0009		; Enable card register select
 CARD_NORMAL			equ $3A0019		; Disable card register select
 CARD_BANK			equ $380011		; Memory Card bank select
 
+;==============================================================================;
 ; [LSPC Regs]
+; Natively words. "Byte writes only work on odd addresses and store the same
+; data in the MSB and LSB."
+
 LSPC_ADDR			equ $3C0000		; VRAM Address
 LSPC_DATA			equ $3C0002		; VRAM Data
 LSPC_INCR			equ $3C0004		; VRAM Increment
@@ -102,17 +117,21 @@ LSPC_TIMER_LO		equ $3C000A		; Timer LSB
 LSPC_IRQ_ACK		equ $3C000C		; Interrupt acknowlege
 LSPC_TIMER_STOP		equ $3C000E		; Stop timer for 32 lines in PAL mode? (LSPC2 only, apparently)
 
+;==============================================================================;
 ; [Palette]
+; Palette data is in words. You can use longs to write two entries at once.
+
 PALETTES			equ $400000		; $400000-$401FFF
 PALETTE_REFERENCE	equ $400000		; Reference Color (must be $8000)
 PALETTE_BACKDROP	equ $401FFE		; Backdrop Color
-PALETTE_BANK1		equ $3A000F		; Palette bank 1 register
-PALETTE_BANK0		equ $3A001F		; Palette bank 0 register
+PALETTE_BANK1		equ $3A000F		; (byte) Palette bank 1 register
+PALETTE_BANK0		equ $3A001F		; (byte) Palette bank 0 register
 
-;------------------------------------------------------------------------------;
+;==============================================================================;
 ; CD system-specific
 UPLOAD				equ $E00000		; Upload Zone ($E00000-$EFFFFF)
 
+;------------------------------------------------------------------------------;
 ; Registers ($FF0002-$FF01FE)
 ;$FF0000	(word) 
 ;$FF0002	(word) "NeoRaine load_files, really interrupt mask?"
@@ -122,21 +141,35 @@ UPLOAD				equ $E00000		; Upload Zone ($E00000-$EFFFFF)
 ;$FF000A	(word) 
 ;$FF000D	(byte) 
 ;$FF000E	(byte) 
-;$FF000F	(byte) 
+;$FF000F	(byte) NeoCDIRQUpdate(byte)
+; $FF0010??
 ;$FF0011	(byte) 
+; $FF0012??
+; $FF0013??
+; $FF0014??
 ;$FF0015	(byte) 
-;$FF0017	(byte) 
-;$FF0061	(byte) 
-
+; $FF0016??
+;$FF0017	(byte) "nNeoCDMode"
+;.......
+;$FF0061	(byte) Writing with bit 6 set executes DMA microcode
+; $FF0062??
+; $FF0063??
 ;$FF0064-$FF0073	Registers used by microcode (NeoRaine upload_param)
 ;$FF007E-$FF008F	Microcode (16x9bit instructions ?)
 
-;$FF0101	(byte)
-;$FF0103	(byte)
-;$FF0105	(byte)
+;$FF0101	(byte) "nLC8951Register (4 LSB)"
+; $FF0102??
+;$FF0103	(byte) "nLC8951Register value"
+; $FF0104??
+;$FF0105	(byte) nActiveTransferArea = byteValue
+; $FF0106??
+; $FF0107??
 ;$FF0108	(word)
+; $FF010A??
 ;$FF010C	(word)
+; $FF010E??
 
+; $FF0110??
 REG_DISABLESPR		equ $FF0111		; (byte) Disable Sprite toggle (1=disable,0=enable)
 REG_DISABLEFIX		equ $FF0115		; (byte) Disable Fix toggle (1=disable,0=enable) 
 REG_ENVIDEO			equ $FF0119		; (byte) Video output toggle (1=enable,0=disable)
