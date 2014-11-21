@@ -9,8 +9,9 @@
 ; reset LSPC_INCR after calling any function in this file.
 
 ; todo:
-; * finish writing fix_Draw8x16 and fix_Draw16x16
-; * add vram <-> 68k ram routines
+; * test fix_Draw8x16
+; * finish writing fix_Draw16x16
+; * finish writing vram <-> 68k ram routines
 ; * routine for taking a "nametable" and writing it to the fix layer
 
 ;==============================================================================;
@@ -77,6 +78,9 @@ fix_UpdateTile:
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 ; d1				New tile number
 
+; (Clobbers)
+; d2				Used for reading from VRAM
+
 fix_ChangeTile:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
 
@@ -94,6 +98,9 @@ fix_ChangeTile:
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 ; d1				New palette number
+
+; (Clobbers)
+; d2				Used for reading from VRAM
 
 fix_ChangePal:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
@@ -118,22 +125,52 @@ fix_ChangePal:
 ; d1				Palette index and tile number MSB
 ; a0				Pointer to string to draw
 
+; (Clobbers)
+; a1				Used for original string pointer
+; d2				Byte for writing
+; d3				Used for temporary tile assembly and VRAM address changing
+
 fix_Draw8x16:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
 
 	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
+	movea.l	a0,a1				; copy original string pointer for later
 
 	; draw top line
 .fix_d8x16_TopLoop:
-	
+	cmpi.b	#$FF,(a0)
+	beq.b	fix_d8x16_FinishTop
+	move.w	d1,d3				; get pal. index and tile number MSB
+	lsl.w	#8,d3				; shift into upper byte of word
+	move.b	(a0)+,d2			; read byte from string, increment read position
+	or.w	d3,d2				; OR with shifted pal. index and tile number MSB
+	move.w	d2,LSPC_DATA		; write combined tile to VRAM
+	bra.b	.fix_d8x16_TopLoop	; loop until finding $FF
 
+.fix_d8x16_FinishTop:
 	; prepare to draw bottom line
-	; (change VRAM address, reset loop vars)
+
+	; change VRAM address
+	move.w	d0,d3				; get original VRAM position
+	addi.w	#$01,d3				; add +1 for next vertical line
+	move.w	d3,LSPC_ADDR		; set new VRAM address
+
+	; reset original string pointer
+	movea.l	a1,a0
 
 	; draw bottom line
 .fix_d8x16_BotLoop:
-	
+	cmpi.b	#$FF,(a0)
+	beq.b	fix_d8x16_End
+	move.w	d1,d3				; get pal. index and tile number MSB
+	lsl.w	#8,d3				; shift into upper byte of word
+	move.b	(a0)+,d2			; read byte from string, increment read position
+	addi.b	#$10,d2				; bottom tile is $10 below top tile
+	or.w	d3,d2				; OR with shifted pal. index and tile number MSB
+	move.w	d2,LSPC_DATA		; write combined tile to VRAM
+	bra.b	.fix_d8x16_BotLoop	; loop until finding $FF
 
+.fix_d8x16_End:
 	rts
 
 ;==============================================================================;
@@ -141,8 +178,8 @@ fix_Draw8x16:
 ; Draws "normal" 16x16 text to the screen. End code is $FF.
 
 ; "normal 16x16 text" means this font layout:
-; A A <- top left/top right
-; A A <- bottom left/bottom right
+; A A <- top left, top right
+; A A <- bottom left, bottom right
 
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
@@ -156,19 +193,28 @@ fix_Draw16x16:
 
 	; draw top line
 .fix_d16x16_TopLoop:
-	
+	; loop until finding $FF
 
+.fix_d16x16_FinishTop:
 	; prepare to draw bottom line
-	; (change VRAM address, reset loop vars)
+
+	; change VRAM address
+	move.w	d0,d3				; get original VRAM position
+	addi.w	#$01,d3				; add +1 for next vertical line
+	move.w	d3,LSPC_ADDR		; set new VRAM address
+
+	; reset loop vars
 
 	; draw bottom line
 .fix_d16x16_BotLoop:
+	; loop until finding $FF
 
+.fix_d16x16_End:
 	rts
 
 ;==============================================================================;
 ; fix_DrawRegion
-; Draws a rectangular region of tiles.
+; Draws a rectangular region of tiles using a single palette and tile number MSB.
 
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
@@ -213,3 +259,32 @@ fix_DrawRegion_Cols:
 
 fix_DrawRegion_End:
 	rts
+
+;==============================================================================;
+; fix_CopyToRAM
+; Copies Fix tilemap data from VRAM to 68K RAM.
+
+; (Params)
+; a?				Starting 68K RAM location
+; d?				Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+; d?				Copy region size ($XXYY)
+
+fix_CopyToRAM:
+	; force MESS_OUT busy? (don't modify while we read)
+
+	rts
+
+;==============================================================================;
+; fix_WriteFromRAM
+; Writes Fix tilemap data from 68K RAM to VRAM.
+
+; (Params)
+; a?				Starting 68K RAM location
+; d?				Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+; d?				Write region size ($XXYY)
+
+fix_WriteFromRAM:
+	; force MESS_OUT busy? (don't modify while we write)
+
+	rts
+
