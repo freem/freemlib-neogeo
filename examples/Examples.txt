@@ -39,5 +39,8 @@ Animation basics.
 [08_collision]
 Dealing with collisions.
 
-[09_sound]
+[09_system]
+Handling system calls and features (credits, demo play, etc)
+
+[10_sound]
 Introduction to the freemlib's Sound Driver.
