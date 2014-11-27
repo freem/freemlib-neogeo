@@ -1,0 +1,10 @@
+Here are some general notes you should know when programming:
+
+==[68000]=======================================================================
+"Most assemblers accept DBRA for DBF for use when only a count terminates the
+loop (no condition is tested)." - M68000 Family Programmer's Reference Manual
+
+This includes vasm and whatever assembler SNK was using.
+
+==[Z80]=========================================================================
+
