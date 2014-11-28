@@ -1,9 +1,0 @@
-# see http://editorconfig.org/ for more information on this file
-
-# master/topmost editorconfig
-root = true
-
-# I do a bad thing by using .asm for both 68K and Z80 assembly...
-[*.asm]
-indent_style = tab
-indent_size = 4
