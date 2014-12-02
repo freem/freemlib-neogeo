@@ -10,7 +10,7 @@ The examples are meant to be short, while trying to show enough possibilities of
 what can be done.
 
 [00_skeleton]
-A skeleton setup for the other examples.
+A very basic skeleton setup for the other examples.
 
 [01_helloFix]
 "Hello World" on the Fix layer.
