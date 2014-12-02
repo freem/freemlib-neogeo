@@ -34,7 +34,7 @@ Blue	000001
 		  |  |__ shared between all channels (1 when "Dark bit" is 0?)
 		  |_____ unique to each channel
 
-Full range of color values for each channel is 00-3F.
+The full range of color values for each channel is 00-3F.
 
 Warning: the following RGB values are approximations due to the fact that a
 resistor network is used to modify the actual color values. See MAME source for
@@ -44,3 +44,5 @@ RGB #FFFFFF = Neo-Geo $7FFF
 RGB #FEFEFE = Geo-Geo $FFFF
 RGB #FDFDFD = Neo-Geo $0FFF
 RGB #FCFCFC = Neo-Geo $8FFF
+...........
+RGB #000000 = Neo-Geo $8000

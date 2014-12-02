@@ -9,13 +9,19 @@ sucks that most of those are for my own testing purposes.
 loading source or binary files
 
 * FM/sound sequencer
-loading various on-P ROM board files that I can't think of off the top of my head
-which would probably include various instrument data and other stuff, idk
+loading various files from P ROM board?
+ - FM and SSG instrument presets/library
 
+* loading external files on custom development cart hardware
+if you're cool, you can create a dev environment for your game that allows you to
+test changes without having to recompile every time. maybe.
+
+================================================================================
 [Why use this over incbin?]
 really good question, and if you can't think of a reason to use it, then don't.
 save yourself the overhead and keep the bytes for more data.
 
+================================================================================
 [What goes into a filesystem?]
 Need to think about this.
 
@@ -26,8 +32,10 @@ references to look at:
 * FAT16B (the canonical "FAT16")
 * FAT32
 
+================================================================================
 [Simplest filesystem I can think of]
 Work in progress since this part was written at 4AM one day...
+(Note that this is a read-only filesystem.)
 
 Root Element\
 * Number of Entries
@@ -39,6 +47,7 @@ repeat for number of entries {
 * Pointer to Data
 }
 
+================================================================================
 [quick romfs overview]
 
 offset	    content
@@ -79,3 +88,6 @@ offset	    content
 	+---+---+---+---+
  xx	| file data	|
 	:		:
+
+================================================================================
+[NeoRomFS]

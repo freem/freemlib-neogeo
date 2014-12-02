@@ -41,6 +41,10 @@ future examples
 * Scrolling backgrounds
 
 ================================================================================
+[Memory Cards]
+there should probably be an example dedicated to memory card/backup memory usage.
+
+================================================================================
 [Sound]
 (Intermediate)
 * Introduction to Neo-Geo sound hardware

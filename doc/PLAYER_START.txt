@@ -45,7 +45,7 @@ SNK docs:
 is available at the player's option, and participation from the middle of play
 should be available. If these options are not possible, or if it is a game like
 Mah-Jong, which allows only one player to play, return after changing the
-applicable bit to "0."
+applicable bit to '0'.
 If any of the START_FLAG bits is returned with 1, the system deducts credit.
 Therefore, be sure to perform the start processing, etc. Furthermore, be sure to
 keep the USER_MODE at 2, or the game may be switched to another game."

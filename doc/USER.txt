@@ -55,7 +55,7 @@ Questionable:
 
 USER_REQUEST Command 2 (Game)
 -----------------------------
-Show the game's demo.
+Either show the game's demo, or perform gameplay.
 
 SNK docs:
 "A demonstration of the title and the game is performed when a request is made.

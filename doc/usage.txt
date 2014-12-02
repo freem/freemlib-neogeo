@@ -14,17 +14,23 @@ Files to Copy (or Symlink) and Leave Alone
 ------------------------------------------
 (Addresses, Registers)
 * src/inc/input.inc				Defines for Controller inputs.
+* src/inc/mvs_bram.inc			Defines for MVS Backup RAM.
 * src/inc/neogeo.inc			Defines for Neo-Geo hardware.
 * src/inc/ram_bios.inc			Defines for the BIOS RAM locations.
-* src/inc/mvs_bram.inc			Defines for MVS Backup RAM.
 
 (freemlib Functionality)
 * src/inc/mess_macro.inc		Macros for use with MESS_OUT.
+* src/inc/mess_defs.inc			Defines for characters to use with MESS_OUT.
 * src/inc/system.inc			System-related functions. (still WIP)
-* src/func/fix.inc				Fix layer-related functions.
-* src/func/memcard.inc			Memory Card-related functions.
-* src/func/palette.inc			Palette-related functions.
-* src/func/sprites.inc			Sprite-related functions.
+--------------------------------
+* src/func/animation.asm		Animation-related functions.
+* src/func/background.asm		Background-related functions.
+* src/func/collision.asm		Collision-related functions.
+* src/func/fix.asm				Fix layer-related functions.
+* src/func/memcard.asm			Memory Card-related functions.
+* src/func/palette.asm			Palette-related functions.
+* src/func/sprites.asm			Sprite-related functions.
+* src/func/system.asm			System-related functions.
 
 (CD System-specific Files)
 * cdfiles/ABS.TXT				Abstract file with required data for loading.
@@ -34,8 +40,8 @@ Files to Copy (or Symlink) and Leave Alone
 Files to Copy and Change
 ------------------------
 * src/header_68k.inc			68000 Vectors and such at $0.
-* src/header_cart.inc			Neo-Geo program header at $100.
-* src/header_cd.inc				WIP program header for CD consoles.
+* src/header_cart.inc			Neo-Geo program header for Cart systems at $100.
+* src/header_cd.inc				Neo-Geo program header for CD systems at $100.
 * src/ram_user.inc				User RAM defines.
 
 header_68k.inc
@@ -79,8 +85,11 @@ $00000000		; Level 7 interrupt (NMI)
 This is what I use in a few of the examples. It may not the the best choice.
 For what it's worth, though, Samurai Shodown/Samurai Spirits does the same thing.
 
+On CD systems, you're going to want to handle interrupt level 3, though I'm not
+sure what code needs to be run, so that's a work in progress.
+
 Some games also use $00C00426 here. I am unsure if you can fully take advantage
-of the other interrupts on the Neo-Geo in any way.
+of the other interrupts (4-7) on the Neo-Geo in any way.
 
 header_cart.inc
 ---------------
@@ -95,18 +104,18 @@ Please note that the NGH number must NOT be 0000, otherwise all other values
 are "valid". SNK only ever used BCD numerals here, as far as I could tell.
 
 * Game program size
-$00080000 = 4Mbits/512KB,
-$00100000 = 16Mbits/1MB,
-and so on.
+$00080000 = 4Mbits/512KB
+$00100000 = 16Mbits/1MB (max size without bankswitching)
+and so on. (What is the smallest valid program size?)
 
 The pointer to backup RAM block is at $10E. The first two bytes at the location
-pointed to hold the debug dipswitches.
+pointed to hold the game's debug dipswitches.
 
 * Game save size (in bytes)
 
 The next two bytes are eyecatch-related:
-* animation flag (0=Eyecatch by BIOS, 1=Eyecatch by game, 2=Nothing)
-* sprite bank (if eyecatch done by BIOS)
+* Animation Flag (0=Eyecatch by BIOS, 1=Eyecatch by game, 2=Nothing)
+* Sprite Bank (if eyecatch done by BIOS)
 
 The software dip pointers start at $116 and map out like so:
 $116		Japan
@@ -124,8 +133,10 @@ which I really don't recommend).
 
 header_cd.inc
 -------------
-header_cd.inc is a currently untested hack of header_cart.inc, so please see that
-section for more information.
+header_cd.inc is based off of header_cart.inc, so please see that section for
+more information. The main difference is that you might want to modify the
+system type byte that appears after the "NEO-GEO" string, as well as an extra
+memory position used for Z80 purposes.
 
 ram_user.inc
 ------------
