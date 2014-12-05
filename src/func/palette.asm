@@ -71,13 +71,18 @@ palmac_LoadData:	macro
 ; Load raw color data into the palette buffer.
 
 ; d7				Number of color entries-1 (loop counter)
-; d6				Beginning buffer index to load data into ($0-$1FFE?)
+; d6				Beginning buffer index to load data into (multiplied by 2)
 ; a0				Address to load palette data from
 
 pal_LoadBuf:
-	; todo: load data into PaletteBuffer
 	lea		PaletteBuffer,a1
-	add.w	d6,a1
+	lsl.w	#1,d6				; shift left once (multiply by 2)
+	add.w	d6,a1				; get offset into PaletteBuffer
+
+.pal_LoadBuf_Loop:
+	move.w	(a0)+,(a1)+
+	dbra	d7,.pal_LoadBuf_Loop
+
 	rts
 
 ; palmac_LoadBuf
