@@ -28,9 +28,10 @@ The functions are dual-compatible thanks to a helper macro (fixmac_CalcVRAMAddr)
 If the first value is >= $7000, then it's a raw VRAM address, otherwise it's a
 combined cell location.
 
-Combined cell location format: $XXYY, where XX=$0-$27,YY=$00-$1F
+Combined cell location format: $XXYY, where XX=$00-$27,YY=$00-$1F
+No sanity checking is done in the macro, so keep the values within those ranges.
 
-This might anger you slightly if you only want to use one format, as expanding
+This might anger you slightly if you only want to use $7000-$74FF, as expanding
 the macro each time also expands the code size. You're free to modify the macro
 as you see fit for your own projects, but I'm keeping it like this for now.
 
@@ -38,6 +39,9 @@ Note: The fix layer can only use the first 16 palettes.
 Note: None of these functions take fix bankswitching into account.
 
 Looking for another project? You could always rewrite MESS_OUT... ;)
+
+todo:
+* Oversize Fix techniques (NEO-CMC42, NEO-CMC50)
 
 ================================================================================
 [fix_UpdateTile]
@@ -110,6 +114,8 @@ a0				Pointer to string to draw
 [fix_DrawRegion]
 Draws a rectangular region of tiles using a single palette and tile number MSB.
 
+todo: rename this to fix_DrawRegionSimple & make fix_DrawRegion operate on words?
+
 (Params)
 d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				Combined rows/columns size
@@ -129,16 +135,25 @@ d?				Copy region size ($XXYY)
 [fix_WriteFromRAM]
 Writes Fix tilemap data from 68K RAM to VRAM.
 
+(Params)
 a?				Starting 68K RAM location
 d?				Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d?				Write region size ($XXYY)
+
+================================================================================
+[fix_ClearAll]
+Clears all tiles on the fix layer, including the leftmost and rightmost columns.
+Uses tile number $0FF, palette 0.
+
+(Clobbers)
+d7				Loop counter
 
 ================================================================================
 todo: "nametable" writing
 
 In this case, "nametable" means "mapping of tiles on the Fix layer". The data
 may or may not be compressed, but there should be some sort of RLE because screw
-storing a bunch of the same value in a row, even when Neo ROMs can be so huge.
+storing a bunch of the same value in a row, even when Neo P ROMs can be so huge.
 
 "fix_WriteNametable"
 * Location of nametable data to write

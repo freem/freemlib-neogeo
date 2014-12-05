@@ -10,6 +10,7 @@
 
 ; todo:
 ; * test fix_Draw8x16
+; * test fix_ClearAll
 ; * finish writing fix_Draw16x16
 ; * finish writing vram <-> 68k ram routines
 ; * routine for taking a "nametable" and writing it to the fix layer
@@ -22,7 +23,8 @@
 
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; (Combined cell location format: $XXYY, where XX=$0-$27,YY=$00-$1F)
+; (Combined cell location format: $XXYY, where XX=$00-$27,YY=$00-$1F)
+; Note: No sanity checking is done here with the ranges.
 
 ; (Output)
 ; d0				output VRAM address
@@ -139,7 +141,7 @@ fix_Draw8x16:
 	; draw top line
 .fix_d8x16_TopLoop:
 	cmpi.b	#$FF,(a0)
-	beq.b	fix_d8x16_FinishTop
+	beq.b	.fix_d8x16_FinishTop
 	move.w	d1,d3				; get pal. index and tile number MSB
 	lsl.w	#8,d3				; shift into upper byte of word
 	move.b	(a0)+,d2			; read byte from string, increment read position
@@ -161,7 +163,7 @@ fix_Draw8x16:
 	; draw bottom line
 .fix_d8x16_BotLoop:
 	cmpi.b	#$FF,(a0)
-	beq.b	fix_d8x16_End
+	beq.b	.fix_d8x16_End
 	move.w	d1,d3				; get pal. index and tile number MSB
 	lsl.w	#8,d3				; shift into upper byte of word
 	move.b	(a0)+,d2			; read byte from string, increment read position
@@ -223,6 +225,7 @@ fix_Draw16x16:
 ; a0				Pointer to data to draw
 
 ; (Clobbers)
+; d5				Combined value to write to VRAM
 ; d6				Used for column/X size
 ; d7				Used for row/Y size
 
@@ -245,7 +248,12 @@ fix_DrawRegion_Rows:
 
 	; loop 2 (column/X)
 fix_DrawRegion_Cols:
-	; write data
+	moveq	#0,d5				; clear d5 for combiation
+	move.b	d2,d5				; copy d2 to d5
+	lsl.w	#8,d5				; shift d2 to upper byte
+	move.b	(a0)+,d5			;
+
+	; write data (xxx: does not take combination with d2 into account)
 	move.w	(a0)+,LSPC_DATA
 	; loop cols
 	dbra	d6,fix_DrawRegion_Cols
@@ -288,3 +296,21 @@ fix_WriteFromRAM:
 
 	rts
 
+;==============================================================================;
+; fix_ClearAll
+; Clears all tiles on the fix layer, including the leftmost and rightmost columns.
+; Uses tile number $0FF, palette 0.
+
+; (Clobbers)
+; d7				Loop counter
+
+fix_ClearAll:
+	move.w	#$7000,LSPC_ADDR	; start at $7000 (end at $74FF)
+	move.w	#1,LSPC_INCR		; VRAM increment +1
+	move.w	#$4FF,d7			; loop counter (xxx: does it need to be $4FF-1?)
+
+.fix_ClearAll_Loop:
+	move.w	#$00FF,LSPC_DATA	; write blank tile (palette 0, tile $0FF)
+	dbra	d7,.fix_ClearAll_Loop	;loop
+
+	rts
