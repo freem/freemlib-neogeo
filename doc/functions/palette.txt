@@ -33,7 +33,9 @@ Possible weights:
 
 ================================================================================
 <Palette Buffers>
-The actual values will need to be written to palette RAM during VBlank.
+The actual values will need to be written to palette RAM during VBlank, in order
+to minimize the chance of color artifacts appearing. This can be done with
+pal_LoadData (or palmac_LoadData for lazy people), among other ways...
 
 * Main Palette Buffer	0x2000		(Values written to the Palette RAM)
 * Pal. Action Buffer	0x0400		(Actions to run on VBlank)
@@ -41,6 +43,16 @@ The actual values will need to be written to palette RAM during VBlank.
 ================================================================================
 <Palette Actions>
 see palette/pal_actions.txt
+
+================================================================================
+[palmac_ColorRGBD]
+A macro for placing an RGB (0-31) value (with dark bit) in the binary.
+
+(Params)
+\1				Red value		($00-$1F; 0-31)
+\2				Green value		($00-$1F; 0-31)
+\3				Blue value		($00-$1F; 0-31)
+\4				Dark bit		(0 or 1; subtracts RGB by 1 if enabled)
 
 ================================================================================
 [pal_LoadData]

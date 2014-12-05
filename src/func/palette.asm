@@ -18,6 +18,8 @@
 ; palmac_PalBufIndex
 ; Internal macro for calculating the palette buffer index.
 
+; xxx: possibly broken
+
 ; Trashes: d5, d4
 
 ; (Params)
@@ -40,6 +42,20 @@ palmac_PalBufIndex:	macro
 	addi.l	#PaletteBuffer,d5	; add palette buffer location
 	movea.l	d5,a0				; palette buffer location in a0
 
+	endm
+
+;==============================================================================;
+; palmac_ColorRGBD
+; A macro for placing an RGB (0-31) value (with dark bit) in the binary.
+
+; (Params)
+; \1				Red value		($00-$1F; 0-31)
+; \2				Green value		($00-$1F; 0-31)
+; \3				Blue value		($00-$1F; 0-31)
+; \4				Dark bit		(0 or 1; subtracts RGB by 1 if enabled)
+
+palmac_ColorRGBD:	macro
+	dc.w	((\4&1)<<15)|((\1&1)<<14)|((\2&1)<<13)|((\3&1)<<12)|(((\1&$1E)>>1)<<8)|(((\2&$1E)>>1)<<4)|((\3&$1E)>>1)
 	endm
 
 ;==============================================================================;
@@ -70,6 +86,7 @@ palmac_LoadData:	macro
 ; pal_LoadBuf
 ; Load raw color data into the palette buffer.
 
+; (Params)
 ; d7				Number of color entries-1 (loop counter)
 ; d6				Beginning buffer index to load data into (multiplied by 2)
 ; a0				Address to load palette data from
@@ -141,14 +158,14 @@ pal_SetColor:
 ; (Params)
 ; d7				Beginning Palette Set & Index ($SS0i; SS=$00-$FF, i=$0-$F)
 ; d6				New color value
-; d5				Number of entries to write
+; d3				Number of entries to write-1 (loop counter)
 
 pal_FillColors:
 	palmac_PalBufIndex			; get address in palette buffer
-	; prepare loop (if necessary)
-
-.pal_FillColors_Loop:
 	; do loop
+.pal_FillColors_Loop:
+	move.w	d6,(a0)+
+	dbra	d3,.pal_FillColors_Loop
 
 	rts
 
