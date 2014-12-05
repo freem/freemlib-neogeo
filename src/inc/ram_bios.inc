@@ -106,7 +106,7 @@ BIOS_STATCURNT			equ $10FDAC	; (byte) Start and Select from current frame (Selec
 BIOS_STATCHANGE			equ $10FDAD	; (byte) Start and Select active-edge input (Select bits = 0 on MVS)
 ;-----------------------------------;
 BIOS_USER_REQUEST		equ $10FDAE	; (byte) Command for USER ($122)
-BIOS_USER_MODE			equ $10FDAF	; (byte) Current game status
+BIOS_USER_MODE			equ $10FDAF	; (byte) Current game status (0:init/boot, 1:title/demo, 2:game)
 ;-----------------------------------;
 ; Before calling CREDIT_CHECK and CREDIT_DOWN, set num credits here (0 for unjoined).
 BIOS_CREDIT1_DEC		equ $10FDB0	; (byte) Credit decrement Player 1 (BCD)
