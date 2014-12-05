@@ -72,11 +72,17 @@ a0				Address to load palette data from
 Set the value of a single color in the palette buffer.
 
 (Params)
-d?				Palette Set, Palette Index ($SS0i, where SS=$00-$FF and i=$0-$F)
-d?				New color value
+d7				Palette Set, Palette Index ($SS0i, where SS=$00-$FF and i=$0-$F)
+d6				New color value
 
-If I was an insane person I could fit the entire thing into a single register,
-but I don't think I'm going to do that.
+================================================================================
+[pal_FillColors]
+Sets the value of multiple colors in the palette buffer.
+
+(Params)
+d7				Beginning Palette Set & Index ($SS0i, where SS=$00-$FF and i=$0-$F)
+d6				New color value
+d5				Number of entries to write
 
 ================================================================================
 [pal_SoftShadow]

@@ -76,7 +76,8 @@ palmac_LoadData:	macro
 
 pal_LoadBuf:
 	; todo: load data into PaletteBuffer
-	;lea		PaletteBuffer+d6,a1
+	lea		PaletteBuffer,a1
+	add.w	d6,a1
 	rts
 
 ; palmac_LoadBuf
@@ -126,6 +127,24 @@ pal_LoadSetBuf:
 pal_SetColor:
 	palmac_PalBufIndex			; get address in palette buffer
 	move.w	d6,(a0)				; write new color value
+	rts
+
+;==============================================================================;
+; pal_FillColors
+; Sets the value of multiple colors in the palette buffer.
+
+; (Params)
+; d7				Beginning Palette Set & Index ($SS0i; SS=$00-$FF, i=$0-$F)
+; d6				New color value
+; d5				Number of entries to write
+
+pal_FillColors:
+	palmac_PalBufIndex			; get address in palette buffer
+	; prepare loop (if necessary)
+
+.pal_FillColors_Loop:
+	; do loop
+
 	rts
 
 ;==============================================================================;
@@ -265,8 +284,19 @@ palAction_Handler:
 ; The Palette Actions system is used to animate palettes via various methods.
 
 ; palAction_StopAll
+; Stop all palette actions.
+;------------------------------------------------------------------------------;
 ; palAction_Nop
+; No operation.
+;------------------------------------------------------------------------------;
 ; palAction_IndexCycle
+; Cycle palette indices.
+;------------------------------------------------------------------------------;
 ; palAction_ColorAnim
+; Perform color animation using fixed values.
+;------------------------------------------------------------------------------;
 ; palAction_ColorPulse
+; Perform a color pulse (0->1->0).
+;------------------------------------------------------------------------------;
 ; palAction_ColorRamp
+; Perform a color ramp (0->1|0).
