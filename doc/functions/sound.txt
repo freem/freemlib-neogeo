@@ -418,3 +418,5 @@ Channel Mappings, "Normal" (6 channels; YM2608/2612) -> YM2160
 2 -> 2
 3 -> 5
 4 -> 6
+
+Z80Wait from smkdan's adpcma_demo2
