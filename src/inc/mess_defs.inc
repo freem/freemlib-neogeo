@@ -224,36 +224,53 @@ KANA_PE			= $77	;	ペ
 KANA_PO			= $78	;	ポ
 
 ; [Kanji]
+; 難易度時間分秒有
+; 無設定??数
+; ?び
+; 方説
+; 明
+
+; 難
+;KANJI_x_1		= $00	; 難 1/2
+;KANJI_x_2		= $01	; 難 2/2
+;--------;
+; 易
+;KANJI_x_1		= $02	; 易 1/2
+;KANJI_x_2		= $03	; 易 2/2
+;--------;
+; 度
+;KANJI_x_1		= $04	; 度 1/2
+;KANJI_x_2		= $05	; 度 2/2
+;--------;
+; 時/ji
+;KANJI_JI_1		= $06	; 時 1/2
+;KANJI_JI_2		= $07	; 時 2/2
+;--------;
+; 間/kan
+;KANJI_KAN_1	= $08	; 間 1/2
+;KANJI_KAN_2	= $09	; 間 2/2
+;--------;
+; 分/bun (minute)
+;KANJI_BUN_1	= $0A	; 分 1/2
+;KANJI_BUN_2	= $0B	; 分 2/2
+;--------;
+; 秒/byō (second)
+;KANJI_BYO_1	= $0C	; 秒 1/2
+;KANJI_BYO_2	= $0D	; 秒 2/2
+;--------;
+; 有/yū (yes)
+;KANJI_YU_1		= $0E	; 有 1/2
+;KANJI_YU_2		= $0F	; 有 2/2
+;--------;
+; 無/mu (nothing/no)
 ;KANJI_x_1	=
 ;KANJI_x_2	=
 ;--------;
+; 設
 ;KANJI_x_1	=
 ;KANJI_x_2	=
 ;--------;
-;KANJI_x_1	=
-;KANJI_x_2	=
-;--------;
-;KANJI_x_1	=
-;KANJI_x_2	=
-;--------;
-;KANJI_x_1	=
-;KANJI_x_2	=
-;--------;
-;KANJI_x_1	=
-;KANJI_x_2	=
-;--------;
-;KANJI_x_1	=
-;KANJI_x_2	=
-;--------;
-;KANJI_x_1	=
-;KANJI_x_2	=
-;--------;
-;KANJI_x_1	=
-;KANJI_x_2	=
-;--------;
-;KANJI_x_1	=
-;KANJI_x_2	=
-;--------;
+; 定
 ;KANJI_x_1	=
 ;KANJI_x_2	=
 ;--------;
