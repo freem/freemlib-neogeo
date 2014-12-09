@@ -137,6 +137,16 @@ spr_ParseSCB1_End:
 ;==============================================================================;
 ; Sprite Macros
 ;------------------------------------------------------------------------------;
+; semantic names for SCB1Data flags
+AUTOANIM_NONE		equ 0		; no auto animation
+AUTOANIM_4			equ 4		; 4-frame auto animation
+AUTOANIM_8			equ 8		; 8-frame auto animation
+;-----------------------;
+VFLIP_NO			equ 0		; no vertical flip
+VFLIP_YES			equ 1		; vertical flip
+HFLIP_NO			equ 0		; no horizontal flip
+HFLIP_YES			equ 1		; horizontal flip
+;------------------------------------------------------------------------------;
 ; sprmac_SCB1Data
 ; Writes a single SCB1 data entry into the binary.
 ; This macro converts normal values to their SCB1 equivalents.
