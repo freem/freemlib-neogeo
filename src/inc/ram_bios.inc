@@ -51,22 +51,21 @@ BIOS_COUNTRY_CODE		equ $10FD83	; (byte) 0=Japan,1=USA,2=Europe/Export (xxx:Korea
 BIOS_GAME_DIP			equ $10FD84	; $10FD84-$10FD93 (all bytes)
 
 ; individual game soft dips
-BIOS_GAMEDIP_01			equ $10FD84
-BIOS_GAMEDIP_02			equ $10FD85
-BIOS_GAMEDIP_03			equ $10FD86
-BIOS_GAMEDIP_04			equ $10FD87
-BIOS_GAMEDIP_05			equ $10FD88
-BIOS_GAMEDIP_06			equ $10FD89
-BIOS_GAMEDIP_07			equ $10FD8A
-BIOS_GAMEDIP_08			equ $10FD8B
-BIOS_GAMEDIP_09			equ $10FD8C
-BIOS_GAMEDIP_10			equ $10FD8D
-BIOS_GAMEDIP_11			equ $10FD8E
-BIOS_GAMEDIP_12			equ $10FD8F
-BIOS_GAMEDIP_13			equ $10FD90
-BIOS_GAMEDIP_14			equ $10FD91
-BIOS_GAMEDIP_15			equ $10FD92
-BIOS_GAMEDIP_16			equ $10FD93
+BIOS_GAMEDIP_TIME1		equ $10FD84	; (word) timed option 1 (minutes and seconds in BCD)
+BIOS_GAMEDIP_TIME2		equ $10FD86	; (word) timed option 2 (minutes and seconds in BCD)
+BIOS_GAMEDIP_COUNT1		equ $10FD88	; (byte) counter option 1 (1-99; value here is default)
+BIOS_GAMEDIP_COUNT2		equ $10FD89	; (byte) counter option 2 (WITHOUT, INFINITE, 1-99 TIMES)
+;---------------------------------;
+BIOS_GAMEDIP_01			equ $10FD8A	; (byte) Game soft dip 01
+BIOS_GAMEDIP_02			equ $10FD8B	; (byte) Game soft dip 02
+BIOS_GAMEDIP_03			equ $10FD8C	; (byte) Game soft dip 03
+BIOS_GAMEDIP_04			equ $10FD8D	; (byte) Game soft dip 04
+BIOS_GAMEDIP_05			equ $10FD8E	; (byte) Game soft dip 05
+BIOS_GAMEDIP_06			equ $10FD8F	; (byte) Game soft dip 06
+BIOS_GAMEDIP_07			equ $10FD90	; (byte) Game soft dip 07
+BIOS_GAMEDIP_08			equ $10FD91	; (byte) Game soft dip 08
+BIOS_GAMEDIP_09			equ $10FD92	; (byte) Game soft dip 09
+BIOS_GAMEDIP_10			equ $10FD93	; (byte) Game soft dip 10
 
 ;-----------------------------------;
 ; INPUT_1
