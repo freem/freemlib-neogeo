@@ -57,16 +57,15 @@ REG_SLOT			equ $380021		; Slot Number (MVS)/REG_POUTPUT mirror (home)
 REG_LEDLATCHES		equ $380031		; LED Latches (latched on 1->0/falling edge transition)
 REG_LEDDATA			equ $380041		; LED Output Data
 REG_RTCCTRL			equ $380051		; Strobe/Clock/DIN for uPD4990
-; currently not included:
-;REG_?????			equ $380061		; Chute 1 coin lockout -> High
-;REG_?????			equ $380063		; Chute 2 coin lockout -> High
-;REG_?????			equ $380065		; Chute 1 coin counter -> High
-;REG_?????			equ $380067		; Chute 2 coin counter -> High
+REG_COIN1COUNT_HI	equ $380061		; Chute 1 coin counter -> High
+REG_COIN2COUNT_HI	equ $380063		; Chute 2 coin counter -> High
+REG_COIN1LOCK_HI	equ $380065		; Chute 1 coin lockout -> High
+REG_COIN2LOCK_HI	equ $380067		; Chute 2 coin lockout -> High
 REG_RTCWRITE		equ $3800D1		; Write to RTC
-;REG_?????			equ $3800E1		; Chute 1 coin lockout -> Low
-;REG_?????			equ $3800E3		; Chute 2 coin lockout -> Low
-;REG_?????			equ $3800E5		; Chute 1 coin counter -> Low
-;REG_?????			equ $3800E7		; Chute 2 coin counter -> Low
+REG_COIN1COUNT_LO	equ $3800E1		; Chute 1 coin counter -> Low
+REG_COIN2COUNT_LO	equ $3800E3		; Chute 2 coin counter -> Low
+REG_COIN1LOCK_LO	equ $3800E5		; Chute 1 coin lockout -> Low
+REG_COIN2LOCK_LO	equ $3800E7		; Chute 2 coin lockout -> Low
 
 ;==============================================================================;
 ; [Sound Reg]
@@ -158,10 +157,10 @@ UPLOAD				equ $E00000		; Upload Zone ($E00000-$EFFFFF)
 ;$FF007E-$FF008F	Microcode (16x9bit instructions ?)
 
 ;$FF0101	(byte) "nLC8951Register (4 LSB)"
-; $FF0102??
+; $FF0102??		start cd transfer when 0xF0 according to mess
 ;$FF0103	(byte) "nLC8951Register value"
 ; $FF0104??
-;$FF0105	(byte) nActiveTransferArea = byteValue
+;$FF0105	(byte) nActiveTransferArea = byteValue ("area selector")
 ; $FF0106??
 ; $FF0107??
 ;$FF0108	(word)
@@ -174,6 +173,9 @@ REG_DISABLESPR		equ $FF0111		; (byte) Disable Sprite toggle (1=disable,0=enable)
 REG_DISABLEFIX		equ $FF0115		; (byte) Disable Fix toggle (1=disable,0=enable) 
 REG_ENVIDEO			equ $FF0119		; (byte) Video output toggle (1=enable,0=disable)
 REG_CDCONFIG		equ $FF011C		; (byte) read config
+
+; these values are from the neo geo dev wiki; ng_aes.c has them off by 1...
+; which one is right??
 REG_UPMAPSPR		equ $FF0121		; (byte) Set upload zone to SPR DRAM
 REG_UPMAPPCM		equ $FF0123		; (byte) Set upload zone to PCM DRAM
 REG_UPMAPZ80		equ $FF0127		; (byte) Set upload zone to Z80 DRAM
