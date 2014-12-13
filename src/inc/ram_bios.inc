@@ -16,6 +16,9 @@ BIOS_WORKRAM			equ $10F300
 ;	ds.b $180				; ends up at $10FD80
 
 ;===================================;
+; $10F688 "decremented each time a sector is read until it's 0" on CD systems
+
+;===================================;
 ; $10FCEE ??
 ; $10FCF2 ??
 
