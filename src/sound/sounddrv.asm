@@ -104,7 +104,9 @@ endNMI:
 ; Handle an interrupt request.
 
 ; In this driver, the IRQ is used for keeping the music playing.
-; IRQs in SNK drivers (SM1/BIOS, MAKOTO v3.0) are pretty large. I'd like to avoid that.
+; At least, that's the goal. Not sure how feasible it really is.
+; Some other engines use the IRQ to poll the two status ports (6 and 4).
+; IRQs in SNK drivers (Mr.Pac, MAKOTO v3.0) are pretty large. I want to avoid that.
 
 IRQ:
 	; save registers
@@ -479,6 +481,9 @@ command_01:
 ; command_02
 ; Plays the eyecatch music. (Typically music code $5F)
 
+;command_02:
+	
+
 ;------------------------------------------------------------------------------;
 ; command_03
 ; Handles a soft reset.
@@ -492,6 +497,7 @@ command_03:
 	jp		Start			; Go back to the top.
 
 ;==============================================================================;
+; play_ADPCM_A
 ; Play ADPCM-A sample
 
 ; (Params)
@@ -515,6 +521,7 @@ play_ADPCM_A:
 	ret
 
 ;==============================================================================;
+; play_ADPCM_B
 ; Play ADPCM-B sample
 
 ; (Params)
