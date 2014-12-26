@@ -91,3 +91,33 @@ offset	    content
 
 ================================================================================
 [NeoRomFS]
+This section is currently a work in progress as well.
+
+Cart version expects a linear database; CD version loads "non-standard" files.
+
+<Header>
+$00-$07		(str.) "NeoRomFS"
+$08-$0B		(long) size of data in filesystem (bytes)
+$0C-$0F		(long) ????
+
+<Default Filesystem (Cart)>
+/				Filesystem Root
+	mc/				[Device] Memory Card
+	bram/			["Device"] MVS Backup RAM
+	pc2neo/			[Device] PC2Neo cable
+
+<Default Filesystem (CD)>
+/				Filesystem Root
+	mc/				[Device] Backup Memory
+	pc2neo/			[Device] PC2Neo cable
+
+
+<Memory Card/Backup Memory>
+NeoRomFS provides a soft layer over the memory card functions.
+Data is written to the card using the original SNK file system.
+
+<MVS Backup RAM>
+Where available, NeoRomFS can provide a soft layer over the MVS Backup RAM.
+
+<PC2Neo Cable>
+(unsure if this should be handled by NeoRomFS or elsewhere)

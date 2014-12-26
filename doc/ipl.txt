@@ -13,7 +13,7 @@ Filename,Bank,Offset
 
 newlines are CR+LF
 
-So far, all IPL.TXT files end with an 0x1A byte.
+So far, all known IPL.TXT files end with an 0x1A byte.
 
 Last Blade 2's IPL.TXT has filenames in lowercase.
 

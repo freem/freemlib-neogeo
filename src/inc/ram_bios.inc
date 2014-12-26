@@ -19,7 +19,8 @@ BIOS_WORKRAM			equ $10F300
 ; $10F688 "decremented each time a sector is read until it's 0" on CD systems
 
 ;===================================;
-; $10FCEE ??
+; $10FCEE "Z80/M ROM check pass", set by game
+
 ; $10FCF2 ??
 
 ;===================================;
@@ -117,21 +118,22 @@ BIOS_CREDIT3_DEC		equ $10FDB2	; (byte) Credit decrement Player 3 (BCD)
 BIOS_CREDIT4_DEC		equ $10FDB3	; (byte) Credit decrement Player 4 (BCD)
 ;-----------------------------------;
 BIOS_START_FLAG			equ $10FDB4	; (byte) Player(s) starting the game on PLAYER_START call
-; $10FDB5??
-BIOS_PLAYER1_MODE		equ $10FDB6	; (byte) Player 1 Status
+;BIOS_??????????		equ $10FDB5	; (byte) ?
+;-----------------------------------;
+; Status Values: 0=No play, 1=Playing, 2=Continue display, 3=Game Over
+BIOS_PLAYER1_MODE		equ $10FDB6	; (byte) Player 1 Status (a.k.a. "BIOS_PLAYER_MOD1")
 BIOS_PLAYER2_MODE		equ $10FDB7	; (byte) Player 2 Status
 BIOS_PLAYER3_MODE		equ $10FDB8	; (byte) Player 3 Status
 BIOS_PLAYER4_MODE		equ $10FDB9	; (byte) Player 4 Status
-; Status Values: 0=No play, 1=Playing, 2=Continue display, 3=Game Over
 ;-----------------------------------;
 ;???					equ $10FDBA	; (long)
-BIOS_MESS_POINT			equ $10FDBE	; (long) pointer to buffer
+BIOS_MESS_POINT			equ $10FDBE	; (long) pointer to MESS_OUT buffer
 BIOS_MESS_BUSY			equ $10FDC2	; (word) 0=run MESS_OUT, 1=skip MESS_OUT
 ;-----------------------------------;
 BIOS_CARD_COMMAND		equ $10FDC4	; (byte) Command to execute
 BIOS_CARD_MODE			equ $10FDC5	; (byte) "command error job mode"
 BIOS_CARD_ANSWER		equ $10FDC6	; (byte) answer code for command; set by BIOS
-; $10FDC7??
+;BIOS_??????????		equ $10FDC7	; (byte) ?
 BIOS_CARD_START			equ $10FDC8	; (long) Pointer to start of card data
 BIOS_CARD_SIZE			equ $10FDCC	; (word) Size of data
 BIOS_CARD_FCB			equ $10FDCE	; (word) Game NGH number
@@ -146,7 +148,7 @@ BIOS_HOUR				equ $10FDD6	; (byte)
 BIOS_MINUTE				equ $10FDD7	; (byte) 
 BIOS_SECOND				equ $10FDD8	; (byte) 
 ;-----------------------------------;
-BIOS_SELECT_TIMER		equ $10FDDA	; (byte?) "BIOS_COMPULSION_TIMER"
+BIOS_SELECT_TIMER		equ $10FDDA	; (byte?) (a.k.a. "BIOS_COMPULSION_TIMER")
 ;BIOS_START_TEST			equ $10FDDC	; ()
 ;BIOS_COIN_LEVER			equ $10FDDE	; ()
 
@@ -195,7 +197,7 @@ BIOS_WORK2				equ $10FE80
 
 BIOS_DEVMODE			equ $10FE80	; (byte)
 ;$10FE81-$10FE87 "Power on ID code"??
-BIOS_FRAMECOUNT			equ $10FE88	; (long) "SYS_INT1_TIMER"
+BIOS_FRAMECOUNT			equ $10FE88	; (long) (a.k.a. "SYS_INT1_TIMER")
 BIOS_SYS_STOPPER		equ $10FE8C	; (byte) "system stopper", actually BIOS VBlank flag
 BIOS_Z80_BANK			equ $10FE8D	; (byte)
 BIOS_SYSTEM_MODE2		equ $10FE8E	; (word)
@@ -223,16 +225,16 @@ BIOS_MESS_STACK			equ $10FEC6	; (long) 5 longs
 ;-----------------------------------;
 ; $10FEDA and $10FEDB are used on CD systems; see below.
 ;-----------------------------------;
-BIOS_STATCURNT_RAW		equ $10FEDC	; (byte) "INPUT_SS"; raw version of BIOS_STATCURNT (includes Select on MVS)
+BIOS_STATCURNT_RAW		equ $10FEDC	; (byte) raw version of BIOS_STATCURNT (includes Select on MVS) (a.k.a. "INPUT_SS")
 BIOS_STATCHANGE_RAW		equ $10FEDD	; (byte) raw version of BIOS_STATCHANGE (includes Select on MVS)
 BIOS_INPUT_TT1			equ $10FEDE	; (byte)
 BIOS_INPUT_TT2			equ $10FEDF	; (byte)
 
-BIOS_KYOUSEI_MODE		equ $10FEE0	; (byte) "KYOUSEI_MODE" (Game start compulsion?)
-BIOS_SYS_STOP			equ $10FEE1	; (byte) "BIOS_FRAME_SKIP","SYS_STOP"
-BIOS_CS_REMAIN			equ $10FEE2	; (byte) "CS_REMAIN"
-BIOS_INT_OFF			equ $10FEE3	; (byte) "BIOS_INT1_SKIP", "INT_OFF"
-BIOS_INT1_TIMER2		equ $10FEE4	; (word) "BIOS_INT1_FRAME_COUNTER", "INT1_TIMER2"
+BIOS_KYOUSEI_MODE		equ $10FEE0	; (byte) a.k.a. "KYOUSEI_MODE" (Game start compulsion?)
+BIOS_SYS_STOP			equ $10FEE1	; (byte) (a.k.a. "BIOS_FRAME_SKIP","SYS_STOP")
+BIOS_CS_REMAIN			equ $10FEE2	; (byte) (a.k.a. "CS_REMAIN")
+BIOS_INT_OFF			equ $10FEE3	; (byte) (a.k.a. "BIOS_INT1_SKIP", "INT_OFF")
+BIOS_INT1_TIMER2		equ $10FEE4	; (word) (a.k.a. "BIOS_INT1_FRAME_COUNTER", "INT1_TIMER2")
 ;-----------------------------------;
 ;INPUT_5
 BIOS_P5STATUS			equ $10FEE8	; (byte) Input 5 status
@@ -262,10 +264,12 @@ BIOS_4P_PLUGGED			equ $10FEFB	; (bios) Is board present? (0=not found; $FF=plugg
 ;==============================================================================;
 ; [CD system-specific]
 
+; $10FDDC	on NeoCD top 3-2: 1=Load file with animation, 0=No animation 
+
 ; $10FDE2 (at least CDZ)
 
 ; DRAM Uploading
-BIOS_CD_UPZONE			equ $10FEDA	; (byte) zone (0=PRG/TXT, 1=FIX, 2=SPR, 3=Z80, 4=PCM, 5=PAT, 7=OBJ, 8=A**)
+BIOS_CD_UPZONE			equ $10FEDA	; (byte) zone (0=PRG/TXT, 1=FIX, 2=SPR, 3=Z80, 4=PCM, 5=PAT, 6=???, 7=OBJ, 8=A**)
 BIOS_CD_UPBANK			equ $10FEDB	; (byte) bank
 BIOS_CD_UPDEST			equ $10FEF4	; (long) destination address
 BIOS_CD_UPSRC			equ $10FEF8	; (long) source address
