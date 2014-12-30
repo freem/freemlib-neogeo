@@ -9,7 +9,8 @@
 ; reset LSPC_INCR after calling any function in this file.
 
 ; todo:
-; * test fix_Draw8x16
+; * fix_Draw8x16 needs to be easier to use w/r/t string data
+; * combined cell locations don't work?
 ; * test fix_ClearAll
 ; * finish writing fix_Draw16x16
 ; * finish writing vram <-> 68k ram routines
@@ -134,6 +135,7 @@ fix_ChangePal:
 
 fix_Draw8x16:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
+	move.w	d0,LSPC_ADDR		; set new VRAM address
 
 	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
 	movea.l	a0,a1				; copy original string pointer for later
