@@ -9,7 +9,6 @@
 ; reset LSPC_INCR after calling any function in this file.
 
 ; todo:
-; * combined cell locations don't work?
 ; * fix_Draw8x16 needs to be easier to use
 ;  * string data needs to be better (no "&$FF" everywhere)
 ;  * ability to use multiple pages in a single string (currently limited to 1)
@@ -47,7 +46,7 @@ fixmac_CalcVRAMAddr:	macro
 
 	move.w	d0,d6				; put combined cell location in d6
 	andi.w	#$FF00,d6			; mask for X position
-	asl.w	#8,d6				; shift over
+	asr.w	#8,d6				; shift over
 
 	; convert to vram address
 	; VRAM Address from Cells = $7000 + (X*$20) + (Y)
