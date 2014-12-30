@@ -10,7 +10,7 @@
 
 ; todo:
 ; * fix_Draw8x16 needs to be easier to use
-;  * string data needs to be better (no "&$FF" everywhere)
+;  * string data (no "&$FF" everywhere)
 ;  * ability to use multiple pages in a single string (currently limited to 1)
 ; * test fix_ClearAll
 ; * finish writing fix_Draw16x16

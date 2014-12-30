@@ -56,6 +56,7 @@ d1				New palette index (pppp) and tile number (TTTT tttttttt)
 ================================================================================
 [fix_ChangeTile]
 Change the tile number of a fix map location.
+Does not attempt to sanitize your input.
 
 xxxx0000 00000000
 
@@ -66,6 +67,7 @@ d1				New tile number
 ================================================================================
 [fix_ChangePal]
 Change the palette index of a fix map location.
+Does not attempt to sanitize your input.
 
 0000xxxx xxxxxxxx
 
