@@ -16,10 +16,11 @@ BRAM_COIN_CREDIT_P1		equ $D0003A	; (byte) Coins needed for crediting player 1
 BRAM_CREDIT_ADD_P1		equ $D0003B	; (byte) Credits added to player 1
 BRAM_COIN_CREDIT_P2		equ $D0003C	; (byte) Coins needed for crediting player 2
 BRAM_CREDIT_ADD_P2		equ $D0003D	; (byte) Credits added to player 2
+
 BRAM_GAMESEL			equ $D00042	; (byte) Game select (1=free,0=need credit)
 BRAM_COMPULSION			equ $D00043	; (byte) compulsion timer toggle (0=enable,1=disable)
 BRAM_COMPULSION_TIME	equ $D00044	; (byte) compulsion timer value, BCD
-
+;$D00045?
 BRAM_SOUND_STOP			equ $D00046	; (byte) demo sound toggle; disable sounds if nonzero
 BRAM_SLOT_NUMBER		equ $D00047	; (byte) number of detected slots (2 for 1-slot machines)
 BRAM_PLAY_TIME			equ $D00048	; (long) play time counter (in seconds, hex)
@@ -79,7 +80,7 @@ BRAM_SLOT8_DATA			equ $D07320	; ($1000 bytes) Save data for BRAM Block 8
 ; Game Soft Dips ($D00220-$D0029F, 16*8)
 
 ; Bookkeeping
-;$D09BA0-$D09DDF	; ($240 bytes) Current month coin (YYMMDDdd - coin1 - coin2 - service)
-;$D09DE0-$D0A01F	; ($240 bytes) Current month play (YYMMDDdd - play - continue - time)
-;$D0A020-$D0A0DF	; ($C0 bytes) Year coin (00000000 - coin1 - coin2 - service)
-;$D0A0E0-$D0A19F	; ($C0 bytes) Year play (00000000 - play - continue - time)
+;$D09BA0-$D09DDF	; ($240/576 bytes) Current month coin (YYMMDDdd - coin1 - coin2 - service)
+;$D09DE0-$D0A01F	; ($240/576 bytes) Current month play (YYMMDDdd - play - continue - time)
+;$D0A020-$D0A0DF	; ($C0/192 bytes) Year coin (00000000 - coin1 - coin2 - service)
+;$D0A0E0-$D0A19F	; ($C0/192 bytes) Year play (00000000 - play - continue - time)
