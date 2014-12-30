@@ -9,8 +9,10 @@
 ; reset LSPC_INCR after calling any function in this file.
 
 ; todo:
-; * fix_Draw8x16 needs to be easier to use w/r/t string data
 ; * combined cell locations don't work?
+; * fix_Draw8x16 needs to be easier to use
+;  * string data needs to be better (no "&$FF" everywhere)
+;  * ability to use multiple pages in a single string (currently limited to 1)
 ; * test fix_ClearAll
 ; * finish writing fix_Draw16x16
 ; * finish writing vram <-> 68k ram routines
@@ -116,6 +118,38 @@ fix_ChangePal:
 	rts
 
 ;==============================================================================;
+; fix_DrawString
+; Draws horizontal text to the screen manually. End code is $FF.
+
+; (Params)
+; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+; d1				Palette index and tile number MSB
+; a0				Pointer to string to draw
+
+; (Clobbers)
+; d2				Byte for writing
+; d3				Used for temporary tile assembly
+
+fix_DrawString:
+	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
+	move.w	d0,LSPC_ADDR		; set new VRAM address
+
+	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
+
+.fix_DrawString_Loop:
+	cmpi.b	#$FF,(a0)
+	beq.b	.fix_DrawString_End
+	move.w	d1,d3				; get pal. index and tile number MSB
+	lsl.w	#8,d3				; shift into upper byte of word
+	move.b	(a0)+,d2			; read byte from string, increment read position
+	or.w	d3,d2				; OR with shifted pal. index and tile number MSB
+	move.w	d2,LSPC_DATA		; write combined tile to VRAM
+	bra.b	.fix_DrawString_Loop	; loop until finding $FF
+
+.fix_DrawString_End:
+	rts
+
+;==============================================================================;
 ; fix_Draw8x16
 ; Draws "normal" 8x16 text to the screen. End code is $FF.
 
@@ -125,11 +159,14 @@ fix_ChangePal:
 
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				Palette index and tile number MSB
+; d1				Palette index (and tile number MSB, in old version)
 ; a0				Pointer to string to draw
 
+; (future param)
+; a1				Pointer to character map
+
 ; (Clobbers)
-; a1				Used for original string pointer
+; a2				Used for original string pointer
 ; d2				Byte for writing
 ; d3				Used for temporary tile assembly and VRAM address changing
 
@@ -138,7 +175,7 @@ fix_Draw8x16:
 	move.w	d0,LSPC_ADDR		; set new VRAM address
 
 	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
-	movea.l	a0,a1				; copy original string pointer for later
+	movea.l	a0,a2				; copy original string pointer for later
 
 	; draw top line
 .fix_d8x16_TopLoop:
@@ -160,7 +197,7 @@ fix_Draw8x16:
 	move.w	d3,LSPC_ADDR		; set new VRAM address
 
 	; reset original string pointer
-	movea.l	a1,a0
+	movea.l	a2,a0
 
 	; draw bottom line
 .fix_d8x16_BotLoop:

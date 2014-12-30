@@ -74,6 +74,19 @@ d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				New palette number
 
 ================================================================================
+[fix_DrawString]
+Draws horizontal text to the screen manually. End code is $FF.
+
+(Params)
+d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1				Palette index and tile number MSB
+a0				Pointer to string to draw
+
+(Clobbers)
+d2				Byte for writing
+d3				Used for temporary tile assembly
+
+================================================================================
 [fix_Draw8x16]
 Draws "normal" 8x16 text to the screen.
 
@@ -90,10 +103,12 @@ $10,$11,$12,$13
 the line below it will be:
 $20,$21,$22,$23
 
+This function is currently undergoing a rewrite as of 2014/12/30.
+
 (Params)
-d?				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d?				Palette index and tile number MSB
-a?				Pointer to string to draw
+d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1				Palette index and tile number MSB
+a0				Pointer to string to draw
 
 ================================================================================
 [fix_Draw16x16]
