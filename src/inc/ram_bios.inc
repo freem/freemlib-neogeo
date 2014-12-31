@@ -19,6 +19,25 @@ BIOS_WORKRAM			equ $10F300
 ; $10F688 "decremented each time a sector is read until it's 0" on CD systems
 
 ;===================================;
+; $10FC24	; (word)
+
+; $10FC48	; (word?) ?? list of some sort? (used in eyecatch)
+
+; $10FC6C	; (word) ?? (used in eyecatch)
+
+; $10FC90	; (word?) ?? list of some sort? (used in eyecatch)
+
+; $10FCB4	; (word) ?? (used in eyecatch)
+
+; $10FCD8	; (word) eyecatch routine number to call next
+; $10FCDA	; (word) ?? (used in eyecatch)
+; $10FCDC	; (word) routine internal counter (used in eyecatch)
+; $10FCDE	; (word) ?? (used in eyecatch)
+; $10FCE0	; (word) ?? (used in eyecatch)
+; $10FCE2	; (long) ?? (used in eyecatch)
+; $10FCE6	; (word) ?? (used in eyecatch)
+; $10FCE8	; (long) ?? (used in eyecatch)
+
 ; $10FCEE "Z80/M ROM check pass", set by game
 
 ; $10FCF2 ??
@@ -215,7 +234,7 @@ BIOS_LED_OFF			equ $10FEBB	; (byte)
 BIOS_IN_TEST			equ $10FEBC	; (byte)
 BIOS_INST_MODE			equ $10FEBD	; (byte)
 BIOS_START_BUSY			equ $10FEBE	; (byte)
-BIOS_BACKUP_MODE		equ $10FEBF	; (byte)
+BIOS_BACKUP_MODE		equ $10FEBF	; (byte) (a.k.a. "BIOS_BRAM_USED")
 ;-----------------------------------;
 BIOS_INST_RAD			equ $10FEC0	; (long)
 BIOS_INST_RCO			equ $10FEC4	; (byte)
@@ -223,7 +242,9 @@ BIOS_INST_RCO			equ $10FEC4	; (byte)
 BIOS_TITLE_MODE			equ $10FEC5	; (byte)
 BIOS_MESS_STACK			equ $10FEC6	; (long) 5 longs
 ;-----------------------------------;
-; $10FEDA and $10FEDB are used on CD systems; see below.
+; $10FEDA and $10FEDB are used differently on CD systems; see below.
+;BIOS_??????????		equ $10FEDA
+;BIOS_??????????		equ $10FEDB	; (byte)
 ;-----------------------------------;
 BIOS_STATCURNT_RAW		equ $10FEDC	; (byte) raw version of BIOS_STATCURNT (includes Select on MVS) (a.k.a. "INPUT_SS")
 BIOS_STATCHANGE_RAW		equ $10FEDD	; (byte) raw version of BIOS_STATCHANGE (includes Select on MVS)

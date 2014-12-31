@@ -2,15 +2,17 @@
 ;==============================================================================;
 BRAM_START				equ $D00000
 
-;$D00020
-;$D00021
-;$D00022
-;$D00023
+;$D00010	; Location of "BACKUP RAM OK !" string?
+
+;$D00020	; (long) ??
+;$D00022	; (byte?) related to service switch?
 BRAM_COIN_INT_P1		equ $D00024	; (byte) Internal coin counter (not credit)
 BRAM_COIN_INT_P2		equ $D00025	; (byte) Internal coin counter (not credit)
 
 BRAM_CREDIT_INT_P1		equ $D00034	; (byte) Internal credit counter for P1 (BCD)
 BRAM_CREDIT_INT_P2		equ $D00035	; (byte) Internal credit counter for P2 (BCD)
+
+;$D00038	; (byte?) ??
 
 BRAM_COIN_CREDIT_P1		equ $D0003A	; (byte) Coins needed for crediting player 1
 BRAM_CREDIT_ADD_P1		equ $D0003B	; (byte) Credits added to player 1
@@ -27,18 +29,21 @@ BRAM_PLAY_TIME			equ $D00048	; (long) play time counter (in seconds, hex)
 BRAM_PLAYTIME_TIMER		equ $D0004C	; (byte) timer used with BRAM_PLAY_TIME. counts down from $3C
 
 ;$D00058	; (byte) First slot number with an eyecatch flag of 0 (BIOS)
+;$D00060	; (word) ??
 
 BRAM_FRAME_TIMER		equ $D0005A	; (long) HHMMSSFF timer (hours*4,minutes,seconds,frame down)
-BRAM_CUR_DATE			equ $D00104	; (long) YYMMDDdd date
 
-;$D00108	; (byte) selected slot number (start at 0); used for EL panels
-;$D00109	; (byte) state of EL-PANEL?
+BRAM_CUR_DATE			equ $D00104	; (long) YYMMDDdd date
+BRAM_CUR_SLOT_NUM		equ $D00108	; (byte) selected slot number (start at 0); also used for EL panels
+BRAM_EL_PANEL			equ $D00109	; (byte) state of EL-PANEL?
 
 BRAM_BOOKP_START_DETAIL	equ $D0010A	; (long) detailed game start book address
 BRAM_BOOKP_START_TOTAL	equ $D0010E	; (long) total game start book address
 BRAM_BOOKP_COIN_DETAIL	equ $D00112	; (long) detailed cabinet coin book address
 BRAM_BOOKP_COIN_MONTH	equ $D00116	; (long) current month cabinet coin book address
 BRAM_BOOKP_START_MONTH	equ $D001A4	; (long) Current month game start book (pointer?)
+
+;$D00122	; (byte?) ??
 
 ; slots (empty slots have NGH 0000 and ID $FFFF)
 BRAM_SLOT1_ID			equ $D00124	; (long) Slot 1 NGH number, BRAM game block ID
@@ -58,6 +63,9 @@ BRAM_SLOT5_CREATED		equ $D00154	; (long) creation date for Slot 5 book (YYMMDDdd
 BRAM_SLOT6_CREATED		equ $D00158	; (long) creation date for Slot 6 book (YYMMDDdd)
 BRAM_SLOT7_CREATED		equ $D0015C	; (long) creation date for Slot 7 book (YYMMDDdd)
 BRAM_SLOT8_CREATED		equ $D00160	; (long) creation date for Slot 8 book (YYMMDDdd)
+;-----------------------------------;
+;$D001AC	; (long?) ??
+;$D001B0	; (word?) ??
 ;-----------------------------------;
 BRAM_SLOT1_NAME			equ $D002A0	; (16 bytes) Game name for BRAM Block 1
 BRAM_SLOT2_NAME			equ $D002B0	; (16 bytes) Game name for BRAM Block 2
