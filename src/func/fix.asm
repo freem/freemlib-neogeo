@@ -256,6 +256,8 @@ fix_Draw16x16:
 ; fix_DrawRegion
 ; Draws a rectangular region of tiles using a single palette and tile number MSB.
 
+; xxx: currently broken
+
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 ; d1				Combined rows/columns size ($XXYY)

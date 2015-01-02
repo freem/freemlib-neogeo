@@ -50,8 +50,8 @@ Change the tile number and palette index of a fix map location.
 ppppTTTT tttttttt
 
 (Params)
-d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1				New palette index (pppp) and tile number (TTTT tttttttt)
+d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1				[long] New palette index (pppp) and tile number (TTTT tttttttt)
 
 ================================================================================
 [fix_ChangeTile]
@@ -61,7 +61,7 @@ Does not attempt to sanitize your input.
 xxxx0000 00000000
 
 (Params)
-d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				New tile number
 
 ================================================================================
@@ -72,7 +72,7 @@ Does not attempt to sanitize your input.
 0000xxxx xxxxxxxx
 
 (Params)
-d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				New palette number
 
 ================================================================================
@@ -80,7 +80,7 @@ d1				New palette number
 Draws horizontal text to the screen manually. End code is $FF.
 
 (Params)
-d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				Palette index and tile number MSB
 a0				Pointer to string to draw
 
@@ -108,7 +108,7 @@ $20,$21,$22,$23
 This function is currently undergoing a rewrite as of 2014/12/30.
 
 (Params)
-d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				Palette index and tile number MSB
 a0				Pointer to string to draw
 
@@ -123,7 +123,7 @@ AA BB CC DD
 AA BB CC DD
 
 (Params)
-d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				Palette index and tile number MSB
 a0				Pointer to string to draw
 
@@ -134,7 +134,7 @@ Draws a rectangular region of tiles using a single palette and tile number MSB.
 todo: rename this to fix_DrawRegionSimple & make fix_DrawRegion operate on words?
 
 (Params)
-d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 d1				Combined rows/columns size
 d2				Palette index and tile number MSB
 a0				Pointer to data to draw
@@ -272,11 +272,11 @@ messmac_SetIncr (Command 2: Set VRAM Increment)
 
 --------------------------------------------------------------------------------
 messmac_SetAddr (Command 3: Set VRAM Address)
-\1		New VRAM address
+\1		[word] New VRAM address
 
 --------------------------------------------------------------------------------
 messmac_OutPtr (Command 4: Pointer to data)
-\1		Pointer to Commands
+\1		[long] Pointer to Commands
 
 --------------------------------------------------------------------------------
 messmac_AddAddr (Command 5: Add to VRAM Address)
@@ -300,7 +300,7 @@ messmac_Out8x16J (Command 9: 8x16 voiced Japanese text)
 
 --------------------------------------------------------------------------------
 messmac_CallSub (Command A: Call sub-command list)
-\1		Pointer to command list (must end with command B)
+\1		[long] Pointer to command list (must end with command B)
 
 --------------------------------------------------------------------------------
 messmac_EndSub (Command B: Return to calling command list)
