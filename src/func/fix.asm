@@ -256,11 +256,9 @@ fix_Draw16x16:
 ; fix_DrawRegion
 ; Draws a rectangular region of tiles using a single palette and tile number MSB.
 
-; xxx: currently broken
-
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				Combined rows/columns size ($XXYY)
+; d1				Combined rows/columns size ($YYXX)
 ; d2				Palette index and tile number MSB
 ; a0				Pointer to data to draw
 
@@ -291,15 +289,15 @@ fix_DrawRegion_Cols:
 	moveq	#0,d5				; clear d5 for combiation
 	move.b	d2,d5				; copy d2 to d5
 	lsl.w	#8,d5				; shift d2 to upper byte
-	move.b	(a0)+,d5			;
+	move.b	(a0)+,d5			; get byte from data
 
-	; write data (xxx: does not take combination with d2 into account)
-	move.w	(a0)+,LSPC_DATA
+	; write data
+	move.w	d5,LSPC_DATA
 	; loop cols
 	dbra	d6,fix_DrawRegion_Cols
 
 	; update vram address
-	addi.w	#$20,d0
+	addi.w	#1,d0
 	move.w	d0,LSPC_ADDR
 
 	; loop rows
