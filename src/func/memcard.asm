@@ -5,6 +5,8 @@
 
 ; IMPORTANT NOTE: It's up to you to ensure the memory card is inserted on cart
 ; systems before issuing most of these commands.
+
+; Developer note: Anything short should be a macro.
 ;==============================================================================;
 ; memCard_Inserted
 ; Check if the memory card is inserted. Always true on CD systems.
@@ -29,30 +31,30 @@ memCard_Inserted:
 ; Check if the memory card is write protected.
 
 ; (Outputs)
-; d0			Card Write Protect status (0=not protected, 1=write protected)
+; d0			Card Write Protect status (0=not protected, nonzero=write protected)
 
-memCard_WriteProtected:
+memCard_WriteProtected:	macro
 	move.b	REG_STATUS_B,d0	; load REG_STATUS_B
 	andi.b	#$40,d0			; mask for "write protected"
-	rts
+	endm
 
 ;==============================================================================;
 ; memCard_EnableWrite
 ; Enables writes to the memory card by poking CARD_ENABLE_1 and CARD_ENABLE_2.
 
-memCard_EnableWrite:
+memCard_EnableWrite:	macro
 	move.b	d0,CARD_ENABLE_1
 	move.b	d0,CARD_ENABLE_2
-	rts
+	endm
 
 ;==============================================================================;
 ; memCard_DisableWrite
 ; Disables writes to the memory card by poking CARD_DISABLE_1 and CARD_DISABLE_2.
 
-memCard_DisableWrite:
+memCard_DisableWrite:	macro
 	move.b	d0,CARD_DISABLE_2
 	move.b	d0,CARD_DISABLE_1
-	rts
+	endm
 
 ;==============================================================================;
 ; memCard_GetRegion
@@ -61,9 +63,9 @@ memCard_DisableWrite:
 ; (Outputs)
 ; d0			Region (byte; 0=Japan, 1=USA, 2=Europe)
 
-memCard_GetRegion:
+memCard_GetRegion:	macro
 	move.b	MEMCARD_DATA+$30,d0
-	rts
+	endm
 
 ;==============================================================================;
 ; memCard_GetSize
@@ -72,9 +74,9 @@ memCard_GetRegion:
 ; (Outputs)
 ; d0			Memory card size (word)
 
-memCard_GetSize:
+memCard_GetSize:	macro
 	move.w	MEMCARD_DATA+$A,d0
-	rts
+	endm
 
 ;==============================================================================;
 
