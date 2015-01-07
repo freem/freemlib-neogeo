@@ -161,7 +161,7 @@ fix_DrawString:
 
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				Palette index (and tile number MSB, in old version)
+; d1				Palette index
 ; a0				Pointer to string to draw
 ; a1				Pointer to character map
 
@@ -185,6 +185,7 @@ fix_Draw8x16:
 
 	; draw top line
 .fix_d8x16_TopLoop:
+	; check for end code
 	cmpi.b	#$FF,(a0)
 	beq.b	.fix_d8x16_FinishTop
 
@@ -216,6 +217,7 @@ fix_Draw8x16:
 
 	; draw bottom line
 .fix_d8x16_BotLoop:
+	; check for end code
 	cmpi.b	#$FF,(a0)
 	beq.b	.fix_d8x16_End
 
@@ -242,17 +244,25 @@ fix_Draw8x16:
 
 ; (Params)
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				Palette index and tile number MSB
+; d1				Palette index
 ; a0				Pointer to string to draw
+; a1				Pointer to character map
 
 fix_Draw16x16:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
+	move.w	d0,LSPC_ADDR		; set new VRAM address
 
 	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
 
 	; draw top line
 .fix_d16x16_TopLoop:
-	; loop until finding $FF
+	; check for end code
+	cmpi.b	#$FF,(a0)
+	beq.b	.fix_d16x16_FinishTop
+
+	;char and char+1
+
+	bra.b	.fix_d16x16_TopLoop	; loop until finding $FF
 
 .fix_d16x16_FinishTop:
 	; prepare to draw bottom line
@@ -266,7 +276,13 @@ fix_Draw16x16:
 
 	; draw bottom line
 .fix_d16x16_BotLoop:
-	; loop until finding $FF
+	; check for end code
+	cmpi.b	#$FF,(a0)
+	beq.b	.fix_d16x16_End
+
+	;char+$10 and char+$11
+
+	bra.b	.fix_d16x16_BotLoop	; loop until finding $FF
 
 .fix_d16x16_End:
 	rts
