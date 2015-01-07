@@ -135,6 +135,9 @@ fix_DrawString:
 
 	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
 
+	moveq	#0,d2				; set up d2
+	moveq	#0,d3				; set up d3
+
 .fix_DrawString_Loop:
 	cmpi.b	#$FF,(a0)
 	beq.b	.fix_DrawString_End
@@ -160,8 +163,6 @@ fix_DrawString:
 ; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
 ; d1				Palette index (and tile number MSB, in old version)
 ; a0				Pointer to string to draw
-
-; (future param)
 ; a1				Pointer to character map
 
 ; (Clobbers)
@@ -176,14 +177,23 @@ fix_Draw8x16:
 	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
 	movea.l	a0,a2				; copy original string pointer for later
 
+	; set up d3
+	moveq	#0,d3
+	move.b	d1,d3				; get pal. index
+	andi.w	#$F0,d3				; mask for palette
+	lsl.w	#8,d3				; shift into upper byte of word
+
 	; draw top line
 .fix_d8x16_TopLoop:
 	cmpi.b	#$FF,(a0)
 	beq.b	.fix_d8x16_FinishTop
-	move.w	d1,d3				; get pal. index and tile number MSB
-	lsl.w	#8,d3				; shift into upper byte of word
+
+	moveq	#0,d2				; set up d2
 	move.b	(a0)+,d2			; read byte from string, increment read position
-	or.w	d3,d2				; OR with shifted pal. index and tile number MSB
+	lsl.w	#1,d2
+	move.w	(a1,d2),d2
+
+	or.w	d3,d2				; OR with shifted pal. index
 	move.w	d2,LSPC_DATA		; write combined tile to VRAM
 	bra.b	.fix_d8x16_TopLoop	; loop until finding $FF
 
@@ -198,15 +208,24 @@ fix_Draw8x16:
 	; reset original string pointer
 	movea.l	a2,a0
 
+	; set up d3
+	moveq	#0,d3
+	move.b	d1,d3				; get pal. index
+	andi.w	#$F0,d3				; mask for palette
+	lsl.w	#8,d3				; shift into upper byte of word
+
 	; draw bottom line
 .fix_d8x16_BotLoop:
 	cmpi.b	#$FF,(a0)
 	beq.b	.fix_d8x16_End
-	move.w	d1,d3				; get pal. index and tile number MSB
-	lsl.w	#8,d3				; shift into upper byte of word
+
+	moveq	#0,d2				; set up d2
 	move.b	(a0)+,d2			; read byte from string, increment read position
+	lsl.w	#1,d2
+	move.w	(a1,d2),d2
 	addi.b	#$10,d2				; bottom tile is $10 below top tile
-	or.w	d3,d2				; OR with shifted pal. index and tile number MSB
+
+	or.w	d3,d2				; OR with shifted pal. index
 	move.w	d2,LSPC_DATA		; write combined tile to VRAM
 	bra.b	.fix_d8x16_BotLoop	; loop until finding $FF
 

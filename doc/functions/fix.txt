@@ -105,12 +105,11 @@ $10,$11,$12,$13
 the line below it will be:
 $20,$21,$22,$23
 
-This function is currently undergoing a rewrite as of 2014/12/30.
-
 (Params)
 d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1				Palette index and tile number MSB
+d1				[byte] Palette index (0-F)
 a0				Pointer to string to draw
+a1				Pointer to character map
 
 ================================================================================
 [fix_Draw16x16]
@@ -121,6 +120,8 @@ What fix_Draw8x16 does for 8x16 fonts, this does for 16x16 fonts.
 Tile Layout:
 AA BB CC DD
 AA BB CC DD
+
+still a work in progress
 
 (Params)
 d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)

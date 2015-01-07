@@ -122,6 +122,10 @@ Other things:
 (Quick Command Overview)
 I'll write the long format descriptions later.
 
+IMPORTANT NOTE:
+It's up to you to ensure the memory card is inserted on cart systems before
+issuing most of these commands.
+
 System:
 * memCard_Inserted			Check if memory card is inserted.
 * memCard_WriteProtected	Check if memory card is write-protected.
