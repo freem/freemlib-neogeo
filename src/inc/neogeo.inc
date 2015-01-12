@@ -38,8 +38,20 @@ BIOSF_VIDEOEN		equ $C00570		; Enable/Disable video layers
 ; All I/O registers are bytes, apparently.
 
 REG_P1CNT			equ $300000		; Player 1 Controls (DCBArldu)/Trackball data [active low]
+
 REG_DIPSW			equ $300001		; Read Hardware DIPs [active low], Kick watchdog (a.k.a. "WATCH_DOG")
-;$300081
+; Hardware DIPs
+; 0000 0000
+; ||||_||||
+; ||| | |||_ Settings/Service Mode
+; ||| | ||__ Number of coin chutes (0=1 chute, 1=2 chutes)
+; ||| | |___ Controller Type (0=normal, 1=mahjong)
+; ||| |_____ Communication ID code (00,01,10,11)
+; |||_______ Multiplayer enable
+; ||________ Free Play
+; |_________ Freeze
+
+;REG_?????			equ $300081
 ;00xxxxxx
 ;|||____|
 ;||  |
