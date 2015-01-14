@@ -42,6 +42,8 @@ Looking for another project? You could always rewrite MESS_OUT... ;)
 
 todo:
 * Oversize Fix techniques (NEO-CMC42, NEO-CMC50)
+* Verify correct operation of various routines
+* Solve partial charmap problem (see charmap.txt)
 
 ================================================================================
 [fix_UpdateTile]
@@ -50,8 +52,8 @@ Change the tile number and palette index of a fix map location.
 ppppTTTT tttttttt
 
 (Params)
-d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1				[long] New palette index (pppp) and tile number (TTTT tttttttt)
+d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1		[long] New palette index (pppp) and tile number (TTTT tttttttt)
 
 ================================================================================
 [fix_ChangeTile]
@@ -61,8 +63,8 @@ Does not attempt to sanitize your input.
 xxxx0000 00000000
 
 (Params)
-d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1				New tile number
+d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1		[word] New tile number ($000-$FFF)
 
 ================================================================================
 [fix_ChangePal]
@@ -72,28 +74,28 @@ Does not attempt to sanitize your input.
 0000xxxx xxxxxxxx
 
 (Params)
-d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1				New palette number
+d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1		[word] New palette number ($0000-$F000, only incrementing the first value)
 
 ================================================================================
 [fix_DrawString]
 Draws horizontal text to the screen manually. End code is $FF.
 
 (Params)
-d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1				Palette index and tile number MSB
-a0				Pointer to string to draw
+d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1		[byte] Palette index and tile number MSB
+a0		[long] Pointer to string to draw
 
 (Clobbers)
-d2				Byte for writing
-d3				Used for temporary tile assembly
+d2		Byte for writing
+d3		Used for temporary tile assembly
 
 ================================================================================
 [fix_Draw8x16]
 Draws "normal" 8x16 text to the screen.
 
 Whereas the 8x16 functions of MESS_OUT require your characters to be on different
-pages,  fix_Draw8x16 lets you stack them right on top of each other, as they're
+pages, fix_Draw8x16 lets you stack them right on top of each other, as they're
 meant to be seen in game.
 
 Tile Layout:
@@ -105,11 +107,14 @@ $10,$11,$12,$13
 the line below it will be:
 $20,$21,$22,$23
 
+The downside to this is that you need to prepare a character map.
+See charmap.txt for more information.
+
 (Params)
-d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1				[byte] Palette index (0-F)
-a0				Pointer to string to draw
-a1				Pointer to character map
+d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1		[byte] Palette index (0-F)
+a0		[long] Pointer to string to draw
+a1		[long] Pointer to character map
 
 ================================================================================
 [fix_Draw16x16]
@@ -124,9 +129,10 @@ AA BB CC DD
 still a work in progress
 
 (Params)
-d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1				Palette index and tile number MSB
-a0				Pointer to string to draw
+d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1		Palette index and tile number MSB
+a0		[long] Pointer to string to draw
+a1		[long] Pointer to character map
 
 ================================================================================
 [fix_DrawRegion]
@@ -135,28 +141,45 @@ Draws a rectangular region of tiles using a single palette and tile number MSB.
 todo: rename this to fix_DrawRegionSimple & make fix_DrawRegion operate on words?
 
 (Params)
-d0				[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1				Combined rows/columns size ($YYXX)
-d2				Palette index and tile number MSB
-a0				Pointer to data to draw
+d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d1		Combined rows/columns size ($YYXX)
+d2		Palette index and tile number MSB
+a0		Pointer to data to draw
+
+================================================================================
+[fix_FillRegion]
+Fills a rectangular region of tiles with the specified tile.
+
+(Params)
+d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+d1		[word] Combined rows/columns size ($YYXX)
+d2		[word] Tile data to use for filling.
+
+;------------------------------------------------------------------------------;
+[fix_ClearRegion]
+Macro for clearing a region using tile $00FF. (Uses fix_FillRegion)
+
+(Params)
+d0		[word] Starting combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+d1		[word] Combined rows/columns size ($YYXX)
 
 ================================================================================
 [fix_CopyToRAM]
 Copies Fix tilemap data from VRAM to 68K RAM.
 
 (Params)
-a?				Starting 68K RAM location
-d?				Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d?				Copy region size ($XXYY)
+a?		[long] Starting 68K RAM location
+d?		[word] Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d?		[word] Copy region size ($XXYY)
 
 ================================================================================
 [fix_WriteFromRAM]
 Writes Fix tilemap data from 68K RAM to VRAM.
 
 (Params)
-a?				Starting 68K RAM location
-d?				Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d?				Write region size ($XXYY)
+a?		[long] Starting 68K RAM location
+d?		[word] Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+d?		[word] Write region size ($XXYY)
 
 ================================================================================
 [fix_ClearAll]
@@ -164,7 +187,7 @@ Clears all tiles on the fix layer, including the leftmost and rightmost columns.
 Uses tile number $0FF, palette 0.
 
 (Clobbers)
-d7				Loop counter
+d7		Loop counter
 
 ================================================================================
 todo: "nametable" writing
@@ -269,7 +292,7 @@ messmac_Format (Command 1: Set Data Format)
 
 --------------------------------------------------------------------------------
 messmac_SetIncr (Command 2: Set VRAM Increment)
-\1		New VRAM increment
+\1		[word] New VRAM increment
 
 --------------------------------------------------------------------------------
 messmac_SetAddr (Command 3: Set VRAM Address)
@@ -281,7 +304,7 @@ messmac_OutPtr (Command 4: Pointer to data)
 
 --------------------------------------------------------------------------------
 messmac_AddAddr (Command 5: Add to VRAM Address)
-\1		Value to add to VRAM address
+\1		[word] Value to add to VRAM address
 
 --------------------------------------------------------------------------------
 messmac_Continue (Command 6: Continue output)

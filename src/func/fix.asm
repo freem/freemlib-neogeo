@@ -24,16 +24,17 @@
 ; 2) If it's a combined cell location, calculate the VRAM address; otherwise, do nothing.
 
 ; (Params)
-; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
 ; (Combined cell location format: $XXYY, where XX=$00-$27,YY=$00-$1F)
 ; Note: No sanity checking is done here with the ranges.
 
 ; (Output)
-; d0				output VRAM address
+; d0		[word] output VRAM address
 
 ; (Clobbers)
-; d6				Used for calculating X coordinate
-; d7				Used for calculating Y coordinate
+; d5		Used for converting X/Y location to VRAM address
+; d6		Used for calculating X coordinate
+; d7		Used for calculating Y coordinate
 
 fixmac_CalcVRAMAddr:	macro
 	; 1) do check for vram addr or cell location (d0 >= $7000)
@@ -64,8 +65,8 @@ fixmac_CalcVRAMAddr:	macro
 ; Change the tile number and palette index of a fix map location.
 
 ; (Params)
-; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				New palette index (pppp) and tile number (TTTT tttttttt)
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		[long] New palette index (pppp) and tile number (TTTT tttttttt)
 
 fix_UpdateTile:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
@@ -79,16 +80,16 @@ fix_UpdateTile:
 ; Change the tile number of a fix map location.
 
 ; (Params)
-; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				New tile number
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		[word] New tile number ($000-$FFF)
 
 ; (Clobbers)
-; d2				Used for reading from VRAM
+; d2		Used for reading from VRAM
 
 fix_ChangeTile:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
-
 	move.w	d0,LSPC_ADDR		; set vram address
+
 	move.w	LSPC_DATA,d2		; get current data
 	andi.w	#$F000,d2			; mask for palette
 	or.w	d2,d1				; OR with new tile data
@@ -100,16 +101,16 @@ fix_ChangeTile:
 ; Change the palette index of a fix map location.
 
 ; (Params)
-; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				New palette number
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		[word] New palette number ($0000-$F000, only incrementing the first value)
 
 ; (Clobbers)
-; d2				Used for reading from VRAM
+; d2		Used for reading from VRAM
 
 fix_ChangePal:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
-
 	move.w	d0,LSPC_ADDR		; set vram address
+
 	move.w	LSPC_DATA,d2		; get current data
 	andi.w	#$0FFF,d2			; mask for tile index
 	or.w	d2,d1				; OR with new palette
@@ -121,13 +122,13 @@ fix_ChangePal:
 ; Draws horizontal text to the screen manually. End code is $FF.
 
 ; (Params)
-; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				Palette index and tile number MSB
-; a0				Pointer to string to draw
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		[byte] Palette index and tile number MSB
+; a0		[long] Pointer to string to draw
 
 ; (Clobbers)
-; d2				Byte for writing
-; d3				Used for temporary tile assembly
+; d2		Byte for writing
+; d3		Used for temporary tile assembly
 
 fix_DrawString:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
@@ -160,15 +161,15 @@ fix_DrawString:
 ; A B C D <- bottom half
 
 ; (Params)
-; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				Palette index
-; a0				Pointer to string to draw
-; a1				Pointer to character map
+; d0		Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		Palette index
+; a0		Pointer to string to draw
+; a1		Pointer to character map
 
 ; (Clobbers)
-; a2				Used for original string pointer
-; d2				Byte for writing
-; d3				Used for temporary tile assembly and VRAM address changing
+; a2		Used for original string pointer
+; d2		Byte for writing
+; d3		Used for temporary tile assembly and VRAM address changing
 
 fix_Draw8x16:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
@@ -243,10 +244,10 @@ fix_Draw8x16:
 ; A A <- bottom left, bottom right
 
 ; (Params)
-; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				Palette index
-; a0				Pointer to string to draw
-; a1				Pointer to character map
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		Palette index
+; a0		[long] Pointer to string to draw
+; a1		[long] Pointer to character map
 
 fix_Draw16x16:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
@@ -292,21 +293,21 @@ fix_Draw16x16:
 ; Draws a rectangular region of tiles using a single palette and tile number MSB.
 
 ; (Params)
-; d0				Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d1				Combined rows/columns size ($YYXX)
-; d2				Palette index and tile number MSB
-; a0				Pointer to data to draw
+; d0		Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		Combined rows/columns size ($YYXX)
+; d2		Palette index and tile number MSB
+; a0		Pointer to data to draw
 
 ; (Clobbers)
-; d5				Combined value to write to VRAM
-; d6				Used for column/X size
-; d7				Used for row/Y size
+; d5		Combined value to write to VRAM
+; d6		Used for column/X size
+; d7		Used for row/Y size
 
 fix_DrawRegion:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
+	move.w	d0,LSPC_ADDR		; set initial VRAM address
 
 	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
-	move.w	d0,LSPC_ADDR		; set initial VRAM address
 
 	; get rows
 	move.w	d1,d7
@@ -314,13 +315,13 @@ fix_DrawRegion:
 	lsr.w	#8,d7				; shift right
 
 	; loop 1 (row/Y)
-fix_DrawRegion_Rows:
+.fix_DrawRegion_Rows:
 	; get cols
 	move.w	d1,d6
 	andi.w	#$00FF,d6
 
 	; loop 2 (column/X)
-fix_DrawRegion_Cols:
+.fix_DrawRegion_Cols:
 	moveq	#0,d5				; clear d5 for combiation
 	move.b	d2,d5				; copy d2 to d5
 	lsl.w	#8,d5				; shift d2 to upper byte
@@ -329,26 +330,82 @@ fix_DrawRegion_Cols:
 	; write data
 	move.w	d5,LSPC_DATA
 	; loop cols
-	dbra	d6,fix_DrawRegion_Cols
+	dbra	d6,.fix_DrawRegion_Cols
 
 	; update vram address
 	addi.w	#1,d0
 	move.w	d0,LSPC_ADDR
 
 	; loop rows
-	dbra	d7,fix_DrawRegion_Rows
+	dbra	d7,.fix_DrawRegion_Rows
 
-fix_DrawRegion_End:
+.fix_DrawRegion_End:
 	rts
+
+;==============================================================================;
+; fix_FillRegion
+; Fills a rectangular region of tiles with the specified tile.
+
+; (Params)
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		[word] Combined rows/columns size ($YYXX)
+; d2		[word] Tile data to use for filling.
+
+fix_FillRegion:
+	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
+	move.w	d0,LSPC_ADDR		; set initial VRAM address
+
+	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
+
+	; get rows
+	move.w	d1,d7
+	andi.w	#$FF00,d7
+	lsr.w	#8,d7				; shift right
+
+	; loop 1 (row/Y)
+.fix_FillRegion_Rows:
+	; get cols
+	move.w	d1,d6
+	andi.w	#$00FF,d6
+
+	; loop 2 (column/X)
+.fix_FillRegion_Cols:
+	move.w	d2,LSPC_DATA		; write data
+
+	; loop cols
+	dbra	d6,.fix_FillRegion_Cols
+
+	; update vram address
+	addi.w	#1,d0
+	move.w	d0,LSPC_ADDR
+
+	; loop rows
+	dbra	d7,.fix_FillRegion_Rows
+
+.fix_FillRegion_End:
+	rts
+
+;------------------------------------------------------------------------------;
+; fix_ClearRegion
+; Macro for clearing a region using tile $00FF.
+
+; (Params)
+; d0		[word] Starting combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		[word] Combined rows/columns size ($YYXX)
+
+fix_ClearRegion:	macro
+	move.w	#$00FF,d2			; clear tile
+	jsr		fix_FillRegion
+	endm
 
 ;==============================================================================;
 ; fix_CopyToRAM
 ; Copies Fix tilemap data from VRAM to 68K RAM.
 
 ; (Params)
-; a?				Starting 68K RAM location
-; d?				Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d?				Copy region size ($XXYY)
+; a?		[long] Starting 68K RAM location
+; d?		[word] Starting combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d?		[word] Copy region size ($XXYY)
 
 fix_CopyToRAM:
 	; force MESS_OUT busy? (don't modify while we read)
@@ -360,9 +417,9 @@ fix_CopyToRAM:
 ; Writes Fix tilemap data from 68K RAM to VRAM.
 
 ; (Params)
-; a?				Starting 68K RAM location
-; d?				Starting combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-; d?				Write region size ($XXYY)
+; a?		[long] Starting 68K RAM location
+; d?		[word] Starting combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d?		[word] Write region size ($XXYY)
 
 fix_WriteFromRAM:
 	; force MESS_OUT busy? (don't modify while we write)
@@ -375,7 +432,7 @@ fix_WriteFromRAM:
 ; Uses tile number $0FF, palette 0.
 
 ; (Clobbers)
-; d7				Loop counter
+; d7		Loop counter
 
 fix_ClearAll:
 	move.w	#$7000,LSPC_ADDR	; start at $7000 (end at $74FF)

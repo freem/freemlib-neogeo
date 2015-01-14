@@ -50,3 +50,4 @@ These require some information:
 * character set (as a string of characters)
 * character map (as a table of words; see above)
 
+I am still trying to figure out the best way of handling this.
