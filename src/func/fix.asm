@@ -10,7 +10,6 @@
 
 ; todo:
 ; * fix_Draw8x16 needs to be easier to use
-;  * string data (no "&$FF" everywhere)
 ;  * ability to use multiple pages in a single string (currently limited to 1)
 ; * test fix_ClearAll
 ; * finish writing fix_Draw16x16
@@ -410,6 +409,7 @@ fix_ClearRegion:	macro
 fix_CopyToRAM:
 	; force MESS_OUT busy? (don't modify while we read)
 
+.fix_CopyToRAM_End:
 	rts
 
 ;==============================================================================;
@@ -424,6 +424,7 @@ fix_CopyToRAM:
 fix_WriteFromRAM:
 	; force MESS_OUT busy? (don't modify while we write)
 
+.fix_WriteFromRAM_End:
 	rts
 
 ;==============================================================================;
