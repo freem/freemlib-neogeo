@@ -53,7 +53,7 @@ ppppTTTT tttttttt
 
 (Params)
 d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1		[long] New palette index (pppp) and tile number (TTTT tttttttt)
+d1		[word] New palette index (pppp) and tile number (TTTT tttttttt)
 
 ================================================================================
 [fix_ChangeTile]
