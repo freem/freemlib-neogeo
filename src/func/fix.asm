@@ -65,7 +65,7 @@ fixmac_CalcVRAMAddr:	macro
 
 ; (Params)
 ; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
-; d1		[long] New palette index (pppp) and tile number (TTTT tttttttt)
+; d1		[word] New palette index (pppp) and tile number (TTTT tttttttt)
 
 fix_UpdateTile:
 	fixmac_CalcVRAMAddr			; VRAM address check/combined cell loc. conversion
@@ -153,7 +153,7 @@ fix_DrawString:
 
 ;==============================================================================;
 ; fix_Draw8x16
-; Draws "normal" 8x16 text to the screen. End code is $FF.
+; Draws "normal" 8x16 text to the screen horizontally. End code is $FF.
 
 ; "normal 8x16 text" means this font layout:
 ; A B C D <- top half
@@ -236,7 +236,7 @@ fix_Draw8x16:
 
 ;==============================================================================;
 ; fix_Draw16x16
-; Draws "normal" 16x16 text to the screen. End code is $FF.
+; Draws "normal" 16x16 text to the screen horizontally. End code is $FF.
 
 ; "normal 16x16 text" means this font layout:
 ; A A <- top left, top right
