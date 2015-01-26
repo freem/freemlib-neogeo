@@ -1,7 +1,7 @@
 ﻿freemlib Sound Engine System Command Documentation
 ================================================================================
 (Command sketchpad)
-* Still unsure about the ADPCM-A part.
+* Still unsure about the "Start ADPCM-A sample #" part.
 * Still unsure about Data Collect and Data Transfer.
 ================================================================================
 Commands marked with a * are used by the BIOS and are therefore out of my hands.
