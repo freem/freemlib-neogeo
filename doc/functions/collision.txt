@@ -1,41 +1,32 @@
 freemlib for Neo-Geo - Collision functionality
 ==============================================
-Yeah, this is going to be a jerk, too.
+Even though you might want to roll your own collision checking, the freemlib
+should provide a simple hitbox system you can adapt/modify.
 
-There are 2 types of collision boxes, named for the colors normally used to display them:
+There are two types of collision boxes, primarily named for the colors normally
+used to display them in certain games (there are probably better names):
 1) Blue/Collision hitbox
 2) Red/Attack hitbox
-There are probably better names, but I don't know them offhand, sorry
 ================================================================================
 (Defining collision data)
-Collision data is tied to animation frames.
-
-Everything is a sprite on the Neo, therefore everything that has collision is
-likely to be a sprite, hence being tied to animations.
+Collision data is normally tied to animation frames.
 
 $00			Number of Boxes [for this frame] (byte)
 .....		Collision Box Data
 
+The number of boxes per frame is currently capped at 255, because having that
+many in a single frame sounds pretty unreasonable as-is.
+
 (Collision Box Data)
-$00			Box00 Collision Type (word; 0=normal, 1=attack; other bytes for future/private expansion)
-$02			Box00 X1 (word; start)
-$04			Box00 Y1 (word; start)
-$06			Box00 X2 (word; end)
-$08			Box00 Y2 (word; end)
+Each entry follows this format:
 
-$0A			Box01 Collision Type
-$0C			Box01 X1
-$0E			Box01 Y1
-$10			Box01 X2
-$12			Box01 Y2
++$00	Type (word; 0=normal, 1=attack; other bytes for future/private expansion)
++$02	Box X1 (word; start)
++$04	Box Y1 (word; start)
++$06	Box X2 (word; end)
++$08	Box Y2 (word; end)
 
-...however many entries later...
-
-$xx			BoxNN Collision Type
-$xx+2		BoxNN X1
-$xx+4		BoxNN Y1
-$xx+6		BoxNN X2
-$xx+8		BoxNN Y2
+X and Y locations are relative to (??? position).
 
 ================================================================================
 (sketchpad)
