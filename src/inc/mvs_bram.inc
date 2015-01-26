@@ -11,7 +11,8 @@ BRAM_COIN_INT_P2		equ $D00025	; (byte) Internal coin counter (not credit)
 
 BRAM_CREDIT_INT_P1		equ $D00034	; (byte) Internal credit counter for P1 (BCD)
 BRAM_CREDIT_INT_P2		equ $D00035	; (byte) Internal credit counter for P2 (BCD)
-
+;$D00036	; (byte?) ??
+;$D00037	; (byte?) ??
 ;$D00038	; (byte?) ??
 
 BRAM_COIN_CREDIT_P1		equ $D0003A	; (byte) Coins needed for crediting player 1
@@ -66,6 +67,9 @@ BRAM_SLOT8_CREATED		equ $D00160	; (long) creation date for Slot 8 book (YYMMDDdd
 ;-----------------------------------;
 ;$D001AC	; (long?) ??
 ;$D001B0	; (word?) ??
+
+; Game Soft Dips ($D00220-$D0029F, 16*8)
+
 ;-----------------------------------;
 BRAM_SLOT1_NAME			equ $D002A0	; (16 bytes) Game name for BRAM Block 1
 BRAM_SLOT2_NAME			equ $D002B0	; (16 bytes) Game name for BRAM Block 2
@@ -85,7 +89,7 @@ BRAM_SLOT6_DATA			equ $D05320	; ($1000 bytes) Save data for BRAM Block 6
 BRAM_SLOT7_DATA			equ $D06320	; ($1000 bytes) Save data for BRAM Block 7
 BRAM_SLOT8_DATA			equ $D07320	; ($1000 bytes) Save data for BRAM Block 8
 
-; Game Soft Dips ($D00220-$D0029F, 16*8)
+;$D08000???
 
 ; Bookkeeping
 ;$D09BA0-$D09DDF	; ($240/576 bytes) Current month coin (YYMMDDdd - coin1 - coin2 - service)

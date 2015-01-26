@@ -8,7 +8,7 @@
 ; todo: Neo-Geo CD uses some ram locations differently. Needs research.
 ; Anything between $10F300 and $10FD80 is typically unexamined, but double check
 ; the NeoGeo dev wiki and existing software/BIOSes first.
-
+;==============================================================================;
 BIOS_WORKRAM			equ $10F300
 
 ;SSP_END:					; supervisor stack
@@ -137,7 +137,7 @@ BIOS_CREDIT3_DEC		equ $10FDB2	; (byte) Credit decrement Player 3 (BCD)
 BIOS_CREDIT4_DEC		equ $10FDB3	; (byte) Credit decrement Player 4 (BCD)
 ;-----------------------------------;
 BIOS_START_FLAG			equ $10FDB4	; (byte) Player(s) starting the game on PLAYER_START call
-;BIOS_??????????		equ $10FDB5	; (byte) ?
+;BIOS_??????????		equ $10FDB5	; (byte) START_FLAG part 2. purpose unknown?
 ;-----------------------------------;
 ; Status Values: 0=No play, 1=Playing, 2=Continue display, 3=Game Over
 BIOS_PLAYER1_MODE		equ $10FDB6	; (byte) Player 1 Status (a.k.a. "BIOS_PLAYER_MOD1")
@@ -158,7 +158,8 @@ BIOS_CARD_SIZE			equ $10FDCC	; (word) Size of data
 BIOS_CARD_FCB			equ $10FDCE	; (word) Game NGH number
 BIOS_CARD_SUB			equ $10FDD0	; (byte/word) Game sub number (0-15)
 ;-----------------------------------;
-; DATE_TIME
+BIOS_DATE_TIME			equ $10FDD2	; DATE_TIME struct
+
 BIOS_YEAR				equ $10FDD2	; (byte) 
 BIOS_MONTH				equ $10FDD3	; (byte) 
 BIOS_DAY				equ $10FDD4	; (byte) 
@@ -166,19 +167,15 @@ BIOS_WEEKDAY			equ $10FDD5	; (byte)
 BIOS_HOUR				equ $10FDD6	; (byte) 
 BIOS_MINUTE				equ $10FDD7	; (byte) 
 BIOS_SECOND				equ $10FDD8	; (byte) 
+;BIOS_??????????		equ $10FDD9	; (byte) ?
 ;-----------------------------------;
-BIOS_SELECT_TIMER		equ $10FDDA	; (byte?) (a.k.a. "BIOS_COMPULSION_TIMER")
-;BIOS_START_TEST			equ $10FDDC	; ()
-;BIOS_COIN_LEVER			equ $10FDDE	; ()
+BIOS_SELECT_TIMER		equ $10FDDA	; (word) (a.k.a. "BIOS_COMPULSION_TIMER")
+BIOS_START_TEST			equ $10FDDC	; (word) ??
+BIOS_COIN_LEVER			equ $10FDDE	; (word) ??
 
-; AOF's $10FDDA-area defs:
-;SELECT_TIMER	ds.w 1
-;START_TEST		ds.w 1
-;COIN_LEVER		ds.w 1
-
-;-----------------------------------;
-; $10FDE0-$10FDFF ???
-;===================================;
+;-------------------------------------------------------------------;
+; $10FDE0-$10FDFF unused on cart BIOS? (possibly used on CD though) ;
+;===================================================================;
 BIOS_WORK1				equ $10FE00
 
 BIOS_CREDIT1			equ $10FE00	; (byte)
@@ -239,8 +236,9 @@ BIOS_BACKUP_MODE		equ $10FEBF	; (byte) (a.k.a. "BIOS_BRAM_USED")
 BIOS_INST_RAD			equ $10FEC0	; (long)
 BIOS_INST_RCO			equ $10FEC4	; (byte)
 ;-----------------------------------;
-BIOS_TITLE_MODE			equ $10FEC5	; (byte)
-BIOS_MESS_STACK			equ $10FEC6	; (long) 5 longs
+BIOS_TITLE_MODE			equ $10FEC5	; (byte) When set to 1, stops BIOS from calling command 3 twice after Game Over if credits are in the system. -paraphrasing Razoola, NeoGeo Development Wiki
+BIOS_MESS_STACK			equ $10FEC6	; (long) 5 longs; first is the pointer to the data.
+;BIOS_??????????		equ $10FECA	; 
 ;-----------------------------------;
 ; $10FEDA and $10FEDB are used differently on CD systems; see below.
 ;BIOS_??????????		equ $10FEDA

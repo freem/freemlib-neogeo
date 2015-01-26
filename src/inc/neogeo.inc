@@ -15,6 +15,8 @@ READ_CALENDAR		equ $C0045C		; Read values from uPD4990 chip (MVS-only)
 SETUP_CALENDAR		equ $C00462		; Sets up uPD4990 chip (MVS-only)
 SYS_CARD			equ $C00468		; Memory Card commands
 SYS_CARD_ERROR		equ $C0046E		; Handle card errors and display message
+;SYSTEM_HOW_TO_PLAY	equ $C00474		; display old-style how to play. uncomment if you want to use it.
+;CALC_CHECKSUM		equ $C0047A		; calc a checksum and loop forever
 FIX_CLEAR			equ $C004C2		; Clear Fix layer
 LSP_1st				equ $C004C8		; Clear SCB2-4, first SCB1 tilemap
 MESS_OUT			equ $C004CE		; Fix layer message output
