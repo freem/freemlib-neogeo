@@ -35,6 +35,57 @@ I think the system throws the sprite numbers into here, but I'm not sure how
 they map to the scanlines or whatever.
 
 ================================================================================
+<Brainstorming>
+Sprites are usually transferred to the VRAM in VBlank...
+
+* DATlib does this
+* AOF does this
+* smkdan's two scrolling demos do this (scroll1.asm being easier to understand)
+* furrtek's nyancat demo does this
+* Frog Feast, the list goes on...
+
+[Frog Feast]
+* "SpritesChanged" can skip the logic in RenderSprites if needed.
+
+[smkdan scroll2.asm]
+(scroll1 is easier, but scroll2 is more flexible)
+* "vramlist": 512 words (list of addresses, increments, and data to upload to VRAM)
+* "vramptr":  1 dword (current pointer into vramlist, reset every frame)
+
+vramlist entries:
+0		Number of words in this entry ("n")
+1		VRAM address
+2		VRAM increment
+3..n	data words
+
+Main loop:
+* update previous scroll values
+* ControllerScroll
+* ClampScroll
+* CheckUpdate		; see if sprite VRAM needs to be updated
+* BufferSCB3		; yscroll, ysize, chain
+* BufferSCB4		; xscroll
+
+VBlank:
+* UpdateVRAM		; make VRAM changes based on commands in list
+
+--------------------------------------------------------------------------------
+[Questions and Thoughts]
+* How many sprites can I update/how much data can I push in one VBlank?
+* Will likely need to provide some conversion routines for vram data
+* Current metasprite system does not account for all possibilities; chain bit forced
+* Is it possible to use the lower bits of SCB4 for custom purposes?
+
+--------------------------------------------------------------------------------
+[Data Formats]
+The best formats are those that map to the LSPC...like smkdan's.
+
+$00		(w) data length
+$02		(w) vram address
+$04		(w) vram increment
+$06...	(w) vram data in words
+
+================================================================================
 <Function Sketchpad>
 
 (Overall)
@@ -68,11 +119,26 @@ Metasprites are a collection of Sprites. On the Neo-Geo, it's a bit easier to
 make metasprites, compared to other consoles. SCB3's Sprite height and Sticky
 bit go a long way in making metasprites easier to deal with.
 
+todo:
+* allow for multiple "groups" of sprites in a single metasprite
+* add x and y offsets to each sprite block
+
 Commands have "mspr" prefix.
 
 <Metasprite Data Block>
 $00			Number of Sprites in Metasprite		(word)
 $02...end	Pointers to Sprite data				(long)
+
+
+<WIP new metasprite data block>
+$00			Number of Metasprite components		(word)
+------------
+$02			Number of sprites in Component 1	(word)
+$04			Component 1 overall X offset		(word)
+$06			Component 1 overall Y offset		(word)
+$08			Pointers to Component 1 Sprite data	(long)
+............
+etc.
 
 ================================================================================
 [Sprite Data]
