@@ -1,12 +1,60 @@
 Notes on Using hoot for Neo-Geo Sound
 =====================================
 
+Due to the author of hoot being paranoid/angry/something about people using
+illegal ROMs, arcade playback is capped to around a minute or so and requires a
+registration key to get around. This key expires every few months and thus needs
+to be re-registered.
+
+================================================================================
+
 When listening to Neo-Geo music in hoot, "Driver Work" is actually the YM2610
 registers. The first 256 bytes are the writes to ports 4/5, and the second 256
 bytes are the writes to ports 6/7. If you were expecting the engine internals to
 be exposed (like I was), you'll be sorely disappointed.
 
-Due to the author of hoot being paranoid/angry/something about people using
-illegal ROMs, arcade playback is capped to around a minute or so and requires a
-registration key to get around. This key expires every few months and thus needs
-to be re-registered.
+Some information on what values in the Driver Work represent, thanks to Fred/FRONT:
+
+1/SSG Ch:  #00,#01,#02
+000 |R00|R01|R02|R03|R04|R05|R06|R07|R08|R09|R0A|R0B|R0C|R0D|R--|R--|
+
+
+2/ADPCM-B Ch:  #00
+010 |R10|R11|R12|R13|R14|R15|R--|R--|R--|R19|R1A|R1B|R1C|R--|R--|R--| ex values : R10=$80/$90, R11=$C0,  R1c=$??
+020 |R--|R--|R??|R--|R??|R??|R??|R??|R--|R--|R--|R--|R--|R--|R--|R--| ???????
+
+ex2:
+020 |R--|R--|$0F|R--|$88|$01|$CA|$20|R--|R--|R--|R--|R--|R--|R--|R--|  ex values  for game S1945+
+
+
+3/ADPCM-A
+Ch:  #00 #01 #02 #03 #04 #05         #00 #01 #02 #03 #04 #05     ici registres placés, sont sur!
+100 |R00|R01|R--|R--|R--|R--|R--|R--|R08|R09|R0A|R0B|R0C|R0D|R--|R--|  R08-R0D=$DF,$DC  R00=$20, R01=$3F
+110 |R10|R11|R12|R13|R14|R15|R--|R--|R18|R19|R1A|R1B|R1C|R1D|R--|R--|
+120 |R20|R21|R22|R22|R24|R25|R--|R--|R28|R29|R2A|R2B|R2C|R2D|R--|R--|
+
+
+4/FM
+Ch:      #00 #00         #01 #01         #02 #02         #03 #03
+030 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+040 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+050 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+060 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+070 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+080 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+
+0a0 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+0b0 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+
+130 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+140 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+150 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+160 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+170 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+180 |R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|R--|
+
+
+5/ Timers
+R24 , R25, R26 , R27 -> big question !
+
+Fred/FRONT 2014! -> Much work remains to be done on the FM part  :(
