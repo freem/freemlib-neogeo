@@ -5,14 +5,14 @@ is used to tell the game to run the demo (or possibly even play the game, but
 that's beyond the scope of this document).
 
 Common attract loops typically include the following:
-* Content Warning screen (if set to US mode or with a dipswitch [Euro])
+* Content Warning screen (if set to US mode or with a game soft dip [Euro])
 * Introduction sequence
 * Title screen
 * Gameplay demonstration
 * High Score screen
 Not every Neo-Geo game released includes all of the above, but they're typically
-found within the 273-odd game library. Content Warning screens were only added
-to games around the late 1990s (starting with ???).
+found within the 150-odd MVS game library. Content Warning screens were only
+added to games around the late 1990s (starting with ???).
 
 In order to have a "good" attract loop setup, you should have the following:
 * A variable to note if you're in attract/demo mode or not
@@ -26,4 +26,4 @@ Garou: Mark of the Wolves does this, and in theory, it's pretty simple.
 * MVS: read and update a value in the MVS Backup RAM.
 * Home consoles: One of two options.
  1) seed the initial value with a random number, then update that.
- 2) Don't care and just start with the first one.
+ 2) Don't care and just start with the first one on every boot.
