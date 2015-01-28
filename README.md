@@ -1,16 +1,16 @@
 freemlib for Neo-Geo
 ====================
 The freemlib for Neo-Geo is a set of functions and tools for those who want to
-develop for the system in assembly language. The functions could also be adapted
-into a library for use with C, but I do not plan on doing so myself until the
-library is better developed.
+develop for the system in assembly language. Adapting the functions into a library
+for use with C is planned, but I won't be doing so myself until the codebase is
+better developed and battle tested.
 
 Status
 ------
 The primary goal right now is to get the library coded, as well as provide
 examples that use the library. Overall, the tasks can be broken down as follows:
 
-(All percentage completions are estimates as of 2014/10/19. No project is ever truly finished. :wink:)
+(All percentage completions are estimates as of 2015/01/28. No project is ever truly finished. :wink:)
 
 ### Library ###
 These elements form the core of the freemlib for Neo-Geo.
@@ -18,10 +18,10 @@ These elements form the core of the freemlib for Neo-Geo.
 * **Animation** &ndash; Sprite animation. 0%.
 * **Backgrounds** &ndash; Routines for background sprites. 0%.
 * **Collision** &ndash; Most every game needs some sort of collision. 0%.
-* **Fix** &ndash; Fix layer functionality. Still needs work, ~20%?
+* **Fix** &ndash; Fix layer functionality. Still needs work, ~22.5%?
 * **Memory Card** &ndash; Handle Memory Cards (also Neo-Geo CD Backup Memory). 5%, needs testing.
 * **Palette** &ndash; Palette functionality. ~10%.
-* **Sound** &ndash; Fully-featured (FM, SSG, both ADPCM types, CD/DA) Z80 sound engine. 1%
+* **Sound** &ndash; Fully-featured (FM, SSG, both ADPCM types, CD/DA) Z80 sound engine. 2%
 * **Sprites** &ndash; General sprite functionality (considering the Neo-Geo is all about sprites). ~20-30%?
 * **System** &ndash; Various system functions. 1%.
 
@@ -34,22 +34,24 @@ should be made for Linux (and OS X) compatibility whenever possible.
 
 * **NeoFixFormat** &ndash; Fix format tiles plugin for YY-CHR.NET. 100%, unless a bug comes up.
 * **NeoCDSprFormat** &ndash; CD sprite tiles plugin for YY-CHR.NET. 20%, needs major work.
-* **NeoSprFormat** &ndash; Combined C ROM sprite tile plugin for YY-CHR.NET. 0% (doing CD first)
-* **NeoTracker** &ndash; On-console tracker and sound driver testbench. 0% (mockups and planning stage).
+* **NeoSprFormat** &ndash; Combined C ROM sprite tile plugin for YY-CHR.NET. 0% (doing CD version first)
+* **NeoTracker** &ndash; On-console tracker and sound driver testbench. 0% (mockups and planning stage; probably needs a new name)
+* **Sailor VROM** &ndash; V ROM/.PCM file builder and manager. 0% (planning stages)
 * and others not listed here...
- * A tool for Fix layer layout, similar to NES Screen Tool
+ * A tool for Fix layer layout, similar to Shiru's NES Screen Tool
  * A tool for animation data (various tools exist already, I'm aware.)
  * PC version of NeoTracker
  * Various sound tools (ADPCM-A/B conversion; tools exist, but need unification.)
 
 ### Documentation ###
 The black sheep of any programming project, but also necessary because who the hell is
-going to read a bunch of ASM to figure out the library?
+going to read a bunch of ASM to figure out the library? My main problem is that I
+only really want to write it once.
 
 * **Library Docs (text)** &ndash; The straight dope. See `doc/` folder.
 * **Library Docs (HTML)** &ndash; The pretty version. Still very WIP.
 * **Neo-Geo Programming Guide** &ndash; think of the Nerdy Nights (NES) tutorials,
-but for Neo-Geo. The examples kind of cover this, but these would be more general.
+but for Neo-Geo. The examples kind of cover this...
 
 Navigation
 ----------
