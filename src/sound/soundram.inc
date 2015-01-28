@@ -51,8 +51,8 @@ loopPoint			ds 2		; Pointer to loop point (shared between channels for now)
 ; <YM2610 Section>
 ;==============================================================================;
 ; [System variables]
-; Status 0 (Timer flags and Busy)
-; Status 1 (ADPCM A and B status)
+intStatus0			ds 1		; Status 0 (Timer flags and Busy)
+intStatus1			ds 1		; Status 1 (ADPCM A and B status)
 
 ;==============================================================================;
 ; [Timer variables]

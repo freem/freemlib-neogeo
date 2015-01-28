@@ -90,7 +90,8 @@ NMI:
 	ld		(curCommand),a	; update curCommand
 	call	HandleCommand
 
-	out		(0xC),a			; write something to 68k in the meantime.
+	out		(0xC),a			; Reply to 68K with something.
+	out		(0),a			; Write to port 0 (Clear sound code)
 endNMI:
 	; restore registers
 	pop		hl
@@ -105,8 +106,10 @@ endNMI:
 
 ; In this driver, the IRQ is used for keeping the music playing.
 ; At least, that's the goal. Not sure how feasible it really is.
+
 ; Some other engines use the IRQ to poll the two status ports (6 and 4).
-; IRQs in SNK drivers (Mr.Pac, MAKOTO v3.0) are pretty large. I want to avoid that.
+; IRQs in SNK drivers (Mr.Pac, MAKOTO v3.0) are pretty large. I want to avoid
+; that, if at all possible.
 
 IRQ:
 	; save registers
@@ -117,9 +120,20 @@ IRQ:
 	push	ix
 	push	iy
 
-	; send a reply to the 68K
+	; update internal Status 1 register
+	in		a, (6)
+	ld		(intStatus1),a
+
+	; check status of ADPCM channels
+
+	; update internal Status 0 register
+	in		a, (4)
+	ld		(intStatus0),a
+
+	; send a reply to the 68K??
 	xor		a
 	out		(0xC),a			; write 0 to port 0xC (Respond to 68K)
+
 
 	; keep the music and sound effects going.
 
