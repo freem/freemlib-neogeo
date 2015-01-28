@@ -181,3 +181,43 @@ $50			("TODO: 16 BYTES FOR NAME")
 $60			"VGM2Pre" ("TODO: 16 BYTES FOR DUMPER")
 $70			("TODO: 16 BYTES FOR GAME")
 
+SNK format (Mr.Pac driver)
+--------------------------
+This format is explained in the Neo-Geo Programmer's Guide, specifically
+"NEO GEO SOUND PROGRAM (SOUND2.REL) USER'S MANUAL".
+
+$00			feedback
+$01			algo
+$02-$05		detune (ops 1-4)
+$06-$09		mul (ops 1-4)
+$0A-$0D		tl (ops 1-4)
+$0E-$11		rs (ops 1-4)
+$12-$16		ar (ops 1-4)
+$17-$1A		dr (ops 1-4)
+$1B-$1E		sr (ops 1-4)
+$1F-$22		sl (ops 1-4)
+$23-$26		rr (ops 1-4)
+$27-$2A		ssg (ops 1-4)
+$2B			software lfo waveform
+$2C			software lfo speed
+$2D			PMD (pulse modulation effect defined)
+$2E			PMS (pulse modulation general effect defined)
+$2F			int count (rough LFO timing)
+$30			unused (set to 0)
+$31			PMS, AMS1
+$32			H-LFO Switch F
+
+<todo>
+Though these aren't for the OPN series...
+* Adlib Tracker II (A2I, A2F)
+* BoomTracker 4.0 (CIF)
+* FM-Kingtracker (FIN)
+* HSC-Tracker/RAD-Tracker, SAdT, Amusic/AdLib instrument (INS)
+* Creative Labs FM instrument (SBI)
+* Sound Generator 3.0 (SGI)
+
+Instrument Banks?
+* Adlib Tracker II (A2B, A2W)
+* AdLib instrument bank v1.0 (BNK)
+* FM-Kingtracker (FIB)
+* Creative Labs FM instrument bank (IBK)
