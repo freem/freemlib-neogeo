@@ -1,4 +1,4 @@
-Instrument Documentation
+freemlib Sound Driver Instrument Documentation
 ================================================================================
 [Instrument Format]
 Offset		Description
@@ -6,17 +6,15 @@ Offset		Description
 $00			Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 <FM Instruments>
 Total:	29 bytes per instrument (4 operators)
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Offset		Description
 --------------------------------------------------------------------------------
 $01			Feedback/Algorithm
 $02			Initial Left/Right Output; AM and PM values
 $03			LFO Frequency Control
-$04			Number of Operators (1-4)
+$04			Number of Operators Used (1-4)
 
 Operator data is defined in port order (each operator's values for a specific
 control). This is similar to the .EIF, .INS, and .TYI formats.
@@ -31,9 +29,8 @@ $15-$18		Sustain for Ops 1-4
 $19-$1C		Sustain Level/Release for Ops 1-4
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 <SSG Instruments>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Offset		Description
 --------------------------------------------------------------------------------
 $01			Initial Volume and Mode

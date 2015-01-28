@@ -202,10 +202,10 @@ $2B			software lfo waveform
 $2C			software lfo speed
 $2D			PMD (pulse modulation effect defined)
 $2E			PMS (pulse modulation general effect defined)
-$2F			int count (rough LFO timing)
+$2F			int count (rough software? LFO timing)
 $30			unused (set to 0)
-$31			PMS, AMS1
-$32			H-LFO Switch F
+$31			ams, pms
+$32			hardware LFO Channel Switch
 
 <todo>
 Though these aren't for the OPN series...

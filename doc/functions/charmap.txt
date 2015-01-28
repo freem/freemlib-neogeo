@@ -43,11 +43,13 @@ Each of those slots should be a word value from $0000 to $0FFF.
 
 [Partial Character Maps]
 Sometimes you don't want to define every character in a map, but you still want
-to use ASCII (or other printable) characters.
+to use ASCII (or other printable) characters. Partial Character Maps are used
+in this situation. A partial character map consists of two tables:
 
-These require some information:
-* starting character? (typically space at $20)
-* character set (as a string of characters)
-* character map (as a table of words; see above)
+* a table of characters in the map ("charset" or "glyphset" for short)
+* the character map itself (as a table of words; see above)
 
-I am still trying to figure out the best way of handling this.
+example_charset:
+	dc.b	"0123456789"
+example_pcharmap:
+	dc.w	($00),($01),($02),($03),($04),($05),($06),($07),($08),($09)

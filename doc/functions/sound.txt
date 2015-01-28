@@ -2,13 +2,17 @@ freemlib for Neo-Geo - Sound Driver
 ===================================
 This will easily take up a lot of time because I have no fucking idea what I'm
 doing, and the public documentation for writing a Neo-Geo sound driver from
-scratch is pretty sparse (and focused on ADPCM). On top of that, I've recently
-learned that the MVSTracker driver doesn't work on original hardware:
+scratch is pretty sparse (and focused on ADPCM, since FM is hard and nearly no
+one wants to use the SSG for music). On top of that, I've recently learned that
+the MVSTracker driver doesn't work on original hardware:
 
 "For the 'homebrew' scene, we had a very basic sound driver that Ivan (MVS Tracker)
 and myself worked on many years ago. Ivan did a very good job of implementing
 FM music but the driver didn’t work on real hardware."
 src: http://www.archaic.fr/articles/interview-jeff-kurtz-repond-a-nos-questions/3/
+
+However, after looking at smkdan's M1 driver, it seems this is an easily fixable
+problem that just needs some testing.
 
 This document is a work in progress! Everything is subject to change!
 
@@ -114,11 +118,6 @@ $08			Channel A Mode/Volume
 $09			Channel B Mode/Volume
 $0A			Channel C Mode/Volume
 
-Reading SSG ports
-$04			Timer A and B flags + Busy
-$05			SSG register data
-$06			has channel reached end address and stopped?
-
 [ADPCM-A]
 Writes to ports $06 (addr) and $07 (data).
 Note that ADPCM-A flag control is with the ADPCM-B registers.
@@ -152,7 +151,6 @@ FM is the most complex.
 Channels 1 and 2 live on ports $04/$05. Channels 3 and 4 live on ports $06/$07.
 Channels 3 and 4 are actually internally known as channels 5 and 6.
 
-$21			LSI test data
 $22			LFO Frequency Control
 $28			Key On/Off
 
@@ -271,7 +269,6 @@ This part is going to take up the most space because FM synthesis is the result
 of a lot of fuckin' values and shit. Multiply that by 4 channels.
 
 Overall Status>
- * 1 byte for LSI test data ($21)
  * 1 byte for LFO, Freq. Control ($22)
  * 1 byte for Key On/Off ($28)
 

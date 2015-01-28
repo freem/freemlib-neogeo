@@ -55,10 +55,13 @@ Difficulty			"Level 1"-"Level 8"
 
 --------------------------------------------------------------------------------
 [macr_GetSoftDipNum]
-Reads the value of the specified software dip.
+Returns the setting of the specified soft dip switch number.
+This macro does not handle the two Time values (BIOS_GAMEDIP_TIME1 and
+BIOS_GAMEDIP_TIME2, both words) or the two Count values (BIOS_GAMEDIP_COUNT1 and
+BIOS_GAMEDIP_COUNT2, both bytes).
 
 (Params)
-\1			Soft DIP number to read (0-15)
+\1			Soft DIP number to read (0-9)
 
 (Returns)
 d0			Value of requested Soft DIP

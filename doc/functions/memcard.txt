@@ -50,13 +50,17 @@ Command			Error				Result
 $2 Load Data	$81 Not Formatted	Display "NO DATA FOR THIS GAME."
 $2 Load Data	$83 FAT error		Display "ERROR ON MEMORY CARD."
 $2 Load Data	$85 Write Disabled	Display "NO DATA FOR THIS GAME."
+
 $3 Save Data	$81 Not Formatted	Format the card.
 $3 Save Data	$83 FAT error		Format the card.
 $3 Save Data	$84 Card is full	Bring up a menu to delete saves
 $3 Save Data	$85 Write Disabled	Display "MEMORY CARD WRITE PROTECTED."
+
 $4 Delete Data	$85 Write Disabled	Display "MEMORY CARD WRITE PROTECTED."
+
 $6 Uname Save	$81 Not Formatted	Format the card.
 $6 Uname Save	$85 Write Disabled	Display "MEMORY CARD WRITE PROTECTED."
+
 $7 Uname Delete	$81 Not Formatted	Display "NO DATA FOR THIS GAME."
 $7 Uname Delete	$85 Write Disabled	Display "NO DATA FOR THIS GAME."
 

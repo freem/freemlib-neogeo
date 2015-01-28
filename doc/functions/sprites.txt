@@ -42,7 +42,8 @@ Sprites are usually transferred to the VRAM in VBlank...
 * AOF does this
 * smkdan's two scrolling demos do this (scroll1.asm being easier to understand)
 * furrtek's nyancat demo does this
-* Frog Feast, the list goes on...
+* Frog Feast does it
+...the list goes on.
 
 [Frog Feast]
 * "SpritesChanged" can skip the logic in RenderSprites if needed.
@@ -80,10 +81,15 @@ VBlank:
 [Data Formats]
 The best formats are those that map to the LSPC...like smkdan's.
 
-$00		(w) data length
+$00		(w) data length (in words)
 $02		(w) vram address
 $04		(w) vram increment
-$06...	(w) vram data in words
+$06...	(w) vram data (in words)
+
+--------------------------------------------------------------------------------
+[Notes]
+* The LSPC prefers to draw Fix data vertically (VRAM increment +1), though
+  people might prefer to think of the Fix data horizontally (VRAM incr +32).
 
 ================================================================================
 <Function Sketchpad>
