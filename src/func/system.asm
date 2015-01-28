@@ -7,14 +7,17 @@
 ; Software Dipswitches
 ;------------------------------------------------------------------------------;
 ; macr_GetSoftDipNum
-; Returns the setting of the specified dip switch number.
+; Returns the setting of the specified soft dip switch number.
+; Does not handle the two Time values (BIOS_GAMEDIP_TIME1, BIOS_GAMEDIP_TIME2)
+; or the two Count values (BIOS_GAMEDIP_COUNT1, BIOS_GAMEDIP_COUNT2).
+
 ; (Params)
-; \1			Soft DIP number to read (0-15)
+; \1			Soft DIP number to read (0-9)
 ; (Returns)
 ; d0			Value of requested Soft DIP
 
 macr_GetSoftDipNum:	macro
-	move.b	BIOS_GAME_DIP+\1,d0
+	move.b	BIOS_GAMEDIP_01+\1,d0
 	endm
 ;------------------------------------------------------------------------------;
 
