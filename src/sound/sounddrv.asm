@@ -446,41 +446,41 @@ command_01:
 	call	SetDefaultBanks	; initialize banks to default config
 
 	; (FM) turn off Left/Right, AM Sense and PM Sense
-	ld		de,#0xB500		; $B500: turn off for channels 1/3
+	ld		de,0xB500		; $B500: turn off for channels 1/3
 	write45
 	write67
-	ld		de,#0xB600		; $B600: turn off for channels 2/4
+	ld		de,0xB600		; $B600: turn off for channels 2/4
 	write45
 	write67
 
 	; (ADPCM-A, ADPCM-B) Reset ADPCM channels
-	ld		de,#0x00BF		; $00BF: ADPCM-A Dump=1, all channels=1
+	ld		de,0x00BF		; $00BF: ADPCM-A Dump=1, all channels=1
 	write67
-	ld		de,#0x1001		; $1001: ADPCM-B Reset=1
+	ld		de,0x1001		; $1001: ADPCM-B Reset=1
 	write45
 
 	; (ADPCM-A, ADPCM-B) Poke ADPCM channel flags (write 1, then 0)
-	ld		de,#0x1CBF		; $1CBF: Reset flags for ADPCM-A 1-6 and ADPCM-B
+	ld		de,0x1CBF		; $1CBF: Reset flags for ADPCM-A 1-6 and ADPCM-B
 	write45
-	ld		de,#0x1C00		; $1C00: Enable flags for ADPCM-A 1-6 and ADPCM-B
+	ld		de,0x1C00		; $1C00: Enable flags for ADPCM-A 1-6 and ADPCM-B
 	write45
 
 	; silence FM channels
-	ld		de,#0x2801		; FM channel 1 (1/4)
+	ld		de,0x2801		; FM channel 1 (1/4)
 	write45
-	ld		de,#0x2802		; FM channel 2 (2/4)
+	ld		de,0x2802		; FM channel 2 (2/4)
 	write45
-	ld		de,#0x2805		; FM channel 5 (3/4)
+	ld		de,0x2805		; FM channel 5 (3/4)
 	write45
-	ld		de,#0x2806		; FM channel 6 (4/4)
+	ld		de,0x2806		; FM channel 6 (4/4)
 	write45
 
 	; silence SSG channels
-	ld		de,#0x800		;SSG Channel A
+	ld		de,0x800		;SSG Channel A
 	write45
-	ld		de,#0x900		;SSG Channel B
+	ld		de,0x900		;SSG Channel B
 	write45
-	ld		de,#0xA00		;SSG Channel C
+	ld		de,0xA00		;SSG Channel C
 	write45
 
 	; set up infinite loop in RAM
