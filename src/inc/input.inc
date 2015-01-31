@@ -7,6 +7,20 @@ INPUT_UP				equ $01
 INPUT_DOWN				equ $02
 INPUT_LEFT				equ $04
 INPUT_RIGHT				equ $08
+
+; bi-directional, "impossible" masks
+INPUT_UD				equ INPUT_UP|INPUT_DOWN
+INPUT_LR				equ INPUT_LEFT|INPUT_RIGHT
+
+; diagonal direction masks
+INPUT_UL				equ INPUT_UP|INPUT_LEFT
+INPUT_UR				equ INPUT_UP|INPUT_RIGHT
+INPUT_DL				equ INPUT_DOWN|INPUT_LEFT
+INPUT_DR				equ INPUT_DOWN|INPUT_RIGHT
+
+; all-direction mask
+INPUT_UDLR				equ INPUT_UP|INPUT_DOWN|INPUT_LEFT|INPUT_RIGHT
+
 INPUT_A					equ $10
 INPUT_B					equ $20
 INPUT_C					equ $40
