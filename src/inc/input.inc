@@ -2,7 +2,7 @@
 ;==============================================================================;
 ; [Control Defines]
 
-; (REG_P1CNT, REG_P2CNT)
+; (REG_P1CNT, REG_P2CNT, BIOS_P*PREVIOUS, BIOS_P*CURRENT, etc.)
 INPUT_UP				equ $01
 INPUT_DOWN				equ $02
 INPUT_LEFT				equ $04
@@ -12,6 +12,24 @@ INPUT_B					equ $20
 INPUT_C					equ $40
 INPUT_D					equ $80
 
+; two-button combos
+INPUT_AB				equ INPUT_A|INPUT_B
+INPUT_AC				equ INPUT_A|INPUT_C
+INPUT_AD				equ INPUT_A|INPUT_D
+INPUT_BC				equ INPUT_B|INPUT_C
+INPUT_BD				equ INPUT_B|INPUT_D
+INPUT_CD				equ INPUT_C|INPUT_D
+
+; three-button combos
+INPUT_ABC				equ INPUT_A|INPUT_B|INPUT_C
+INPUT_ABD				equ INPUT_A|INPUT_B|INPUT_D
+INPUT_ACD				equ INPUT_A|INPUT_C|INPUT_D
+INPUT_BCD				equ INPUT_B|INPUT_C|INPUT_D
+
+; all four buttons
+INPUT_ABCD				equ INPUT_A|INPUT_B|INPUT_C|INPUT_D
+
+;------------------------------------------------------------------------------;
 ; (REG_STATUS_A)
 INPUT_COIN1				equ $01
 INPUT_COIN2				equ $02
@@ -19,12 +37,14 @@ INPUT_COIN3				equ $08
 INPUT_COIN4				equ $10
 INPUT_SERVICE			equ $04
 
+;------------------------------------------------------------------------------;
 ; (REG_STATUS_B)
 INPUT_STATB_START1		equ $01
 INPUT_STATB_SELECT1		equ $02
 INPUT_STATB_START2		equ $04
 INPUT_STATB_SELECT2		equ $08
 
+;------------------------------------------------------------------------------;
 ; (BIOS_STATCURNT/BIOS_STATCHANGE, BIOS_STATCURNT_RAW/BIOS_STATCHANGE_RAW)
 INPUT_STATC_START1		equ $01
 INPUT_STATC_SELECT1		equ $02
