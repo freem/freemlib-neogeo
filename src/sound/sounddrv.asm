@@ -90,6 +90,10 @@ NMI:
 	ld		(curCommand),a	; update curCommand
 	call	HandleCommand
 
+	; update previous command
+	ld		a,(curCommand)
+	ld		(prevCommand),a
+
 	out		(0xC),a			; Reply to 68K with something.
 	out		(0),a			; Write to port 0 (Clear sound code)
 endNMI:
@@ -320,27 +324,11 @@ SetDefaultBanks:
 ; fm_Silence
 ; Silences all FM channels.
 
-; Normal version you find in a few Neo-Geo sound drivers:
-fm_Silence:
-	ld		de,0x2801		; FM Channel 1
-	write45					; write to ports 4 and 5
-	;----------------------------------------------;
-	ld		de,0x2802		; FM Channel 2
-	write45					; write to ports 4 and 5
-	;----------------------------------------------;
-	ld		de,0x2805		; FM Channel 3
-	write45					; write to ports 4 and 5
-	;----------------------------------------------;
-	ld		de,0x2806		; FM Channel 4
-	write45					; write to ports 4 and 5
-	ret
-
-;------------------------------------------------------------------------------;
 ; "However, if you're accessing the same address multiple times, you may write
 ; the address first and procceed to write the data register multiple times."
 ; - translated from YM2610 Application Manual, Section 9
 
-fm_Silence2:
+fm_Silence:
 	push	af
 	ld		a,0x28			; Slot and Key On/Off
 	out		(4),a			; write to port 4 (address 1)
@@ -362,6 +350,23 @@ fm_Silence2:
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	pop		af
+	ret
+
+;------------------------------------------------------------------------------;
+; Normal version you find in a few Neo-Geo sound drivers ("the long way")
+
+fm_Silence2:
+	ld		de,0x2801		; FM Channel 1
+	write45					; write to ports 4 and 5
+	;----------------------------------------------;
+	ld		de,0x2802		; FM Channel 2
+	write45					; write to ports 4 and 5
+	;----------------------------------------------;
+	ld		de,0x2805		; FM Channel 3
+	write45					; write to ports 4 and 5
+	;----------------------------------------------;
+	ld		de,0x2806		; FM Channel 4
+	write45					; write to ports 4 and 5
 	ret
 
 ;==============================================================================;
@@ -395,16 +400,40 @@ pcma_Silence:
 ; Silences the ADPCM-B channel.
 
 pcmb_Silence:
-	;
+	; Force ADPCM-B to stop synthesizing with a $1001 write (set Reset bit)
+	ld		de,0x1001			; $1001: ADPCM-B Control 1: Reset bit = 1
+	write45
+
+	; Stop ADPCM-B output by clearing the Reset bit ($1000 write)
+	dec		e					; $1000: ADPCM-B Control 1: All bits = 0
+	write45
+
 	ret
 
 ;==============================================================================;
-; all of these are writes to ports 4/5:
+; all of these are timer-related writes to ports 4/5:
+;------------------------------------------------------------------------------;
+; timer_SetAll
 ; Set all Timer flags (0x273F)
+
+;------------------------------------------------------------------------------;
+; timer_ClearAll
 ; Clear all Timer flags (0x2700)
+
+;------------------------------------------------------------------------------;
+; timer_LoadEnable_B
 ; Reset A/B flags, Load and Enable Timer B (0x273A)
+
+;------------------------------------------------------------------------------;
+; timer_LoadEnable_A
 ; Reset A/B flags, Load and Enable Timer A (0x2735)
+
+;------------------------------------------------------------------------------;
+; timer_Reset_A
 ; Reset Timer A flag, Enable and Load Timers A/B (0x271F)
+
+;------------------------------------------------------------------------------;
+; timer_Reset_B
 ; Reset Timer B flag, Enable and Load Timers A/B (0x272F)
 
 ;==============================================================================;
@@ -542,8 +571,9 @@ play_ADPCM_A:
 ; d				ADPCM-B Sample Number
 
 play_ADPCM_B:
-	; Start/Repeat/Reset ($10 on ports 4/5)
-
+	; $1C80		; Flag Control ($1C on ports 4/5)
+	; $1C00		; Flag Control ($1C on ports 4/5)
+	; $1000		; Start/Repeat/Reset ($10 on ports 4/5)
 	; Left/Right Output ($11 on ports 4/5)
 
 	; start address/256 LSB ($12 on ports 4/5)
@@ -556,7 +586,6 @@ play_ADPCM_B:
 	; Channel Volume ($1B on ports 4/5)
 
 	; Start/Repeat/Reset ($10 on ports 4/5)
-	; Flag Control ($1C on ports 4/5)
 
 	ret
 
@@ -618,10 +647,10 @@ samples_PCMA:
 ; ADPCM-B Sample Data
 ; format:
 ; 2 words - Start and End address/256
-; 2 words - Delta-N sampling rates
+; 1 word  - Default Delta-N sampling rate
 
 samples_PCMB:
-	;word	startaddr,endaddr,samprateL,samprateH
+	;word	startaddr,endaddr,samprate
 
 ;==============================================================================;
 ; Sound Effects Library
