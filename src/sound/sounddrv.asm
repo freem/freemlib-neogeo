@@ -311,7 +311,8 @@ doCmd03:
 
 ;==============================================================================;
 ; SetDefaultBanks
-; Sets the default program banks. This setup treats the M1 ROM as linear space.
+; Sets the default program banks.
+; This setup treats the M1 ROM as linear space. (no bankswitching needed)
 
 SetDefaultBanks:
 	SetBank	0x1E,8			; Set $F000-$F7FF bank to bank $1E (30 *  2K)
@@ -327,6 +328,9 @@ SetDefaultBanks:
 ; "However, if you're accessing the same address multiple times, you may write
 ; the address first and procceed to write the data register multiple times."
 ; - translated from YM2610 Application Manual, Section 9
+
+; todo: switch out the ld commands on 0x02 and 0x06 for "inc a" instead?
+; 7->4 cycles for each switch.
 
 fm_Silence:
 	push	af
@@ -354,11 +358,13 @@ fm_Silence:
 
 ;------------------------------------------------------------------------------;
 ; Normal version you find in a few Neo-Geo sound drivers ("the long way"),
-; except that I've replaced the direct loads of de with modifications of e only.
+; except that I've replaced the last three direct loads of de with modifications
+; of e only. This saves 15 cycles.
 
-; Saving cycles this way is silly compared to doing the above (one address write
-; versus four), but if you feel you want to silence the FM channels in the
-; typical fashion, why not try this version out?
+; Saving cycles this way is silly compared to using the above routine (which
+; only has one address write versus the four in this one), but if you feel you
+; want to silence the FM channels in the typical fashion, why not try this
+; version out?
 
 ; Loads in original: 40 cycles
 ; Loads in new ver.: 25 cycles
