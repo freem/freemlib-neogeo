@@ -17,6 +17,7 @@
 	dc.l	$00C00426		; Reserved
 	dc.l	$00C0042C		; Uninitialized Interrupt Vector
 
+	; The following addresses differ between CD and Cart systems:
 	ifd		TARGET_CD
 		dc.l	$00C00522		; BIOSF_LOADFILE
 		dc.l	$00C00528		; Reserved
