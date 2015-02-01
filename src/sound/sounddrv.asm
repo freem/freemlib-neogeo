@@ -353,19 +353,33 @@ fm_Silence:
 	ret
 
 ;------------------------------------------------------------------------------;
-; Normal version you find in a few Neo-Geo sound drivers ("the long way")
+; Normal version you find in a few Neo-Geo sound drivers ("the long way"),
+; except that I've replaced the direct loads of de with modifications of e only.
+
+; Saving cycles this way is silly compared to doing the above (one address write
+; versus four), but if you feel you want to silence the FM channels in the
+; typical fashion, why not try this version out?
+
+; Loads in original: 40 cycles
+; Loads in new ver.: 25 cycles
 
 fm_Silence2:
 	ld		de,0x2801		; FM Channel 1
 	write45					; write to ports 4 and 5
 	;----------------------------------------------;
-	ld		de,0x2802		; FM Channel 2
+	; FM Channel 2
+	inc		e				; 4 cycles (de = 0x2802)
+	;ld		de,0x2802		; (10 cycles)
 	write45					; write to ports 4 and 5
 	;----------------------------------------------;
-	ld		de,0x2805		; FM Channel 3
+	; FM Channel 3
+	ld		e,5				; 7 cycles (de = 0x2805)
+	;ld		de,0x2805		; (10 cycles)
 	write45					; write to ports 4 and 5
 	;----------------------------------------------;
-	ld		de,0x2806		; FM Channel 4
+	; FM Channel 4
+	inc		e				; 4 cycles (de = 0x2806)
+	;ld		de,0x2806		; (10 cycles)
 	write45					; write to ports 4 and 5
 	ret
 
