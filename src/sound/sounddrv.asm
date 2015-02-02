@@ -34,6 +34,7 @@ j_write67:
 ; Code from smkdan's example M1 driver (adpcma_demo2/sound_M1.asm), where he
 ; uses this instead of portWriteDelayPart2 and portWriteDelayPart4. It's noted
 ; that "MAME doesn't care", so I'm currently not using it for the time being.
+; This will be changed later, of course.
 
 CheckBusyFlag:
 	in		a,(4)			; read Status 0 (busy flag in bit 7)
@@ -134,10 +135,8 @@ IRQ:
 	in		a, (4)
 	ld		(intStatus0),a
 
-	; send a reply to the 68K??
-	xor		a
-	out		(0xC),a			; write 0 to port 0xC (Respond to 68K)
-
+	; Check Timer B
+	; Check Timer A
 
 	; keep the music and sound effects going.
 
@@ -190,11 +189,11 @@ EntryPoint:
 
 	; continue setting up the hardware, etc.
 
-	ld		de,0x2730		; Reset Timer flags, Disable Timer IRQs
+	ld		de,FM_TimerMode<<8|0x30		; Reset Timer flags, Disable Timer IRQs
 	write45					; write to ports 4 and 5
-	ld		de,0x1001		; Reset ADPCM-B
+	ld		de,PCMB_Control<<8|1	; Reset ADPCM-B
 	write45					; write to ports 4 and 5
-	ld		de,0x1C00		; Unmask ADPCM-A and B flag controls
+	ld		de,PCMB_Flags<<8|0		; Unmask ADPCM-A and B flag controls
 	write45					; write to ports 4 and 5
 
 	; Initialize more variables
@@ -206,11 +205,11 @@ EntryPoint:
 	; set timer values??
 
 	; Start Timers ($27,$3F to ports 4 and 5)
-	ld		de,0x273F		; Reset Timer flags, Enable Timer IRQs, Load Timers
+	ld		de,FM_TimerMode<<8|0x3F		; Reset Timer flags, Enable Timer IRQs, Load Timers
 	write45					; write to ports 4 and 5
 
 	; (ADPCM-A shared volume)
-	ld		de,0x013F		; Set ADPCM-A volume to Maximum
+	ld		de,PCMA_MasterVol<<8|0x3F	; Set ADPCM-A volume to Maximum
 	write67					; write to ports 6 and 7
 ;}
 
@@ -223,8 +222,7 @@ EntryPoint:
 ; The code that handles the command buffer. I have no idea how it's gonna work yet.
 
 MainLoop:
-	; now it's your turn to handle the buffer!!! fuck.
-
+	; handle the buffer...
 	jp		MainLoop
 
 ;==============================================================================;
@@ -334,23 +332,23 @@ SetDefaultBanks:
 
 fm_Silence:
 	push	af
-	ld		a,0x28			; Slot and Key On/Off
+	ld		a,FM_KeyOnOff	; Slot and Key On/Off
 	out		(4),a			; write to port 4 (address 1)
 	rst		8				; Write delay 1 (17 cycles)
 	;---------------------------------------------------;
-	ld		a,0x01			; FM Channel 1
+	ld		a,FM_Chan1		; FM Channel 1
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	;---------------------------------------------------;
-	ld		a,0x02			; FM Channel 2
+	ld		a,FM_Chan2		; FM Channel 2
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	;---------------------------------------------------;
-	ld		a,0x05			; FM Channel 3
+	ld		a,FM_Chan3		; FM Channel 3
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	;---------------------------------------------------;
-	ld		a,0x06			; FM Channel 4
+	ld		a,FM_Chan4		; FM Channel 4
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
 	pop		af
@@ -370,7 +368,7 @@ fm_Silence:
 ; Loads in new ver.: 25 cycles
 
 fm_Silence2:
-	ld		de,0x2801		; FM Channel 1
+	ld		de,FM_KeyOnOff<<8|FM_Chan1		; FM Channel 1
 	write45					; write to ports 4 and 5
 	;----------------------------------------------;
 	; FM Channel 2
@@ -379,7 +377,7 @@ fm_Silence2:
 	write45					; write to ports 4 and 5
 	;----------------------------------------------;
 	; FM Channel 3
-	ld		e,5				; 7 cycles (de = 0x2805)
+	ld		e,FM_Chan3		; 7 cycles (de = 0x2805)
 	;ld		de,0x2805		; (10 cycles)
 	write45					; write to ports 4 and 5
 	;----------------------------------------------;
@@ -394,18 +392,14 @@ fm_Silence2:
 ; Silences all SSG channels.
 
 ssg_Silence:
-	ld		de,0x0800		; SSG Channel A Volume/Mode
-	write45					; write to ports 4 and 5
-	;-------------------------------------------------;
-	ld		de,0x0900		; SSG Channel B Volume/Mode
-	write45					; write to ports 4 and 5
-	;-------------------------------------------------;
-	ld		de,0x0A00		; SSG Channel C Volume/Mode
-	write45					; write to ports 4 and 5
-	;-------------------------------------------------;
-	; Disable all SSG channels... you may not want this.
-	ld		de,0x073F		; Disable all SSG channels (Tone and Noise)
-	write45					; write to ports 4 and 5
+	ld		de,SSG_VolumeA<<8|0
+	write45
+
+	ld		de,SSG_VolumeB<<8|0
+	write45
+
+	ld		de,SSG_VolumeC<<8|0
+	write45
 	ret
 
 ;==============================================================================;
@@ -421,7 +415,7 @@ pcma_Silence:
 
 pcmb_Silence:
 	; Force ADPCM-B to stop synthesizing with a $1001 write (set Reset bit)
-	ld		de,0x1001			; $1001: ADPCM-B Control 1: Reset bit = 1
+	ld		de,PCMB_Control<<8|1	; $1001: ADPCM-B Control 1: Reset bit = 1
 	write45
 
 	; Stop ADPCM-B output by clearing the Reset bit ($1000 write)
@@ -495,41 +489,41 @@ command_01:
 	call	SetDefaultBanks	; initialize banks to default config
 
 	; (FM) turn off Left/Right, AM Sense and PM Sense
-	ld		de,0xB500		; $B500: turn off for channels 1/3
+	ld		de,FM1_LeftRightAMPM<<8|0	; $B500: turn off for channels 1/3
 	write45
 	write67
-	ld		de,0xB600		; $B600: turn off for channels 2/4
+	ld		de,FM2_LeftRightAMPM<<8|0	; $B600: turn off for channels 2/4
 	write45
 	write67
 
 	; (ADPCM-A, ADPCM-B) Reset ADPCM channels
-	ld		de,0x00BF		; $00BF: ADPCM-A Dump=1, all channels=1
+	ld		de,PCMA_Control<<8|0xBF		; $00BF: ADPCM-A Dump=1, all channels=1
 	write67
-	ld		de,0x1001		; $1001: ADPCM-B Reset=1
+	ld		de,PCMB_Control<<8|1	; $1001: ADPCM-B Reset=1
 	write45
 
 	; (ADPCM-A, ADPCM-B) Poke ADPCM channel flags (write 1, then 0)
-	ld		de,0x1CBF		; $1CBF: Reset flags for ADPCM-A 1-6 and ADPCM-B
+	ld		de,PCMB_Flags<<8|0xBF	; $1CBF: Reset flags for ADPCM-A 1-6 and ADPCM-B
 	write45
-	ld		de,0x1C00		; $1C00: Enable flags for ADPCM-A 1-6 and ADPCM-B
+	ld		de,PCMB_Flags<<8|0		; $1C00: Enable flags for ADPCM-A 1-6 and ADPCM-B
 	write45
 
 	; silence FM channels
-	ld		de,0x2801		; FM channel 1 (1/4)
+	ld		de,FM_KeyOnOff<<8|1		; FM channel 1 (1/4)
 	write45
-	ld		de,0x2802		; FM channel 2 (2/4)
+	ld		de,FM_KeyOnOff<<8|2		; FM channel 2 (2/4)
 	write45
-	ld		de,0x2805		; FM channel 5 (3/4)
+	ld		de,FM_KeyOnOff<<8|5		; FM channel 5 (3/4)
 	write45
-	ld		de,0x2806		; FM channel 6 (4/4)
+	ld		de,FM_KeyOnOff<<8|6		; FM channel 6 (4/4)
 	write45
 
 	; silence SSG channels
-	ld		de,0x800		;SSG Channel A
+	ld		de,SSG_VolumeA<<8|0		;SSG Channel A
 	write45
-	ld		de,0x900		;SSG Channel B
+	ld		de,SSG_VolumeB<<8|0		;SSG Channel B
 	write45
-	ld		de,0xA00		;SSG Channel C
+	ld		de,SSG_VolumeC<<8|0		;SSG Channel C
 	write45
 
 	; set up infinite loop in RAM
