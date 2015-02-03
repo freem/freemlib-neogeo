@@ -44,11 +44,11 @@ $06			EFFECT DI	(disable sound effects)
 $07			ALL EI	(enable music & sound effects)
 $08			MUSIC EI	(enable music)
 $09			EFFECT EI	(enable sound effects)
-$0A			Fade Out
+$0A			Fade Out									[1 arg, fade out speed]
 $0B				(undocumented)
 $0C				(undocumented)
 $0D				(undocumented)
-$0E			Tempo Change
+$0E			Tempo Change								[1 arg, new tempo]
 $0F			SSG Stop
 $10			ROM/RAM check ("Please do not send this code.")
 $11			Fade Out Stop

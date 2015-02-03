@@ -86,11 +86,6 @@ $02		(w) vram address
 $04		(w) vram increment
 $06...	(w) vram data (in words)
 
---------------------------------------------------------------------------------
-[Notes]
-* The LSPC prefers to draw Fix data vertically (VRAM increment +1), though
-  people might prefer to think of the Fix data horizontally (VRAM incr +32).
-
 ================================================================================
 <Function Sketchpad>
 
