@@ -1,6 +1,10 @@
 freemlib Sound Driver Instrument Documentation
 ================================================================================
-Work in progress until I figure out what I'm doing!
+This is a very large work in progress until I figure out what I'm doing!
+
+Currently, this is written as a PC-facing format for some reason or another.
+On the real console, instruments would be separated into different groups,
+and the "Instrument Type" byte wouldn't be needed.
 
 [Instrument Format]
 Offset		Description
@@ -9,31 +13,27 @@ $00			Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <FM Instruments>
-Total:	29 bytes per instrument (4 operators)
+Total:	31 bytes per instrument (4 operators) + 1 type byte = 32 bytes total
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Offset		Description
---------------------------------------------------------------------------------
-$01			Feedback/Algorithm
-$02			Initial Left/Right Output; AM and PM values
-$03			LFO Frequency Control
-$04			Number of Operators Used (1-4)
-
-Operator data is defined in port order (each operator's values for a specific
-control). This is similar to the .EIF, .INS, and .TYI formats.
+FM instruments are meant to be similar to .TYI format.
 
 Offset		Description
 --------------------------------------------------------------------------------
-$05-$08		Detune/Multiple for Ops 1-4
-$09-$0C		Total Level for Ops 1-4
-$0D-$10		Key Scale/Attack for Ops 1-4
-$11-$14		AM On/Decay for Ops 1-4
-$15-$18		Sustain for Ops 1-4
-$19-$1C		Sustain Level/Release for Ops 1-4
+$01-$04		Detune/Multiple for Ops 1-4
+$05-$08		Total Level for Ops 1-4
+$09-$0C		Key Scale/Attack Rate for Ops 1-4
+$0D-$10		AM On/Decay Rate for Ops 1-4
+$11-$14		Sustain Rate for Ops 1-4
+$15-$18		Sustain Level/Release for Ops 1-4
+$19-$1C		SSG-EG value for Ops 1-4
+$1D			Feedback/Algorithm
+$1E			AM Sense/PM Sense
+$1F			(padding byte/reserved for future expansion)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <SSG Instruments>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-todo: possibly allow *.afx format from AY Sound FX Editor
+(todo: possibly allow *.afx format from AY Sound FX Editor)
 
 Offset		Description
 --------------------------------------------------------------------------------
@@ -47,43 +47,5 @@ $03			Noise Period Control
 Offset		Description
 --------------------------------------------------------------------------------
 $01			ADPCM-B Sample Number (1 byte); index into samples_PCMB
-$02,$03		Delta-N Sampling Rate (2 bytes)
-$04			Initial Left/Right Output (1 byte)
-
-================================================================================
-[Full Examples]
-
-<SSG Instrument>
-Offset		Description
---------------------------------------------------------------------------------
-$00=1		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
-$01			Initial Volume and Mode
-$02			Noise/Tone (0-3)
-$03			Noise Period Control
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-<4-op FM Instrument>
-Offset		Description
---------------------------------------------------------------------------------
-$00=0		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
-$01			Feedback (FB)/Algorithm (ALGO)
-$02			Initial Left/Right Output; AM and PM values
-$03			LFO Frequency Control
-$04=4		Number of Operators (1-4)
-$05-$08		Detune (DT)/Multiple (MULT) for Ops 1-4
-$09-$0C		Total Level (TL) for Ops 1-4
-$0D-$10		Key Scale (KS)/Attack Rate (AR) for Ops 1-4
-$11-$14		AM On (AM)/Decay Rate (DR) for Ops 1-4
-$15-$18		Sustain Rate (SR) for Ops 1-4
-$19-$1C		Sustain Level (SL)/Release Rate (RR) for Ops 1-4
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-<ADPCM-B Instrument>
-Offset		Description
---------------------------------------------------------------------------------
-$00=3		Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
-$01			ADPCM-B Sample Number (1 byte)
-$02,$03		Delta-N Sampling Rate (2 bytes)
+$02,$03		Base Delta-N Sampling Rate (2 bytes)
 $04			Initial Left/Right Output (1 byte)
