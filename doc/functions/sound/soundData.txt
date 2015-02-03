@@ -10,7 +10,7 @@ For others, see doc/functions/sound/
 
 ================================================================================
 [Instruments]
-In-depth info can be found in instruments.txt.
+In-depth (and proper) info can be found in instruments.txt.
 
 SSG instruments are a small collection of variables.
 ADPCM samples are a medium amount of variables.

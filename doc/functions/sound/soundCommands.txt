@@ -1,10 +1,9 @@
 ﻿freemlib Sound Engine System Command Documentation
 ================================================================================
-(Command sketchpad)
-* Still unsure about the "Start ADPCM-A sample #" part.
+(Notes and Command Sketchpad)
 * Still unsure about Data Collect and Data Transfer.
 ================================================================================
-Commands marked with a * are used by the BIOS and are therefore out of my hands.
+Commands marked with a * are used by the BIOS, and are out of my hands.
 Commands marked with @ are in slots that are compatible with SNK drivers.
 
 $00			No Command
@@ -19,26 +18,26 @@ $08			@ Enable Music
 $09			@ Enable Sounds
 $0A			Disable/Silence SSG (equiv. to SNK Command $0F)
 $0B			Disable/Silence FM
-$0C			Stop ADPCM-A sample [1 arg; sound(/channel?) to stop]
+$0C			Stop all ADPCM-A samples
 $0D			Stop ADPCM-B sample
 $0E			@ Tempo Change LSB [1 arg; $00-$FF = 0-255bpm]
 $0F			  Tempo Change MSB [1 arg; $00-$FF = 256-511bpm]
 $10			Fade Out [1 arg; speed $00-$FF]
 $11			@ Stop Fade In/Out
 $12			Fade In [1 arg; speed $00-$FF]
-$13			(Start ADPCM-A sample 1?)
-$14			(Start ADPCM-A sample 2?)
-$15			(Start ADPCM-A sample 3?)
-$16			Start ADPCM-B sample [1 arg; sound to play]
-$17			Write Address 1 (Port 4) [1 arg; address value]
-$18			Write Data 1 (Port 5) [1 arg; data value]
-$19			Write Address 2 (Port 6) [1 arg; address value]
-$1A			Write Data 2 (Port 7) [1 arg; data value]
-$1B			(VBlank Notification?)
+$13			--currently unassigned--
+$14			--currently unassigned--
+$15			--currently unassigned--
+$16			--currently unassigned--
+$17			--currently unassigned--
+$18			--currently unassigned--
+$19			--currently unassigned--
+$1A			--currently unassigned--
+$1B			--currently unassigned--
 $1C			(Data Collect (Z80 -> 68K)?)
 $1D			(Data Transfer (68K -> Z80)?)
-$1E			
-$1F			
+$1E			--currently unassigned--
+$1F			--currently unassigned--
 
 Extended details for system commands follow.
 ================================================================================
@@ -122,11 +121,8 @@ Stops playback of all SSG channels.
 Stops playback of all FM channels.
 
 ================================================================================
-[System Command $0C: Stop ADPCM-A sample]
-Stops the playback of the specified ADPCM-A sample.
-
-(Params)
-1 byte			Sample number to stop... or is this the channel?
+[System Command $0C: Stop all ADPCM-A samples]
+Stops the playback of all ADPCM-A samples.
 
 ================================================================================
 [System Command $0D: Stop ADPCM-B sample]
@@ -171,35 +167,19 @@ Handles tempos between 256-511.
 [System Command $15: ]
 
 ================================================================================
-[System Command $16: Start ADPCM-B sample]
+[System Command $16: ]
 
 ================================================================================
-[System Command $17: Write Address 1 (Port 4)]
-Writes data to port 4.
-
-(Params)
-1 byte			Address value (port 4)
+[System Command $17: ]
 
 ================================================================================
-[System Command $18: Write Data 1 (Port 5)]
-Writes data to port 5.
-
-(Params)
-1 byte			Data value (port 5)
+[System Command $18: ]
 
 ================================================================================
-[System Command $19: Write Address 2 (Port 6)]
-Writes data to port 6.
-
-(Params)
-1 byte			Address value (port 6)
+[System Command $19: ]
 
 ================================================================================
-[System Command $1A: Write Data 2 (Port 7)]
-Writes data to port 7.
-
-(Params)
-1 byte			Data value (port 7)
+[System Command $1A: ]
 
 ================================================================================
 [System Command $1B: ]
