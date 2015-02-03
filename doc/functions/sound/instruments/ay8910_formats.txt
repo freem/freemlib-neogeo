@@ -1,1 +1,41 @@
-(todo)
+AY-3-8910 (and Compatible) Instrument Formats
+=============================================
+(major todo)
+
+Variants:
+* General Instrument AY-3-8910
+* Yamaha YM2149F ("SSG")
+
+Similar to Texas Instruments SN76489
+
+================================================================================
+[AY FX Editor (.afx)]
+from "readme_eng.htm" by Shiru, slightly reformatted and edited.
+
+(16-bit numbers are storted in LSB, MSB format.)
+
+Every frame is encoded with the flag byte and a number of bytes that vary
+depending from value changes.
+
+ 0000 0000
+ |||| |__|
+ ||||  |
+ ||||  |__ Volume (bit0..3)
+ ||||_____ Disable T (bit4)
+ |||______ Change Tone (bit5)
+ ||_______ Change Noise (bit6)
+ |________ Disable N (bit7)
+
+When bit5 is set, two bytes with tone period follow.
+when bit6 is set, a single byte with noise period follows.
+When both bits are set, first two bytes that follow are the tone period, then
+a single byte with noise period follows that.
+
+When none of the bits are set, the next flags byte follows.
+
+End of effect is marked with byte sequence $D0, $20. Player should detect it before
+outputting it to the AY registers, by checking noise period value to be equal $20.
+The editor considers last non-zero volume value as last frame of an effect, other
+parameters don't matter.
+
+$D0 = Disable N, Change Noise, Disable T
