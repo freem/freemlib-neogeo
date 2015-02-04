@@ -25,7 +25,7 @@ soundToggle			ds 1		; Master Toggle for Sound Effects
 chanToggle			ds 1		; Overall toggle for SSG, FM, and PCM (1 bit each)
 ssgToggle			ds 1		; Specific SSG channel toggles ($07 p4/5)
 fmToggle			ds 1		; Specific FM channel toggles
-pcmToggle			ds 1		; Specific ADPCM channel toggles
+pcmToggle			ds 1		; Specific ADPCM channel toggles (matches ADPCM-B $1C/Flag Control register)
 
 ;------------------------------------------------------------------------------;
 ; [Song Attributes/Playback]
