@@ -430,25 +430,55 @@ pcmb_Silence:
 ; timer_SetAll
 ; Set all Timer flags (0x273F)
 
+timer_SetAll:
+	ld		de,0x273F
+	write45
+	ret
+
 ;------------------------------------------------------------------------------;
 ; timer_ClearAll
 ; Clear all Timer flags (0x2700)
+
+timer_ClearAll:
+	ld		de,0x2700
+	write45
+	ret
 
 ;------------------------------------------------------------------------------;
 ; timer_LoadEnable_B
 ; Reset A/B flags, Load and Enable Timer B (0x273A)
 
+timer_LoadEnable_B:
+	ld		de,0x273A
+	write45
+	ret
+
 ;------------------------------------------------------------------------------;
 ; timer_LoadEnable_A
 ; Reset A/B flags, Load and Enable Timer A (0x2735)
+
+timer_LoadEnable_A:
+	ld		de,0x2735
+	write45
+	ret
 
 ;------------------------------------------------------------------------------;
 ; timer_Reset_A
 ; Reset Timer A flag, Enable and Load Timers A/B (0x271F)
 
+timer_Reset_A:
+	ld		de,0x271F
+	write45
+	ret
+
 ;------------------------------------------------------------------------------;
 ; timer_Reset_B
 ; Reset Timer B flag, Enable and Load Timers A/B (0x272F)
+
+timer_Reset_B:
+	ld		de,0x272F
+	write45
+	ret
 
 ;==============================================================================;
 ; HandleCommand
