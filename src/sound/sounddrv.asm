@@ -367,6 +367,7 @@ fm_Silence:
 ; Loads in original: 40 cycles
 ; Loads in new ver.: 25 cycles
 
+	if 0
 fm_Silence2:
 	ld		de,FM_KeyOnOff<<8|FM_Chan1		; FM Channel 1
 	write45					; write to ports 4 and 5
@@ -386,6 +387,7 @@ fm_Silence2:
 	;ld		de,0x2806		; (10 cycles)
 	write45					; write to ports 4 and 5
 	ret
+	endif
 
 ;==============================================================================;
 ; ssg_Silence
