@@ -431,7 +431,7 @@ pcmb_Silence:
 ; Set all Timer flags (0x273F)
 
 timer_SetAll:
-	ld		de,0x273F
+	ld		de,FM_TimerMode<<8|0x3F
 	write45
 	ret
 
@@ -440,7 +440,7 @@ timer_SetAll:
 ; Clear all Timer flags (0x2700)
 
 timer_ClearAll:
-	ld		de,0x2700
+	ld		de,FM_TimerMode<<8|0
 	write45
 	ret
 
@@ -449,7 +449,7 @@ timer_ClearAll:
 ; Reset A/B flags, Load and Enable Timer B (0x273A)
 
 timer_LoadEnable_B:
-	ld		de,0x273A
+	ld		de,FM_TimerMode<<8|0x3A
 	write45
 	ret
 
@@ -458,7 +458,7 @@ timer_LoadEnable_B:
 ; Reset A/B flags, Load and Enable Timer A (0x2735)
 
 timer_LoadEnable_A:
-	ld		de,0x2735
+	ld		de,FM_TimerMode<<8|0x35
 	write45
 	ret
 
@@ -467,7 +467,7 @@ timer_LoadEnable_A:
 ; Reset Timer A flag, Enable and Load Timers A/B (0x271F)
 
 timer_Reset_A:
-	ld		de,0x271F
+	ld		de,FM_TimerMode<<8|0x1F
 	write45
 	ret
 
@@ -476,7 +476,7 @@ timer_Reset_A:
 ; Reset Timer B flag, Enable and Load Timers A/B (0x272F)
 
 timer_Reset_B:
-	ld		de,0x272F
+	ld		de,FM_TimerMode<<8|0x2F
 	write45
 	ret
 
@@ -491,7 +491,7 @@ HandleCommand_end:
 	ret
 
 ;------------------------------------------------------------------------------;
-; Relevant command pointers go here
+; Relevant command pointers go here...
 sysCmdPointers:
 	
 
