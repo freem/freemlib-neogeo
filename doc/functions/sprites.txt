@@ -120,13 +120,9 @@ Metasprites are a collection of Sprites. On the Neo-Geo, it's a bit easier to
 make metasprites, compared to other consoles. SCB3's Sprite height and Sticky
 bit go a long way in making metasprites easier to deal with.
 
-todo:
-* allow for multiple "groups" of sprites in a single metasprite
-* add x and y offsets to each sprite block
-
 Commands have "mspr" prefix.
 
-<Metasprite Data Block>
+<Metasprite Data Block (current, but deprecated)>
 $00			Number of Sprites in Metasprite		(word)
 $02...end	Pointers to Sprite data				(long)
 
@@ -205,7 +201,45 @@ SCB1 Macro would take the following values:
 
 ================================================================================
 todo: actual documentation of existing code
-* spr_Load
-* sprmac_SCB1Data
-* sprmac_SpriteData
 * mspr_Load
+
+================================================================================
+[spr_Load]
+Loads a single sprite into the VRAM.
+
+Can be called on its own, or by mspr_Load.
+
+(Params)
+d0		[word] Sprite index (0-511; sprite 0 is not recommended!)
+a0		[long] Pointer to Sprite Data Block
+
+================================================================================
+[sprmac_SCB1Data]
+Writes a single SCB1 data entry into the binary.
+
+This macro converts normal values to their SCB1 equivalents.
+You will want to use this macro multiple times for Sprites with Height > 1.
+
+(Params)
+\1		Tile Number					(long) 20 bits; SCB1 even, SCB1 odd (bits 4-7)
+\2		Palette Number				(byte) 8 bits; SCB1 odd (bits 8-15)
+\3		Auto-Animation (0/4/8)		(byte) 2 bits; SCB1 odd (bits 2,3) 4=2bit, 8=3bit
+\4		Vertical Flip				(byte) 1 bit; SCB1 odd (bit 1)
+\5		Horizontal Flip				(byte) 1 bit; SCB1 odd (bit 0)
+
+================================================================================
+[sprmac_SpriteData]
+Writes Sprite data into the binary.
+
+This macro converts normal values to their SCB* section equivalents.
+(Aside from SCB1 tilemaps, which are handled with the sprmac_SCB1Data macro.)
+
+; Major Note: This does not handle the sticky bit in SCB3.
+
+(Params)
+\1		Sprite Height (in tiles)	(word) (bottom 6 bits of SCB3)
+\2		X position					(word) 9 bits (SCB4); converted to X<<7
+\3		Y position					(word) 9 bits (SCB3); converted to (496-Y)<<7
+\4		SCB1 tilemap data Pointer	(long)
+\5		Horizontal Shrink (0-F)		(byte)
+\6		Vertical Shrink (00-FF)		(byte)

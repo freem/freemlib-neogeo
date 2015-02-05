@@ -61,8 +61,8 @@ utilmac_CalcSprY:	macro
 ; Loads a single sprite into the VRAM. Can be called on its own, or by mspr_Load.
 
 ; (Params)
-; d0			Sprite index (0-511; sprite 0 is not recommended!)
-; a0			Pointer to Sprite Data Block
+; d0			[word] Sprite index (0-511; sprite 0 is not recommended!)
+; a0			[long] Pointer to Sprite Data Block
 
 spr_Load:
 	; start reading from sprite data block
@@ -97,9 +97,9 @@ spr_Load:
 ; Internal routine for writing SCB1 tilemap data.
 
 ; (Params)
-; d0			Sprite index (carried over from spr_Load or mspr_Load)
-; d1			Number of tiles to parse
-; a1			Pointer to SCB1 tilemap data
+; d0			[word] Sprite index (carried over from spr_Load or mspr_Load)
+; d1			[word] Number of tiles to parse
+; a1			[long] Pointer to SCB1 tilemap data
 
 spr_ParseSCB1:
 	move.w	#1,LSPC_INCR		; VRAM increment +1
@@ -152,6 +152,7 @@ HFLIP_YES			equ 1		; horizontal flip
 ; This macro converts normal values to their SCB1 equivalents.
 ; You will want to use this macro multiple times for Sprites with Height > 1.
 
+; (Params)
 ; \1			Tile Number				(long) 20 bits; SCB1 even, SCB1 odd (bits 4-7)
 ; \2			Palette Number			(byte) 8 bits; SCB1 odd (bits 8-15)
 ; \3			Auto-Animation (0,4,8)	(byte) 2 bits; SCB1 odd (bits 2,3) 4=2bit, 8=3bit
@@ -174,6 +175,7 @@ sprmac_SCB1Data:	macro
 
 ; Major Note: This does not handle the sticky bit in SCB3.
 
+; (Params)
 ; \1			Sprite Height (in tiles)		(word) (bottom 6 bits of SCB3)
 ; \2			X position						(word) 9 bits (SCB4); converted to X<<7
 ; \3			Y position						(word) 9 bits (SCB3); converted to (496-Y)<<7
@@ -191,13 +193,15 @@ sprmac_SpriteData:	macro
 
 ;==============================================================================;
 ; [Metasprites]
+; Metasprite code will need to be revisited (see doc/functions/sprite.txt)
+
 ;------------------------------------------------------------------------------;
 ; mspr_Load
 ; Loads a Metasprite into the VRAM.
 
 ; (Params)
-; d0			Metasprite starting sprite index
-; a0			Pointer to Metasprite Data Block
+; d0			[word] Metasprite starting sprite index
+; a0			[long] Pointer to Metasprite Data Block
 
 mspr_Load:
 	move.w	d0,d5				; save initial sprite number
