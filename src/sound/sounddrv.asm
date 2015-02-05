@@ -493,9 +493,41 @@ HandleCommand_end:
 	ret
 
 ;------------------------------------------------------------------------------;
-; Relevant command pointers go here...
-sysCmdPointers:
-	
+; Table of command routine pointers
+
+tbl_SysCmdPointers:
+	word	command_00		; $00 - nop/do nothing
+	word	command_01		; $01 - Slot switch
+	word	command_02		; $02 - Play eyecatch music
+	word	command_03		; $03 - Soft Reset
+	word	command_04		; $04 - Disable All (Music & Sounds)
+	word	command_05		; $05 - Disable Music
+	word	command_06		; $06 - Disable Sounds
+	word	command_07		; $07 - Enable All (Music & Sounds)
+	word	command_08		; $08 - Enable Music
+	word	command_09		; $09 - Enable Sounds
+	;word	command_0A		; $0A - Silence SSG
+	;word	command_0B		; $0B - Silence FM
+	;word	command_0C		; $0C - Stop all ADPCM-A samples
+	;word	command_0D		; $0D - Stop current ADPCM-B sample
+	;word	command_0E		; $0E - 
+	;word	command_0F		; $0F - 
+	;word	command_10		; $10 - Fade Out (1 argument; fade speed)
+	;word	command_11		; $11 - Stop Fade In/Out
+	;word	command_12		; $12 - Fade In (1 argument; fade speed)
+	;word	command_00		; $13 - (currently unassigned)
+	;word	command_00		; $14 - (currently unassigned)
+	;word	command_00		; $15 - (currently unassigned)
+	;word	command_00		; $16 - (currently unassigned)
+	;word	command_00		; $17 - (currently unassigned)
+	;word	command_00		; $18 - (currently unassigned)
+	;word	command_00		; $19 - (currently unassigned)
+	;word	command_00		; $1A - (currently unassigned)
+	;word	command_00		; $1B - (currently unassigned)
+	;word	command_00		; $1C - (currently unassigned)
+	;word	command_00		; $1D - (currently unassigned)
+	;word	command_00		; $1E - (currently unassigned)
+	;word	command_00		; $1F - (currently unassigned)
 
 ;==============================================================================;
 ; temporary system command holding cell.
@@ -570,8 +602,8 @@ command_01:
 ; command_02
 ; Plays the eyecatch music. (Typically music code $5F)
 
-;command_02:
-	
+command_02:
+	ret
 
 ;------------------------------------------------------------------------------;
 ; command_03
@@ -584,6 +616,92 @@ command_03:
 	out		(0),a			; Reset sound code
 	ld		sp,0xFFFF
 	jp		Start			; Go back to the top.
+
+;------------------------------------------------------------------------------;
+; command_04
+; Disable All (Music & Sounds)
+
+command_04:
+	;(musicToggle)
+	;(soundToggle)
+	ret
+
+;------------------------------------------------------------------------------;
+; command_05
+; Disable Music
+
+command_05:
+	;(musicToggle)
+	ret
+
+;------------------------------------------------------------------------------;
+; command_06
+; Disable Sounds
+
+command_06:
+	;(soundToggle)
+	ret
+
+;------------------------------------------------------------------------------;
+; command_07
+; Enable All (Music & Sounds)
+
+command_07:
+	;(musicToggle)
+	;(soundToggle)
+	ret
+
+;------------------------------------------------------------------------------;
+; command_08
+; Enable Music
+
+command_08:
+	;(musicToggle)
+	ret
+
+;------------------------------------------------------------------------------;
+; command_09
+; Enable Sounds
+
+command_09:
+	;(soundToggle)
+	ret
+
+;------------------------------------------------------------------------------;
+; command_0A
+; Silence SSG
+
+;------------------------------------------------------------------------------;
+; command_0B
+; Silence FM
+
+;------------------------------------------------------------------------------;
+; command_0C
+; Stop all ADPCM-A samples
+
+;------------------------------------------------------------------------------;
+; command_0D
+; Stop ADPCM-B sample
+
+;------------------------------------------------------------------------------;
+; command_0E
+; tempo change 1/2??
+
+;------------------------------------------------------------------------------;
+; command_0F
+; tempo change 2/2??
+
+;------------------------------------------------------------------------------;
+; command_10
+; Fade out
+
+;------------------------------------------------------------------------------;
+; command_11
+; Cancel fade in/fade out
+
+;------------------------------------------------------------------------------;
+; command_12
+; Fade in
 
 ;==============================================================================;
 ; play_ADPCM_A
