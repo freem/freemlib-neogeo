@@ -506,8 +506,8 @@ tbl_SysCmdPointers:
 	word	command_07		; $07 - Enable All (Music & Sounds)
 	word	command_08		; $08 - Enable Music
 	word	command_09		; $09 - Enable Sounds
-	;word	command_0A		; $0A - Silence SSG
-	;word	command_0B		; $0B - Silence FM
+	word	ssg_Silence		; $0A - Silence SSG channels
+	word	fm_Silence		; $0B - Silence FM channels
 	;word	command_0C		; $0C - Stop all ADPCM-A samples
 	;word	command_0D		; $0D - Stop current ADPCM-B sample
 	;word	command_0E		; $0E - 
@@ -705,7 +705,7 @@ command_09:
 
 ;==============================================================================;
 ; play_ADPCM_A
-; Play ADPCM-A sample
+; Play an ADPCM-A sample.
 
 ; (Params)
 ; d				ADPCM-A Channel Number
@@ -717,6 +717,7 @@ play_ADPCM_A:
 	; set channel volume and left/right output ($08-$0D on ports 6/7)
 	; * default is full volume and both channels
 
+	; get the following values from samples_PCMA table:
 	; start address/256 LSB ($10-$15 on ports 6/7)
 	; start address/256 MSB ($18-$1D on ports 6/7)
 	; end address/256 LSB ($20-$25 on ports 6/7)
@@ -729,7 +730,7 @@ play_ADPCM_A:
 
 ;==============================================================================;
 ; play_ADPCM_B
-; Play ADPCM-B sample
+; Play an ADPCM-B sample.
 
 ; (Params)
 ; d				ADPCM-B Sample Number
@@ -740,6 +741,7 @@ play_ADPCM_B:
 	; $1000		; Start/Repeat/Reset ($10 on ports 4/5)
 	; Left/Right Output ($11 on ports 4/5)
 
+	; get the following values from samples_PCMB table:
 	; start address/256 LSB ($12 on ports 4/5)
 	; start address/256 MSB ($13 on ports 4/5)
 	; end address/256 LSB ($14 on ports 4/5)
@@ -787,34 +789,8 @@ freqTable_FM:
 	;word	0x04AE 			; imaginary B#/Cb (507.74Hz)
 
 ;==[begin to edit stuff below this line]======================================;
-; Instrument Data
-; * FM instruments
-instruments_FM:
-	; 29 bytes per instrument
-
-; * SSG instruments
-instruments_SSG:
-	; 3 bytes per instrument
-
-; * ADPCM-B instruments
-instruments_PCMB:
-	; 5 bytes per instrument
-
-;==============================================================================;
-; ADPCM-A Sample Data
-; format: Start and End address/256 in Words.
-
-samples_PCMA:
-	;word	startaddr,endaddr
-
-;------------------------------------------------------------------------------;
-; ADPCM-B Sample Data
-; format:
-; 2 words - Start and End address/256
-; 1 word  - Default Delta-N sampling rate
-
-samples_PCMB:
-	;word	startaddr,endaddr,samprate
+	include "instruments.inc"	; Instrument Data
+	include "samples.inc"		; ADPCM Sample Data
 
 ;==============================================================================;
 ; Sound Effects Library
