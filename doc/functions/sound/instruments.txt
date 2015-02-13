@@ -2,50 +2,41 @@ freemlib Sound Driver Instrument Documentation
 ================================================================================
 This is a very large work in progress until I figure out what I'm doing!
 
-Currently, this is written as a PC-facing format for some reason or another.
-On the real console, instruments would be separated into different groups,
-and the "Instrument Type" byte wouldn't be needed.
-
-[Instrument Format]
-Offset		Description
---------------------------------------------------------------------------------
-$00			Instrument Type (0=FM, 1=SSG, 2=ADPCM-A, 3=ADPCM-B)
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<FM Instruments>
-Total:	31 bytes per instrument (4 operators) + 1 type byte = 32 bytes total
+<FM Instruments> | Total: 32 bytes per instrument (4 operators)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 FM instruments are meant to be similar to .TYI format.
 
 Offset		Description
 --------------------------------------------------------------------------------
-$01-$04		Detune/Multiple for Ops 1-4
-$05-$08		Total Level for Ops 1-4
-$09-$0C		Key Scale/Attack Rate for Ops 1-4
-$0D-$10		AM On/Decay Rate for Ops 1-4
-$11-$14		Sustain Rate for Ops 1-4
-$15-$18		Sustain Level/Release for Ops 1-4
-$19-$1C		SSG-EG value for Ops 1-4
-$1D			Feedback/Algorithm
-$1E			AM Sense/PM Sense
-$1F			(padding byte/reserved for future expansion)
+$00-$03		Detune/Multiple (Ops 1-4)				_DDDMMMM (D=detune, M=multiple)
+$04-$07		Total Level (Ops 1-4)					_VVVVVVV (V=total level/volume)
+$08-$0B		Key Scale/Attack Rate (Ops 1-4)			SS_RRRRR (S=key scale, R=attack rate)
+$0C-$0F		AM On/Decay Rate (Ops 1-4)				A__DDDDD (A=AM on, D=decay rate)
+$10-$13		Sustain Rate (Ops 1-4)					___SSSSS (S=sustain rate)
+$14-$17		Sustain Level/Release Rate (Ops 1-4)	SSSSRRRR (S=sustain level, R=release rate)
+$18-$1B		SSG-EG value (Ops 1-4)					____EEEE (E=SSG-EG value)
+$1C			Feedback/Algorithm						__FFFAAA (F=feedback, A=algorithm)
+$1D			AM Sense/PM Sense						__AA_PPP (A=AM sense, P=PM sense)
+$1E			currently 0x00 (reserved for future expansion)
+$1F			currently 0x00 (reserved for future expansion)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <SSG Instruments>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A SSG "instrument" is a collection of notes played on one of the SSG channels.
+
 (todo: possibly allow *.afx format from AY Sound FX Editor)
 
-Offset		Description
---------------------------------------------------------------------------------
-$01			Initial Volume and Mode
-$02			Noise/Tone Values
-$03			Noise Period Control
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <ADPCM-B Instruments>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Still under construction, since some samples might require tables for Delta-N
+differences (as opposed to just adding/subtracting a fixed number)...
+
 Offset		Description
 --------------------------------------------------------------------------------
-$01			ADPCM-B Sample Number (1 byte); index into samples_PCMB
-$02,$03		Base Delta-N Sampling Rate (2 bytes)
-$04			Initial Left/Right Output (1 byte)
+$00			ADPCM-B Sample Number (1 byte); index into samples_PCMB
+$01,$02		Delta-N Sampling Rate +- difference per tone (2 bytes)
+$03			currently 0x00 (reserved for future expansion)

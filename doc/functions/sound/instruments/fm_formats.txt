@@ -218,11 +218,10 @@ $32			hardware LFO Channel Switch
 ================================================================================
 <todo>
 Though these aren't for the OPN series...
+
 * Adlib Tracker II (A2I, A2F)
-* BoomTracker 4.0 (CIF)
 * FM-Kingtracker (FIN)
 * HSC-Tracker/RAD-Tracker, SAdT, Amusic/AdLib instrument (INS)
-* Creative Labs FM instrument (SBI)
 * Sound Generator 3.0 (SGI)
 
 Instrument Banks?
@@ -230,3 +229,137 @@ Instrument Banks?
 * AdLib instrument bank v1.0 (BNK)
 * FM-Kingtracker (FIB)
 * Creative Labs FM instrument bank (IBK)
+
+todo: decode this stuff from Adlib Tracker II
+================================================================================
+* BoomTracker 4.0 (CIF)
+
+procedure import_hsc_instrument_alt(var data);
+begin
+	With temp_instrument do
+		begin
+			fm_data.AM_VIB_EG_carrier   := tDUMMY_BUFF(data)[0];
+			fm_data.AM_VIB_EG_modulator := tDUMMY_BUFF(data)[1];
+			fm_data.KSL_VOLUM_carrier   := tDUMMY_BUFF(data)[2];
+			fm_data.KSL_VOLUM_modulator := tDUMMY_BUFF(data)[3];
+			fm_data.ATTCK_DEC_carrier   := tDUMMY_BUFF(data)[4];
+			fm_data.ATTCK_DEC_modulator := tDUMMY_BUFF(data)[5];
+			fm_data.SUSTN_REL_carrier   := tDUMMY_BUFF(data)[6];
+			fm_data.SUSTN_REL_modulator := tDUMMY_BUFF(data)[7];
+			fm_data.FEEDBACK_FM         := tDUMMY_BUFF(data)[8]  AND $0f;
+			fm_data.WAVEFORM_carrier    := tDUMMY_BUFF(data)[9]  AND 3;
+			fm_data.WAVEFORM_modulator  := tDUMMY_BUFF(data)[10] AND 3;
+		end;
+
+	temp_instrument.panning := 0;
+	temp_instrument.fine_tune := tDUMMY_BUFF(data)[11] SHR 4;
+end;
+
+procedure cif_file_loader_alt(fname: String);
+
+const id = '<CUD-FM-Instrument>'+#26;
+
+type
+	tCIF_DATA = Record
+					ident: array[1..20] of Char;
+					idata: tFM_INST_DATA;
+					resrv: Byte;
+					iname: array[1..20] of Char;
+				end;
+
+var
+	f: File;
+	buffer: tCIF_DATA;
+	temp: Longint;
+
+const MIN_CIF_SIZE = SizeOf(buffer.ident)+SizeOf(buffer.idata)+SizeOf(buffer.resrv);
+
+begin
+	FillChar(temp_instrument,SizeOf(temp_instrument),0);
+	{$i-}
+	Assign(f,fname);
+	ResetF(f);
+	{$i+}
+	If (IOresult <> 0) then
+		begin
+			CloseF(f);
+			EXIT;
+		end;
+
+	BlockReadF(f,buffer,SizeOf(buffer),temp);
+	If NOT ((temp >= MIN_CIF_SIZE) and (buffer.ident = id)) then
+		begin
+			CloseF(f);
+			EXIT;
+		end;
+
+	import_hsc_instrument_alt(buffer.idata);
+	temp_instrument.fine_tune := 0;
+	CloseF(f);
+	load_flag_alt := 1;
+end;
+
+================================================================================
+* Creative Labs FM instrument (SBI)
+procedure import_sbi_instrument_alt(var data);
+begin
+	FillChar(temp_instrument,SizeOf(temp_instrument),0);
+	With temp_instrument do
+		begin
+			fm_data.AM_VIB_EG_modulator := tDUMMY_BUFF(data)[0];
+			fm_data.AM_VIB_EG_carrier := tDUMMY_BUFF(data)[1];
+			fm_data.KSL_VOLUM_modulator := tDUMMY_BUFF(data)[2];
+			fm_data.KSL_VOLUM_carrier := tDUMMY_BUFF(data)[3];
+			fm_data.ATTCK_DEC_modulator := tDUMMY_BUFF(data)[4];
+			fm_data.ATTCK_DEC_carrier := tDUMMY_BUFF(data)[5];
+			fm_data.SUSTN_REL_modulator := tDUMMY_BUFF(data)[6];
+			fm_data.SUSTN_REL_carrier := tDUMMY_BUFF(data)[7];
+			fm_data.WAVEFORM_modulator := tDUMMY_BUFF(data)[8] AND 3;
+			fm_data.WAVEFORM_carrier := tDUMMY_BUFF(data)[9] AND 3;
+			fm_data.FEEDBACK_FM := tDUMMY_BUFF(data)[10] AND $0f;
+		end;
+
+	temp_instrument.panning := 0;
+	temp_instrument.fine_tune := 0;
+end;
+
+procedure sbi_file_loader_alt(fname: String);
+
+const id = 'SBI'+#26;
+
+type
+	tSBI_DATA = Record
+					ident: array[1..4]  of Char;
+					iname: array[1..32] of Char;
+					idata: tFM_INST_DATA;
+					dummy: array[1..5]  of Byte;
+				end;
+var
+	f: File;
+	buffer: tSBI_DATA;
+	temp: Longint;
+
+begin
+	FillChar(temp_instrument,SizeOf(temp_instrument),0);
+	{$i-}
+	Assign(f,fname);
+	ResetF(f);
+	{$i+}
+	If (IOresult <> 0) then
+		begin
+			CloseF(f);
+			EXIT;
+		end;
+
+	BlockReadF(f,buffer,SizeOf(buffer),temp);
+	If NOT ((temp = SizeOf(buffer)) and (buffer.ident = id)) then
+		begin
+			CloseF(f);
+			EXIT;
+		end;
+
+	import_standard_instrument_alt(buffer.idata);
+	CloseF(f);
+	load_flag_alt := 1;
+end;
+================================================================================
