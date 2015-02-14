@@ -9,41 +9,40 @@
 Start:
 	di
 	jp		EntryPoint
-;------------------------------------------------------------------------------;
+;==============================================================================;
 	org $0008
 ; Port Delay Write for Addresses
 portWriteDelayPart1:
 	jp		portWriteDelayPart2
-;------------------------------------------------------------------------------;
+;==============================================================================;
 	org $0010
 ; Port Delay Write for Data
 portWriteDelayPart3:
 	jp		portWriteDelayPart4
-;------------------------------------------------------------------------------;
+;==============================================================================;
 	org $0018
 j_write45:
 	jp		write_45
-;------------------------------------------------------------------------------;
+;==============================================================================;
 	org $0020
 j_write67:
 	jp		write_67
-;------------------------------------------------------------------------------;
+;==============================================================================;
 	org $0028
 ; Keep checking the busy flag in Status 0 until it's clear.
 
 ; Code from smkdan's example M1 driver (adpcma_demo2/sound_M1.asm), where he
-; uses this instead of portWriteDelayPart2 and portWriteDelayPart4. It's noted
-; that "MAME doesn't care", so I'm currently not using it for the time being.
-; This will be changed later, of course.
+; uses this instead of portWriteDelayPart2 and portWriteDelayPart4.
+; It's noted that "MAME doesn't care". The hardware does, however.
 
 CheckBusyFlag:
 	in		a,(4)			; read Status 0 (busy flag in bit 7)
 	add		a
 	jr		c,CheckBusyFlag
 	ret
-;------------------------------------------------------------------------------;
+;==============================================================================;
 	;org $0030
-;------------------------------------------------------------------------------;
+;==============================================================================;
 	org $0038
 ; the IRQ belongs here.
 j_IRQ:
@@ -113,8 +112,9 @@ endNMI:
 ; At least, that's the goal. Not sure how feasible it really is.
 
 ; Some other engines use the IRQ to poll the two status ports (6 and 4).
-; IRQs in SNK drivers (Mr.Pac, MAKOTO v3.0) are pretty large. I want to avoid
-; that, if at all possible.
+
+; IRQs in SNK drivers (e.g. Mr.Pac, MAKOTO v3.0) are pretty large.
+; I want to avoid that, if at all possible. However, it might not be...
 
 IRQ:
 	; save registers
@@ -130,6 +130,13 @@ IRQ:
 	ld		(intStatus1),a
 
 	; check status of ADPCM channels
+	; $80 - ADPCM-B
+	; $20 - ADPCM-A 6
+	; $10 - ADPCM-A 5
+	; $08 - ADPCM-A 4
+	; $04 - ADPCM-A 3
+	; $02 - ADPCM-A 2
+	; $01 - ADPCM-A 1
 
 	; update internal Status 0 register
 	in		a, (4)
@@ -165,17 +172,16 @@ endIRQ:
 EntryPoint:
 	ld		sp,0xFFFC		; Set stack pointer ($FFFD-$FFFE is used for other purposes)
 	im		1				; Set Interrupt Mode 1 (IRQ at $38)
-	xor		a				; make value in A = 0
 
 	; Clear RAM at $F800-$FFFF
+	xor		a				; make value in A = 0
 	ld		(0xF800),a		; set $F800 = 0
 	ld		hl,0xF800		; 00 value is at $F800
 	ld		de,0xF801		; write sequence begins at $F801
 	ld		bc,0x7FF		; end at $FFFF
 	ldir					; clear out memory
 
-	; Initialize variables
-	ld		(dataMode),a	; data mode = 0 (default)
+	; Initialize variables (todo)
 
 	; Silence SSG, FM(, and ADPCM?)
 	call	ssg_Silence
@@ -489,11 +495,28 @@ timer_Reset_B:
 HandleCommand:
 	ld		a,(curCommand)	; get current command
 
+	; check what the command falls under
+	; in SNK drivers, this is done using a table of values that map between 0-5:
+	; 0=unused, 1=system, 2=music, 3=pcm?, 4=pcm?, 5=SSG
+
+	; in the freemlib driver, this might be handled differently, since games
+	; might want to have different configurations. However, commands $00-$1F
+	; are reserved for system use.
+
 HandleCommand_end:
 	ret
 
 ;------------------------------------------------------------------------------;
-; Table of command routine pointers
+; HandleSystemCommand
+; Handles a system command (IDs $00-$1F).
+
+HandleSystemCommand:
+	; use command as index into tbl_SysCmdPointers
+
+	ret						; xxx: should be a jump into the system command pointers
+
+;------------------------------------------------------------------------------;
+; Table of system command routine pointers
 
 tbl_SysCmdPointers:
 	word	command_00		; $00 - nop/do nothing
@@ -508,26 +531,26 @@ tbl_SysCmdPointers:
 	word	command_09		; $09 - Enable Sounds
 	word	ssg_Silence		; $0A - Silence SSG channels
 	word	fm_Silence		; $0B - Silence FM channels
-	;word	command_0C		; $0C - Stop all ADPCM-A samples
-	;word	command_0D		; $0D - Stop current ADPCM-B sample
-	;word	command_0E		; $0E - 
-	;word	command_0F		; $0F - 
-	;word	command_10		; $10 - Fade Out (1 argument; fade speed)
-	;word	command_11		; $11 - Stop Fade In/Out
-	;word	command_12		; $12 - Fade In (1 argument; fade speed)
-	;word	command_00		; $13 - (currently unassigned)
-	;word	command_00		; $14 - (currently unassigned)
-	;word	command_00		; $15 - (currently unassigned)
-	;word	command_00		; $16 - (currently unassigned)
-	;word	command_00		; $17 - (currently unassigned)
-	;word	command_00		; $18 - (currently unassigned)
-	;word	command_00		; $19 - (currently unassigned)
-	;word	command_00		; $1A - (currently unassigned)
-	;word	command_00		; $1B - (currently unassigned)
-	;word	command_00		; $1C - (currently unassigned)
-	;word	command_00		; $1D - (currently unassigned)
-	;word	command_00		; $1E - (currently unassigned)
-	;word	command_00		; $1F - (currently unassigned)
+	word	command_0C		; $0C - Stop all ADPCM-A samples
+	word	command_0D		; $0D - Stop current ADPCM-B sample
+	word	command_0E		; $0E - (tempo-related)
+	word	command_0F		; $0F - (tempo-related)
+	word	command_10		; $10 - Fade Out (1 argument; fade speed)
+	word	command_11		; $11 - Stop Fade In/Out
+	word	command_12		; $12 - Fade In (1 argument; fade speed)
+	word	command_00		; $13 - (currently unassigned)
+	word	command_00		; $14 - (currently unassigned)
+	word	command_00		; $15 - (currently unassigned)
+	word	command_00		; $16 - (currently unassigned)
+	word	command_00		; $17 - (currently unassigned)
+	word	command_00		; $18 - (currently unassigned)
+	word	command_00		; $19 - (currently unassigned)
+	word	command_00		; $1A - (currently unassigned)
+	word	command_00		; $1B - (currently unassigned)
+	word	command_00		; $1C - (currently unassigned)
+	word	command_00		; $1D - (currently unassigned)
+	word	command_00		; $1E - (currently unassigned)
+	word	command_00		; $1F - (currently unassigned)
 
 ;==============================================================================;
 ; temporary system command holding cell.
@@ -668,40 +691,53 @@ command_09:
 	ret
 
 ;------------------------------------------------------------------------------;
-; command_0A
-; Silence SSG
-
-;------------------------------------------------------------------------------;
-; command_0B
-; Silence FM
-
-;------------------------------------------------------------------------------;
 ; command_0C
 ; Stop all ADPCM-A samples
+
+command_0C:
+	ret
 
 ;------------------------------------------------------------------------------;
 ; command_0D
 ; Stop ADPCM-B sample
 
+command_0D:
+	ret
+
 ;------------------------------------------------------------------------------;
 ; command_0E
 ; tempo change 1/2??
+
+command_0E:
+	ret
 
 ;------------------------------------------------------------------------------;
 ; command_0F
 ; tempo change 2/2??
 
+command_0F:
+	ret
+
 ;------------------------------------------------------------------------------;
 ; command_10
 ; Fade out
+
+command_10:
+	ret
 
 ;------------------------------------------------------------------------------;
 ; command_11
 ; Cancel fade in/fade out
 
+command_11:
+	ret
+
 ;------------------------------------------------------------------------------;
 ; command_12
 ; Fade in
+
+command_12:
+	ret
 
 ;==============================================================================;
 ; play_ADPCM_A
