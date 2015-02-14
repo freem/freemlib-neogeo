@@ -24,9 +24,15 @@ $1F			currently 0x00 (reserved for future expansion)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <SSG Instruments>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-A SSG "instrument" is a collection of notes played on one of the SSG channels.
+A SSG instrument is a collection of frames that determine the values used for
+one of the SSG channels.
 
-(todo: possibly allow *.afx format from AY Sound FX Editor)
+The SSG instrument format (todo)
+
+(todo: possibly use *.afx format from AY Sound FX Editor)
+
+Offset		Description
+--------------------------------------------------------------------------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
