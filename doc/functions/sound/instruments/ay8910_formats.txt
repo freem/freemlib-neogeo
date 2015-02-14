@@ -39,3 +39,5 @@ The editor considers last non-zero volume value as last frame of an effect, othe
 parameters don't matter.
 
 $D0 = Disable N, Change Noise, Disable T
+
+Note: The AY Sound FX Editor has a maximum of 0xFFF (4095) positions in a sound.
