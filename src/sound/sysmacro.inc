@@ -129,4 +129,16 @@
 	byte	0xC0|(\1&3)<<5|(\2&7)
 	endm
 
-; todo: fm_Inst_AMSPMSLR?
+;==============================================================================;
+; fmInst_AMSPMSLR
+; A macro for writing a FM instrument's AM Sense and PM Sense values, and
+; default left/right output.
+
+; Params:
+; \1			AM Sense (0-3)
+; \2			PM Sense (0-7)
+; \3			Left/Right output (0=none,1=left,2=right,3=both)
+
+	macro	fmInst_AMSPMSLR
+	byte	(\3&0x3)<<6|(\1&3)<<5|(\2&7)
+	endm
