@@ -7,7 +7,8 @@
 	org $0000
 ; $0000: Disable interrupts and jump to the real entry point
 Start:
-	di
+	di						; Disable interrupts (Z80)
+	out		(0x18),a		; Disable interrupts (YM2610)
 	jp		EntryPoint
 ;==============================================================================;
 	org $0008
@@ -219,9 +220,10 @@ EntryPoint:
 	write67					; write to ports 6 and 7
 ;}
 
-	; (Enable NMIs)
+	; (Enable interrupts)
 	ld		a,1
-	out		(8),a			; Write to Port 8 (Enable NMI)
+	out		(8),a			; Write to Port 8 (Enable YM2610 interrupts)
+	ei						; Enable interrupts (Z80)
 
 ;------------------------------------------------------------------------------;
 ; MainLoop
