@@ -76,13 +76,13 @@ NMI:
 	push	hl
 
 	in		a,(0)			; Acknowledge NMI, get command from 68K via Port 0
-	ld		b,a				; load value into b for comparisons
+	ld		b,a				; save command into b for later
 
 	; "Commands $01 and $03 are always expected to be implemented as they
 	; are used by the BIOSes for initialization purposes." - NeoGeoDev Wiki
-	cp		#1				; Command 1 (Slot Switch)
+	cp		1				; Command 1 (Slot Switch)
 	jp		Z,doCmd01
-	cp		#3				; Command 3 (Soft Reset)
+	cp		3				; Command 3 (Soft Reset)
 	jp		Z,doCmd03
 	or		a				; check if Command is 0
 	jp		Z,endNMI		; exit if Command 0
@@ -131,13 +131,13 @@ IRQ:
 	ld		(intStatus1),a
 
 	; check status of ADPCM channels
-	; $80 - ADPCM-B
-	; $20 - ADPCM-A 6
-	; $10 - ADPCM-A 5
-	; $08 - ADPCM-A 4
-	; $04 - ADPCM-A 3
-	; $02 - ADPCM-A 2
-	; $01 - ADPCM-A 1
+	;bit 7 - ADPCM-B
+	;bit 5 - ADPCM-A 6
+	;bit 4 - ADPCM-A 5
+	;bit 3 - ADPCM-A 4
+	;bit 2 - ADPCM-A 3
+	;bit 1 - ADPCM-A 2
+	;bit 0 - ADPCM-A 1
 
 	; update internal Status 0 register
 	in		a, (4)
@@ -290,7 +290,7 @@ portWriteDelayPart4:
 ; Performs setup work for Command $01 (Slot Change).
 
 doCmd01:
-	ld		a,#0
+	ld		a,0
 	out		(0xC),a			; write 0 to port 0xC (Respond to 68K)
 	out		(0),a			; write to port 0 (Clear sound code)
 	ld		sp,0xFFFC		; set stack pointer
@@ -331,8 +331,8 @@ SetDefaultBanks:
 ; fm_Silence
 ; Silences all FM channels.
 
-; "However, if you're accessing the same address multiple times, you may write
-; the address first and procceed to write the data register multiple times."
+; "If you're accessing the same address multiple times, you may write the
+; address first and procceed to write the data register multiple times."
 ; - translated from YM2610 Application Manual, Section 9
 
 ; todo: switch out the ld commands on 0x02 and 0x06 for "inc a" instead?
@@ -340,6 +340,7 @@ SetDefaultBanks:
 
 fm_Silence:
 	push	af
+
 	ld		a,FM_KeyOnOff	; Slot and Key On/Off
 	out		(4),a			; write to port 4 (address 1)
 	rst		8				; Write delay 1 (17 cycles)
@@ -359,6 +360,7 @@ fm_Silence:
 	ld		a,FM_Chan4		; FM Channel 4
 	out		(5),a			; write to port 5 (data 1)
 	rst		0x10			; Write delay 2 (83 cycles)
+
 	pop		af
 	ret
 
@@ -496,14 +498,20 @@ timer_Reset_B:
 
 HandleCommand:
 	ld		a,(curCommand)	; get current command
+	ld		b,a				; save in b
 
 	; check what the command falls under
 	; in SNK drivers, this is done using a table of values that map between 0-5:
 	; 0=unused, 1=system, 2=music, 3=pcm?, 4=pcm?, 5=SSG
 
 	; in the freemlib driver, this might be handled differently, since games
-	; might want to have different configurations. However, commands $00-$1F
-	; are reserved for system use.
+	; might want to have different configurations.
+
+	; However, commands $00-$1F are always reserved for system use.
+	cp		0x1F
+	jp		NC,HandleSystemCommand
+
+	; commands $20-$FF are up to you, for now...
 
 HandleCommand_end:
 	ret
@@ -514,8 +522,13 @@ HandleCommand_end:
 
 HandleSystemCommand:
 	; use command as index into tbl_SysCmdPointers
-
-	ret						; xxx: should be a jump into the system command pointers
+	ld		e,a
+	ld		d,0
+	ld		hl,tbl_SysCmdPointers
+	add		hl,de
+	add		hl,de
+	add		hl,de
+	jp		(hl)
 
 ;------------------------------------------------------------------------------;
 ; Table of system command routine pointers
@@ -534,7 +547,7 @@ tbl_SysCmdPointers:
 	word	ssg_Silence		; $0A - Silence SSG channels
 	word	fm_Silence		; $0B - Silence FM channels
 	word	command_0C		; $0C - Stop all ADPCM-A samples
-	word	command_0D		; $0D - Stop current ADPCM-B sample
+	word	pcmb_Silence	; $0D - Stop current ADPCM-B sample
 	word	command_0E		; $0E - (tempo-related)
 	word	command_0F		; $0F - (tempo-related)
 	word	command_10		; $10 - Fade Out (1 argument; fade speed)
@@ -697,13 +710,6 @@ command_09:
 ; Stop all ADPCM-A samples
 
 command_0C:
-	ret
-
-;------------------------------------------------------------------------------;
-; command_0D
-; Stop ADPCM-B sample
-
-command_0D:
 	ret
 
 ;------------------------------------------------------------------------------;

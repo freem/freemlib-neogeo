@@ -22,10 +22,10 @@ dataBuffer			ds 64		; buffer for data transfer
 musicToggle			ds 1		; Master Toggle for Music
 soundToggle			ds 1		; Master Toggle for Sound Effects
 
-chanToggle			ds 1		; Overall toggle for SSG, FM, and PCM (1 bit each)
+typeToggle			ds 1		; Overall toggle for SSG, FM, and PCM (1 bit each)
 ssgToggle			ds 1		; Specific SSG channel toggles ($07 p4/5)
-fmToggle			ds 1		; Specific FM channel toggles
-pcmToggle			ds 1		; Specific ADPCM channel toggles (matches ADPCM-B $1C/Flag Control register)
+fmToggle			ds 1		; Specific FM channel toggles (matches FM register $28 - Key On/Off)
+pcmToggle			ds 1		; Specific ADPCM channel toggles (matches ADPCM-B register $1C - Flag Control)
 
 ;------------------------------------------------------------------------------;
 ; [Song Attributes/Playback]
@@ -64,19 +64,24 @@ intTimerB			ds 1		; ($26) Timer B value
 ;==============================================================================;
 ; [SSG variables] (Ports 4/5)
 intSSG_Enable		ds 1		; ($07) SSG channel enable
+
+; shared between channels:
 intSSG_EnvPeriodL	ds 1		; ($0B) Envelope Period Fine Tune
 intSSG_EnvPeriodH	ds 1		; ($0C) Envelope Period Coarse Tune
 intSSG_EnvShape		ds 1		; ($0D) Envelope Shape Cycle
 intSSG_Noise		ds 1		; ($06) Noise Period
 
+;--[SSG Channel A]-------------------------------------------------------------;
 intSSG_A_PeriodL	ds 1		; ($00) Tone Period Fine Tune
 intSSG_A_PeriodH	ds 1		; ($01) Tone Period Coarse Tune
 intSSG_A_Volume		ds 1		; ($08) Volume and Mode
 
+;--[SSG Channel B]-------------------------------------------------------------;
 intSSG_B_PeriodL	ds 1		; ($02) Tone Period Fine Tune
 intSSG_B_PeriodH	ds 1		; ($03) Tone Period Coarse Tune
 intSSG_B_Volume		ds 1		; ($09) Volume and Mode
 
+;--[SSG Channel C]-------------------------------------------------------------;
 intSSG_C_PeriodL	ds 1		; ($04) Tone Period Fine Tune
 intSSG_C_PeriodH	ds 1		; ($05) Tone Period Coarse Tune
 intSSG_C_Volume		ds 1		; ($0A) Volume and Mode
@@ -153,7 +158,7 @@ intFM1_Freq2		ds 1		; ($A5, 4/5) Block, Frequency (MSB)
 intFM1_2Freq1		ds 1		; ($A9, 4/5) 2 CH*Frequency (LSB)
 intFM1_2Freq2		ds 1		; ($AD, 4/5) 2 CH*Block, 2CH*Frequency (MSB)
 intFM1_FbackAlgo	ds 1		; ($B1, 4/5) Self Feedback/Algorithm
-intFM1_LefRgtAMPM	ds 1		; ($B5, 4/5) L/R select, AM and PM values
+intFM1_LRAMPM		ds 1		; ($B5, 4/5) L/R select, AM and PM values
 
 ; Detune (DT1) and Multiple (MUL)
 intFM1_DetuneMult1	ds 1		; ($31, 4/5) Op1 Detune/Multiple
