@@ -10,7 +10,7 @@ Status
 The primary goal right now is to get the library coded, as well as provide
 examples that use the library. Overall, the tasks can be broken down as follows:
 
-(All percentage completions are estimates as of 2015/01/28. No project is ever truly finished. :wink:)
+(All percentage completions are estimates as of 2015/02/16. No project is ever truly finished. :wink:)
 
 ### Library ###
 These elements form the core of the freemlib for Neo-Geo.
@@ -21,7 +21,7 @@ These elements form the core of the freemlib for Neo-Geo.
 * **Fix** &ndash; Fix layer functionality. Still needs work, ~22.5%?
 * **Memory Card** &ndash; Handle Memory Cards (also Neo-Geo CD Backup Memory). 5%, needs testing.
 * **Palette** &ndash; Palette functionality. ~10%.
-* **Sound** &ndash; Fully-featured (FM, SSG, both ADPCM types, CD/DA) Z80 sound engine. 2%
+* **Sound** &ndash; Fully-featured (FM, SSG, both ADPCM types, CD/DA) Z80 sound engine. 3%
 * **Sprites** &ndash; General sprite functionality (considering the Neo-Geo is all about sprites). ~20-30%?
 * **System** &ndash; Various system functions. 1%.
 
