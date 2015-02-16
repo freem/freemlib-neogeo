@@ -508,7 +508,7 @@ HandleCommand:
 	; might want to have different configurations.
 
 	; However, commands $00-$1F are always reserved for system use.
-	cp		0x1F
+	cp		0x20
 	jp		C,HandleSystemCommand
 
 	; commands $20-$FF are up to you, for now...
