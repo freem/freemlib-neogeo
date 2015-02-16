@@ -509,7 +509,7 @@ HandleCommand:
 
 	; However, commands $00-$1F are always reserved for system use.
 	cp		0x1F
-	jp		NC,HandleSystemCommand
+	jp		C,HandleSystemCommand
 
 	; commands $20-$FF are up to you, for now...
 
