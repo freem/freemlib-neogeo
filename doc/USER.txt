@@ -42,7 +42,8 @@ entered."
 USER_REQUEST Command 1 (EyeCatcher)
 -----------------------------------
 Shows the game's boot logo animation if the Eye catcher anim flag ($114) is 1.
-Apparently not checked on the MVS, only home? <- todo: verify this
+
+By default, only run on AES systems.
 
 (todo: find out more information, like what games use command 1)
 
@@ -55,7 +56,7 @@ Questionable:
 
 USER_REQUEST Command 2 (Game)
 -----------------------------
-Either show the game's demo, or perform gameplay.
+Either show the game's demo (attract mode sequence), or perform gameplay.
 
 SNK docs:
 "A demonstration of the title and the game is performed when a request is made.
@@ -66,7 +67,7 @@ game is over."
 USER_REQUEST Command 3 (Title)
 ------------------------------
 Show the game's title screen.
-On MVS systems, this is called when a coin is inserted.
+Only called on MVS systems when a coin is inserted. Not used on AES.
 
 SNK docs:
 "Only the game title is displayed. This command is requested only in the mode
@@ -76,3 +77,13 @@ runs out, instructions come from the system to start the game. Therefore, there
 is no need for the game side to return to the SYSTEM_RETURN. Everything else is
 the same as in the Command 2 game demo. (Please note that if the Game Start
 Compulsion is not set for compulsion time, then the SELECT_TIMER is not used.)"
+
+Razoola:
+"Some games write 0x01 to 0x10FEC5 [BIOS_TITLE_MODE] in this routine. It stops
+the BIOS calling command 3 twice after Game Over if credits are already in the
+system (attract mode skipped). When 0x00, the BIOS will initiate another command
+3 a few frames after the first. This causes the title page to draw twice. This
+could be a BIOS bug which SNK fixed by adding this variable in a later BIOS
+revision (needs confirming)."
+
+[BIOS_TITLE_MODE is the name in freemlib's ram_bios.inc for 0x10FEC5]
