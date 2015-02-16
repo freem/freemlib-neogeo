@@ -527,7 +527,6 @@ HandleSystemCommand:
 	ld		hl,tbl_SysCmdPointers
 	add		hl,de
 	add		hl,de
-	add		hl,de
 	jp		(hl)
 
 ;------------------------------------------------------------------------------;
