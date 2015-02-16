@@ -773,6 +773,16 @@ play_ADPCM_A:
 	ret
 
 ;==============================================================================;
+; ADPCM-A Channel masks
+tbl_ChanMasksPCMA:
+	byte	0x01			; Ch.1
+	byte	0x02			; Ch.2
+	byte	0x04			; Ch.3
+	byte	0x08			; Ch.4
+	byte	0x10			; Ch.5
+	byte	0x20			; Ch.6
+
+;==============================================================================;
 ; play_ADPCM_B
 ; Play an ADPCM-B sample.
 
