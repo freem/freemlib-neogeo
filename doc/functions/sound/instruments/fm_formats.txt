@@ -200,20 +200,22 @@ $02-$05		detune (ops 1-4)
 $06-$09		mul (ops 1-4)
 $0A-$0D		tl (ops 1-4)
 $0E-$11		rs (ops 1-4)
-$12-$16		ar (ops 1-4)
-$17-$1A		dr (ops 1-4)
-$1B-$1E		sr (ops 1-4)
-$1F-$22		sl (ops 1-4)
-$23-$26		rr (ops 1-4)
-$27-$2A		ssg (ops 1-4)
-$2B			software lfo waveform
-$2C			software lfo speed
-$2D			PMD (pulse modulation effect defined)
-$2E			PMS (pulse modulation general effect defined)
-$2F			int count (rough software? LFO timing)
-$30			unused (set to 0)
-$31			ams, pms
-$32			hardware LFO Channel Switch
+$12-$15		ar (ops 1-4)
+$16-$19		dr (ops 1-4)
+$1A-$1D		sr (ops 1-4)
+$1E-$21		sl (ops 1-4)
+$22-$25		rr (ops 1-4)
+$26-$29		ssg (ops 1-4)
+$2A			software LFO waveform
+$2B			software LFO sync delay
+$2C			software LFO speed (1/2)
+$2D			software LFO speed (2/2)
+$2E			PMD (pulse modulation effect defined)
+$2F			PMS (pulse modulation general effect defined)
+$30			int count (rough software? LFO timing)
+$31			unused (set to 0)
+$32			hardware LFO AMS, PMS
+$33			hardware LFO Channel Switch (AM On)
 
 ================================================================================
 <todo>
