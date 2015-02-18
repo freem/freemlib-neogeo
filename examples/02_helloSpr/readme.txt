@@ -109,7 +109,7 @@ $8680-$86FF		?				Sprite List Odd Scanlines
 [Process]
 This demo uses multiple techniques to display sprites:
 1) Manual writes to VRAM		"Hello"
-2) freemlib spr_Load			Movable rectangle (single sprite)
+2) freemlib spr_LoadDirect		Movable rectangle (single sprite)
 3) freemlib mspr_Load			"World!!!" (metasprite)
 
 The only way to properly learn how this system works is if you go through it in
@@ -190,12 +190,12 @@ After throwing about 30 lines of code in, you're probably wondering if there's a
 better way of doing it. That's where the freemlib comes in.
 
 --------------------------------------------------------------------------------
-<spr_Load>
-The spr_Load function is meant to load a single Sprite into the relevant VRAM
-sections. It relies on two helper macros to put data in the binary, which we'll
-cover in a second.
+<spr_LoadDirect>
+The spr_LoadDirect function is meant to load a single Sprite into the relevant
+VRAM sections. It relies on two helper macros to put data in the binary, which
+we'll cover in a second.
 
-spr_Load takes two parameters:
+spr_LoadDirect takes two parameters:
 	d0		Sprite Index (0-511; 0 is not recommended!)
 	a0		Pointer to Sprite Data Block
 

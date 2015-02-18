@@ -57,14 +57,14 @@ utilmac_CalcSprY:	macro
 ;==============================================================================;
 ; [Sprites]
 ;------------------------------------------------------------------------------;
-; spr_Load
+; spr_LoadDirect
 ; Loads a single sprite into the VRAM. Can be called on its own, or by mspr_Load.
 
 ; (Params)
 ; d0			[word] Sprite index (0-511; sprite 0 is not recommended!)
 ; a0			[long] Pointer to Sprite Data Block
 
-spr_Load:
+spr_LoadDirect:
 	; start reading from sprite data block
 	move.w	(a0)+,d1			; $00		sprite height (in tiles)
 
@@ -97,7 +97,7 @@ spr_Load:
 ; Internal routine for writing SCB1 tilemap data.
 
 ; (Params)
-; d0			[word] Sprite index (carried over from spr_Load or mspr_Load)
+; d0			[word] Sprite index (carried over from spr_LoadDirect or mspr_Load)
 ; d1			[word] Number of tiles to parse
 ; a1			[long] Pointer to SCB1 tilemap data
 
@@ -212,7 +212,7 @@ mspr_Load:
 ; metasprite sprite loading loop
 mspr_Load_Loop:
 	movea.l	(a2)+,a0			; get sprite data block pointer
-	jsr		spr_Load			; load sprite
+	jsr		spr_LoadDirect		; load sprite
 
 	; something about automatically setting sticky bit if d0 > d5
 	cmp.w	d5,d0

@@ -44,9 +44,9 @@ should be made for Linux (and OS X) compatibility whenever possible.
  * Various sound tools (ADPCM-A/B conversion; tools exist, but need unification.)
 
 ### Documentation ###
-The black sheep of any programming project, but also necessary because who the hell is
-going to read a bunch of ASM to figure out the library? My main problem is that I
-only really want to write it once.
+The black sheep of any programming project, but also necessary because who the hell
+is going to read a bunch of ASM to figure out the library? My main problem is that
+I only really want to write it once.
 
 * **Library Docs (text)** &ndash; The straight dope. See `doc/` folder.
 * **Library Docs (HTML)** &ndash; The pretty version. Still very WIP.

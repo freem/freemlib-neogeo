@@ -253,11 +253,11 @@ Display_Sprite:
 	move.w	#$8401,LSPC_ADDR
 	move.w	#(64<<7),LSPC_DATA	; X pos = 64
 
-	; Draw a random test sprite using freemlib's spr_Load
-	;----------------------------------------------------
+	; Draw a random test sprite using freemlib's spr_LoadDirect
+	;----------------------------------------------------------
 	move.w	#12,d0				; sprite 12
 	lea		sprite_Test,a0
-	jsr		spr_Load
+	jsr		spr_LoadDirect
 
 	; draw "World!" sprite with a freemlib metasprite
 	;------------------------------------------------

@@ -18,7 +18,7 @@ Horiz. Size				0000
 Vert.  Size				00000000
 
 {SCB3}
-SCB3 holds the vertical positions, sticky bit, and sprite tile size.
+SCB3 holds the vertical positions, sticky/chain bit, and sprite tile size.
 Y Position				000000000
 Sticky Bit				one bit
 Sprite Size				000000
@@ -61,8 +61,8 @@ vramlist entries:
 
 Main loop:
 * update previous scroll values
-* ControllerScroll
-* ClampScroll
+* ControllerScroll	; scroll background
+* ClampScroll		; make sucr scroll stays within bounds
 * CheckUpdate		; see if sprite VRAM needs to be updated
 * BufferSCB3		; yscroll, ysize, chain
 * BufferSCB4		; xscroll
@@ -204,8 +204,8 @@ todo: actual documentation of existing code
 * mspr_Load
 
 ================================================================================
-[spr_Load]
-Loads a single sprite into the VRAM.
+[spr_LoadDirect]
+Loads a single sprite directly into the VRAM.
 
 Can be called on its own, or by mspr_Load.
 
