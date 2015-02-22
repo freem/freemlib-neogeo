@@ -1,4 +1,4 @@
-; Neo-Geo CD Header (currently untested)
+; Neo-Geo CD Header
 	dc.b	"NEO-GEO"
 	dc.b	$00				; System Version (0,1,2? CDDA flag?)
 
