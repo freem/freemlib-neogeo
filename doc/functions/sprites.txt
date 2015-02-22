@@ -62,7 +62,7 @@ vramlist entries:
 Main loop:
 * update previous scroll values
 * ControllerScroll	; scroll background
-* ClampScroll		; make sucr scroll stays within bounds
+* ClampScroll		; make sure scroll stays within bounds
 * CheckUpdate		; see if sprite VRAM needs to be updated
 * BufferSCB3		; yscroll, ysize, chain
 * BufferSCB4		; xscroll
