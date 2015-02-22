@@ -76,6 +76,7 @@ VBlank:
 * Will likely need to provide some conversion routines for vram data
 * Current metasprite system does not account for all possibilities; chain bit forced
 * Is it possible to use the lower bits of SCB4 for custom purposes?
+* Sprite index management? (not nearly as ludicrous as NES, but still...)
 
 --------------------------------------------------------------------------------
 [Data Formats]
