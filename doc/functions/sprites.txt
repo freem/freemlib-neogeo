@@ -82,10 +82,13 @@ VBlank:
 [Data Formats]
 The best formats are those that map to the LSPC...like smkdan's.
 
+{
 $00		(w) data length (in words)
 $02		(w) vram address
 $04		(w) vram increment
 $06...	(w) vram data (in words)
+}
+repeat until end of buffer (data length 0000)
 
 ================================================================================
 <Function Sketchpad>
@@ -164,11 +167,11 @@ SCB4{
 }
 
 <Sprite Data Block>
-$00			Sprite Height (tiles)				(word)
-$02-$05		Pointer to SCB1 tilemap data		(long)
-$06			SCB2 data, native format			(word)
-$08			SCB3 data, native format			(word)
-$0A			SCB4 data, native format			(word)
+$00			Sprite Height (tiles)				(word)	"spr_height"
+$02-$05		Pointer to SCB1 tilemap data		(long)	"spr_tilemap"
+$06			SCB2 data, native format			(word)	"spr_shrink"
+$08			SCB3 data, native format			(word)	"spr_ypp"
+$0A			SCB4 data, native format			(word)	"spr_x"
 
 SCB1 data is stored in native format and is limited based on the value of
 Sprite Height. Real length of SCB1 data is 2x Sprite Height.

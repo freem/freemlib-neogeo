@@ -9,6 +9,42 @@ The animation functionality depends on the basic sprite functionality.
 * current animation state
 * animation timers
 
+After taking a closer look at DATLib, my animation structure needs some work.
+
+DATLib has:
+* aSprite (animated sprite class, the big one)
+ * baseSprite			base sprite number
+ * basePalette			base palette number
+ * posX					current x position
+ * posY					current y position
+ * currentStepNum		current step number
+ * maxStep				maximum step number for current anim
+ * frames				unused/deprecated
+ * currentFrame			pointer to current frame data
+ * anims				pointer to animations block
+ * currentAnimation		pointer to current animation
+ * steps				pointer to steps block of current anim
+ * currentStep			pointer to current step
+ * counter				internal frame counter
+ * repeats				number of repeats completed
+ * currentFlip			current flipmode squad affiliation (0=none, 1=X, 2=Y, 3=XY)
+ * tileWidth			width of current frame (in tiles)
+ * animID				current animation ID
+ * flags				internal flags (1=moved, 2=flipped)
+
+* animation (a single animation)
+ * id					animation ID
+ * steps				list of frames in animation
+ * link					animation to link to
+ * repeats				number of repeats
+
+* animStep (a frame in an animation)
+ * frameNum				frame number
+ * frameID				frame ID
+ * duration				number of frames to show step
+ * offsetX				x offset (from origin; for flipping, etc.)
+ * offsetY				y offset (from origin; for flipping, etc.)
+
 ================================================================================
 (Animation Library)
 The Animation Library is created from "proper" use of the Animation IDs. What
