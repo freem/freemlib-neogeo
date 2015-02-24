@@ -26,7 +26,7 @@ Each entry follows this format:
 +$06	Box X2 (word; end)
 +$08	Box Y2 (word; end)
 
-X and Y locations are relative to (??? position).
+X and Y locations are relative to the top left of the sprite (0,0).
 
 ================================================================================
 (sketchpad)
