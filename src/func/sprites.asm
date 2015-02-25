@@ -113,25 +113,25 @@ spr_ParseSCB1:
 
 	; check number of tiles
 	cmpi.w	#1,d1				; numTiles == 1?
-	bgt		spr_ParseSCB1_Multiple	; otherwise, loop.
+	bgt		.spr_ParseSCB1_Multiple	; otherwise, loop.
 
 	; if numTiles == 1, do a single write.
-spr_ParseSCB1_Single:
+.spr_ParseSCB1_Single:
 	move.w	(a1)+,LSPC_DATA		; 1) Tile Number LSB
 	move.w	(a1)+,LSPC_DATA		; 2) Palette, Tile Number MSB, Auto-Animation flags, V/H flip flags
-	bra		spr_ParseSCB1_End
+	bra		.spr_ParseSCB1_End
 
-spr_ParseSCB1_Multiple:
+.spr_ParseSCB1_Multiple:
 	move.w	d1,d7				; copy num tiles (d1) to temp
 	subi.w	#1,d7				; subtract 1 for loop counter
 
 ; tile loop
-spr_ParseSCB1_Loop:
+.spr_ParseSCB1_Loop:
 	move.w	(a1)+,LSPC_DATA		; 1) Tile Number LSB
 	move.w	(a1)+,LSPC_DATA		; 2) Palette, Tile Number MSB, Auto-Animation flags, V/H flip flags
-	dbra	d7,spr_ParseSCB1_Loop
+	dbra	d7,.spr_ParseSCB1_Loop
 
-spr_ParseSCB1_End:
+.spr_ParseSCB1_End:
 	rts
 
 ;==============================================================================;
@@ -210,13 +210,13 @@ mspr_Load:
 	subi.w	#1,d6				; subtract 1 for loop counter
 
 ; metasprite sprite loading loop
-mspr_Load_Loop:
+.mspr_Load_Loop:
 	movea.l	(a2)+,a0			; get sprite data block pointer
 	jsr		spr_LoadDirect		; load sprite
 
 	; something about automatically setting sticky bit if d0 > d5
 	cmp.w	d5,d0
-	beq		mspr_LoadLoop_Continue
+	beq		.mspr_LoadLoop_Continue
 
 	; set sticky bit for this sprite
 	move.w	d0,d4				; temporary for getting SCB3 addr
@@ -224,11 +224,11 @@ mspr_Load_Loop:
 	move.w	d4,LSPC_ADDR		; set VRAM addr
 	move.w	#$0040,LSPC_DATA	; set sticky bit
 
-mspr_LoadLoop_Continue:
+.mspr_LoadLoop_Continue:
 	addq.w	#1,d0				; update sprite index
-	dbra	d6,mspr_Load_Loop	; loop until finished
+	dbra	d6,.mspr_Load_Loop	; loop until finished
 
-mspr_Load_End:
+.mspr_Load_End:
 	rts
 
 ;==============================================================================;
