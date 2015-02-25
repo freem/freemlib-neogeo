@@ -70,6 +70,13 @@ Main loop:
 VBlank:
 * UpdateVRAM		; make VRAM changes based on commands in list
 
+[DATLib]
+There are two buffers in DATLib:
+* tiledata/SCB1
+* control/SCB2,3,4
+
+The provided custom vblank interrupt handles uploading the buffers to the VRAM.
+
 --------------------------------------------------------------------------------
 [Questions and Thoughts]
 * How many sprites can I update/how much data can I push in one VBlank?
@@ -89,57 +96,6 @@ $04		(w) vram increment
 $06...	(w) vram data (in words)
 }
 repeat until end of buffer (data length 0000)
-
-================================================================================
-<Function Sketchpad>
-
-(Overall)
-Active Sprites (for keeping track)
-VRAM Buffers
- * background layers
- * etc.
-
-(Metasprite)
-Functions for dealing with a metasprite
-* Add metasprite to active pool
-* Remove metasprite from active pool
-* Change metasprite X position
-* Change metasprite Y position
-* Change metasprite Horiz flip
-* Change metasprite Vert flip
-* Change metasprite Animation
-
-(Sprite)
-Functions for dealing with a single sprite
-* Change sprite X position
-* Change sprite Y position
-* Change sprite palette
-* Change sprite Horiz. flip
-* Change sprite Vert. flip
-* Change sprite tilemap
-
-================================================================================
-[Metasprite Data]
-Metasprites are a collection of Sprites. On the Neo-Geo, it's a bit easier to
-make metasprites, compared to other consoles. SCB3's Sprite height and Sticky
-bit go a long way in making metasprites easier to deal with.
-
-Commands have "mspr" prefix.
-
-<Metasprite Data Block (current, but deprecated)>
-$00			Number of Sprites in Metasprite		(word)
-$02...end	Pointers to Sprite data				(long)
-
-
-<WIP new metasprite data block>
-$00			Number of Metasprite components		(word)
-------------
-$02			Number of sprites in Component 1	(word)
-$04			Component 1 overall X offset		(word)
-$06			Component 1 overall Y offset		(word)
-$08			Pointers to Component 1 Sprite data	(long)
-............
-etc.
 
 ================================================================================
 [Sprite Data]
@@ -202,6 +158,59 @@ SCB1 Macro would take the following values:
 * Auto-Anim (4/2-bit or 8/3-bit)
 * Vertical Flip
 * Horizontal Flip
+
+================================================================================
+[Metasprite Data]
+Metasprites are a collection of Sprites. On the Neo-Geo, it's a bit easier to
+make metasprites, compared to other consoles. SCB3's Sprite height and Sticky
+bit go a long way in making metasprites easier to deal with.
+
+Commands have "mspr" prefix.
+
+<Metasprite Data Block (current, but deprecated)>
+$00			Number of Sprites in Metasprite		(word)
+$02...end	Pointers to Sprite data				(long)
+
+
+<WIP new metasprite data block>
+$00			Number of Metasprite components		(word)
+------------
+$02			Number of sprites in Component 1	(byte)
+$03			Component 1 palette					(byte)
+$04			Component 1 overall X offset		(word)
+$06			Component 1 overall Y offset		(word)
+$08			Pointers to Component 1 Sprite data	(long)
+............
+etc.
+
+
+================================================================================
+<Function Sketchpad>
+
+(Overall)
+Active Sprites (for keeping track)
+VRAM Buffers
+ * background layers
+ * etc.
+
+(Metasprite)
+Functions for dealing with a metasprite
+* Add metasprite to active pool
+* Remove metasprite from active pool
+* Change metasprite X position
+* Change metasprite Y position
+* Change metasprite Horiz flip
+* Change metasprite Vert flip
+* Change metasprite Animation
+
+(Sprite)
+Functions for dealing with a single sprite
+* Change sprite X position
+* Change sprite Y position
+* Change sprite palette
+* Change sprite Horiz. flip
+* Change sprite Vert. flip
+* Change sprite tilemap
 
 ================================================================================
 todo: actual documentation of existing code
