@@ -42,7 +42,7 @@ PCMB_Flags			equ 0x1C		; ADPCM-A and B Flag control
 
 ;==============================================================================;
 ; [FM address ports]
-; -- Shared FM --;
+; -- Shared FM (ports 4/5) --;
 FM_LFOFreq			equ 0x22		; LFO Frequency Control
 FM_TimerALo			equ 0x24		; Timer A lower 8 bits
 FM_TimerAHi			equ 0x25		; Timer A upper 2 bits
@@ -57,7 +57,7 @@ FM_Chan2			equ 0x02		; Physical Channel 2/6; Real Channel 2/4
 FM_Chan3			equ 0x05		; Physical Channel 5/6; Real Channel 3/4
 FM_Chan4			equ 0x06		; Physical Channel 6/6; Real Channel 4/4
 ;====================================;
-; "FM1" is used for Channels 1 and 3.
+; "FM1" is used for Channel 1 (ports 4/5) and 3 (ports 6/7).
 
 ; -- FM1 Channel Variables -- ;
 FM1_FreqHi			equ 0xA5		; Block and Frequency upper 3 bits
@@ -68,37 +68,43 @@ FM1_FeedbackAlgo	equ 0xB1		; Feedback and Algorithm
 FM1_LeftRightAMPM	equ 0xB5		; Left/Right, AM Change, PM Change
 
 ; -- FM1 Operators -- ;
-FM1_DetuneMult_Op1	equ 0x31		; DT/MULT
+FM1_DetuneMult_Op1	equ 0x31		; DT/MULT	_DDDMMMM (D=detune, M=multiple)
 FM1_DetuneMult_Op2	equ 0x35		; DT/MULT
 FM1_DetuneMult_Op3	equ 0x39		; DT/MULT
 FM1_DetuneMult_Op4	equ 0x3D		; DT/MULT
 ;---------------------------;
-FM1_TotalLevel_Op1	equ 0x41		; TL
+FM1_TotalLevel_Op1	equ 0x41		; TL		_VVVVVVV (V=total level/volume)
 FM1_TotalLevel_Op2	equ 0x45		; TL
 FM1_TotalLevel_Op3	equ 0x49		; TL
 FM1_TotalLevel_Op4	equ 0x4D		; TL
 ;---------------------------;
-FM1_KeyScalAtk_Op1	equ 0x51		; KS/AR
+FM1_KeyScalAtk_Op1	equ 0x51		; KS/AR		SS_RRRRR (S=key scale, R=attack rate)
 FM1_KeyScalAtk_Op2	equ 0x55		; KS/AR
 FM1_KeyScalAtk_Op3	equ 0x59		; KS/AR
 FM1_KeyScalAtk_Op4	equ 0x5D		; KS/AR
 ;---------------------------;
-FM1_DecayAMOn_Op1	equ 0x61		; AM/DR
+FM1_DecayAMOn_Op1	equ 0x61		; AM/DR		A__DDDDD (A=AM on, D=decay rate)
 FM1_DecayAMOn_Op2	equ 0x65		; AM/DR
 FM1_DecayAMOn_Op3	equ 0x69		; AM/DR
 FM1_DecayAMOn_Op4	equ 0x6D		; AM/DR
 ;---------------------------;
-FM1_Sustain_Op1		equ 0x71		; SR
+FM1_Sustain_Op1		equ 0x71		; SR		___SSSSS (S=sustain rate)
 FM1_Sustain_Op2		equ 0x75		; SR
 FM1_Sustain_Op3		equ 0x79		; SR
 FM1_Sustain_Op4		equ 0x7D		; SR
 ;---------------------------;
-FM1_SusLevRel_Op1	equ 0x81		; SL/RR
+FM1_SusLevRel_Op1	equ 0x81		; SL/RR		SSSSRRRR (S=sustain level, R=release rate)
 FM1_SusLevRel_Op2	equ 0x85		; SL/RR
 FM1_SusLevRel_Op3	equ 0x89		; SL/RR
 FM1_SusLevRel_Op4	equ 0x8D		; SL/RR
+;---------------------------;
+FM1_SSGEG_Op1		equ 0x91		; SSG-EG	____CALH (C=Cont., A=Attack, L=Alternate, H=Hold)
+FM1_SSGEG_Op2		equ 0x95
+FM1_SSGEG_Op3		equ 0x99
+FM1_SSGEG_Op4		equ 0x9D
+
 ;====================================;
-; "FM2" is used for Channels 2 and 4.
+; "FM2" is used for Channel 2 (ports 4/5) and 4 (ports 6/7).
 
 ; -- FM2 Channel Variables -- ;
 FM2_FreqHi			equ 0xA6		; Block and Frequency upper 3 bits
@@ -138,3 +144,8 @@ FM2_SusLevRel_Op1	equ 0x82		; SL/RR
 FM2_SusLevRel_Op2	equ 0x86		; SL/RR
 FM2_SusLevRel_Op3	equ 0x8A		; SL/RR
 FM2_SusLevRel_Op4	equ 0x8E		; SL/RR
+;---------------------------;
+FM2_SSGEG_Op1		equ 0x92		; SSG-EG	____CALH (C=Cont., A=Attack, L=Alternate, H=Hold)
+FM2_SSGEG_Op2		equ 0x96
+FM2_SSGEG_Op3		equ 0x9A
+FM2_SSGEG_Op4		equ 0x9E
