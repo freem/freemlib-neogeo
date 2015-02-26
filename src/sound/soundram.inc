@@ -36,6 +36,9 @@ curTempo			ds 2		; Current Song Tempo (0-511, for now...)
 songLoops			ds 1		; Does the song loop?
 loopPoint			ds 2		; Pointer to loop point (shared between channels for now)
 
+;------------------------------------------------------------------------------;
+; Pattern Playback
+
 ; FM Channel 1
 ; FM Channel 2
 ; FM Channel 3
@@ -43,9 +46,6 @@ loopPoint			ds 2		; Pointer to loop point (shared between channels for now)
 ; SSG Channel A
 ; SSG Channel B
 ; SSG Channel C
-
-;------------------------------------------------------------------------------;
-; Pattern Playback
 
 ;==============================================================================;
 ; <YM2610 Section>
@@ -93,37 +93,37 @@ intPCMA_MasterVol	ds 1		; ($01) Master Volume
 
 ;------------------------------------------------------------------------------;
 ; * ADPCM-A channels (1-6)
-intPCMA1_Volume		ds 1		; ($08)
+intPCMA1_Volume		ds 1		; ($08) Channel volume
 intPCMA1_StartL		ds 1		; ($10) Sample Start Address/256 (LSB)
 intPCMA1_StartH		ds 1		; ($18) Sample Start Address/256 (MSB)
 intPCMA1_EndL		ds 1		; ($20) Sample End Address/256 (xSB)
 intPCMA1_EndH		ds 1		; ($28) Sample End Address/256 (xSB)
-
-intPCMA2_Volume		ds 1		; ($09)
+;-------------------------------;
+intPCMA2_Volume		ds 1		; ($09) Channel volume
 intPCMA2_StartL		ds 1		; ($11) Sample Start Address/256 (LSB)
 intPCMA2_StartH		ds 1		; ($19) Sample Start Address/256 (MSB)
 intPCMA2_EndL		ds 1		; ($21) Sample End Address/256 (LSB)
 intPCMA2_EndH		ds 1		; ($29) Sample End Address/256 (MSB)
-
-intPCMA3_Volume		ds 1		; ($0A)
+;-------------------------------;
+intPCMA3_Volume		ds 1		; ($0A) Channel volume
 intPCMA3_StartL		ds 1		; ($12) Sample Start Address/256 (LSB)
 intPCMA3_StartH		ds 1		; ($1A) Sample Start Address/256 (MSB)
 intPCMA3_EndL		ds 1		; ($22) Sample End Address/256 (LSB)
 intPCMA3_EndH		ds 1		; ($2A) Sample End Address/256 (MSB)
-
-intPCMA4_Volume		ds 1		; ($0B)
+;-------------------------------;
+intPCMA4_Volume		ds 1		; ($0B) Channel volume
 intPCMA4_StartL		ds 1		; ($13) Sample Start Address/256 (LSB)
 intPCMA4_StartH		ds 1		; ($1B) Sample Start Address/256 (MSB)
 intPCMA4_EndL		ds 1		; ($23) Sample End Address/256 (LSB)
 intPCMA4_EndH		ds 1		; ($2B) Sample End Address/256 (MSB)
-
-intPCMA5_Volume		ds 1		; ($0C)
+;-------------------------------;
+intPCMA5_Volume		ds 1		; ($0C) Channel volume
 intPCMA5_StartL		ds 1		; ($14) Sample Start Address/256 (LSB)
 intPCMA5_StartH		ds 1		; ($1C) Sample Start Address/256 (MSB)
 intPCMA5_EndL		ds 1		; ($24) Sample End Address/256 (LSB)
 intPCMA5_EndH		ds 1		; ($2C) Sample End Address/256 (MSB)
-
-intPCMA6_Volume		ds 1		; ($0D)
+;-------------------------------;
+intPCMA6_Volume		ds 1		; ($0D) Channel volume
 intPCMA6_StartL		ds 1		; ($15) Sample Start Address/256 (LSB)
 intPCMA6_StartH		ds 1		; ($1D) Sample Start Address/256 (MSB)
 intPCMA6_EndL		ds 1		; ($25) Sample End Address/256 (LSB)
