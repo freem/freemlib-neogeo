@@ -167,19 +167,41 @@ bit go a long way in making metasprites easier to deal with.
 
 Commands have "mspr" prefix.
 
+<Thoughts on Metasprites>
+the current system is limited, and I keep having to go back and change the
+WIP metasprite block definition as I remember more and more things about the
+Neo-Geo sprite hardware, so I'm just going to plan this out before making
+any more changes.
+
+(Metasprite as a whole)
+* number of components	[byte]
+
+(Metasprite components)
+* number of sprites		[byte]
+* sprite size (tiles)	[byte]
+* palette				[byte]
+* sticky bit			[byte] attach to previous sprite
+* offset x/y position	[word] one each
+* scale value			[word]
+* pointer to tilemap	[long]
+
+--------------------------------------------------------------------------------
 <Metasprite Data Block (current, but deprecated)>
 $00			Number of Sprites in Metasprite		(word)
 $02...end	Pointers to Sprite data				(long)
 
-
+--------------------------------------------------------------------------------
 <WIP new metasprite data block>
 $00			Number of Metasprite components		(word)
 ------------
 $02			Number of sprites in Component 1	(byte)
-$03			Component 1 palette					(byte)
-$04			Component 1 overall X offset		(word)
-$06			Component 1 overall Y offset		(word)
-$08			Pointers to Component 1 Sprite data	(long)
+$03			Component 1 sprite size/height		(byte)
+$04			Component 1 palette					(byte)
+$05			Component 1 sticky bit				(byte)
+$06			Component 1 overall X offset		(word)
+$08			Component 1 overall Y offset		(word)
+$0A			Component 1 scale value				(word)
+$0C			Pointers to Component 1 Sprite data	(long)
 ............
 etc.
 
