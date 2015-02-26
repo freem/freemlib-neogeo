@@ -56,6 +56,16 @@ FM_Chan1			equ 0x01		; Physical Channel 1/6; Real Channel 1/4
 FM_Chan2			equ 0x02		; Physical Channel 2/6; Real Channel 2/4
 FM_Chan3			equ 0x05		; Physical Channel 5/6; Real Channel 3/4
 FM_Chan4			equ 0x06		; Physical Channel 6/6; Real Channel 4/4
+
+; Data values used with addresses 0xB1/0xB2:
+FM_Algo1			equ 0			; Four serial connection mode
+FM_Algo2			equ 1			; Three double modulation serial connection mode
+FM_Algo3			equ 2			; Double modulation mode 1
+FM_Algo4			equ 3			; Double modulation mode 2
+FM_Algo5			equ 4			; Two serial connection and two parallel modes
+FM_Algo6			equ 5			; Common modulation 3 parallel mode
+FM_Algo7			equ 6			; Two serial connection and two sine mode
+FM_Algo8			equ 7			; Four parallel sine synthesis mode
 ;====================================;
 ; "FM1" is used for Channel 1 (ports 4/5) and 3 (ports 6/7).
 
