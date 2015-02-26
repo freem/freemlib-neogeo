@@ -68,6 +68,7 @@ b1 b2		Effect Name								Origin/Equivalent Effect
 .....
 [20-26]		(Shared FM Effects)
 [30-6B]		(FM Operator Effects)
+[70-77]		(SSG Effects (provisional))
 .....
 A0 xx		Write to Auto Address (port 4 or 6)		*NeoTracker
 A1 xx		Write to Address 1 (port 4)				*NeoTracker

@@ -1,0 +1,43 @@
+freemlib Sound Driver Playback Routine
+================================================================================
+The "playback routine" is an overall name for the process of playing back
+music and sound effects. 
+
+================================================================================
+[IRQ]
+The IRQ is in charge of handling the two YM2610 Status registers, as well as
+playback for each channel.
+
+1) Status 1 (ADPCM channels)
+Check if any of the ADPCM channels have ended, and if so, perform whatever
+actions are needed.
+
+2) Status 0 (Timers)
+Check if either timer (A or B) has ended, and react accordingly.
+
+3) ...?
+This is where the problems begin, as I am no playback routine writer. :s
+
+================================================================================
+[NMI]
+The NMI handles communications to and from the 68K.
+
+The steps in the NMI are roughly as follows:
+1) Get the code the 68K sent
+2) Check if it falls under one of the system codes (1,3) or is zero (exit)
+ 2a) if code 1, do a slot switch
+ 2b) if code 3, do a soft reset
+3) If the command is not a system code, send it along for further processing.
+
+================================================================================
+[Main Loop]
+A number of sound drivers handle a buffer of commands in their main loop.
+The freemlib Sound Driver currently does not do this.
+
+================================================================================
+[What happens on "play a sound effect"?]
+(todo)
+
+================================================================================
+[What happens on "play a new song"?]
+(todo)

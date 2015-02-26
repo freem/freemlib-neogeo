@@ -7,6 +7,9 @@ This is a very large work in progress until I figure out what I'm doing!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 FM instruments are meant to be similar to .TYI format.
 
+In fact, they are similar enough that for the time being, you can just blindly
+import .TYI files into the code and they should work.
+
 Offset		Description
 --------------------------------------------------------------------------------
 $00-$03		Detune/Multiple (Ops 1-4)				_DDDMMMM (D=detune, M=multiple)
@@ -24,7 +27,7 @@ $1F			currently 0x00 (reserved for future expansion)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <SSG Instruments>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-A SSG instrument is a collection of frames that determine the values used for
+A SSG "instrument" is a collection of frames that determine the values used for
 one of the SSG channels.
 
 The SSG instrument format (todo)
