@@ -3,6 +3,8 @@ Pattern Data Overview
 This document is written as though pattern data is uncompressed.
 When stored, it might be compressed. I don't know.
 
+(todo: major overhaul, as this is a bit crazy)
+
 Section Sizes:
 * Control Channel		3 to 11 bytes
 * FM Channel (x4)		??? bytes

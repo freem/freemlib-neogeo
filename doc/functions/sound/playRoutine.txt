@@ -18,6 +18,10 @@ Check if either timer (A or B) has ended, and react accordingly.
 3) ...?
 This is where the problems begin, as I am no playback routine writer. :s
 
+* play FM channels 1-4 and update curPos_FM* for each
+* play SSG channels A-C and update curPos_SSG_* for each
+unsure how to handle the adpcm channels yet.
+
 ================================================================================
 [NMI]
 The NMI handles communications to and from the 68K.
