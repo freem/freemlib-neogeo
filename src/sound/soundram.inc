@@ -11,7 +11,7 @@ dummyByte			ds 1		; dummy byte used for RAM clearing, etc.
 ; [Commands]
 curCommand			ds 1		; Current command to handle
 prevCommand			ds 1		; Previous command handled
-commandBuffer		ds 96		; 96 byte command buffer (todo: is this enough?)
+commandBuffer		ds 64		; 64 byte command buffer (todo: is this enough? too much?)
 
 ; unsure if I'm keeping this idea...
 dataMode			ds 1		; (0=normal, 1=send to 68k, 2=receive from 68k)
@@ -39,13 +39,22 @@ loopPoint			ds 2		; Pointer to loop point (shared between channels for now)
 ;------------------------------------------------------------------------------;
 ; Pattern Playback
 
-; FM Channel 1
-; FM Channel 2
-; FM Channel 3
-; FM Channel 4
-; SSG Channel A
-; SSG Channel B
-; SSG Channel C
+curPos_FM1			ds 2		; pointer to current FM Channel 1 data
+curPos_FM2			ds 2		; pointer to current FM Channel 2 data
+curPos_FM3			ds 2		; pointer to current FM Channel 3 data
+curPos_FM4			ds 2		; pointer to current FM Channel 4 data
+
+curPos_SSG_A		ds 2		; pointer to current SSG Channel A data
+curPos_SSG_B		ds 2		; pointer to current SSG Channel B data
+curPos_SSG_C		ds 2		; pointer to current SSG Channel C data
+
+;curPos_PCMA1
+;curPos_PCMA2
+;curPos_PCMA3
+;curPos_PCMA4
+;curPos_PCMA5
+;curPos_PCMA6
+;curPos_PCMB
 
 ;==============================================================================;
 ; <YM2610 Section>
