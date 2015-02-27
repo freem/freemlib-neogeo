@@ -66,8 +66,8 @@ intStatus1			ds 1		; Status 1 (ADPCM A and B status)
 ;==============================================================================;
 ; [Timer variables]
 intTimerControl		ds 1		; ($27) Timer Control and Mode
-intTimerA_Lo		ds 1		; ($24) Timer A value LSB
-intTimerA_Hi		ds 1		; ($25) Timer A value MSB
+intTimerA_Hi		ds 1		; ($24) Timer A value, upper 8 bits
+intTimerA_Lo		ds 1		; ($25) Timer A value, lower 2 bits
 intTimerB			ds 1		; ($26) Timer B value
 
 ;==============================================================================;
