@@ -6,7 +6,7 @@ music and sound effects.
 ================================================================================
 [IRQ]
 The IRQ is in charge of handling the two YM2610 Status registers, as well as
-playback for each channel.
+playback for each channel. The source of the IRQs are the two timers.
 
 1) Status 1 (ADPCM channels)
 Check if any of the ADPCM channels have ended, and if so, perform whatever
