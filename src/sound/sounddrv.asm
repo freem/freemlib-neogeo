@@ -556,7 +556,7 @@ tbl_SysCmdPointers:
 	word	command_07		; $07 - Enable All (Music & Sounds)
 	word	command_08		; $08 - Enable Music
 	word	command_09		; $09 - Enable Sounds
-	word	ssg_Silence		; $0A - Silence SSG channels
+	word	ssg_Silence		; $0A - Silence SSG channels (todo: different routine)
 	word	fm_Silence		; $0B - Silence FM channels
 	word	command_0C		; $0C - Stop all ADPCM-A samples
 	word	pcmb_Silence	; $0D - Stop current ADPCM-B sample
@@ -819,6 +819,16 @@ play_ADPCM_B:
 
 	; Start/Repeat/Reset ($10 on ports 4/5)
 
+	ret
+
+;==============================================================================;
+; chanEnd_ADPCMA
+; Handles an ADPCM-A channel ending.
+
+; (Params)
+; ?				ADPCM-A channel number
+
+chanEnd_ADPCMA:
 	ret
 
 ;==============================================================================;
