@@ -39,7 +39,7 @@ j_write67:
 CheckBusyFlag:
 	in		a,(4)			; read Status 0 (busy flag in bit 7)
 	add		a
-	jr		c,CheckBusyFlag
+	jr		C,CheckBusyFlag
 	ret
 ;==============================================================================;
 	;org $0030
@@ -544,19 +544,20 @@ HandleSystemCommand:
 
 ;------------------------------------------------------------------------------;
 ; Table of system command routine pointers
+; Commands marked with a * are required by the BIOS
 
 tbl_SysCmdPointers:
 	word	command_00		; $00 - nop/do nothing
-	word	command_01		; $01 - Slot switch
-	word	command_02		; $02 - Play eyecatch music
-	word	command_03		; $03 - Soft Reset
+	word	command_01		; $01* - Slot switch
+	word	command_02		; $02* - Play eyecatch music
+	word	command_03		; $03* - Soft Reset
 	word	command_04		; $04 - Disable All (Music & Sounds)
 	word	command_05		; $05 - Disable Music
 	word	command_06		; $06 - Disable Sounds
 	word	command_07		; $07 - Enable All (Music & Sounds)
 	word	command_08		; $08 - Enable Music
 	word	command_09		; $09 - Enable Sounds
-	word	ssg_Silence		; $0A - Silence SSG channels (todo: different routine)
+	word	command_0A		; $0A - Silence SSG channels
 	word	fm_Silence		; $0B - Silence FM channels
 	word	command_0C		; $0C - Stop all ADPCM-A samples
 	word	pcmb_Silence	; $0D - Stop current ADPCM-B sample
@@ -643,7 +644,7 @@ command_01:
 	; set up infinite loop in RAM
 	ld		hl,0xFFFD
 	ld		(hl),0xC3		; Set 0xFFFD = 0xC3 ($C3 is opcode for "jp")
-	ld		(0xFFFE),hl	; Set 0xFFFE = 0xFFFD (making "jp $FFFD")
+	ld		(0xFFFE),hl		; Set 0xFFFE = 0xFFFD (making "jp $FFFD")
 	ld		a,1
 	out		(0xC),a			; Write 1 to port 0xC (Reply to 68K)
 	jp		0xFFFD			; jump to infinite loop in RAM
@@ -661,7 +662,7 @@ command_02:
 
 command_03:
 	di
-	ld		a,0
+	xor		a
 	out		(0xC),a			; Write to port 0xC (Reply to 68K)
 	out		(0),a			; Reset sound code
 	ld		sp,0xFFFF
@@ -715,6 +716,19 @@ command_08:
 
 command_09:
 	;(soundToggle)
+	ret
+
+;------------------------------------------------------------------------------;
+; command_0A
+; Stop SSG playback
+
+command_0A:
+	; xxx: deal with typeToggle?
+	; xxx: ssg toggle register uses active low (e.g. 0=on)
+	;xor		a
+	;ld		(ssgToggle),a
+
+	call	ssg_Silence
 	ret
 
 ;------------------------------------------------------------------------------;

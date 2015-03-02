@@ -19,8 +19,8 @@ dataBuffer			ds 64		; buffer for data transfer
 
 ;------------------------------------------------------------------------------;
 ; [Channel Playback]
-musicToggle			ds 1		; Master Toggle for Music
-soundToggle			ds 1		; Master Toggle for Sound Effects
+musicToggle			ds 1		; Master Toggle for Music (0=off, nonzero=on)
+soundToggle			ds 1		; Master Toggle for Sound Effects (0=off, nonzero=on)
 
 typeToggle			ds 1		; Overall toggle for SSG, FM, and PCM (1 bit each)
 ssgToggle			ds 1		; Specific SSG channel toggles ($07 p4/5)
