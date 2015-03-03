@@ -1,4 +1,4 @@
-Sailor VROM (Lua version) | v0.1 by freem
+Sailor VROM (Lua version) | v0.02 by freem
 ================================================================================
 Real coders would tell me to write this in C, but screw parsing text files in C.
 ================================================================================
@@ -11,7 +11,7 @@ What this doesn't do:
 
 ================================================================================
 [Usage]
-lua svrom.lua (pcmaList) [pcmbList] {outFile} {listFile}
+lua svrom.lua (pcmaList) [pcmbList] [outFile] [listFile]
 
 pcmaList is a text file containing paths to ADPCM-A encoded samples.
 
@@ -21,19 +21,21 @@ sampling rates (between 1800Hz-55500Hz), separated by a pipe character ('|').
 An example of an ADPCM-B entry at 22050Hz:
 example.pcmb|22050
 
-Currently, there is no way to customize the output filenames, because I'm lazy
-and this is a quickly rushed v0.1 release. Mentions of {outFile} and {listFile}
-above are for my own documentation until I put them in the program.
+outFile is the name of the output V ROM/.PCM file.
+
+listFile is the name of the generated include file with the sample addresses.
+
+--------------------------------------------------------------------------------
+Yes this is cumbersome and I should really do proper options parsing, but this
+is what you get with early versions/lazily coded software.
 
 ================================================================================
 [To-Do]
 Many things.
-* TEST OUTPUT, I'm quietly releasing this before I head out for a bit and don't
-  have the time to actually test this until I get back; if you aren't me and you
+* TEST OUTPUT, I'm back, but still haven't tested it; if you aren't me and you
   see this message, panic.
 
-* Support for naming output files
-* Pad non-power of two size samples with 0x80, in case your encoder doesn't
+* Pad non-power of two size samples with 0x80, in case your encoder doesn't.
 * Sample size checking (e.g. if something will be too big)
 * Output size checking (e.g. max 512KB per .PCM; max ?? per V ROM, 16MB total)
 * Detecting sample boundary crossings and fixing them (rearranging samples)

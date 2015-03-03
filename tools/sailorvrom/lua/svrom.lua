@@ -1,6 +1,6 @@
 -- Sailor VROM (Lua version) by freem
 --============================================================================--
-local verNum = 0.01
+local verNum = 0.02
 local pcmbSeparator = "|"
 local args = {...}
 
@@ -22,11 +22,16 @@ local pcmbListFN = nil
 local cdMode = false
 local sizeWarn = ""
 
+local outRomFilename = ""
+local outListFilename = ""
+
 if #args > 1 then
 	-- pcmb list passed in as well
 	pcmbListFN = args[2]
 
-	-- todo: check for other arguments (output file, listing file)
+	-- check for other arguments (output file, listing file)
+	if args[3] then outRomFilename = args[3] end
+	if args[4] then outListFilename = args[4] end
 else
 	-- no pcmb list, force cd mode on
 	print("[Note] No ADPCM-B list provided; assuming .PCM creation for Neo-Geo CD\n")
@@ -66,6 +71,7 @@ for s in pcmaListFile:lines() do
 
 	if pcmaTempLen % 256 ~= 0 then
 		sizeWarn = "(size not a multiple of 2)"
+		-- todo: pad sample with 0x80
 	else
 		sizeWarn = ""
 	end
@@ -129,6 +135,7 @@ if not cdMode then
 
 		if pcmaTempLen % 256 ~= 0 then
 			sizeWarn = "(size not a multiple of 2)"
+			-- todo: pad sample with 0x80
 		else
 			sizeWarn = ""
 		end
@@ -180,8 +187,11 @@ end
 -- forge the merged sample rom and the sample address list
 local outRom, outList, outError
 
-local outName = "output" .. (cdMode and ".pcm" or ".v")
-outRom, outError = io.open(outName,"w+b")
+if outRomFilename == "" then
+	outRomFilename = "output" .. (cdMode and ".pcm" or ".v")
+end
+
+outRom, outError = io.open(outRomFilename,"w+b")
 if not outRom then
 	print(string.format("Error attempting to create output file %s",outError))
 	return
@@ -199,7 +209,11 @@ end
 
 outRom:close()
 
-outList, outError = io.open("samples.inc","w+")
+if outListFilename == "" then
+	outListFilename = "samples.inc"
+end
+
+outList, outError = io.open(outListFilename,"w+")
 if not outList then
 	print(string.format("Error attempting to create sample list file %s",outError))
 	return
