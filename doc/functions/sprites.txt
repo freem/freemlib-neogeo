@@ -12,10 +12,34 @@ Palette					00000000
 Auto-anim modes			2-bit/3-bit, one bit for each
 HFlip, VFlip			one bit each
 
+(actual formats)
+SCB1 first word:
+FEDCBA9876543210
+tttttttttttttttt
+
+SCB1 second word:
+FEDCBA9876543210
+ppppppppTTTTAAVH
+
+t = Tile number LSB
+p = palette
+T = Tile number MSB
+A = auto-anim bits (2=2-bit, 3=3-bit)
+V = vertical flip
+H = horizontal flip
+
 {SCB2}
 SCB2 holds the shrinking coefficients.
 Horiz. Size				0000
 Vert.  Size				00000000
+
+(actual format)
+FEDCBA9876543210
+----HHHHVVVVVVVV
+
+- = unused
+H = horizontal scale
+V = vertical scale
 
 {SCB3}
 SCB3 holds the vertical positions, sticky/chain bit, and sprite tile size.
@@ -23,9 +47,24 @@ Y Position				000000000
 Sticky Bit				one bit
 Sprite Size				000000
 
+(actual format)
+FEDCBA9876543210
+YYYYYYYYYCSSSSSS
+
+Y = Y position
+C = sticky/chain bit
+S = sprite size
+
 {SCB4}
 SCB4 has the horizontal position only.
 X position				000000000
+
+(actual format)
+FEDCBA9876543210
+XXXXXXXXX-------
+
+X = X position
+- = unused
 
 After the SCB sections is the Sprite List. I'm not 100% sure how it operates.
 
