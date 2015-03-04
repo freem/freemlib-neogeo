@@ -29,7 +29,7 @@ lua svrom.lua (options)
 
 [Options]
 As of version 0.10, the program has changed how it handles the command line.
-Here are the options you can pass to the program.
+Here are the options you can pass to the program:
 
 --pcma=(path to adpcm-a list)
 Sets the ADPCM-A sample list. (required)
@@ -64,6 +64,9 @@ Many things.
   I still haven't tested the output, even after jumping to v0.10.
   If you aren't me and you see this message, you should probably panic.
 
+  However, I did a quick spot check using the data from smkdan's ADPCM-A demo,
+  and the file and sample addresses checked out. (Still needs system testing.)
+
 * Sample size checking (e.g. if something will be too big)
 
 * Output size checking
@@ -86,7 +89,7 @@ Many things.
 [Future Options]
 These might appear in a future version of the program.
 
---sizelimit=(positive integer, "kilobytes" [actually kibibytes, value*1024])
+--maxsize=(positive integer, "kilobytes" [actually kibibytes, value*1024])
 Specifies the maximum size of a sound data output file.
 (default: ????) (maximum on cart: 8192KiB (8MiB), maximum on cd: 512KiB)
 
