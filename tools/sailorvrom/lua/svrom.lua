@@ -1,7 +1,9 @@
 -- Sailor VROM (Lua version) by freem
 --============================================================================--
-local verNum = 0.02
+local verNum = 0.03
 local pcmbSeparator = "|"
+local sizeWarnString = "(size not a multiple of 2, padding)"
+
 local args = {...}
 
 local function sortBySize(c1,c2) return c1.Length < c2.Length end
@@ -21,6 +23,7 @@ local pcmaListFN = args[1]
 local pcmbListFN = nil
 local cdMode = false
 local sizeWarn = ""
+local padMe = false
 
 local outRomFilename = ""
 local outListFilename = ""
@@ -51,6 +54,7 @@ end
 print("[ADPCM-A Samples]")
 local pcmaTempFile, pcmaTempLen
 local pcmaCount = 1
+local pcmaData = nil
 
 for s in pcmaListFile:lines() do
 	-- try loading file
@@ -69,16 +73,32 @@ for s in pcmaListFile:lines() do
 
 	pcmaTempFile:seek("set")
 
+	-- reset padme
+	padMe = false
+
 	if pcmaTempLen % 256 ~= 0 then
-		sizeWarn = "(size not a multiple of 2)"
-		-- todo: pad sample with 0x80
+		sizeWarn = sizeWarnString
+		padMe = true
 	else
 		sizeWarn = ""
 	end
 
 	print(string.format("(PCMA %03i) %s %s",pcmaCount,s,sizeWarn))
 
-	table.insert(pcmaFiles,pcmaCount,{ ID = pcmaCount, File = s, Length = pcmaTempLen, Data = pcmaTempFile:read(pcmaTempLen) })
+	pcmaData = pcmaTempFile:read(pcmaTempLen)
+
+	if padMe then
+		-- pad sample with 0x80
+		local padBytes = 256-(pcmaTempLen%256)
+
+		for i=1,padBytes do
+			pcmaData = pcmaData .. string.char(128)
+		end
+		pcmaTempLen = pcmaTempLen + padBytes
+	end
+
+	table.insert(pcmaFiles,pcmaCount,{ ID = pcmaCount, File = s, Length = pcmaTempLen, Data = pcmaData })
+
 	pcmaCount = pcmaCount + 1
 	pcmaTempFile:close()
 end
@@ -98,6 +118,8 @@ if not cdMode then
 	print("[ADPCM-B Samples]")
 	local pcmbTempFile, pcmbTempLen, pcmbSampleRate, pcmbRealName
 	local pcmbCount = 1
+	local pcmbData = nil
+
 	for s in pcmbListFile:lines() do
 		local rateSplitter = string.find(s,pcmbSeparator)
 		if not rateSplitter then
@@ -133,16 +155,30 @@ if not cdMode then
 
 		pcmbTempFile:seek("set")
 
-		if pcmaTempLen % 256 ~= 0 then
-			sizeWarn = "(size not a multiple of 2)"
-			-- todo: pad sample with 0x80
+		-- reset padme
+		padMe = false
+		if pcmbTempLen % 256 ~= 0 then
+			sizeWarn = sizeWarnString
+			padMe = true
 		else
 			sizeWarn = ""
 		end
 
 		print(string.format("(PCMB %03i) %s (rate %d) %s",pcmbCount,pcmbRealName,pcmbSampleRate,sizeWarn))
 
-		table.insert(pcmbFiles,pcmbCount,{ ID = pcmbCount, File = pcmbRealName, Length = pcmbTempLen, Rate = pcmbSampleRate, Data = pcmbTempFile:read(pcmbTempLen) })
+		pcmbData = pcmbTempFile:read(pcmbTempLen)
+
+		if padMe then
+			-- pad sample with 0x80
+			local padBytes = 256-(pcmbTempLen%256)
+
+			for i=1,padBytes do
+				pcmbData = pcmbData .. string.char(128)
+			end
+			pcmbTempLen = pcmbTempLen + padBytes
+		end
+
+		table.insert(pcmbFiles,pcmbCount,{ ID = pcmbCount, File = pcmbRealName, Length = pcmbTempLen, Rate = pcmbSampleRate, Data = pcmbData })
 		pcmbCount = pcmbCount + 1
 		pcmbTempFile:close()
 	end
