@@ -1,4 +1,4 @@
-Sailor VROM (Lua version) | v0.03 by freem
+Sailor VROM (Lua version) | v0.10 by freem
 ================================================================================
 Real coders would tell me to write this in C, but screw parsing text files in C.
 ================================================================================
@@ -13,40 +13,45 @@ its output is verified working on hardware and produces good enough quality.
 Don't ask me how I know.
 
 ================================================================================
-[Usage]
-lua svrom.lua (pcmaList) [pcmbList] [outFile] [listFile]
+[Sample Lists]
+The sample lists that the program expects are simple text files, with one sound
+path/filename per line.
 
-pcmaList is the path to a text file containing paths to ADPCM-A encoded samples,
-one per line.
+The ADPCM-B sample list requires the sampling rate (between 1800Hz and 55500Hz)
+as well each filename, being separated with a pipe character ('|').
 
-pcmbList is the path to a text file containing paths to ADPCM-B samples and
-their default sampling rates (between 1800Hz-55500Hz), separated by a pipe
-character ('|').
-
-An example of an ADPCM-B entry (filename "example.pcmb") at 22050Hz:
+An example of an ADPCM-B sample entry with a default sampling rate of 22050Hz:
 example.pcmb|22050
 
-outFile is the name of the output V ROM/.PCM file.
+================================================================================
+[Usage]
+lua svrom.lua (options)
 
-listFile is the name of the generated include file with the sample addresses.
+[Options]
+As of version 0.10, the program has changed how it handles the command line.
+Here are the options you can pass to the program.
 
---------------------------------------------------------------------------------
-Yes, this is cumbersome, and I should really do proper options parsing,
-but this is what you get with early versions of lazily coded software.
+--pcma=(path to adpcm-a list)
+Sets the ADPCM-A sample list. (required)
+
+--pcmb=(path to adpcm-b list)
+Sets the ADPCM-B sample list. Ignored if mode is set to cd.
+
+--outname=(path to sound rom output file)
+Sets the output path/filename for the V ROM/.PCM file.
+(default "output.v" for cart, "output.pcm" for cd)
+
+--samplelist=(path to sample list output file)
+Sets the output path/filename for the sample list. (default "samples.inc")
+
+--mode=("cart" or "cd" without the quotes)
+Sets up the output type. (CD mode will enforce the ignoring of ADPCM-B.)
 
 ================================================================================
 [Notes]
 * This program will pad your samples with 0x80 (silence) if necessary, if your
   original ADPCM encoding tool hasn't done so already. As this happens only
   during processing, the original sample files are untouched.
-
-* In order to pass in the "outFile" and "listFile" parameters, you will need to
-  have the pcmbList option as well. Yes, I know this is awkward, see above.
-
-* If the PCM-B list file does not exist, the program will continue in "CD mode",
-  meaning the file will have a default extension of ".PCM" instead of ".V".
-  CD mode is also meant to have an upper file size limit of 512KiB, but this is
-  not yet implemented.
 
 * The PCM-B list _only_ accepts sampling rates in Hertz. If you enter "44.1"
   expecting 44.1KHz (instead of 44100), don't be surprised when everything
@@ -55,10 +60,59 @@ but this is what you get with early versions of lazily coded software.
 ================================================================================
 [To-Do]
 Many things.
-* TEST OUTPUT, I still haven't tested the output, 0.03 versions in; if you
-  aren't me and you see this message, you should panic.
+* TEST OUTPUT!
+  I still haven't tested the output, even after jumping to v0.10.
+  If you aren't me and you see this message, you should probably panic.
 
 * Sample size checking (e.g. if something will be too big)
-* Output size checking (e.g. max 512KiB per .PCM; max ?? per V ROM, 16MiB total)
+
+* Output size checking
+ * .PCM files: max 512KiB
+ * V ROMs: max 16MiB total (max configs: 4 x 4MiB [typical], 2 x 8MiB [ca.2002])
+
 * Detecting sample boundary crossings and fixing them (rearranging samples)
-* Support different syntaxes for sample list include file
+
+* Support different word define syntaxes for sample list include file
+ * "word" - vasm oldstyle syntax
+ * "dw"   - tniasm
+ * ".dw"  - WLA-DX
+ 
+* Support different value output syntaxes for sample list include file
+ * 0x00   - vasm oldstyle syntax
+ * $00    - tniasm
+ * 00h    - WLA-DX
+
+================================================================================
+[Future Options]
+These might appear in a future version of the program.
+
+--sizelimit=(positive integer, "kilobytes" [actually kibibytes, value*1024])
+Specifies the maximum size of a sound data output file.
+(default: ????) (maximum on cart: 8192KiB (8MiB), maximum on cd: 512KiB)
+
+--slformat=("vasm", "tniasm", "wla")
+Sets the sample list to output in a specific format:
+ * vasm:   word	0x0000,0x00CE
+ * tniasm: dw	$0000,$00CE
+ * wla:    .dw	0000h,00CEh
+
+================================================================================
+[Output Configurations]
+This is fun (not)
+
+<Early Carts>
+ADPCM-A and ADPCM-B in separate V ROMs
+
+<PCM Chip Carts>
+8192KiB (or more?) maximum per chip?
+
+"On some Cartridge boards, V A20~V A22 can be used to select which of the 4
+possible V ROMs to use" - NeoGeo Dev Wiki
+
+<16 Megabytes>
+* 4x4 MiB configuration
+* 2x8 MiB configuration
+
+<Neo-Geo CD>
+Maximum File Size: 512KiB?
+Banks: 2x512KiB (1 Megabyte total)
