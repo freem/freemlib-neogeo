@@ -12,7 +12,7 @@ print("Sailor VROM - Neo-Geo V ROM/.PCM File Builder (Lua version)");
 print(string.format("v%.02f by freem",verNum))
 print("===========================================================");
 
-if not args then
+if not args or not args[1] then
 	print("No arguments found.")
 	print("usage: lua svrom.lua (pcmalist) [pcmblist]")
 	return
