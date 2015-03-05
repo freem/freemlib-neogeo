@@ -1,6 +1,7 @@
-Sailor VROM (Lua version) | v0.10 by freem
+Sailor VROM (Lua version) | v0.11 by freem
 ================================================================================
 Real coders would tell me to write this in C, but screw parsing text files in C.
+(This script should work on Lua 5.1 and Lua 5.2; Lua 5.3 has not been tested.)
 ================================================================================
 [Introduction]
 Sailor VROM is a Neo-Geo V ROM/.PCM file builder.
@@ -28,24 +29,34 @@ example.pcmb|22050
 lua svrom.lua (options)
 
 [Options]
-As of version 0.10, the program has changed how it handles the command line.
-Here are the options you can pass to the program:
+As of version 0.10, the program handles the command line differently.
+
+Possible options you can pass to the program:
 
 --pcma=(path to adpcm-a list)
 Sets the ADPCM-A sample list. (required)
 
 --pcmb=(path to adpcm-b list)
-Sets the ADPCM-B sample list. Ignored if mode is set to cd.
+Sets the ADPCM-B sample list. Ignored if mode is set to cd. (optional)
 
 --outname=(path to sound rom output file)
-Sets the output path/filename for the V ROM/.PCM file.
+Sets the output path/filename for the V ROM/.PCM file. (optional)
 (default "output.v" for cart, "output.pcm" for cd)
 
 --samplelist=(path to sample list output file)
 Sets the output path/filename for the sample list. (default "samples.inc")
 
 --mode=("cart" or "cd" without the quotes)
-Sets up the output type. (CD mode will enforce the ignoring of ADPCM-B.)
+Sets up the output type. (optional)
+(default "cart")
+ * CD mode will enforce the ignoring of ADPCM-B.
+ * CD mode will eventually force an upper limit of 512KiB per .PCM file.
+
+--slformat=("vasm", "tniasm", or "wla")
+Sets the sample list to output in a specific format:
+ * vasm:   word	0x0000,0x00CE (vasm oldstyle syntax)
+ * tniasm: dw	$0000,$00CE   (tniasm syntax)
+ * wla:    .dw	$0000,$00CE   (WLA syntax)
 
 ================================================================================
 [Notes]
@@ -61,7 +72,7 @@ Sets up the output type. (CD mode will enforce the ignoring of ADPCM-B.)
 [To-Do]
 Many things.
 * TEST OUTPUT!
-  I still haven't tested the output, even after jumping to v0.10.
+  I still haven't tested the output, even after jumping to v0.11.
   If you aren't me and you see this message, you should probably panic.
 
   However, I did a quick spot check using the data from smkdan's ADPCM-A demo,
@@ -75,16 +86,6 @@ Many things.
 
 * Detecting sample boundary crossings and fixing them (rearranging samples)
 
-* Support different word define syntaxes for sample list include file
- * "word" - vasm oldstyle syntax
- * "dw"   - tniasm
- * ".dw"  - WLA-DX
- 
-* Support different value output syntaxes for sample list include file
- * 0x00   - vasm oldstyle syntax
- * $00    - tniasm
- * 00h    - WLA-DX
-
 ================================================================================
 [Future Options]
 These might appear in a future version of the program.
@@ -92,12 +93,6 @@ These might appear in a future version of the program.
 --maxsize=(positive integer, "kilobytes" [actually kibibytes, value*1024])
 Specifies the maximum size of a sound data output file.
 (default: ????) (maximum on cart: 8192KiB (8MiB), maximum on cd: 512KiB)
-
---slformat=("vasm", "tniasm", "wla")
-Sets the sample list to output in a specific format:
- * vasm:   word	0x0000,0x00CE
- * tniasm: dw	$0000,$00CE
- * wla:    .dw	0000h,00CEh
 
 ================================================================================
 [Output Configurations]
@@ -114,7 +109,12 @@ possible V ROMs to use" - NeoGeo Dev Wiki
 
 <16 Megabytes>
 * 4x4 MiB configuration
-* 2x8 MiB configuration
+* 2x8 MiB configuration (only possible with NEO-PCM2?)
+
+<NeoBitz PROGBITZ1>
+Supposedly this board can support 32MiB (banked?) V ROMs, along with a more
+conventional 16MiB. All of this without a NEO-PCM chip in sight, though the only
+known game released on the board so far uses a single 8MiB chip.
 
 <Neo-Geo CD>
 Maximum File Size: 512KiB?
