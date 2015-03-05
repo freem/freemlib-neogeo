@@ -80,8 +80,8 @@ This could also be called "Animation Script" or something like that.
 
 ================================================================================
 [Animation Frame Data]
-* Number of frames to display this frame (60 frames = 1 second)
+* Number of frames to display this frame (60 frames = 1 second on NTSC systems)
 * Metasprite pointer for this frame
 * Anchor point (pixels, relative to sprite size)
 * Pointer to collision data (see collision.txt)
-* Pointer to next displayed frame ($FFFFFFFF if none)
+* Pointer to next displayed frame ($00000000 if none)
