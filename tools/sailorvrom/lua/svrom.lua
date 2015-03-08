@@ -356,7 +356,6 @@ outSampleFile:write("\n")
 outSampleFile:write("; [ADPCM-A Samples]\n")
 outSampleFile:write("samples_pcma:\n")
 
--- todo: using hardcoded values
 for k,v in pairs(pcmaFiles) do
 	outSampleFile:write(string.format("\t%s\t"..valFormat..","..valFormat.."\t; Sample #%i (%s)\n",direc,v.Start,v.End,v.ID,v.File))
 end
