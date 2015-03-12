@@ -44,3 +44,6 @@ Handling system calls and features (credits, demo play, etc)
 
 [10_sound]
 Introduction to the freemlib's Sound Driver.
+
+[xx_presentation]
+A combined demo that shows off freemlib capabilities.
