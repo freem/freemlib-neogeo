@@ -10,7 +10,7 @@ Status
 The primary goal right now is to get the library coded, as well as provide
 examples that use the library. Overall, the tasks can be broken down as follows:
 
-(All percentage completions are estimates as of 2015/03/03. No project is ever truly finished. :wink:)
+(All percentage completions are estimates as of 2015/03/13. No project is ever truly finished. :wink:)
 
 ### Library ###
 These elements form the core of the freemlib for Neo-Geo.
@@ -34,9 +34,9 @@ should be made for Linux (and OS X) compatibility whenever possible.
 
 * **NeoFixFormat** &ndash; Fix format tiles plugin for YY-CHR.NET. 100%, unless a bug comes up.
 * **NeoCDSprFormat** &ndash; CD sprite tiles plugin for YY-CHR.NET. 20%, needs major work.
-* **NeoSprFormat** &ndash; Combined C ROM sprite tile plugin for YY-CHR.NET. 0% (doing CD version first)
+* **NeoSprFormat** &ndash; Combined C ROM (".c0" format) sprite tile plugin for YY-CHR.NET. 0% (doing CD version first)
 * **NeoTracker** &ndash; On-console tracker and sound driver testbench. 0% (mockups and planning stage; probably needs a new name)
-* **Sailor VROM** &ndash; V ROM/.PCM file builder and manager. 0% (planning stages)
+* **Sailor VROM** &ndash; V ROM/.PCM file builder and manager. 25% [https://github.com/freem/freemlib-neogeo/tree/master/tools/sailorvrom/lua]((Lua version available))
 * and others not listed here...
  * A tool for Fix layer layout, similar to Shiru's NES Screen Tool
  * A tool for animation data (various tools exist already, I'm aware.)
@@ -72,8 +72,8 @@ Tools may be licensed differently from the main library.
 Contact
 -------
 The best way to reach me about this project is via IRC:
-* irc.clearimagery.net &ndash; #ssc
 * chat.freenode.org &ndash; #neogeodev
+* irc.clearimagery.net &ndash; #ssc
 
 but if IRC isn't your thing, you might want to try one (or more) of these options:
 * [Yaronet forums](http://www.yaronet.com/en/sujets.php?f=417)
