@@ -14,12 +14,12 @@ HFlip, VFlip			one bit each
 
 (actual formats)
 SCB1 first word:
-FEDCBA9876543210
-tttttttttttttttt
+FEDCBA98 76543210
+tttttttt tttttttt
 
 SCB1 second word:
-FEDCBA9876543210
-ppppppppTTTTAAVH
+FEDCBA98 76543210
+pppppppp TTTTAAVH
 
 t = Tile number LSB
 p = palette
@@ -28,18 +28,22 @@ A = auto-anim bits (2=2-bit, 3=3-bit)
 V = vertical flip
 H = horizontal flip
 
+--------------------------------------------------------------------------------
+
 {SCB2}
 SCB2 holds the shrinking coefficients.
 Horiz. Size				0000
 Vert.  Size				00000000
 
 (actual format)
-FEDCBA9876543210
-----HHHHVVVVVVVV
+FEDCBA98 76543210
+----HHHH VVVVVVVV
 
 - = unused
 H = horizontal scale
 V = vertical scale
+
+--------------------------------------------------------------------------------
 
 {SCB3}
 SCB3 holds the vertical positions, sticky/chain bit, and sprite tile size.
@@ -48,23 +52,27 @@ Sticky Bit				one bit
 Sprite Size				000000
 
 (actual format)
-FEDCBA9876543210
-YYYYYYYYYCSSSSSS
+FEDCBA98 76543210
+YYYYYYYY YCSSSSSS
 
 Y = Y position
 C = sticky/chain bit
 S = sprite size
+
+--------------------------------------------------------------------------------
 
 {SCB4}
 SCB4 has the horizontal position only.
 X position				000000000
 
 (actual format)
-FEDCBA9876543210
-XXXXXXXXX-------
+FEDCBA98 76543210
+XXXXXXXX X-------
 
 X = X position
 - = unused
+
+--------------------------------------------------------------------------------
 
 After the SCB sections is the Sprite List. I'm not 100% sure how it operates.
 
@@ -128,6 +136,7 @@ The provided custom vblank interrupt handles uploading the buffers to the VRAM.
 [Data Formats]
 The best formats are those that map to the LSPC...like smkdan's.
 
+VRAM Buffer:
 {
 $00		(w) data length (in words)
 $02		(w) vram address
@@ -190,13 +199,9 @@ Converting a tile index value of $12345 to SCB1:
 LSB = ($12345 & $0FFFF) -> SCB1a
 MSB = (($12345 & $F0000)>>12) | SCB1b
 
-SCB1 Macro would take the following values:
-* Tile Number ($00000-$FFFFF)
---------------------------------
-* Palette Index ($00-$FF)
-* Auto-Anim (4/2-bit or 8/3-bit)
-* Vertical Flip
-* Horizontal Flip
+
+sprmac_SCB1Data writes SCB1 data to ROM. However, it assumes you know the
+palette and auto-animation values beforehand. This may not always be the case.
 
 ================================================================================
 [Metasprite Data]
@@ -240,7 +245,7 @@ $05			Component 1 sticky bit				(byte)
 $06			Component 1 overall X offset		(word)
 $08			Component 1 overall Y offset		(word)
 $0A			Component 1 scale value				(word)
-$0C			Pointers to Component 1 Sprite data	(long)
+$0C			Pointers to Component 1 Tilemaps	(long)
 ............
 etc.
 
