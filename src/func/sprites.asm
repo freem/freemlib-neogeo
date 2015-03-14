@@ -152,6 +152,10 @@ HFLIP_YES			equ 1		; horizontal flip
 ; This macro converts normal values to their SCB1 equivalents.
 ; You will want to use this macro multiple times for Sprites with Height > 1.
 
+; Note: This macro assumes you know the palette and auto-animation values when
+; you're writing data into the ROM. (A better solution is needed for metasprite
+; initialization and other such tasks.)
+
 ; (Params)
 ; \1			Tile Number				(long) 20 bits; SCB1 even, SCB1 odd (bits 4-7)
 ; \2			Palette Number			(byte) 8 bits; SCB1 odd (bits 8-15)
