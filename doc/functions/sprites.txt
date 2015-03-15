@@ -235,7 +235,7 @@ $00			Number of Sprites in Metasprite		(word)
 $02...end	Pointers to Sprite data				(long)
 
 --------------------------------------------------------------------------------
-<WIP new metasprite data block>
+<WIP new metasprite data block (not final; will change)>
 $00			Number of Metasprite components		(word)
 ------------
 $02			Number of sprites in Component 1	(byte)

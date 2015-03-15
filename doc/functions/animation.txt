@@ -20,11 +20,11 @@ DATLib has:
  * currentStepNum		current step number
  * maxStep				maximum step number for current anim
  * frames				unused/deprecated
- * currentFrame			pointer to current frame data
+ * currentFrame			pointer to current sprFrame data
  * anims				pointer to animations block
  * currentAnimation		pointer to current animation
  * steps				pointer to steps block of current anim
- * currentStep			pointer to current step
+ * currentStep			pointer to current animStep
  * counter				internal frame counter
  * repeats				number of repeats completed
  * currentFlip			current flipmode squad affiliation (0=none, 1=X, 2=Y, 3=XY)
@@ -33,18 +33,25 @@ DATLib has:
  * flags				internal flags (1=moved, 2=flipped)
 
 * animation (a single animation)
- * id					animation ID
- * steps				list of frames in animation
- * link					animation to link to
+ * stepsCount			number of steps for animation
  * repeats				number of repeats
+ * steps				pointer to list of frames in animation
+ * link					pointer to linked animation
 
 * animStep (a frame in an animation)
- * frameNum				frame number
- * frameID				frame ID
- * duration				number of frames to show step
+ * framePtr				Pointer to sprFrame data
  * offsetX				x offset (from origin; for flipping, etc.)
  * offsetY				y offset (from origin; for flipping, etc.)
+ * duration				number of frames to show step
 
+* sprFrame (sprite data for an animation frame)
+ * tileWidth			Frame width in tiles
+ * tileHeight			Frame height in tiles
+ * colSize				Word size of each tilemap
+ * maps[4]				pointers to tilemaps (normal, flipX, flipY, flipXY)
+
+
+Everything below this line needs re-thinking.
 ================================================================================
 (Animation Library)
 The Animation Library is created from "proper" use of the Animation IDs. What
