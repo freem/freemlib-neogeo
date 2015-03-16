@@ -74,6 +74,16 @@ The data that was here is now in sound/soundCommands.txt.
 <Functionality>
 The sound driver's total functionality depends on the hardware.
 
+Z80 I/O ports:
+$00			(read) Sound Code input (Communication from 68K to Z80)
+$00			(write) Clear Sound Code input
+$04			(read) [YM] Status 0 (Busy, Timer A and B flags)
+$05			(read) [YM] SSG registers
+$06			(read) [YM] Status 1 (ADPCM flags for samples reaching end address)
+$08			(write) Enable NMI
+$0C			(write) Sound Code output (Communication from Z80 to 68K)
+$18			(write) Disable NMI
+
 The YM2610 gives us:
 * Timers	(2 timers, A and B)
 * SSG		(3 channels)
@@ -82,12 +92,6 @@ The YM2610 gives us:
 ------------------------------------------------------
 * ADPCM-B	(1 channel, 1.8kHz~55.5kHz sampling rate); cart systems only
 * CDDA		(CD audio, 44.1kHz sampling rate); CD systems only
-
-[Overall]
-Port Reads:
-$04			Status 0 (Busy, Timer A and B flags)
-$05			SSG registers
-$06			Status 1 (ADPCM flags for samples reaching end address)
 
 [Timers]
 Writes to ports $04 (addr) and $05 (data)
