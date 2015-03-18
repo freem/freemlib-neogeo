@@ -225,9 +225,11 @@ any more changes.
 * sprite size (tiles)	[byte]
 * palette				[byte]
 * sticky bit			[byte] attach to previous sprite
-* offset x/y position	[word] one each
+* offset x/y position	[word] one word each
 * scale value			[word]
 * pointer to tilemap	[long]
+
+Of course, this doesn't even factor animation in...
 
 --------------------------------------------------------------------------------
 <Metasprite Data Block (current, but deprecated)>
@@ -271,6 +273,7 @@ Functions for dealing with a metasprite
 
 (Sprite)
 Functions for dealing with a single sprite
+* Clear sprite (set SCB3 sprite size = 0, unstick?)
 * Change sprite X position
 * Change sprite Y position
 * Change sprite palette
