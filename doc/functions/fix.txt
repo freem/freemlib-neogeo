@@ -142,9 +142,9 @@ todo: rename this to fix_DrawRegionSimple & make fix_DrawRegion operate on words
 
 (Params)
 d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1		Combined rows/columns size ($YYXX)
-d2		Palette index and tile number MSB
-a0		Pointer to data to draw
+d1		[word] Combined rows/columns size ($YYXX)
+d2		[byte] Palette index and tile number MSB
+a0		[long] Pointer to data to draw
 
 ================================================================================
 [fix_FillRegion]

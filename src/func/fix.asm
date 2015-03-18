@@ -162,10 +162,10 @@ fix_DrawString:
 ; A B C D <- bottom half
 
 ; (Params)
-; d0		Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
-; d1		Palette index
-; a0		Pointer to string to draw
-; a1		Pointer to character map
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		[byte] Palette index
+; a0		[long] Pointer to string to draw
+; a1		[long] Pointer to character map
 
 ; (Clobbers)
 ; a2		Used for original string pointer
@@ -294,10 +294,10 @@ fix_Draw16x16:
 ; Draws a rectangular region of tiles using a single palette and tile number MSB.
 
 ; (Params)
-; d0		Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
-; d1		Combined rows/columns size ($YYXX)
-; d2		Palette index and tile number MSB
-; a0		Pointer to data to draw
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		[word] Combined rows/columns size ($YYXX)
+; d2		[byte] Palette index and tile number MSB
+; a0		[long] Pointer to data to draw
 
 ; (Clobbers)
 ; d5		Combined value to write to VRAM
