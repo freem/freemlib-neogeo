@@ -83,7 +83,7 @@ Draws horizontal text to the screen manually. End code is $FF.
 
 (Params)
 d0		[word] Combined cell location (x,y) or Raw VRAM address ($7000-$74FF)
-d1		[byte] Palette index and tile number MSB
+d1		[word] Palette index and tile number MSB
 a0		[long] Pointer to string to draw
 
 (Clobbers)

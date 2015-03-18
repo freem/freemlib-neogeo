@@ -122,7 +122,7 @@ fix_ChangePal:
 
 ; (Params)
 ; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
-; d1		[byte] Palette index and tile number MSB
+; d1		[word] Palette index and tile number MSB
 ; a0		[long] Pointer to string to draw
 
 ; (Clobbers)
@@ -136,13 +136,15 @@ fix_DrawString:
 	move.w	#$20,LSPC_INCR		; set VRAM increment +$20 (horiz. writing)
 
 	moveq	#0,d2				; set up d2
-	moveq	#0,d3				; set up d3
+
+	; set up d3
+	moveq	#0,d3
+	move.w	d1,d3				; get pal. index and tile number MSB
+	lsl.w	#8,d3				; shift into upper byte of word
 
 .fix_DrawString_Loop:
 	cmpi.b	#$FF,(a0)
 	beq.b	.fix_DrawString_End
-	move.w	d1,d3				; get pal. index and tile number MSB
-	lsl.w	#8,d3				; shift into upper byte of word
 	move.b	(a0)+,d2			; read byte from string, increment read position
 	or.w	d3,d2				; OR with shifted pal. index and tile number MSB
 	move.w	d2,LSPC_DATA		; write combined tile to VRAM
