@@ -208,6 +208,7 @@ BIOS_SR_STORE			equ $10FE20	; (word)
 BIOS_VERSION_BASE		equ $10FE22	; (long)
 BIOS_GD_STORE			equ $10FE26	; (byte) 32 bytes
 
+;???					equ $10FE34	; (byte?)
 ;???					equ $10FE35	; (byte?)
 ;???					equ $10FE37	; (byte?)
 ;???					equ $10FE38	; (word?)
