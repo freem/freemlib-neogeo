@@ -21,8 +21,8 @@ These elements form the core of the freemlib for Neo-Geo.
 * **Fix** &ndash; Fix layer functionality. Still needs work, ~22.5%?
 * **Memory Card** &ndash; Handle Memory Cards (also Neo-Geo CD Backup Memory). 5%, needs testing.
 * **Palette** &ndash; Palette functionality. ~10%.
-* **Sound** &ndash; Fully-featured (FM, SSG, both ADPCM types, CD/DA) Z80 sound engine. 3%
-* **Sprites** &ndash; General sprite functionality (considering the Neo-Geo is all about sprites). ~15%?
+* **Sound** &ndash; Fully-featured (FM, SSG, both ADPCM types, CD/DA) Z80 sound engine. 3%.
+* **Sprites** &ndash; General sprite functionality. ~15%?, with restructuring to come.
 * **System** &ndash; Various system functions. 1%.
 
 Am I missing anything? Please let me know. (Input routines for non-standard controllers
@@ -51,14 +51,14 @@ I only really want to write it once.
 * **Library Docs (text)** &ndash; The straight dope. See `doc/` folder.
 * **Library Docs (HTML)** &ndash; The pretty version. Still very WIP.
 * **Neo-Geo Programming Guide** &ndash; think of the Nerdy Nights (NES) tutorials,
-but for Neo-Geo. The examples kind of cover this...
+but for Neo-Geo. The examples kind of cover this, but aren't nearly as accessible...
 
 Navigation
 ----------
 * `cdfiles/` &ndash; Files required for Neo-Geo CD games (aside from `IPL.TXT`)
-* `doc/` &ndash; Documentation
+* `doc/` &ndash; Documentation (both general and freemlib related)
 * `examples/` &ndash; freemlib Usage Examples
-* `src/` &ndash; The code.
+* `src/` &ndash; The freemlib library code.
 * `tools/` &ndash; Various tools.
 
 You should read `doc/usage.txt` for how to setup a project with the freemlib.
@@ -67,7 +67,7 @@ License
 -------
 The freemlib for Neo-Geo is licensed under the [ISC License](http://opensource.org/licenses/ISC).
 Full terms may be found in the "LICENSE" file.
-Tools may be licensed differently from the main library.
+Tools may be licensed differently from the main library, see each project for licensing details.
 
 Contact
 -------
