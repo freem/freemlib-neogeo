@@ -275,6 +275,8 @@ BIOS_P6CHANGE			equ $10FEF1	; (byte) Active-edge input
 BIOS_P6REPEAT			equ $10FEF2	; (byte) Auto-repeat flag
 BIOS_P6TIMER			equ $10FEF3	; (byte) Input repeat timer
 ;-----------------------------------;
+; (see "Cart systems with 4-Player Compatible BIOS only" below)
+;-----------------------------------;
 BIOS_MESS_BUFFER		equ $10FF00	; 100 byte buffer
 
 ;==============================================================================;
