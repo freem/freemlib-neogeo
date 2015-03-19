@@ -6,5 +6,18 @@ loop (no condition is tested)." - M68000 Family Programmer's Reference Manual
 
 This includes vasm and whatever assembler SNK was using.
 
+--------------------------------------------------------------------------------
+Some of the optimizations made by compilers can possibly break your ROM.
+This is why the freemlib examples currently use vasm's -devpac parameter, as it
+is known to produce working ROMs. (Of course, it might be possible to disable
+certain optimizations, but this hasn't fully been looked into.)
+
 ==[Z80]=========================================================================
+If you happen to be writing both Z80 and 68K code, you'll probably either know
+this or will need to remember it: source and destination registers are typically
+flipped between the two architectures.
+
+e.g. Loading an 8-bit value from one register to another:
+(68K) move.b source,dest
+(Z80) ld	dest,source
 
