@@ -1,0 +1,21 @@
+freemlib for Neo-Geo - General 68000 Macros
+===========================================
+The "68k_macro.inc" file contains macros for slightly more semantic programming.
+
+The push and pop macros exist mainly for my own projects.
+You are welcome to use them if you want.
+================================================================================
+[push]
+Pushes data to the stack.
+Alias for "movem.l _,-(sp)", where _ is the value(s) pushed.
+
+(Params)
+\1			Value(s) to push on the stack
+
+================================================================================
+[pop]
+Pops data off the stack.
+Alias for "movem.l (sp)+,_", where _ is the value(s) popped.
+
+(Params)
+\1			Destination(s) for value(s) to pop off the stack
