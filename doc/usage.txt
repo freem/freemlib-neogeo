@@ -21,7 +21,6 @@ Files to Copy (or Symlink) and Leave Alone
 (freemlib Functionality)
 * src/inc/mess_macro.inc		Macros for use with MESS_OUT.
 * src/inc/mess_defs.inc			Defines for characters to use with MESS_OUT.
-* src/inc/system.inc			System-related functions. (still WIP)
 --------------------------------
 * src/func/animation.asm		Animation-related functions.
 * src/func/background.asm		Background-related functions.
