@@ -19,7 +19,7 @@ future examples
 
 --------------------------------------------------------------------------------
 (Expert)
-* Mid-frame Palette Changes (hblank? check Pochi to Nyaa's title screen?)
+* Mid-frame Palette Changes (hblank abuse?)
 * Faking Blending?
  * Careful usage of colors + fake transparency
 
