@@ -12,7 +12,7 @@ Common attract loops typically include the following:
 * High Score screen
 Not every Neo-Geo game released includes all of the above, but they're typically
 found within the 150-odd MVS game library. Content Warning screens were only
-added to games around the late 1990s (starting with ???).
+added to games around the mid-1990s (starting with Real Bout Fatal Fury?).
 
 In order to have a "good" attract loop setup, you should have the following:
 * A variable to note if you're in attract/demo mode or not
