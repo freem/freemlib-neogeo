@@ -158,15 +158,18 @@ BIOS_CARD_SIZE			equ $10FDCC	; (word) Size of data
 BIOS_CARD_FCB			equ $10FDCE	; (word) Game NGH number
 BIOS_CARD_SUB			equ $10FDD0	; (byte/word) Game sub number (0-15)
 ;-----------------------------------;
+; DATE_TIME is only available on MVS, and READ_CALENDAR should be called to get
+; the current values before using the following locations.
 BIOS_DATE_TIME			equ $10FDD2	; DATE_TIME struct
 
-BIOS_YEAR				equ $10FDD2	; (byte) 
-BIOS_MONTH				equ $10FDD3	; (byte) 
-BIOS_DAY				equ $10FDD4	; (byte) 
-BIOS_WEEKDAY			equ $10FDD5	; (byte) 
-BIOS_HOUR				equ $10FDD6	; (byte) 
-BIOS_MINUTE				equ $10FDD7	; (byte) 
-BIOS_SECOND				equ $10FDD8	; (byte) 
+; Most of these values are set in BCD (Weekday is an exception)
+BIOS_YEAR				equ $10FDD2	; (byte) Current Year (starts at ??)
+BIOS_MONTH				equ $10FDD3	; (byte) Current Month
+BIOS_DAY				equ $10FDD4	; (byte) Current Day
+BIOS_WEEKDAY			equ $10FDD5	; (byte) Current Weekday (0:Sunday, 1:Monday, ... 6:Saturday)
+BIOS_HOUR				equ $10FDD6	; (byte) Current Hour (24 hour format)
+BIOS_MINUTE				equ $10FDD7	; (byte) Current Minute
+BIOS_SECOND				equ $10FDD8	; (byte) Current Second
 ;BIOS_??????????		equ $10FDD9	; (byte) ?
 ;-----------------------------------;
 BIOS_SELECT_TIMER		equ $10FDDA	; (word) (a.k.a. "BIOS_COMPULSION_TIMER")

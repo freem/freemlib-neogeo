@@ -62,8 +62,29 @@ REG_DIPSW			equ $300001		; Read Hardware DIPs [active low], Kick watchdog (a.k.a
 ;|________ Test switch (IN01; active low)
 
 REG_STATUS_A		equ $320001		; uPD4990 bits, Coin switches [switches active low]
+;00000000
+;||||||||
+;||||||||_ Coin 1
+;|||||||__ Coin 2
+;||||||___ Service
+;|||||____ Coin 3
+;||||_____ Coin 4
+;|||______ (0 on 4slot, 1 on 6slot)
+;||_______ NEC D4990 time pulse
+;|________ NEC D4990 data bit
+
 REG_P2CNT			equ $340000		; Player 2 Controls (DCBArldu) [active low]
+
 REG_STATUS_B		equ $380000		; Aux inputs (Start/Select, Memory Card...) [active low]
+;00000000
+;||||||||
+;||||||||_ Start P1
+;|||||||__ Select P1
+;||||||___ Start P2
+;|||||____ Select P2
+;||\/_____ Memory Card inserted if both are 0
+;||_______ Memory Card write protected
+;|________ System Type (0: AES/Home, 1: MVS)
 
 ; (Writes)
 REG_POUTPUT			equ $380001		; Joypad port outputs

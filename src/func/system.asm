@@ -26,8 +26,46 @@ macr_GetSoftDipNum:	macro
 
 ;==============================================================================;
 ; Calendar (MVS-only)
-; the various DATE_TIME elements.
-
+; Routines for handling the various DATE_TIME elements.
+;------------------------------------------------------------------------------;
 ; mvsCal_GetDayNum
 ; Get day number (1-366).
+
+; On CD systems, this routine short circuits because there is no calendar chip.
+
+; On cart systems, the System Type value is checked to ensure we are on MVS.
+; If we are not on MVS, the routine ends early.
+
+; (Returns)
+; d0			(word) Day number 1-366, or 0 if routine not run (e.g. home system)
+
+; (Thrashes)
+; d0			Used for return value
+
+mvsCal_GetDayNum:
+	moveq	#0,d0
+	ifd TARGET_CD
+		rts					; short circuit when building for CD systems
+	else
+
+	; check for MVS
+	move.b	REG_STATUS_B,d0
+	andi.b	#$80
+	beq		.mvsCal_GetDayNum_end	; not MVS, skip this.
+
+	; MVS mode, get the calendar values
+	jsr		READ_CALENDAR
+
+	; (rest of this routine is WIP)
+	; Check for leap year
+
+	; not divisible by 4: not leap year
+	; if divisible by 4 and not divisible by 100: leap year
+	; if divisible by 4 and 100, but not 400: not leap year
+	; otherwise: leap year
+
+.mvsCal_GetDayNum_end:
+	rts
+	endif
+
 ;------------------------------------------------------------------------------;
