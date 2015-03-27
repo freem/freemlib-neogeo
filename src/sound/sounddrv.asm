@@ -665,7 +665,17 @@ command_03:
 	xor		a
 	out		(0xC),a			; Write to port 0xC (Reply to 68K)
 	out		(0),a			; Reset sound code
-	ld		sp,0xFFFF
+	ld		sp,0xFFFF		; Set stack pointer location
+
+	; disable FM channels
+	ld		d, #0xB5
+	ld		e, #0			; $B500: Clear L/R output, AM Sense, PM Sense
+	call	write_45		; (for channel 1)
+	call	write_67		; (for channel 3)
+	ld		d, #0xB6		; $B600: Clear L/R output, AM Sense, PM Sense
+	call	write_45		; (for channel 2)
+	call	write_67		; (for channel 4)
+
 	jp		Start			; Go back to the top.
 
 ;------------------------------------------------------------------------------;
