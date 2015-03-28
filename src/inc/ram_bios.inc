@@ -293,6 +293,24 @@ BIOS_4P_PLUGGED			equ $10FEFB	; (bios) Is board present? (0=not found; $FF=plugg
 ;==============================================================================;
 ; [CD system-specific]
 
+; $10F64B (byte) related to CDDA?
+;...
+; $10F676 (byte)
+; $10F677 (byte)
+; $10F678 (byte) related to CDDA?
+;...
+; $10F6AD (byte) random number table index?
+; $10F6B6 (byte)
+;...
+; $10F6D9 (byte)
+;...
+; $10F6EA (long)
+; $10F6EE (long) pointer to ??? (CD $68)
+; $10F6F2 (long) pointer to ??? (CD $64)
+; $10F6F6 (byte) related to CDDA?
+; $10F6F7 (byte) related to CDDA?
+; $10F6F8 (byte) related to CDDA?
+
 ; $10FDDC	on NeoCD top 3-2: 1=Load file with animation, 0=No animation 
 
 ; $10FDE2 (at least CDZ)
