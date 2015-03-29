@@ -1,0 +1,98 @@
+MESS_OUT Helpers
+================
+Macros for more semantic use of MESS_OUT are found in src/inc/mess_macro.inc.
+
+A reference is included here. Numbered values beginning with '\' are macro
+parameters; these get passed to the macro.
+
+Note: Currently, all these macros insert data into the ROM. Macros for use in
+code are forthcoming.
+
+In order to use the macros, you just call them and pass the parameters like you
+would any other assembly command:
+
+	messmac_Format		0,$03FF		; bytes, upper byte $03, end code $FF
+	messmac_SetIncr		$20			; VRAM Auto-Increment = $20 (horizontal)
+
+Some macros don't require any parameters; these can just be called on their own:
+
+	messmac_OutData					; Begin output data
+	dc.b	'Wow',$FF
+	messmac_EndSub					; end Sub-Command list
+
+--------------------------------------------------------------------------------
+messmac_End (Command 0: End Command List)
+Simple enough, ends a MESS_OUT command list.
+
+--------------------------------------------------------------------------------
+messmac_Format (Command 1: Set Data Format)
+\1		flags (0=bytes+end code, 1=bytes+length, 2=word+end code, 3=word+length)
+\2		data (depends on what flags you set)
+
+[Flag 0: Bytes and End Code]
+The upper byte of "data" will be the contant upper byte for VRAM writes.
+(This controls the Palette and Bank.)
+
+The lower byte of "data" will be the end code value.
+
+[Flag 1: Bytes and Length]
+The upper word of "data" will be the contant upper byte for VRAM writes.
+(This controls the Palette and Bank.)
+
+The lower byte of "data" will be the length of the string. (Maximum value $FF)
+
+[Flag 2: Words and End code]
+"data" will be the end code value.
+
+[Flag 3: Words and Length]
+"data" will be the length of the string. (Maximum value $FFFF)
+
+--------------------------------------------------------------------------------
+messmac_SetIncr (Command 2: Set VRAM Increment)
+\1		[word] New VRAM increment
+
+--------------------------------------------------------------------------------
+messmac_SetAddr (Command 3: Set VRAM Address)
+\1		[word] New VRAM address
+
+--------------------------------------------------------------------------------
+messmac_OutPtr (Command 4: Pointer to data)
+\1		[long] Pointer to Commands
+
+--------------------------------------------------------------------------------
+messmac_AddAddr (Command 5: Add to VRAM Address)
+\1		[word] Value to add to VRAM address
+
+--------------------------------------------------------------------------------
+messmac_Continue (Command 6: Continue output)
+Data will continue from the last address (typically used after messmac_OutPtr).
+
+--------------------------------------------------------------------------------
+messmac_OutData (Command 7: Direct output)
+Put your data to display after this.
+
+--------------------------------------------------------------------------------
+messmac_Out8x16 (Command 8: 8x16 output)
+\1		VRAM output upper byte
+
+--------------------------------------------------------------------------------
+messmac_Out8x16J (Command 9: 8x16 voiced Japanese text)
+\1		VRAM output upper byte
+
+--------------------------------------------------------------------------------
+messmac_CallSub (Command A: Call sub-command list)
+\1		[long] Pointer to command list (must end with command B)
+
+--------------------------------------------------------------------------------
+messmac_EndSub (Command B: Return to calling command list)
+Every command list called with messmac_CallSub needs to end with this.
+
+--------------------------------------------------------------------------------
+messmac_Repeat (Command C: Repeat output)
+\1		Times to repeat
+\2		Value to write
+
+--------------------------------------------------------------------------------
+messmac_RepIncr (Command D: Repeat and increment output)
+\1		Times to repeat and increment
+\2		Value to write (lower byte gets incremented)
