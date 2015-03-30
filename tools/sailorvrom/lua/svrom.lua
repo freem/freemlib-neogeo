@@ -75,14 +75,14 @@ local possibleParams = {
 
 local startDash, endDash, startEquals
 for k,v in pairs(args) do
-	-- something about searching for "--" at the beginning of a string and
-	-- looking for a "=" somewhere inside of it.
+	-- search for "--" at the beginning of a string
 	startDash,endDash = string.find(v,"--",1,true)
 	if not startDash then
 		print(string.format("Unrecognized option '%s'.",v))
 		return
 	end
 
+	-- look for a "=" inside of it
 	startEquals = string.find(v,"=",3,true)
 	if not startEquals then
 		print(string.format("Did not find equals to assign data in '%s'.",v))
@@ -93,7 +93,7 @@ for k,v in pairs(args) do
 	local command = string.sub(v,endDash+1,startEquals-1)
 	local value = string.sub(v,startEquals+1,-1)
 
-	-- look for command
+	-- look for command in table
 	local didCommand = false
 	for c,f in pairs(possibleParams) do
 		if c == command then

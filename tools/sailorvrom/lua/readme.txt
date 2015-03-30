@@ -119,3 +119,13 @@ known game released on the board so far uses a single 8MiB chip.
 <Neo-Geo CD>
 Maximum File Size: 512KiB?
 Banks: 2x512KiB (1 Megabyte total)
+
+Additionally, .PAT files can be loaded to patch Z80 code. These files are used
+to replace sound sample addresses when different .PCM files are used.
+
+.PAT file entry format:
+* [word] Patch Address ($0000-$FFFF)
+* [word] Sample Start Address
+* [word] Sample End Address
+* [word] Loop Start Address
+* [word] Loop End Address
