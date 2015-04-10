@@ -43,6 +43,16 @@ INPUT_BCD				equ INPUT_B|INPUT_C|INPUT_D
 ; all four buttons
 INPUT_ABCD				equ INPUT_A|INPUT_B|INPUT_C|INPUT_D
 
+; bit numbers (for use with btst)
+INBIT_UP				equ 0
+INBIT_DOWN				equ 1
+INBIT_LEFT				equ 2
+INBIT_RIGHT				equ 3
+INBIT_A					equ 4
+INBIT_B					equ 5
+INBIT_C					equ 6
+INBIT_D					equ 7
+
 ;------------------------------------------------------------------------------;
 ; (REG_STATUS_A)
 INPUT_COIN1				equ $01
@@ -51,12 +61,25 @@ INPUT_COIN3				equ $08
 INPUT_COIN4				equ $10
 INPUT_SERVICE			equ $04
 
+; bit numbers (for use with btst)
+INBIT_COIN1				equ 0
+INBIT_COIN2				equ 1
+INBIT_SERVICE			equ 2
+INBIT_COIN3				equ 3
+INBIT_COIN4				equ 4
+
 ;------------------------------------------------------------------------------;
 ; (REG_STATUS_B)
 INPUT_STATB_START1		equ $01
 INPUT_STATB_SELECT1		equ $02
 INPUT_STATB_START2		equ $04
 INPUT_STATB_SELECT2		equ $08
+
+; bit numbers (for use with btst)
+INBIT_STATB_START1		equ 0
+INBIT_STATB_SELECT1		equ 1
+INBIT_STATB_START2		equ 2
+INBIT_STATB_SELECT2		equ 3
 
 ;------------------------------------------------------------------------------;
 ; (BIOS_STATCURNT/BIOS_STATCHANGE, BIOS_STATCURNT_RAW/BIOS_STATCHANGE_RAW)
@@ -68,6 +91,16 @@ INPUT_STATC_START3		equ $10
 INPUT_STATC_SELECT3		equ $20
 INPUT_STATC_START4		equ $40
 INPUT_STATC_SELECT4		equ $80
+
+; bit numbers (for use with btst)
+INBIT_STATC_START1		equ 0
+INBIT_STATC_SELECT1		equ 1
+INBIT_STATC_START2		equ 2
+INBIT_STATC_SELECT2		equ 3
+INBIT_STATC_START3		equ 4
+INBIT_STATC_SELECT3		equ 5
+INBIT_STATC_START4		equ 6
+INBIT_STATC_SELECT4		equ 7
 
 ; todo: mahjong controller, trackball
 
