@@ -834,8 +834,10 @@ play_ADPCM_B:
 	; end address/256 LSB ($14 on ports 4/5)
 	; end address/256 MSB ($15 on ports 4/5)
 
+	; get these values from rates_PCMB table:
 	; Delta-N Sampling Rate LSB ($19 on ports 4/5)
 	; Delta-N Sampling Rate MSB ($1A on ports 4/5)
+
 	; Channel Volume ($1B on ports 4/5)
 
 	; Start/Repeat/Reset ($10 on ports 4/5)

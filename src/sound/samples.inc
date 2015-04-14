@@ -13,7 +13,12 @@ samples_PCMA:
 ; ADPCM-B Sample Data
 ; format:
 ; 2 words - Start and End address/256
-; 1 word  - Default Delta-N sampling rate
 
 samples_PCMB:
-	;word	startaddr,endaddr,samprate
+	;word	startaddr,endaddr
+
+; ADPCM-B Sample Rate
+; format:
+; 1 word  - Default Delta-N sampling rate
+rates_PCMB:
+	;word	samprate
