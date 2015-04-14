@@ -1,4 +1,4 @@
-Sailor VROM (Lua version) | v0.11 by freem
+Sailor VROM (Lua version) | v0.20 by freem
 ================================================================================
 Real coders would tell me to write this in C, but screw parsing text files in C.
 (This script should work on Lua 5.1 and Lua 5.2; Lua 5.3 has not been tested.)
@@ -11,7 +11,6 @@ No, this won't encode ADPCM samples for you.
 An ADPCM-B encoder is available on the Internet, and I have it on good authority
 that an open source and portable ADPCM-A encoder will be available as soon as
 its output is verified working on hardware and produces good enough quality.
-Don't ask me how I know.
 
 ================================================================================
 [Sample Lists]
@@ -46,6 +45,10 @@ Sets the output path/filename for the V ROM/.PCM file. (optional)
 --samplelist=(path to sample list output file)
 Sets the output path/filename for the sample list. (default "samples.inc")
 
+--samplestart=(address for sample list to start)
+Sets the start point for the sample list addresses. (default 0)
+Can accept decimal and hex formats (both $0000 and 0x0000).
+
 --mode=("cart" or "cd" without the quotes)
 Sets up the output type. (optional)
 (default "cart")
@@ -79,12 +82,17 @@ Many things.
   and the file and sample addresses checked out. (Still needs system testing.)
 
 * Sample size checking (e.g. if something will be too big)
+  Max size for ADPCM-A targeted WAV files = 4MiB (1MiB when converted)
+  Max size for ADPCM-B targeted WAV files depends on sampling rate.
 
 * Output size checking
  * .PCM files: max 512KiB
  * V ROMs: max 16MiB total (max configs: 4 x 4MiB [typical], 2 x 8MiB [ca.2002])
 
-* Detecting sample boundary crossings and fixing them (rearranging samples)
+* Better sample boundary detection/fixing (rearranging samples).
+  Currently, the program creates an unused empty space when the next sample will
+  span a 1MB barrier. It's possible that the sample set being imported has a
+  sample that could fit in said empty space...
 
 ================================================================================
 [Future Options]

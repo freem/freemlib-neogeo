@@ -2,7 +2,7 @@
 -- Use of this tool (e.g. using the exported files) is free.
 -- License is still undecided, but leaning towards public domain/unlicense/CC0.
 --============================================================================--
-local verNum = 0.11
+local verNum = 0.20
 local pcmbSeparator = "|"
 local sizeWarnString = "(needs padding)"
 local errorString = ""
@@ -31,6 +31,7 @@ if not args or not args[1] then
 	print("    --pcmb=(path)         path/filename of ADPCM-B sample list file")
 	print("    --outname=(path)      path/filename of sound data output")
 	print("    --samplelist=(path)   path/filename of sample list output")
+	print("    --samplestart=(addr)  starting address for sample list output")
 	print("    --mode=(mode)         'cd' or 'cart', without the quotes")
 	print("    --slformat=(format)   'vasm', 'tniasm', or 'wla', all without quotes")
 	return
@@ -43,12 +44,27 @@ local outSoundFile, outSampleFile	-- sound data and sample list output files
 local pcmaListFN, pcmbListFN, outSoundFN, outSampleFN -- filenames for the above
 local modeType = "cart"
 local sampListType = "vasm"
+local outSampleStart = 0
 
 local possibleParams = {
 	["pcma"] = function(input) pcmaListFN = input end,
 	["pcmb"] = function(input) pcmbListFN = input end,
 	["outname"] = function(input) outSoundFN = input end,
 	["samplelist"] = function(input) outSampleFN = input end,
+	["samplestart"] = function(input)
+		local _start,_end
+		if string.find(input,"0x") then -- hex format 1
+			_start,_end = string.find(input,"0x")
+			outSampleStart = tonumber(string.sub(input,_end+1,-1),16)
+		elseif string.find(input,"$") then -- hex format 2
+			_start,_end = string.find(input,"$")
+			outSampleStart = tonumber(string.sub(input,2,-1),16)
+		elseif tonumber(input) then -- decimal
+			outSampleStart = tonumber(input)
+		else
+			error("Invalid input for samplestart: "..input)
+		end
+	end,
 	["mode"] = function(input)
 		input = string.lower(input)
 		if input ~= "cart" and input ~="cd" then
@@ -111,16 +127,13 @@ end
 -- variables if the user decided to actually enter some data. Of course, some
 -- parameters are optional, so we also handle the fallback filenames here.
 
--- pcmaListFN is mandatory.
-if not pcmaListFN then
-	print("This program requires an ADPCM-A sample list in order to function.")
-	return
+print(string.format("Output Mode Type: %s",modeType))
+
+if pcmaListFN then
+	print(string.format("ADPCM-A sample list file: '%s'",pcmaListFN))
 end
 
-print(string.format("Output Mode Type: %s",modeType))
-print(string.format("ADPCM-A sample list file: '%s'",pcmaListFN))
-
--- pcmbListFN is not. however, if it's used on a CD system, we need to ignore it.
+-- if ADPCM-B is attempted to be used on a CD system, we need to ignore it.
 if pcmbListFN and modeType == "cd" then
 	print("Neo-Geo CD does not support ADPCM-B playback. (Yes, we've tried.)")
 	print("Ignoring ADPCM-B samples...")
@@ -147,6 +160,8 @@ else
 	print(string.format("Sample address output: %s",outSampleFN))
 end
 
+print(string.format("sample list address start: %s",outSampleStart))
+
 print(string.format("sample list type: %s",sampListType))
 
 print("")
@@ -155,10 +170,12 @@ print("")
 -- Whew. That's a lot of checking. We're still not done yet, though, because if
 -- those list files turn out to not exist, then I'm gonna get really mad!
 
-pcmaListFile,errorString = io.open(pcmaListFN,"r")
-if not pcmaListFile then
-	print(string.format("Error attempting to open ADPCM-A list %s",errorString))
-	return
+if pcmaListFN then
+	pcmaListFile,errorString = io.open(pcmaListFN,"r")
+	if not pcmaListFile then
+		print(string.format("Error attempting to open ADPCM-A list %s",errorString))
+		return
+	end
 end
 
 --[[ Generic List Parsing Variables ]]--
@@ -169,52 +186,62 @@ local padMe = false
 local pcmaFiles = {}
 local pcmaCount = 1
 
-print("")
-print("==[ADPCM-A Input Sample List]==")
-for l in pcmaListFile:lines() do
-	-- try loading file
-	tempFile,errorString = io.open(l,"rb")
-	if not tempFile then
-		print(string.format("Error attempting to load ADPCM-A sample %s",errorString))
-		return
-	end
-
-	-- get file length
-	tempLen,errorString = tempFile:seek("end")
-	if not tempLen then
-		print(string.format("Error attempting to get length of ADPCM-A sample %s",errorString))
-		return
-	end
-
-	tempFile:seek("set")
-
-	padMe = false
-	if tempLen % 256 ~= 0 then
-		sizeWarn = sizeWarnString
-		padMe = true
-	else
-		sizeWarn = ""
-	end
-
-	tempData = tempFile:read(tempLen)
-	tempFile:close()
-	print(string.format("(PCMA %03i) %s %s",pcmaCount,l,sizeWarn))
-
-	if padMe then
-		-- pad the sample with 0x80
-		local padBytes = 256-(tempLen%256)
-
-		for i=1,padBytes do
-			tempData = tempData .. string.char(128)
+if pcmaListFN then
+	print("")
+	print("==[ADPCM-A Input Sample List]==")
+	for l in pcmaListFile:lines() do
+		-- try loading file
+		tempFile,errorString = io.open(l,"rb")
+		if not tempFile then
+			print(string.format("Error attempting to load ADPCM-A sample %s",errorString))
+			return
 		end
-		tempLen = tempLen + padBytes
+
+		-- get file length
+		tempLen,errorString = tempFile:seek("end")
+		if not tempLen then
+			print(string.format("Error attempting to get length of ADPCM-A sample %s",errorString))
+			return
+		end
+
+		tempFile:seek("set")
+
+		padMe = false
+		if tempLen % 256 ~= 0 then
+			sizeWarn = sizeWarnString
+			padMe = true
+		else
+			sizeWarn = ""
+		end
+
+		tempData = tempFile:read(tempLen)
+		tempFile:close()
+		print(string.format("(PCMA %03i) %s %s",pcmaCount,l,sizeWarn))
+
+		if tempLen > (1024*1024) then
+			print(string.format("WARNING: PCMA sample %03i is too large! (>1MB)",pcmaCount))
+		end
+
+		if padMe then
+			-- pad the sample with 0x80
+			local padBytes = 256-(tempLen%256)
+
+			for i=1,padBytes do
+				tempData = tempData .. string.char(128)
+			end
+			tempLen = tempLen + padBytes
+
+			if tempLen > (1024*1024) then
+				print(string.format("WARNING: PCMA sample %03i is too large after padding! (>1MB)",pcmaCount))
+			end
+		end
+
+		table.insert(pcmaFiles,pcmaCount,{ID=pcmaCount,File=l,Length=tempLen,Data=tempData})
+		pcmaCount = pcmaCount + 1
 	end
 
-	table.insert(pcmaFiles,pcmaCount,{ID=pcmaCount,File=l,Length=tempLen,Data=tempData})
-	pcmaCount = pcmaCount + 1
+	pcmaListFile:close()
 end
-
-pcmaListFile:close()
 
 --============================================================================--
 -- Time for ADPCM-B, but only if we have it.
@@ -305,29 +332,183 @@ end
 print("")
 
 --============================================================================--
--- pcmaFiles (and pcmbFiles, if used) should have data.
--- Time to get the sample addresses.
+-- Determine sample bank layouts (a.k.a. try to avoid crossing 1MB boundaries)
+local curBankSize = 0
+local curBankNum = 1
+local curIndex = 1
+
+local banksA = {}
+local banksB = {}
+
+-- handle ADPCM-A first
+if pcmaListFN then
+	for k,v in pairs(pcmaFiles) do
+		if not banksA[curBankNum] then table.insert(banksA,curBankNum,{}) end
+
+		-- check if adding current file to bank would cause overflow
+		if (v.Length + curBankSize) > 1024*1024 then
+			print("------------------------------------------------")
+			print(string.format("PCMA bank %d: add %s (overflow from bank %d)",curBankNum+1,v.File,curBankNum))
+			-- needs to go to next bank
+			curBankNum = curBankNum + 1
+			curBankSize = v.Length
+			curIndex = 1
+			if not banksA[curBankNum] then table.insert(banksA,curBankNum,{}) end
+			table.insert(banksA[curBankNum],curIndex,v)
+			curIndex = curIndex + 1
+		else
+			-- add to current bank
+			print(string.format("PCMA bank %d: add %s",curBankNum,v.File))
+			curBankSize = curBankSize + v.Length
+			table.insert(banksA[curBankNum],curIndex,v)
+			curIndex = curIndex + 1
+		end
+	end
+end
+
+-- handle ADPCM-B next (if applicable)
+if pcmbListFN then
+	curBankSize = 0
+	curIndex = 1
+	curBankNum = 1
+
+	for k,v in pairs(pcmbFiles) do
+		if not banksB[curBankNum] then table.insert(banksB,curBankNum,{}) end
+
+		-- ADPCM-B has no restrictions on sample sizes, according to datasheet
+
+		-- add to current bank
+		print(string.format("PCMB bank %d: add %s",curBankNum,v.File))
+		curBankSize = curBankSize + v.Length
+		table.insert(banksB[curBankNum],curIndex,v)
+		curIndex = curIndex + 1
+	end
+end
+
+print("")
+
+--============================================================================--
+-- Read bank layouts and figure out required padding.
+local paddingA = {}
+
+if pcmaListFN then
+	print("Reading ADPCM-A bank layouts...")
+	curBankSize = 0
+
+	for k,v in pairs(banksA) do
+		for i,d in pairs(v) do
+			curBankSize = curBankSize + d.Length
+		end
+		print(string.format("size of ADPCM-A bank %d: %d bytes",k,curBankSize))
+		if curBankSize < 1024*1024 and k ~= #banksA then
+			local diff = (1024*1024) - curBankSize
+			print(string.format("Padding required: %d bytes",diff))
+			table.insert(paddingA,k,diff)
+		end
+		print("------------------------------------------------")
+		curBankSize = 0
+	end
+end
+
+if pcmbListFN then
+	print("Reading ADPCM-B bank layouts...")
+	curBankSize = 0
+
+	for k,v in pairs(banksB) do
+		for i,d in pairs(v) do
+			curBankSize = curBankSize + d.Length
+		end
+		print(string.format("size of ADPCM-B bank %d: %d bytes",k,curBankSize))
+		print("------------------------------------------------")
+		curBankSize = 0
+	end
+end
+
+print("")
+
+--============================================================================--
+-- Create the combined sample rom using bank layout
+
+print("Creating combined sample data...")
+
+outSoundFile,errorString = io.open(outSoundFN,"w+b")
+if not outSoundFile then
+	print(string.format("Error attempting to create output file %s",errorString))
+	return
+end
+
+-- ADPCM-A
+if pcmaListFN then
+	for k,v in pairs(banksA) do
+		-- write sounds in this bank
+		print(string.format("Writing ADPCM-A bank %d...",k))
+		for i,d in pairs(v) do
+			outSoundFile:write(d.Data)
+		end
+
+		if paddingA[k] and k ~= #banksA then
+			print(string.format("Writing %d bytes of padding...",paddingA[k]))
+			-- write padding for this bank
+			for i=1,paddingA[k] do
+				outSoundFile:write(string.char(128))
+			end
+		end
+		print("------------------------------------------------")
+	end
+end
+
+if pcmbListFN then
+	for k,v in pairs(banksB) do
+		-- write sounds in this bank
+		print("Writing ADPCM-B bank...")
+		for i,d in pairs(v) do
+			outSoundFile:write(d.Data)
+		end
+		print("------------------------------------------------")
+	end
+end
+
+outSoundFile:close()
+
+print("")
+
+--============================================================================--
+-- Get sample addresses (using banks to account for padding)
 
 local sampleStart = 0
+if outSampleStart then
+	sampleStart = outSampleStart
+end
 
-print("Calculating sample addresses...")
+if pcmaListFN then
+	print("Calculating ADPCM-A sample addresses...")
 
--- ADPCM-A samples
-for k,v in pairs(pcmaFiles) do
-	local fixedLen = (v.Length/256)
-	v.Start = sampleStart
-	v.End = (sampleStart+fixedLen)-1
-	sampleStart = sampleStart + fixedLen
+	-- ADPCM-A samples
+	for k,v in pairs(banksA) do
+		for i,d in pairs(v) do
+			local fixedLen = (d.Length/256)
+			d.Start = sampleStart
+			d.End = (sampleStart+fixedLen)-1
+			sampleStart = sampleStart + fixedLen
+		end
+		if paddingA[k] and k ~= #banksA then
+			sampleStart = sampleStart + (paddingA[k]/256)
+		end
+	end
 end
 
 -- ADPCM-B samples
 if pcmbListFN then
-	for k,v in pairs(pcmbFiles) do
-		local fixedLen = (v.Length/256)
-		v.Start = sampleStart
-		v.End = (sampleStart+fixedLen)-1
-		v.DeltaN = (v.Rate/55500)*65536
-		sampleStart = sampleStart + fixedLen
+	print("Calculating ADPCM-B sample addresses...")
+
+	for k,v in pairs(banksB) do
+		for i,d in pairs(v) do
+			local fixedLen = (d.Length/256)
+			d.Start = sampleStart
+			d.End = (sampleStart+fixedLen)-1
+			d.DeltaN = (d.Rate/55500)*65536
+			sampleStart = sampleStart + fixedLen
+		end
 	end
 end
 
@@ -353,47 +534,35 @@ outSampleFile:write(";==============================================;\n")
 outSampleFile:write("\n")
 
 -- write ADPCM-A
-outSampleFile:write("; [ADPCM-A Samples]\n")
-outSampleFile:write("samples_pcma:\n")
+if pcmaListFN then
+	outSampleFile:write("; [ADPCM-A Samples]\n")
+	outSampleFile:write("samples_PCMA:\n")
 
-for k,v in pairs(pcmaFiles) do
-	outSampleFile:write(string.format("\t%s\t"..valFormat..","..valFormat.."\t; Sample #%i (%s)\n",direc,v.Start,v.End,v.ID,v.File))
+	for k,v in pairs(pcmaFiles) do
+		outSampleFile:write(string.format("\t%s\t"..valFormat..","..valFormat.."\t; Sample #%i (%s)\n",direc,v.Start,v.End,v.ID,v.File))
+	end
+	outSampleFile:write("\n")
 end
-outSampleFile:write("\n")
 
 -- write ADPCM-B, if applicable
 if pcmbListFN then
-	outSampleFile:write("; [ADPCM-B Samples & Rates]\n")
-	outSampleFile:write("samples_pcmb:\n")
+	outSampleFile:write("; [ADPCM-B Samples]\n")
+	outSampleFile:write("samples_PCMB:\n")
 
 	for k,v in pairs(pcmbFiles) do
-		outSampleFile:write(string.format("\t%s\t"..valFormat..","..valFormat..","..valFormat.."\t; Sample #%i (%s, %dHz)\n",direc,v.Start,v.End,v.DeltaN,v.ID,v.File,v.Rate))
+		outSampleFile:write(string.format("\t%s\t"..valFormat..","..valFormat.."\t; Sample #%i (%s, %dHz)\n",direc,v.Start,v.End,v.ID,v.File,v.Rate))
 	end
+	outSampleFile:write("\n")
+
+	outSampleFile:write("; [ADPCM-B Sample Rates]\n")
+	outSampleFile:write("rates_PCMB:\n")
+	for k,v in pairs(pcmbFiles) do
+		outSampleFile:write(string.format("\t%s\t"..valFormat.."\t; Sample #%i (%s, %dHz)\n",direc,v.DeltaN,v.ID,v.File,v.Rate))
+	end
+	outSampleFile:write("\n")
 end
-outSampleFile:write("\n")
 
 outSampleFile:close()
-
-print("")
-
---============================================================================--
--- Create the combined sample rom
-
-print("Creating combined sample data...")
-
-outSoundFile,errorString = io.open(outSoundFN,"w+b")
-if not outSoundFile then
-	print(string.format("Error attempting to create output file %s",errorString))
-	return
-end
-
-for k,v in pairs(pcmaFiles) do outSoundFile:write(v.Data) end
-
-if pcmbListFN then
-	for k,v in pairs(pcmbFiles) do outSoundFile:write(v.Data) end
-end
-
-outSoundFile:close()
 
 --============================================================================--
 print("")
