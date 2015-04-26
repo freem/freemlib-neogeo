@@ -537,6 +537,13 @@ HandleSystemCommand:
 	ld		hl,tbl_SysCmdPointers
 	add		hl,de
 	add		hl,de
+
+	; get routine location and jump to it
+	ld		e,(hl)
+	inc		hl
+	ld		d,(hl)
+	push	de
+	pop		hl
 	jp		(hl)
 
 ;------------------------------------------------------------------------------;
