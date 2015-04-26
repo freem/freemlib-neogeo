@@ -159,3 +159,8 @@ FM2_SSGEG_Op1		equ 0x92		; SSG-EG	____CALH (C=Cont., A=Attack, L=Alternate, H=Ho
 FM2_SSGEG_Op2		equ 0x96
 FM2_SSGEG_Op3		equ 0x9A
 FM2_SSGEG_Op4		equ 0x9E
+
+;==============================================================================;
+; YM2610 ports
+YM_Status0			equ 4			; YM2610 Status 0 (read from port 4)
+YM_Status1			equ 6			; YM2610 Status 1 (read from port 6)
