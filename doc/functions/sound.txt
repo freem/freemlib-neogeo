@@ -83,6 +83,14 @@ $06			(read) [YM] Status 1 (ADPCM flags for samples reaching end address)
 $08			(write) Enable NMI
 $0C			(write) Sound Code output (Communication from Z80 to 68K)
 $18			(write) Disable NMI
+$C0			(write) ???
+
+Banking is also done via the I/O ports, see "Z80 Banking" section below.
+
+(CD-specific?)
+$80			(write) ???
+$C1			(write) ???
+$C2			(write) ???
 
 The YM2610 gives us:
 * Timers	(2 timers, A and B)
@@ -350,10 +358,10 @@ InstrAddr2: ; Neo 2 (FM2 on 4/5, FM4 on 6/7)
 <Z80 Banking>
 Needing to deal with this at some point.
 
-$8000-$BFFF		16KiB	Switchable bank 3 [default $02]
-$C000-$DFFF		 8KiB	Switchable bank 2 [default $06]
-$E000-$EFFF		 4KiB	Switchable bank 1 [default $0E]
-$F000-$F7FF		 2KiB	Switchable bank 0 [default $1E]
+$8000-$BFFF		16KiB	Switchable bank 3 [default $02] (I/O port 0xB)
+$C000-$DFFF		 8KiB	Switchable bank 2 [default $06] (I/O port 0xA)
+$E000-$EFFF		 4KiB	Switchable bank 1 [default $0E] (I/O port 9)
+$F000-$F7FF		 2KiB	Switchable bank 0 [default $1E] (I/O port 8)
 
 Examples from Art of Fighting (MAKOTO v3 driver)
 
