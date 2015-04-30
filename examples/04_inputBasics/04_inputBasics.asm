@@ -361,7 +361,7 @@ UpdateIOMirrors_end:
 UpdateDisplay:
 	; check if BIOS_MESS_BUSY first.
 	tst.b	BIOS_MESS_BUSY
-	bne		UpdateDisplay_end	; todo: update branch length
+	bne		UpdateDisplay_end
 
 	; if not, we can do it!
 	bset.b	#0,BIOS_MESS_BUSY	; MESS_OUT busy
@@ -459,7 +459,7 @@ tbl_PlayerBaseInputVars:
 ;------------------------------------------------------------------------------;
 ; UpdatePlayerDisplay
 ; Updates each of the displays for the specified player.
-; (I'm lazy and don't feel like writing the same code twice?)
+; (I'm lazy and don't feel like writing the same code twice.)
 
 ; (display order: Status, Previous, Current, Change, Repeat, Timer)
 
