@@ -52,4 +52,33 @@ the calls to SYSTEM_IO and MESS_OUT.
 This example is meant to show you the input values from the BIOS, as well as how
 they map to the buttons and directions.
 
-(wip)
+--------------------------------------------------------------------------------
+<VBlank>
+VBlank runs every frame, and we need to run SYSTEM_IO, so...
+* SYSTEM_IO in VBlank sets up the BIOS RAM values
+* our UpdateIOMirrors grabs these values and updates our internal copies
+* UpdateDisplay shows the status of the variables
+
+--------------------------------------------------------------------------------
+<UpdateIOMirrors>
+For the most part, this routine is simple, as it just copies the BIOS RAM values
+to the internal copies in user RAM. The only thing to really note is the
+dipswitch update logic, which is skipped in home mode.
+
+--------------------------------------------------------------------------------
+<UpdateDisplay>
+The main part of this demo; this throws the various displays into the message
+buffer for MESS_OUT to deal with. (For the number of lines we need to write,
+it's faster than the freemlib fix layer functions.)
+
+UpdateDisplay calls a few routines:
+* UpdateSystemDisplay
+* UpdatePlayerDisplay (with the value of d0 representing the player; 1=p2, 0=p1)
+
+--------------------------------------------------------------------------------
+<UpdateSystemDisplay>
+(todo)
+
+--------------------------------------------------------------------------------
+<UpdatePlayerDisplay>
+(todo)
