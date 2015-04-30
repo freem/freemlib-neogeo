@@ -50,6 +50,11 @@ update your issue with the code changes. But _please do not close the issue your
 in MAME/MESS, it'll probably be accepted. If it's known to work on real hardware,
 then there's a very large chance it will be accepted.
 
+## Alternate Methods
+
+For those who may not want to deal with the pull request system, please visit #neogeodev
+IRC on chat.freenode.net and ask for freem_inc.
+
 # Additional Resources
 
 * [General GitHub documentation](http://help.github.com/)
