@@ -12,5 +12,5 @@ I can truly say what I really need.
 * Trackball (SIT board)
 * Mahjong Controller (note differences between MVS [1p only] and Home)
 * Kizuna 4P multiplayer board (NEO-FTC1B)
-* What the hell is the Keyboard that the wiki keeps talking about?
+* What the hell are the Keyboard (status==4) and Expanded controller (status==2)?
 ================================================================================
