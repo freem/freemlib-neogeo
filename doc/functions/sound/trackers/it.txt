@@ -101,7 +101,7 @@ xxxx: │ 'Long' Offset of patterns, Length = PatNum*4 (3)              │
                                           still processed)
       Orders:   This is the order in which the patterns are played.
                  Valid values are from 0->199.
-                 255 = "───", End of song marker
+                 255 = "---", End of song marker
                  254 = "+++", Skip to next order
 
 
