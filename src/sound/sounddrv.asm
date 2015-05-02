@@ -306,7 +306,7 @@ doCmd01:
 	ld		sp,0xFFFC		; set stack pointer
 
 	; call Command 01
-	ld		hl,#command_01
+	ld		hl,command_01
 	push	hl
 	retn
 
@@ -321,7 +321,7 @@ doCmd03:
 	ld		sp,0xFFFC		; set stack pointer
 
 	; call Command 03
-	ld		hl,#command_03
+	ld		hl,command_03
 	push	hl
 	retn
 
