@@ -218,6 +218,55 @@ $32			hardware LFO AMS, PMS
 $33			hardware LFO Channel Switch (AM On)
 
 ================================================================================
+VOPM .OPM Format
+----------------
+The format used in the VOPM VSTi by Sam, available from:
+http://www.geocities.jp/sam_kb/VOPM/
+
+.opm files are human-readable plain text.
+There is usually a comment at the top of the .opm file explaining what each
+parameter represents; It is reproduced here:
+
+//MiOPMdrv sound bank Paramer Ver2002.04.22 
+//LFO: LFRQ AMD PMD WF NFRQ
+//@:[Num] [Name]
+//CH: PAN  FL CON AMS PMS SLOT NE
+//[OPname]: AR D1R D2R  RR D1L  TL  KS MUL DT1 DT2 AMS-EN
+
+[LFO]
+LFRQ		LFO Frequency
+AMD			(Amplitude Modulation ?)
+PMD			(Pulse Modulation?)
+WF			Waveform
+NFRQ		(? Frequency?)
+
+[@]
+This section names the instrument and gives it a number in the bank.
+Numbers start from 0 and end at 127. Names seem to end on newlines.
+
+[CH]
+PAN			Channel Panning (Left/Right)
+FL			Feedback Level
+CON			Connection/Algorithm
+AMS			AM Sense
+PMS			PM Sense
+SLOT		slot enable?
+NE			Noise Enable
+
+[per-op]
+AR			Attack Rate
+D1R			"Decay 1 Rate"/Decay Rate
+D2R			"Decay 2 Rate"/Sustain Rate
+RR			Release Rate
+D1L			"Decay 1 Level"/Sustain Level
+TL			Total Level
+KS			Key Scale
+MUL			Multiple
+DT1			Detune 1
+DT2			Detune 2
+AMS-EN		AM Sense Enable (AM On)
+
+================================================================================
 <todo>
 Though these aren't for the OPN series...
 
