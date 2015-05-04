@@ -672,11 +672,11 @@ command_03:
 	ld		sp,0xFFFF		; Set stack pointer location
 
 	; disable FM channels
-	ld		d, #0xB5
-	ld		e, #0			; $B500: Clear L/R output, AM Sense, PM Sense
+	ld		d, 0xB5
+	ld		e, 0			; $B500: Clear L/R output, AM Sense, PM Sense
 	call	write_45		; (for channel 1)
 	call	write_67		; (for channel 3)
-	ld		d, #0xB6		; $B600: Clear L/R output, AM Sense, PM Sense
+	ld		d, 0xB6		; $B600: Clear L/R output, AM Sense, PM Sense
 	call	write_45		; (for channel 2)
 	call	write_67		; (for channel 4)
 
