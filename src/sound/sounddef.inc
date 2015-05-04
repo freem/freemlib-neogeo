@@ -44,8 +44,8 @@ PCMB_Flags			equ 0x1C		; ADPCM-A and B Flag control
 ; [FM address ports]
 ; -- Shared FM (ports 4/5) --;
 FM_LFOFreq			equ 0x22		; LFO Frequency Control
-FM_TimerAHi			equ 0x24		; Timer A upper 8 bits
-FM_TimerALo			equ 0x25		; Timer A lower 2 bits
+FM_TimerALo			equ 0x24		; Timer A lower 2 bits
+FM_TimerAHi			equ 0x25		; Timer A upper 8 bits
 FM_TimerB			equ 0x26		; Timer B
 FM_TimerMode		equ 0x27		; Timer A/B Control and 2CH Mode
 FM_KeyOnOff			equ 0x28		; Key On/Off (and Slot)
