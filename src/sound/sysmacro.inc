@@ -24,6 +24,24 @@
 	endm
 
 ;==============================================================================;
+; enNMI
+; Semantic shortcut for enabling NMI via port 8.
+
+	macro	enNMI
+	out		(8),a
+	endm
+
+;==============================================================================;
+; diNMI
+; Semantic shortcut for disabling NMI via port 0x18.
+
+	macro	diNMI
+	out		(0x18),a
+	endm
+
+;==============================================================================;
+; FM Instrument Definition Macros
+;==============================================================================;
 ; fmInst_DetuneMult
 ; A macro for writing a combined detune/multiple value.
 
