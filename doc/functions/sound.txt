@@ -109,7 +109,7 @@ $25			Timer A counter (lower 2 bits)
 $26			Timer B counter
 $27			Control/Flags/etc.
 
-Timer A musings:
+(Timer A musings)
 8333 microsec: 98/$62 (~120.0048 times/second)
 8325 microsec: 99/$63 (~120.120 times/second)
 
@@ -122,7 +122,13 @@ Some SNK drivers have a set of values for Timer A:
 * $1D5	(469)  (72*(1024-469))/8000000 = 0.004995 sec | 4995 microsec (~200 times/second)
 * $2EB	(747)  (72*(1024-747))/8000000 = 0.002493 sec | 2493 microsec (~401 times/second)
 
-SNK drivers typically use Timer B as the tempo...
+SNK drivers seem to use Timer A as the sound effect playback timer...
+
+(Timer B musings)
+* $46	(70)   (1152*(256-76)/8) = 26784 microsec
+* $47	(71)   (1152*(256-71)/8) = 26640 microsec
+
+SNK drivers typically use Timer B as the tempo (for music playback).
 
 [SSG]
 Writes to ports $04 (addr) and $05 (data)
