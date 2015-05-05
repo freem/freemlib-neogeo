@@ -104,10 +104,25 @@ The YM2610 gives us:
 [Timers]
 Writes to ports $04 (addr) and $05 (data)
 
-$24			Timer A counter (lower 8 bits)
-$25			Timer A counter (top 2 bits)
+$24			Timer A counter (upper 8 bits)
+$25			Timer A counter (lower 2 bits)
 $26			Timer B counter
 $27			Control/Flags/etc.
+
+Timer A musings:
+8333 microsec: 98/$62 (~120.0048 times/second)
+8325 microsec: 99/$63 (~120.120 times/second)
+
+Some SNK drivers have a set of values for Timer A:
+* $01E	(30)   (72*(1024-30))/8000000  = 0.008946 sec | 8946 microsec (~112 times/second)
+* $028	(40)   (72*(1024-40))/8000000  = 0.008856 sec | 8856 microsec (~113 times/second)
+* $032	(50)   (72*(1024-50))/8000000  = 0.008766 sec | 8766 microsec (~114 times/second)
+* $051	(81)   (72*(1024-81))/8000000  = 0.008487 sec | 8487 microsec (~118 times/second; typically set as default)
+* $0C0	(192)  (72*(1024-192))/8000000 = 0.007488 sec | 7488 microsec (~134 times/second)
+* $1D5	(469)  (72*(1024-469))/8000000 = 0.004995 sec | 4995 microsec (~200 times/second)
+* $2EB	(747)  (72*(1024-747))/8000000 = 0.002493 sec | 2493 microsec (~401 times/second)
+
+SNK drivers typically use Timer B as the tempo...
 
 [SSG]
 Writes to ports $04 (addr) and $05 (data)
