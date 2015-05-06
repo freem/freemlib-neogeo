@@ -38,6 +38,7 @@ outputting it to the AY registers, by checking noise period value to be equal $2
 The editor considers last non-zero volume value as last frame of an effect, other
 parameters don't matter.
 
-$D0 = Disable N, Change Noise, Disable T
+$D0 = Disable N (b7), Change Noise (b6), Disable T (b4)
+$20 = Noise period
 
 Note: The AY Sound FX Editor has a maximum of 0xFFF (4095) positions in a sound.
