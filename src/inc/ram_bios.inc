@@ -91,6 +91,9 @@ BIOS_GAMEDIP_09			equ $10FD92	; (byte) Game soft dip 09
 BIOS_GAMEDIP_10			equ $10FD93	; (byte) Game soft dip 10
 
 ;-----------------------------------;
+; Input Previous/Current/Change/Repeat order:
+; D,C,B,A,Right,Left,Down,Up
+;-----------------------------------;
 ; INPUT_1
 BIOS_P1STATUS			equ $10FD94	; (byte) Controller 1 status
 BIOS_P1PREVIOUS			equ $10FD95	; (byte) Inputs from last frame
