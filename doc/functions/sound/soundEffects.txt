@@ -1,5 +1,7 @@
 Music Driver Effects
 ================================================================================
+(This is another file that needs to get hit with the editing stick)
+================================================================================
 What effects are available depend on what effects exist and what has to be done
 to implement them.
 
@@ -58,7 +60,7 @@ b1 b2		Effect Name								Origin/Equivalent Effect
 06 xx		Volume Slide+Vibrato					ProTracker 6xx
 07 xy		Tremolo									ProTracker 7xx
 08 xy		L/R Channel Output (if applicable)		*NeoTracker
-09 xx		
+09 xx		Sample Offset (PCMA/PCMB only?)			ProTracker 9xx
 0A xy		Volume Slide Up/Down					ProTracker Axx
 0B xx		
 0C xx		Channel Volume (if applicable)			ProTracker Cxx
