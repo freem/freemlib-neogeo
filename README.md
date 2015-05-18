@@ -35,12 +35,12 @@ should be made for Linux (and OS X) compatibility whenever possible.
 * **NeoFixFormat** &ndash; Fix format tiles plugin for YY-CHR.NET. 100%, unless a bug comes up.
 * **NeoCDSprFormat** &ndash; CD sprite tiles plugin for YY-CHR.NET. 20%, needs major work.
 * **NeoSprFormat** &ndash; Combined C ROM (".c0" format) sprite tile plugin for YY-CHR.NET. 0% (doing CD version first)
-* **NeoTracker** &ndash; On-console tracker and sound driver testbench. 0% (mockups and planning stage; probably needs a new name)
+* **NeoGeoTracker** &ndash; On-console tracker and sound driver testbench. 0% (mockups and planning stage)
 * **Sailor VROM** &ndash; V ROM/.PCM file builder and manager. 25% [https://github.com/freem/freemlib-neogeo/tree/master/tools/sailorvrom/lua]((Lua version available))
 * and others not listed here...
  * A tool for Fix layer layout, similar to Shiru's NES Screen Tool
  * A tool for animation data (various tools exist already, I'm aware.)
- * PC version of NeoTracker
+ * PC version of NeoGeoTracker
  * Various sound tools (ADPCM-A/B conversion; tools exist, but need unification.)
 
 ### Documentation ###
