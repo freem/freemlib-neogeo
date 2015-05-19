@@ -52,8 +52,8 @@ Notes to deal with:
 Undetermined CDZ BIOS calls:
 
 $C00576
-$C0057C
+$C0057C (read, modify bit 0, and write $FF0017)
 $C00582
-$C00588
+$C00588 (mask value in d0 with $F, use as index into subroutine table)
 $C0058E
 $C00594
