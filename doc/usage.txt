@@ -84,6 +84,10 @@ $00000000		; Level 7 interrupt (NMI)
 This is what I use in a few of the examples. It may not the the best choice.
 For what it's worth, though, Samurai Shodown/Samurai Spirits does the same thing.
 
+Some cart games have a very short Level 3 interrupt handler. Others point the
+Level 3 interrupt handler to $00000000. The examples use a minimal Level 3
+interrupt handler just to be safe.
+
 On CD systems, you're going to want to handle interrupt level 3, though I'm not
 sure what code needs to be run, so that's a work in progress.
 
