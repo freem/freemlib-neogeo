@@ -145,7 +145,16 @@ VBlank:
 IRQ2:
 	move.w	#2,LSPC_IRQ_ACK		; ack. interrupt #2 (HBlank)
 	move.b	d0,REG_DIPSW		; kick watchdog
+	rte
 
+;==============================================================================;
+; IRQ3
+; Level 3 IRQ, unused here. Might be used for something else on CD, though.
+; (More research needed)
+
+IRQ3:
+	move.w  #1,LSPC_IRQ_ACK		; acknowledge interrupt 3
+	move.b	d0,REG_DIPSW		; kick watchdog
 	rte
 
 ;==============================================================================;

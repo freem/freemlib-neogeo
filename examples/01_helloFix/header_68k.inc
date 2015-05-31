@@ -47,7 +47,7 @@
 		dc.l	IRQ2			; Level 2 interrupt (HBlank)
 	endif
 
-	dc.l	$00000000		; Level 3 interrupt
+	dc.l	IRQ3			; Level 3 interrupt
 	dc.l	$00000000		; Level 4 interrupt
 	dc.l	$00000000		; Level 5 interrupt
 	dc.l	$00000000		; Level 6 interrupt
