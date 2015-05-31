@@ -92,7 +92,7 @@ On CD systems, you're going to want to handle interrupt level 3, though I'm not
 sure what code needs to be run, so that's a work in progress.
 
 Some games also use $00C00426 here. I am unsure if you can fully take advantage
-of the other interrupts (4-7) on the Neo-Geo in any way.
+of the other interrupts (4-7) on the Neo-Geo in any way. (Perhaps via TRAPV?)
 
 header_cart.inc
 ---------------
