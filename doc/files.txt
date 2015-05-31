@@ -21,6 +21,7 @@ CPY.TXT			Copyright
 freemlib documentation lives here. Right now, it's kind of a mess.
 
 .mkisofsrc					Sample .mkisofsrc file for Neo-Geo CD images.
+attract_loop.txt			Notes on Attract Loops.
 designing_fix_tiles.txt		Notes on designing Fix layer tiles.
 examples.txt				A list of future examples to write.
 files.txt					you're reading it!
@@ -29,6 +30,7 @@ ipl.txt						Information about Neo-Geo CD's IPL.TXT
 mame_mess-softlist.txt		(ab)Using the MAME/MESS Software List for Neo-Geo Homebrew Development
 mkisofs.txt					Short document on using mkisofs to create Neo-Geo CD ISO images.
 NeoRomFS.txt				A silly idea I had for a filesystem on cart games.
+notes.txt					General programming notes.
 palette.txt					Basic information about palettes.
 PLAYER_START.txt			Notes about what the PLAYER_START routine should do.
 TITLE_x_SYS.txt				Explains TITLE_*.SYS files.
@@ -36,13 +38,16 @@ usage.txt					Generalized freemlib usage instructions.
 USER.txt					Notes about what the USER routine should do.
 
 functions\					Functionality (or future functionality) documentation
+	68k_macro.txt				General 68000 macros
 	animation.txt				WIP Animation functionality
 	background.txt				WIP Background functionality
 	cd.txt						WIP CD functionality
+	charmap.txt					WIP Fix layer Charmap functionality
 	collision.txt				WIP Collision functionality
 	fix.txt						Fix layer functionality
 	input.txt					WIP Input functionality
 	memcard.txt					Memory Card functionality
+	mess_macro.txt				MESS_OUT Helpers
 	palette.txt					Palette functionality
 	sound.txt					WIP Sound functionality overview
 	sprites.txt					WIP Sprite functionality
@@ -53,7 +58,12 @@ functions\					Functionality (or future functionality) documentation
 
 	sound\					Sound-related documentation.
 		instruments\			Documentation on existing instrument formats.
-			formats.txt				Combined human-readable information on various FM patch formats.
+			ay8910_formats.txt		Information on AY-3-8910 (and Compatible) Instrument Formats
+			fm_formats.txt			Information on various FM patch formats.
+			sysex-format.txt		Information on System Exclusive patches.
+
+			ay8910\					Example AY-3-8910 instruments
+				test11.afx
 
 			dmp\					DefleMask instruments and documentation
 				_all.dmp			"All values max"
@@ -69,10 +79,13 @@ functions\					Functionality (or future functionality) documentation
 
 		trackers\				Various tracker documentation.
 			it.txt					IMPULSE TRACKER!!!!!!!!! (open source now btw)
+			modform.txt				
+			MOD-info.txt			Large information dump about ProTracker modules
 			MVSTracker.txt			"MVSTracker data and playback"
-			protracker.txt			Notes on Protracker's MOD format
+			protracker-effects.txt
 			s3m.html				Annotated ScreamTracker 3 Module documentation
 			s3m.txt					Original ScreamTracker 3 Module documentation (w/errors)
+			Ultimate_Soundtracker-format.txt
 			xm.html					Annotated FastTracker 2 Module documentation
 			XM.TXT					Original FastTracker 2 Module documentation (w/errors)
 			xm-errata.txt			"Errors in the XM format doucmentation"
@@ -87,6 +100,7 @@ functions\					Functionality (or future functionality) documentation
 		hoot.txt					Notes on Using hoot for Neo-Geo Sound
 		instruments.txt				WIP Instrument Formats
 		patternData.txt				WIP Pattern Data Overview
+		playRoutine.txt				WIP Playback Routine
 		soundCommands.txt			WIP Sound Engine System Commands
 		soundControl.txt			WIP Control Channel
 		soundData.txt				WIP Sound Data Documentation
