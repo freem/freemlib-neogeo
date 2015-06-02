@@ -70,6 +70,8 @@ instFM_02:
 	;--------------------------;
 	fmInst_FeedbackAlgo		0,0
 	fmInst_AMSPMS			0,0
+	byte	$00					; (padding/future expansion)
+	byte	$00					; (padding/future expansion)
 
 ;==============================================================================;
 ; [SSG instruments]
