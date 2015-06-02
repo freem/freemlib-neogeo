@@ -3,6 +3,14 @@ freemlib for Neo-Geo - Palette Actions
 Palette actions are in charge of handling effects for sections of the palette.
 This is different from full-palette effects (e.g. fading).
 
+(Usage)
+Trying to figure out the best way to handle this...
+palAction_Handler runs through the Palette Action buffer every frame.
+
+The Palette Action buffer will need to be updated in order for this to work, and
+persistent data will need to exist for some effects (e.g. how many frames a
+certain effect has run).
+
 (Command List)
 $FF		Stop All Actions
 $00		No Action
@@ -20,17 +28,17 @@ $04		Color Ramp
 
 ($01) Palette Index Cycling (palsetNum, startIdx, numColors, frameTime, animTime)
   Create a color cycling effect.
-  * palsetNum		Palette set number (0-255/$00-$FF)
-  * startIdx		Starting index (1-15/$1-$F)
-  * numColors		Number of colors in cycle (2-15)
-  * frameTime		Frames before switching colors
-  * animTime		Time to loop palette cycling. (0=loop forever?)
+  * palsetNum		[byte] Palette set number (0-255/$00-$FF)
+  * startIdx		[byte] Starting index (1-15/$1-$F)
+  * numColors		[byte] Number of colors in cycle (2-15)
+  * frameTime		[????] Frames before switching colors
+  * animTime		[????] Time to loop palette cycling. (0=loop forever?)
 
 ($02) Color Animation (palsetNum, startIdx, colorAnimPtr)
   Play back a set of colors, similar to an animation.
-  * palsetNum		Palette set number (0-255/$00-$FF)
-  * startIdx		Starting index (1-15/$1-$F)
-  * colorAnimPtr	Color animation data pointer
+  * palsetNum		[byte] Palette set number (0-255/$00-$FF)
+  * startIdx		[byte] Starting index (1-15/$1-$F)
+  * colorAnimPtr	[long] Color animation data pointer
 
 ($03) Color Pulse
   (0->1->0; repeat)

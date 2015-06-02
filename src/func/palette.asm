@@ -47,10 +47,10 @@ palmac_PalBufIndex:	macro
 ; A macro for placing an RGB (0-31) value (with dark bit) in the binary.
 
 ; (Params)
-; \1				Red value		($00-$1F; 0-31)
-; \2				Green value		($00-$1F; 0-31)
-; \3				Blue value		($00-$1F; 0-31)
-; \4				Dark bit		(0 or 1; subtracts RGB by 1 if enabled)
+; \1			[byte] Red value		($00-$1F; 0-31)
+; \2			[byte] Green value		($00-$1F; 0-31)
+; \3			[byte] Blue value		($00-$1F; 0-31)
+; \4			[byte] Dark bit			(0 or 1; subtracts RGB by 1 if enabled)
 
 palmac_ColorRGBD:	macro
 	dc.w	((\4&1)<<15)|((\1&1)<<14)|((\2&1)<<13)|((\3&1)<<12)|(((\1&$1E)>>1)<<8)|(((\2&$1E)>>1)<<4)|((\3&$1E)>>1)
@@ -85,9 +85,9 @@ palmac_LoadData:	macro
 ; Load raw color data into the palette buffer.
 
 ; (Params)
-; d7				Number of color entries-1 (loop counter)
-; d6				Beginning buffer index to load data into (multiplied by 2)
-; a0				Address to load palette data from
+; d7			[????] Number of color entries-1 (loop counter)
+; d6			[word] Beginning buffer index to load data into (multiplied by 2)
+; a0			[long] Address to load palette data from
 
 pal_LoadBuf:
 	lea		PaletteBuffer,a1
@@ -115,8 +115,8 @@ palmac_LoadBuf:		macro
 ; Load a single palette set (16 colors) into the palette buffer.
 
 ; (Params)
-; d7				Palette set to load data into ($00-$FF)
-; a0				Address to load palette data from
+; d7			[byte] Palette set to load data into ($00-$FF)
+; a0			[long] Address to load palette data from
 
 pal_LoadSetBuf:
 	; calculate starting address in palette buffer
@@ -141,8 +141,8 @@ pal_LoadSetBuf:
 ; Set the value of a single color in the palette buffer.
 
 ; (Params)
-; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
-; d6				New color value
+; d7			[word] Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+; d6			[word] New color value
 
 pal_SetColor:
 	palmac_PalBufIndex			; get address in palette buffer
@@ -154,9 +154,9 @@ pal_SetColor:
 ; Sets the value of multiple colors in the palette buffer.
 
 ; (Params)
-; d7				Beginning Palette Set & Index ($SS0i; SS=$00-$FF, i=$0-$F)
-; d6				New color value
-; d3				Number of entries to write-1 (loop counter)
+; d7			[word] Beginning Palette Set & Index ($SS0i; SS=$00-$FF, i=$0-$F)
+; d6			[word] New color value
+; d3			[????] Number of entries to write-1 (loop counter)
 
 pal_FillColors:
 	palmac_PalBufIndex			; get address in palette buffer
@@ -172,7 +172,7 @@ pal_FillColors:
 ; Halves the color values of the specified color in the palette buffer.
 
 ; (Params)
-; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+; d7			[word] Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
 
 pal_SoftShadow:
 	palmac_PalBufIndex			; get address in palette buffer
@@ -192,7 +192,7 @@ pal_SoftShadow:
 ; Doubles the color values of the specified color in the palette buffer.
 
 ; (Params)
-; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+; d7			[word] Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
 
 pal_SoftBright:
 	palmac_PalBufIndex			; get address in palette buffer
@@ -212,8 +212,8 @@ pal_SoftBright:
 ; Modify the Red channel of the specified color in the palette buffer.
 
 ; (Params)
-; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
-; d6				New Red channel value (0011111d)
+; d7			[word] Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+; d6			[byte] New Red channel value (0011111d)
 
 ; Dr__RRRR________
 
@@ -238,8 +238,8 @@ pal_SetSingleRed:
 ; Modify the Green channel of the specified color in the palette buffer.
 
 ; (Params)
-; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
-; d6				New Green channel value (0011111d)
+; d7			[word] Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+; d6			[byte] New Green channel value (0011111d)
 
 ; D_g_____GGGG____
 
@@ -264,8 +264,8 @@ pal_SetSingleGreen:
 ; Modify the Blue channel of the specified color in the palette buffer.
 
 ; (Params)
-; d7				Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
-; d6				New Blue channel value (0011111d)
+; d7			[word] Palette Set, Palette Index ($SS0i; SS=$00-$FF, i=$0-$F)
+; d6			[byte] New Blue channel value (0011111d)
 
 ; D__b________BBBB
 
@@ -290,14 +290,18 @@ pal_SetSingleBlue:
 ; Runs commands in the Palette Action buffer.
 
 palAction_Handler:
+	; check for command $FF first
+
+	; then handle other commands
+
 	rts
 
-;palAction_Commands:
-	;dc.l	palAction_Nop
-	;dc.l	palAction_IndexCycle
-	;dc.l	palAction_ColorAnim
-	;dc.l	palAction_ColorPulse
-	;dc.l	palAction_ColorRamp
+palAction_Commands:
+	dc.l	palAction_Nop
+	dc.l	palAction_IndexCycle
+	dc.l	palAction_ColorAnim
+	dc.l	palAction_ColorPulse
+	dc.l	palAction_ColorRamp
 
 ;==============================================================================;
 ; <Palette Actions>
@@ -305,18 +309,48 @@ palAction_Handler:
 
 ; palAction_StopAll
 ; Stop all palette actions.
+
+palAction_StopAll:
+	rts
+
 ;------------------------------------------------------------------------------;
 ; palAction_Nop
 ; No operation.
+
+palAction_Nop:
+	rts
+
 ;------------------------------------------------------------------------------;
 ; palAction_IndexCycle
 ; Cycle palette indices.
+
+palAction_IndexCycle:
+	rts
+
 ;------------------------------------------------------------------------------;
 ; palAction_ColorAnim
 ; Perform color animation using fixed values.
+
+; (Params)
+; d?		[byte] Palette set number ($00-$FF)
+; d?		[byte] Starting index (1-15)
+; a?		[long] Color animation data pointer
+
+palAction_ColorAnim:
+	; find index in palette buffer
+
+	rts
+
 ;------------------------------------------------------------------------------;
 ; palAction_ColorPulse
 ; Perform a color pulse (0->1->0).
+
+palAction_ColorPulse:
+	rts
+
 ;------------------------------------------------------------------------------;
 ; palAction_ColorRamp
 ; Perform a color ramp (0->1|0).
+
+palAction_ColorRamp:
+	rts
