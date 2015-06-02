@@ -319,6 +319,10 @@ updateSprSwatches:
 ; CheckInput
 ; Checks for any inputs and handles them.
 
+; -todo-
+; P1 A: increment curPalSet
+; P1 B: decrement curPalSet
+
 CheckInput:
 	; We're only checking Player 1's inputs here.
 	move.b	BIOS_P1CURRENT,d0	; Player 1 current input
@@ -327,7 +331,7 @@ CheckInput:
 	; do a check to see if any of the buttons we're handling have been pressed
 
 ;------------------------------------------------------------------------------;
-CheckInput_End:
+.CheckInput_End:
 	rts
 
 ;==============================================================================;
