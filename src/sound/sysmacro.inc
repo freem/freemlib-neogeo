@@ -3,11 +3,11 @@
 ; write45, write67
 ; Shorthand macros for write_45 and write_67, using the rst opcodes.
 	macro	write45
-	rst		$18				; j_write45
+	rst		rst_Write45
 	endm
 
 	macro	write67
-	rst		$20				; j_write67
+	rst		rst_Write67
 	endm
 
 ;==============================================================================;

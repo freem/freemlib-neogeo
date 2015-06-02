@@ -1,6 +1,13 @@
 ; freemlib for Neo-Geo: Sound Driver (ROM)
 ; assemble with vasm z80 (oldstyle syntax)
 ;==============================================================================;
+; Defines for RST usage, in case the locations change later.
+rst_PortDelay1	= $08
+rst_PortDelay2	= $10
+rst_Write45		= $18
+rst_Write67		= $20
+rst_BusyWait	= $28
+;==============================================================================;
 	include "sounddef.inc"
 	include "sysmacro.inc"
 ;==============================================================================;
@@ -251,10 +258,10 @@ write_45:
 	push	af
 	ld		a,d
 	out		(4),a			; write to port 4 (address 1)
-	rst		8				; Write delay 1 (17 cycles)
+	rst		rst_PortDelay1	; Write delay 1 (17 cycles)
 	ld		a,e
 	out		(5),a			; write to port 5 (data 1)
-	rst		0x10			; Write delay 2 (83 cycles)
+	rst		rst_PortDelay2	; Write delay 2 (83 cycles)
 	pop		af
 	ret
 
@@ -266,10 +273,10 @@ write_67:
 	push	af
 	ld		a,d
 	out		(6),a			; write to port 6 (address 2)
-	rst		8				; Write delay 1 (17 cycles)
+	rst		rst_PortDelay1	; Write delay 1 (17 cycles)
 	ld		a,e
 	out		(7),a			; write to port 7 (data 2)
-	rst		0x10			; Write delay 2 (83 cycles)
+	rst		rst_PortDelay2	; Write delay 2 (83 cycles)
 	pop		af
 	ret
 
