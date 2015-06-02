@@ -239,7 +239,7 @@ initSprSwatches:
 	move.w	#64,d3				; tile index LSB (modified in loop)
 	move.w	#1,d4				; current palette
 	asl.w	#8,d4				; shift to upper byte
-	move.w	#16-1,d5			; 15 sprites
+	move.w	#16-1,d5			; 16 sprites (subtract 1 for loop logic)
 
 .initSwatchSCB1:
 	move.w	d2,-2(a6)			; write vram address
@@ -253,7 +253,7 @@ initSprSwatches:
 	move.w	#$8001,-2(a6)		; write beginning at SCB2, sprite 1
 	move.w	#1,2(a6)			; vram increment +1
 	move.w	#$0FFF,d0			; just set the thing to $0FFF for full size
-	move.w	#16-1,d1			; 15 sprites
+	move.w	#16-1,d1			; 16 sprites (subtract 1 for loop logic)
 .initSwatchSCB2:
 	move.w	d0,(a6)
 	dbra	d1,.initSwatchSCB2
