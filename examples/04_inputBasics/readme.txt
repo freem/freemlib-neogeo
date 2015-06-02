@@ -77,8 +77,21 @@ UpdateDisplay calls a few routines:
 
 --------------------------------------------------------------------------------
 <UpdateSystemDisplay>
-(todo)
+The "system display" handles various system inputs (e.g. Start, Select, others).
+
+Status A		(MVS only?) Reacts to coin drops; switches are active low (e.g. 0=on)
+Stat Current	Current frame's inputs for Start/Select
+Stat Change		Input change for Start/Select. Goes by fast.
+Input TT1		(MVS only?) Unsure of this...
+Input TT2		(MVS only?) Unsure of this...
 
 --------------------------------------------------------------------------------
 <UpdatePlayerDisplay>
-(todo)
+Player display, as you would expect, shows the player inputs.
+
+Status		Current controller stats
+Previous	Previous frame's inputs
+Current		Current frame's inputs
+Change		Input change. You have to be quick to see this one. :)
+Repeat		Repeating input. If a button or direction is held, it will pulse here.
+Timer		Repeat timer.
