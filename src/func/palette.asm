@@ -1,7 +1,5 @@
 ; freemlib for Neo-Geo - Palette Functions
 ;==============================================================================;
-; todo: palmac_ColorRGBD macro for defining colors easier
-
 ; It should be noted that most of the functions in here modify the palette
 ; buffers, which are written to palette RAM every vblank/int1.
 
