@@ -304,7 +304,7 @@ updateSprSwatches:
 	move.w	curPalSet,d0		; use curPalSet for palette
 	asl.w	#8,d0
 	; do write loop
-	move.w	#16-1,d1			; 15 sprites
+	move.w	#16-1,d1			; 16 sprites (subtract 1 for loop logic)
 
 .swatchSCB1:
 	move.w	d2,LSPC_ADDR		; set vram address
