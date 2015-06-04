@@ -1,4 +1,12 @@
-# makefile for compiling a Neo-Geo project with vasm (68k, motorola syntax)
+# makefile for assembling a Neo-Geo project with vasm (68k, motorola syntax)
+################################################################################
+# [Input and Intermediate Settings]
+# main file to assemble
+INPUT_MAINSRCFILE = 00_skeleton.asm
+
+# intermediate binary (for cart)
+INTERMED_BINARY = 00_skeleton.p
+
 ################################################################################
 # [Tool Settings]
 # executable name for vasm (68k, motorola syntax); change as needed
@@ -50,14 +58,14 @@ DISCFILES = \
 # [Makefile Targets]
 
 # cart: compile game for cart (default build target)
-cart: 00_skeleton.asm
-	$(VASM68K) $(VASMFLAGS) -DTARGET_CART -o 00_skeleton.p 00_skeleton.asm
-	$(BYTESWAP) 00_skeleton.p $(PRG_CART)
+cart: $(INPUT_MAINSRCFILE)
+	$(VASM68K) $(VASMFLAGS) -DTARGET_CART -o $(INTERMED_BINARY) $(INPUT_MAINSRCFILE)
+	$(BYTESWAP) $(INTERMED_BINARY) $(PRG_CART)
 	$(PAD) $(PRG_CART) $(PADFLAGS)
 
 # cd: compile game for CD
-cd: 00_skeleton.asm
-	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o $(PRG_CD) 00_skeleton.asm
+cd: $(INPUT_MAINSRCFILE)
+	$(VASM68K) $(VASMFLAGS) -DTARGET_CD -o $(PRG_CD) $(INPUT_MAINSRCFILE)
 	$(MKISOFS) $(MKISOFSFLAGS) -o $(IMAGENAME).iso -V "$(DISCLABEL)" $(DISCFILES)
 
 # chd: create CHD from CD for use with MAME/MESS
