@@ -1,3 +1,6 @@
 [submodule "tools/romwak"]
 	path = tools/romwak
 	url = git@github.com:freem/romwak.git
+[submodule "tools/adpcma"]
+	path = tools/adpcma
+	url = git@github.com:freem/adpcma.git
