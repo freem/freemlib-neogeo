@@ -5,7 +5,7 @@
 	dc.w	$F004			; NGH number
 	dc.l	$00080000		; game prog size in bytes
 							; $00080000 =  4Mbits/512KB
-							; $00100000 = 16Mbits/1MB
+							; $00100000 =  8Mbits/1MB
 							; etc.
 	dc.l	$00108000		; pointer to backup RAM block (first two bytes are debug dips)
 	dc.w	$0000			; game save size in bytes
