@@ -76,7 +76,7 @@ BIOS_GAME_DIP			equ $10FD84	; $10FD84-$10FD93 (all bytes)
 ; individual game soft dips
 BIOS_GAMEDIP_TIME1		equ $10FD84	; (word) timed option 1 (minutes and seconds in BCD)
 BIOS_GAMEDIP_TIME2		equ $10FD86	; (word) timed option 2 (minutes and seconds in BCD)
-BIOS_GAMEDIP_COUNT1		equ $10FD88	; (byte) counter option 1 (1-99; value here is default)
+BIOS_GAMEDIP_COUNT1		equ $10FD88	; (byte) counter option 1 (1-99; value set here is default)
 BIOS_GAMEDIP_COUNT2		equ $10FD89	; (byte) counter option 2 (WITHOUT, INFINITE, 1-99 TIMES)
 ;---------------------------------;
 BIOS_GAMEDIP_01			equ $10FD8A	; (byte) Game soft dip 01
