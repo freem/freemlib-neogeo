@@ -43,6 +43,8 @@ BIOS_WORKRAM			equ $10F300
 ; $10FCF2 ??
 
 ;===================================;
+; $10FD00 ??
+
 ; $10FD40 ??
 ; $10FD44 ??
 ; $10FD48 ??
@@ -249,7 +251,7 @@ BIOS_INST_RCO			equ $10FEC4	; (byte)
 ;-----------------------------------;
 BIOS_TITLE_MODE			equ $10FEC5	; (byte) When set to 1, stops BIOS from calling command 3 twice after Game Over if credits are in the system. -paraphrasing Razoola, NeoGeo Development Wiki
 BIOS_MESS_STACK			equ $10FEC6	; (long) 5 longs; first is the pointer to the data.
-;BIOS_??????????		equ $10FECA	; 
+;BIOS_??????????		equ $10FECA	; (???) that damned FEKA!</Johnny Turbo>
 ;-----------------------------------;
 ; $10FEDA and $10FEDB are used differently on CD systems; see below.
 ;BIOS_??????????		equ $10FEDA
@@ -264,7 +266,7 @@ BIOS_KYOUSEI_MODE		equ $10FEE0	; (byte) a.k.a. "KYOUSEI_MODE" (Game start compul
 BIOS_SYS_STOP			equ $10FEE1	; (byte) (a.k.a. "BIOS_FRAME_SKIP","SYS_STOP")
 BIOS_CS_REMAIN			equ $10FEE2	; (byte) (a.k.a. "CS_REMAIN")
 BIOS_INT_OFF			equ $10FEE3	; (byte) (a.k.a. "BIOS_INT1_SKIP", "INT_OFF")
-BIOS_INT1_TIMER2		equ $10FEE4	; (word) (a.k.a. "BIOS_INT1_FRAME_COUNTER", "INT1_TIMER2")
+BIOS_INT1_TIMER2		equ $10FEE4	; (word?) (a.k.a. "BIOS_INT1_FRAME_COUNTER", "INT1_TIMER2")
 ;-----------------------------------;
 ;INPUT_5
 BIOS_P5STATUS			equ $10FEE8	; (byte) Input 5 status

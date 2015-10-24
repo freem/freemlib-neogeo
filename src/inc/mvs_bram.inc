@@ -30,7 +30,14 @@ BRAM_PLAY_TIME			equ $D00048	; (long) play time counter (in seconds, hex)
 BRAM_PLAYTIME_TIMER		equ $D0004C	; (byte) timer used with BRAM_PLAY_TIME. counts down from $3C
 
 ;$D00058	; (byte) First slot number with an eyecatch flag of 0 (BIOS)
+;$D0005E	; (byte?) ??
+
 ;$D00060	; (word) ??
+;$D00062	; (byte) ?? related to NTSC/PAL??
+;$D00063	; (byte) ??
+;
+;$D00065	; (byte) ??
+;$D00066	; (byte) ??
 
 BRAM_FRAME_TIMER		equ $D0005A	; (long) HHMMSSFF timer (hours*4,minutes,seconds,frame down)
 
@@ -45,6 +52,7 @@ BRAM_BOOKP_COIN_MONTH	equ $D00116	; (long) current month cabinet coin book addre
 BRAM_BOOKP_START_MONTH	equ $D001A4	; (long) Current month game start book (pointer?)
 
 ;$D00122	; (byte?) ??
+;$D00124	; (long?) ??
 
 ; slots (empty slots have NGH 0000 and ID $FFFF)
 BRAM_SLOT1_ID			equ $D00124	; (long) Slot 1 NGH number, BRAM game block ID
@@ -91,8 +99,35 @@ BRAM_SLOT8_DATA			equ $D07320	; ($1000 bytes) Save data for BRAM Block 8
 
 ;$D08000???
 
+;$D08320
+;$D08560
+;$D087A0
+;$D089E0
+;$D08C20
+;$D08E60
+;$D090A0
+;$D092E0
+
+;$D09520
+;$D095E0
+;$D096A0
+;$D09760
+;$D09820
+;$D098E0
+;$D099A0
+;$D09A60
+
 ; Bookkeeping
 ;$D09BA0-$D09DDF	; ($240/576 bytes) Current month coin (YYMMDDdd - coin1 - coin2 - service)
 ;$D09DE0-$D0A01F	; ($240/576 bytes) Current month play (YYMMDDdd - play - continue - time)
 ;$D0A020-$D0A0DF	; ($C0/192 bytes) Year coin (00000000 - coin1 - coin2 - service)
 ;$D0A0E0-$D0A19F	; ($C0/192 bytes) Year play (00000000 - play - continue - time)
+
+;$D0A1A0
+;$D0A200
+;$D0A260
+;$D0A2C0
+;$D0A320
+;$D0A380
+;$D0A3E0
+;$D0A440
