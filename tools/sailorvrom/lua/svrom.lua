@@ -27,13 +27,13 @@ if not args or not args[1] then
 	print("usage: lua svrom.lua (options)")
 	print("===========================================================");
 	print("Available options:")
-	print("    --pcma=(path)         path/filename of ADPCM-A sample list file")
-	print("    --pcmb=(path)         path/filename of ADPCM-B sample list file")
-	print("    --outname=(path)      path/filename of sound data output")
-	print("    --samplelist=(path)   path/filename of sample list output")
-	print("    --samplestart=(addr)  starting address for sample list output")
-	print("    --mode=(mode)         'cd' or 'cart', without the quotes")
-	print("    --slformat=(format)   'vasm', 'tniasm', or 'wla', all without quotes")
+	print("    --pcma=path         path/filename of ADPCM-A sample list file")
+	print("    --pcmb=path         path/filename of ADPCM-B sample list file")
+	print("    --outname=path      path/filename of sound data output")
+	print("    --samplelist=path   path/filename of sample list output")
+	print("    --samplestart=addr  starting address for sample list output")
+	print("    --mode=mode         'cd' or 'cart', without the quotes")
+	print("    --slformat=format   'vasm', 'tniasm', or 'wla', all without quotes")
 	return
 end
 

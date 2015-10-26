@@ -8,9 +8,8 @@ Sailor VROM is a Neo-Geo V ROM/.PCM file builder.
 
 No, this won't encode ADPCM samples for you.
 
-An ADPCM-B encoder is available on the Internet, and I have it on good authority
-that an open source and portable ADPCM-A encoder will be available as soon as
-its output is verified working on hardware and produces good enough quality.
+ADPCM-A and ADPCM-B encoders are available on the Internet. The ADPCM-B encoder
+is by ValleyBell and Fred/FRONT; the ADPCM-A encoder is by freem (that's me!).
 
 ================================================================================
 [Sample Lists]
@@ -49,13 +48,13 @@ Sets the output path/filename for the sample list. (default "samples.inc")
 Sets the start point for the sample list addresses. (default 0)
 Can accept decimal and hex formats (both $0000 and 0x0000).
 
---mode=("cart" or "cd" without the quotes)
+--mode=("cart" or "cd" (without the quotes))
 Sets up the output type. (optional)
 (default "cart")
  * CD mode will enforce the ignoring of ADPCM-B.
  * CD mode will eventually force an upper limit of 512KiB per .PCM file.
 
---slformat=("vasm", "tniasm", or "wla")
+--slformat=("vasm", "tniasm", or "wla" (without the quotes))
 Sets the sample list to output in a specific format:
  * vasm:   word	0x0000,0x00CE (vasm oldstyle syntax)
  * tniasm: dw	$0000,$00CE   (tniasm syntax)
