@@ -539,7 +539,7 @@ if pcmaListFN then
 	outSampleFile:write("samples_PCMA:\n")
 
 	for k,v in pairs(pcmaFiles) do
-		outSampleFile:write(string.format("\t%s\t"..valFormat..","..valFormat.."\t; Sample #%i (%s)\n",direc,v.Start,v.End,v.ID,v.File))
+		outSampleFile:write(string.format("\t%s\t"..valFormat..","..valFormat.."\t; PCMA Sample #%i (%s)\n",direc,v.Start,v.End,v.ID,v.File))
 	end
 	outSampleFile:write("\n")
 end
@@ -550,14 +550,14 @@ if pcmbListFN then
 	outSampleFile:write("samples_PCMB:\n")
 
 	for k,v in pairs(pcmbFiles) do
-		outSampleFile:write(string.format("\t%s\t"..valFormat..","..valFormat.."\t; Sample #%i (%s, %dHz)\n",direc,v.Start,v.End,v.ID,v.File,v.Rate))
+		outSampleFile:write(string.format("\t%s\t"..valFormat..","..valFormat.."\t; PCMB Sample #%i (%s, %dHz)\n",direc,v.Start,v.End,v.ID,v.File,v.Rate))
 	end
 	outSampleFile:write("\n")
 
-	outSampleFile:write("; [ADPCM-B Sample Rates]\n")
+	outSampleFile:write("; [ADPCM-B Default Sample Rates]\n")
 	outSampleFile:write("rates_PCMB:\n")
 	for k,v in pairs(pcmbFiles) do
-		outSampleFile:write(string.format("\t%s\t"..valFormat.."\t; Sample #%i (%s, %dHz)\n",direc,v.DeltaN,v.ID,v.File,v.Rate))
+		outSampleFile:write(string.format("\t%s\t"..valFormat.."\t; PCMB Sample #%i (%s, %dHz)\n",direc,v.DeltaN,v.ID,v.File,v.Rate))
 	end
 	outSampleFile:write("\n")
 end

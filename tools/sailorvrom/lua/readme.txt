@@ -80,6 +80,10 @@ Many things.
   However, I did a quick spot check using the data from smkdan's ADPCM-A demo,
   and the file and sample addresses checked out. (Still needs system testing.)
 
+  (2015/10/26 edit)
+  I have managed to make a file that's 31.7KB (ends at $7F00) instead of 32KB
+  even (ends at $8000). Time to bugcheck!
+
 * Sample size checking (e.g. if something will be too big)
   Max size for ADPCM-A targeted WAV files = 4MiB (1MiB when converted)
   Max size for ADPCM-B targeted WAV files depends on sampling rate.
