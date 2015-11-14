@@ -19,7 +19,7 @@
 ; \2			Bank slot (8,9,0xA,0xB)
 
 	macro	SetBank
-	ld		a,#\1
+	ld		a,\1
 	in		a,(\2)
 	endm
 

@@ -1,7 +1,7 @@
 ; instruments.inc - ADPCM Sample Definitions file
 ;==============================================================================;
 ; [Instructions]
-; Copy and edit me!
+; Copy and edit me! (or use Sailor VROM to generate a file like this instead)
 ;==============================================================================;
 ; ADPCM-A Sample Data
 ; format: Start and End address/256 in Words.
