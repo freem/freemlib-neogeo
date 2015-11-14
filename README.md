@@ -10,7 +10,7 @@ Status
 The primary goal right now is to get the library coded, as well as provide
 examples that use the library. Overall, the tasks can be broken down as follows:
 
-(All percentage completions are estimates as of 2015/03/13. No project is ever truly finished. :wink:)
+(All percentage completions are estimates as of 2015/11/13. No project is ever truly finished. :wink:)
 
 ### Library ###
 These elements form the core of the freemlib for Neo-Geo.
@@ -18,10 +18,10 @@ These elements form the core of the freemlib for Neo-Geo.
 * **Animation** &ndash; Sprite animation. 0%.
 * **Backgrounds** &ndash; Routines for background sprites. 0%.
 * **Collision** &ndash; Most every game needs some sort of collision. 0%.
-* **Fix** &ndash; Fix layer functionality. Still needs work, ~22.5%?
+* **Fix** &ndash; Fix layer functionality. Still needs work, ~23%?
 * **Memory Card** &ndash; Handle Memory Cards (also Neo-Geo CD Backup Memory). 5%, needs testing.
 * **Palette** &ndash; Palette functionality. ~10%.
-* **Sound** &ndash; Fully-featured (FM, SSG, both ADPCM types, CD/DA) Z80 sound engine. 3%.
+* **Sound** &ndash; Fully-featured (FM, SSG, both ADPCM types, CD/DA) Z80 sound engine. 4%.
 * **Sprites** &ndash; General sprite functionality. ~15%?, with restructuring to come.
 * **System** &ndash; Various system functions. 1%.
 
@@ -33,9 +33,9 @@ Various tools to help you produce content for the Neo-Geo. Special consideration
 should be made for Linux (and OS X) compatibility whenever possible.
 
 * **NeoFixFormat** &ndash; Fix format tiles plugin for YY-CHR.NET. 100%, unless a bug comes up.
-* **NeoGeoTracker** &ndash; On-console tracker and sound driver testbench. 0% (mockups and planning stage)
-* **Sailor VROM** &ndash; V ROM/.PCM file builder and manager. 25% ([https://github.com/freem/freemlib-neogeo/tree/master/tools/sailorvrom/lua](Lua version available))
-* **4BPP SMS/GG/WSC to Neo-Geo ".c0" Format tool** &ndash; 100% for the time being. Source code needs uploading (might be here, might be elsewhere)
+* **Sailor VROM** &ndash; V ROM/.PCM file builder and manager. 25%, but usable. ([https://github.com/freem/freemlib-neogeo/tree/master/tools/sailorvrom/lua](Lua version available))
+* **4BPP SMS/GG/WSC to Neo-Geo ".c0" Format tool** &ndash; 100% for the time being. ([https://github.com/freem/NeoSpriteConv](project repository))
+* **NeoGeoTracker** &ndash; On-console tracker and sound driver testbench. 0% (mockups and planning stage, might take a while)
 * and others not listed here...
  * A tool for Fix layer layout, similar to Shiru's NES Screen Tool
  * A tool for animation data (various tools exist already, I'm aware.)
@@ -58,7 +58,8 @@ Navigation
 * `cdfiles/` &ndash; Files required for Neo-Geo CD games (aside from `IPL.TXT`)
 * `doc/` &ndash; Documentation (both general and freemlib related)
 * `examples/` &ndash; freemlib Usage Examples
-* `src/` &ndash; The freemlib library code.
+* `src_68k/` &ndash; Main freemlib library code.
+* `src_z80/` &ndash; freemlib sound engine code.
 * `tools/` &ndash; Various tools.
 
 You should read `doc/usage.txt` for how to setup a project with the freemlib.

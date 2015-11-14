@@ -9,7 +9,7 @@ Following that are 40 sprite tiles in the regular SPR file format, making a 9*5
 tiles (144*80 pixels) logo. Tiles are mapped from left to right, top to bottom.
 
 todo: create some sort of tool for creating a TITLE_*.SYS file from a .SPR file
-and palette data. (or even better, a .png file, for people who aren't me!)
+and palette data. (blastar's NGFX can handle importing from BMP files)
 
 "See cdrom_load_title in cdrom.c of NEOCD 0.31":
 void cdrom_load_title(void)

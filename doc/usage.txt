@@ -13,23 +13,23 @@ your environment so you can actually use the freemlib in the first place.
 Files to Copy (or Symlink) and Leave Alone
 ------------------------------------------
 (Addresses, Registers)
-* src/inc/input.inc				Defines for Controller inputs.
-* src/inc/mvs_bram.inc			Defines for MVS Backup RAM.
-* src/inc/neogeo.inc			Defines for Neo-Geo hardware.
-* src/inc/ram_bios.inc			Defines for the BIOS RAM locations.
+* src_68k/inc/input.inc			Defines for Controller inputs.
+* src_68k/inc/mvs_bram.inc		Defines for MVS Backup RAM.
+* src_68k/inc/neogeo.inc		Defines for Neo-Geo hardware.
+* src_68k/inc/ram_bios.inc		Defines for the BIOS RAM locations.
 
 (freemlib Functionality)
-* src/inc/mess_macro.inc		Macros for use with MESS_OUT.
-* src/inc/mess_defs.inc			Defines for characters to use with MESS_OUT.
+* src_68k/inc/mess_macro.inc	Macros for use with MESS_OUT.
+* src_68k/inc/mess_defs.inc		Defines for characters to use with MESS_OUT.
 --------------------------------
-* src/func/animation.asm		Animation-related functions.
-* src/func/background.asm		Background-related functions.
-* src/func/collision.asm		Collision-related functions.
-* src/func/fix.asm				Fix layer-related functions.
-* src/func/memcard.asm			Memory Card-related functions.
-* src/func/palette.asm			Palette-related functions.
-* src/func/sprites.asm			Sprite-related functions.
-* src/func/system.asm			System-related functions.
+* src_68k/func/animation.asm	Animation-related functions.
+* src_68k/func/background.asm	Background-related functions.
+* src_68k/func/collision.asm	Collision-related functions.
+* src_68k/func/fix.asm			Fix layer-related functions.
+* src_68k/func/memcard.asm		Memory Card-related functions.
+* src_68k/func/palette.asm		Palette-related functions.
+* src_68k/func/sprites.asm		Sprite-related functions.
+* src_68k/func/system.asm		System-related functions.
 
 (CD System-specific Files)
 * cdfiles/ABS.TXT				Abstract file with required data for loading.
@@ -38,10 +38,10 @@ Files to Copy (or Symlink) and Leave Alone
 
 Files to Copy and Change
 ------------------------
-* src/header_68k.inc			68000 Vectors and such at $0.
-* src/header_cart.inc			Neo-Geo program header for Cart systems at $100.
-* src/header_cd.inc				Neo-Geo program header for CD systems at $100.
-* src/ram_user.inc				User RAM defines.
+* src_68k/header_68k.inc		68000 Vectors and such at $0.
+* src_68k/header_cart.inc		Neo-Geo program header for Cart systems at $100.
+* src_68k/header_cd.inc			Neo-Geo program header for CD systems at $100.
+* src_68k/ram_user.inc			User RAM defines.
 
 header_68k.inc
 --------------

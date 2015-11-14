@@ -1,6 +1,6 @@
 MESS_OUT Helpers
 ================
-Macros for more semantic use of MESS_OUT are found in src/inc/mess_macro.inc.
+Macros for more semantic use of MESS_OUT are found in src_68k/inc/mess_macro.inc.
 
 A reference is included here. Numbered values beginning with '\' are macro
 parameters; these get passed to the macro.

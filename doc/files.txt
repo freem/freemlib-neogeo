@@ -5,7 +5,8 @@ Starting from the main folder:
 cdfiles\			Required Files for CD games
 doc\				Documentation
 examples\			Examples
-src\				Source Code
+src_68k\			Source Code (main)
+src_z80\			Source Code (sound)
 
 ================================================================================
 [cdfiles\]
@@ -118,8 +119,8 @@ The examples rely on being set up as they are in order to build correctly.
 (e.g. a path of "..\..\src\" from an example will go to the main src directory.)
 
 ================================================================================
-[src\]
-This directory contains the actual code and includes that make up the freemlib.
+[src_68k\ and src_z80\]
+These directories contain the actual code and includes that make up the freemlib.
 Trying to document it here would be pointless, as it will change often.
 
 ================================================================================
