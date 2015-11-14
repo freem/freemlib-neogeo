@@ -11,6 +11,14 @@ No, this won't encode ADPCM samples for you.
 ADPCM-A and ADPCM-B encoders are available on the Internet. The ADPCM-B encoder
 is by ValleyBell and Fred/FRONT; the ADPCM-A encoder is by freem (that's me!).
 
+/!!\ Important Note /!!\
+When running this script on anything that isn't Windows, you may need to change
+the line feeds of your ADPCM-A and ADPCM-B file lists. (For example, I needed
+to change the line endings to LF on Linux.)
+
+I currently do not know of a decent workaround (aside from running dos2unix on
+the list files, but that requires dos2unix) for this issue.
+
 ================================================================================
 [Sample Lists]
 The sample lists that the program expects are simple text files, with one sound
