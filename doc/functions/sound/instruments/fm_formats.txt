@@ -235,7 +235,7 @@ parameter represents; It is reproduced here:
 
 [LFO]
 LFRQ		LFO Frequency
-AMD			(Amplitude Modulation ?)
+AMD			(Amplitude Modulation?)
 PMD			(Pulse Modulation?)
 WF			Waveform
 NFRQ		(? Frequency?)
