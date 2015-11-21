@@ -78,7 +78,7 @@ $11...		ssg
 ================================================================================
 EIF (Echo Instrument File)
 --------------------------
-Data is stored for each operator in a row.
+Data is stored for each operator in a row, like in TYI.
 
 $00			algo | feedback << 3
 $01..$04	mul | dt << 4
@@ -133,7 +133,7 @@ TYI ("Tiido's YM2612 Instrument file")
 Each file is 32 bytes long, containing data for straightforward loading
 into YM2612 registers - very little code reqired to load an instrument.
 
-Each entry except 8 and 9 are for all four operators.
+Each entry except the last three (8, 9, and 10) are for all four operators.
 
 1.  DT/MUL  - 4 - Detune(D6...D4) and multiplicator(D3...D0) value
 2.  TL      - 4 - Total level (D6...D0)
