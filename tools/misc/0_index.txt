@@ -1,0 +1,4 @@
+misc directory
+==============
+* cdzsys2sms.c
+  Converts TITLE_*.SYS files to SMS 4bpp SMS/GG/WSC format.
