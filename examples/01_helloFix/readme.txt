@@ -42,8 +42,8 @@ sprtiles/
 	TITLE_U.*			USA Title image related files
 
 (Included from outside the directory)
-../../src/inc/neogeo.inc		Neo-Geo hardware defines
-../../src/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
+../../src_68k/inc/neogeo.inc		Neo-Geo hardware defines
+../../src_68k/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
 
 ================================================================================
 [Setup]

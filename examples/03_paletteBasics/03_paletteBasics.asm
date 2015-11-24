@@ -1,9 +1,9 @@
 ; freemlib for Neo-Geo Example 03: Palette Basics
 ;==============================================================================;
 	; defines
-	include "../../src/inc/neogeo.inc"
-	include "../../src/inc/ram_bios.inc"
-	include "../../src/inc/mess_macro.inc"
+	include "../../src_68k/inc/neogeo.inc"
+	include "../../src_68k/inc/ram_bios.inc"
+	include "../../src_68k/inc/mess_macro.inc"
 	include "ram_user.inc"
 ;------------------------------------------------------------------------------;
 	; headers
@@ -188,9 +188,9 @@ WaitVBlank:
 
 ;==============================================================================;
 ; include freemlib function files
-	include "../../src/func/palette.asm"
-	include "../../src/func/sprites.asm"
-	include "../../src/inc/input.inc"
+	include "../../src_68k/func/palette.asm"
+	include "../../src_68k/func/sprites.asm"
+	include "../../src_68k/inc/input.inc"
 
 ;==============================================================================;
 ; CreateDisplay

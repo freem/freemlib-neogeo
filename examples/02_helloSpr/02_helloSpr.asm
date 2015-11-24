@@ -1,9 +1,9 @@
 ; freemlib for Neo-Geo Example 02: Hello World on the Sprite Layer
 ;==============================================================================;
 	; defines
-	include "../../src/inc/neogeo.inc"
-	include "../../src/inc/ram_bios.inc"
-	include "../../src/inc/mess_macro.inc"
+	include "../../src_68k/inc/neogeo.inc"
+	include "../../src_68k/inc/ram_bios.inc"
+	include "../../src_68k/inc/mess_macro.inc"
 	include "ram_user.inc"
 ;------------------------------------------------------------------------------;
 	; headers
@@ -192,8 +192,8 @@ WaitVBlank:
 
 ;==============================================================================;
 ; include freemlib function files
-	include "../../src/func/sprites.asm"
-	include "../../src/inc/input.inc"
+	include "../../src_68k/func/sprites.asm"
+	include "../../src_68k/inc/input.inc"
 
 ;==============================================================================;
 ; CreateDisplay
@@ -221,28 +221,28 @@ Display_Sprite:
 	;--------------------------------------
 	; set up SCB1 for each sprite
 	; sprite  1: H
-	move.w	#$0040,LSPC_ADDR
+	move.w	#SCB1+(1*64),LSPC_ADDR	; $0040
 	move.w	#$0040,LSPC_DATA	; tile $00040: H
 	move.w	#$0000,LSPC_DATA	; palette 0, tile msb 0, no attributes
 	; sprite  2: E
-	move.w	#$0080,LSPC_ADDR
+	move.w	#SCB1+(2*64),LSPC_ADDR	; $0080
 	move.w	#$0041,LSPC_DATA	; tile $00041: E
 	move.w	#$0000,LSPC_DATA	; palette 0, tile msb 0, no attributes
 	; sprite  3: L 1
-	move.w	#$00C0,LSPC_ADDR
+	move.w	#SCB1+(3*64),LSPC_ADDR	; $00C0
 	move.w	#$0042,LSPC_DATA	; tile $00042: L
 	move.w	#$0000,LSPC_DATA	; palette 0, tile msb 0, no attributes
 	; sprite  4: L 2
-	move.w	#$0100,LSPC_ADDR
+	move.w	#SCB1+(4*64),LSPC_ADDR	; $0100
 	move.w	#$0042,LSPC_DATA	; tile $00042: L
 	move.w	#$0000,LSPC_DATA	; palette 0, tile msb 0, no attributes
 	; sprite  5: O
-	move.w	#$0140,LSPC_ADDR
+	move.w	#SCB1+(5*64),LSPC_ADDR	; $0140
 	move.w	#$0043,LSPC_DATA	; tile $00043: O
 	move.w	#$0000,LSPC_DATA	; palette 0, tile msb 0, no attributes
 
 	; set up SCB2 for sprites 1-5
-	move.w	#$8001,LSPC_ADDR
+	move.w	#SCB2+1,LSPC_ADDR
 	move.w	#$0FFF,LSPC_DATA	; Sprite 1: full scale in X ($F) and Y ($FF)
 	move.w	#$0FFF,LSPC_DATA	; Sprite 2: full scale in X ($F) and Y ($FF)
 	move.w	#$0FFF,LSPC_DATA	; Sprite 3: full scale in X ($F) and Y ($FF)
@@ -250,7 +250,7 @@ Display_Sprite:
 	move.w	#$0FFF,LSPC_DATA	; Sprite 5: full scale in X ($F) and Y ($FF)
 
 	; set up SCB3 for sprite 1
-	move.w	#$8201,LSPC_ADDR
+	move.w	#SCB3+1,LSPC_ADDR
 	move.w	#((496-80)<<7)|1,LSPC_DATA	; Y pos = 80, sprite height = 1
 	; set up SCB3 for sprites 2-5 (sticky bit)
 	move.w	#$0040,LSPC_DATA	; Sprite 2 sticky bit
@@ -259,7 +259,7 @@ Display_Sprite:
 	move.w	#$0040,LSPC_DATA	; Sprite 5 sticky bit
 
 	; set up SCB4 for sprite 1
-	move.w	#$8401,LSPC_ADDR
+	move.w	#SCB4+1,LSPC_ADDR
 	move.w	#(64<<7),LSPC_DATA	; X pos = 64
 
 	; Draw a random test sprite using freemlib's spr_LoadDirect
@@ -485,7 +485,7 @@ UpdateTestSprite:
 	move.w	curSprPalette,d0	; get palette index
 	lsl.w	#8,d0				; shift into proper position for SCB1
 	; write to SCB1
-	move.w	#$0301,LSPC_ADDR	; SCB1 sprite 12
+	move.w	#SCB1+(12*64)+1,LSPC_ADDR	; SCB1 sprite 12
 	move.w	#2,LSPC_INCR		; update every other word
 	move.w	d0,LSPC_DATA		; write palette twice,
 	move.w	d0,LSPC_DATA		; since there's two sprites
@@ -497,7 +497,7 @@ UpdateTestSprite:
 	sub.w	spriteY,d0
 	lsl.w	#7,d0				; shift into position for SCB3
 	; get current SCB3 value
-	move.w	#$820C,LSPC_ADDR	; SCB3 sprite 12
+	move.w	#SCB3+12,LSPC_ADDR	; SCB3 sprite 12
 	move.w	LSPC_DATA,d1		; grab current SCB3 value
 	andi.w	#$7F,d1				; mask away Y position from SCB3
 	; combine old SCB3 value with new Y position
@@ -508,7 +508,7 @@ UpdateTestSprite:
 	move.w	spriteX,d0			; get X position
 	lsl.w	#7,d0				; shift into position for SCB4
 	; Write to SCB4
-	move.w	#$840C,LSPC_ADDR	; SCB4 sprite 12
+	move.w	#SCB4+12,LSPC_ADDR	; SCB4 sprite 12
 	move.w	d0,LSPC_DATA		; write new SCB4 value
 
 	rts

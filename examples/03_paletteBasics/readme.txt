@@ -33,11 +33,11 @@ sprtiles/
 	PALBASIC.SPR		.SPR file for Neo-Geo CD
 
 (Included from outside the directory)
-../../src/inc/neogeo.inc		Neo-Geo hardware defines
-../../src/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
-../../src/inc/mess_macro.inc	Macros for MESS_OUT
-../../src/func/palette.inc		Palette-related Functions and Macros
-../../src/func/sprites.inc		Sprite-related Functions and Macros
+../../src_68k/inc/neogeo.inc		Neo-Geo hardware defines
+../../src_68k/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
+../../src_68k/inc/mess_macro.inc	Macros for MESS_OUT
+../../src_68k/func/palette.inc		Palette-related Functions and Macros
+../../src_68k/func/sprites.inc		Sprite-related Functions and Macros
 
 ================================================================================
 [Setup]

@@ -1,8 +1,8 @@
 ; freemlib for Neo-Geo Example 00: Skeleton Project
 ;==============================================================================;
 	; defines
-	include "../../src/inc/neogeo.inc"
-	include "../../src/inc/ram_bios.inc"
+	include "../../src_68k/inc/neogeo.inc"
+	include "../../src_68k/inc/ram_bios.inc"
 	include "ram_user.inc"
 ;------------------------------------------------------------------------------;
 	; headers

@@ -1,8 +1,8 @@
 ; freemlib for Neo-Geo Example 01: Hello World on the Fix Layer
 ;==============================================================================;
 	; defines
-	include "../../src/inc/neogeo.inc"
-	include "../../src/inc/ram_bios.inc"
+	include "../../src_68k/inc/neogeo.inc"
+	include "../../src_68k/inc/ram_bios.inc"
 ;------------------------------------------------------------------------------;
 	; headers
 	include "header_68k.inc"

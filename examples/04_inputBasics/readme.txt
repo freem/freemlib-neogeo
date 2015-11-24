@@ -34,9 +34,9 @@ sprtiles/
 	in.smc				Source of C ROM (SNES format graphics; convert with recode16)
 
 (Included from outside the directory)
-../../src/inc/neogeo.inc		Neo-Geo hardware defines
-../../src/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
-../../src/inc/mess_macro.inc	Macros for MESS_OUT
+../../src_68k/inc/neogeo.inc		Neo-Geo hardware defines
+../../src_68k/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
+../../src_68k/inc/mess_macro.inc	Macros for MESS_OUT
 
 ================================================================================
 [Setup]

@@ -1,9 +1,9 @@
 ; freemlib for Neo-Geo Example 04: Input Basics
 ;==============================================================================;
 	; defines
-	include "../../src/inc/neogeo.inc"
-	include "../../src/inc/ram_bios.inc"
-	include "../../src/inc/mess_macro.inc"
+	include "../../src_68k/inc/neogeo.inc"
+	include "../../src_68k/inc/ram_bios.inc"
+	include "../../src_68k/inc/mess_macro.inc"
 	include "ram_user.inc"
 ;------------------------------------------------------------------------------;
 	; headers
@@ -188,8 +188,8 @@ WaitVBlank:
 
 ;==============================================================================;
 ; include freemlib function files
-	include "../../src/func/fix.asm"
-	include "../../src/inc/input.inc"
+	include "../../src_68k/func/fix.asm"
+	include "../../src_68k/inc/input.inc"
 
 ;==============================================================================;
 ; InitDisplay

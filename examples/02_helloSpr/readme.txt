@@ -43,11 +43,11 @@ sprtiles/
 	TITLE_U.*			USA Title image related files
 
 (Included from outside the directory)
-../../src/inc/neogeo.inc		Neo-Geo hardware defines
-../../src/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
-../../src/inc/mess_macro.inc	Macros for MESS_OUT
-../../src/func/sprites.inc		Sprite-related Functions and Macros
-../../src/inc/input.inc			Input-related defines
+../../src_68k/inc/neogeo.inc		Neo-Geo hardware defines
+../../src_68k/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
+../../src_68k/inc/mess_macro.inc	Macros for MESS_OUT
+../../src_68k/func/sprites.inc		Sprite-related Functions and Macros
+../../src_68k/inc/input.inc			Input-related defines
 
 ================================================================================
 [Setup]
@@ -266,5 +266,5 @@ ensures this happens.
 
 With the call to SYSTEM_IO in place, putting a call to a routine where you handle
 input in the main loop is the next step. In this routine, you end up masking the
-values from the BIOS against values from src/inc/input.inc in order to find out
-if anything was pressed.
+values from the BIOS against values from src_68k/inc/input.inc in order to find
+out if anything was pressed.
