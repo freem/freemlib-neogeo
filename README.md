@@ -32,16 +32,20 @@ and for other purposes might be provided later.)
 Various tools to help you produce content for the Neo-Geo. Special consideration
 should be made for Linux (and OS X) compatibility whenever possible.
 
+#### Available and/or Finished ####
 * **NeoFixFormat** &ndash; Fix format tiles plugin for YY-CHR.NET. 100%, unless a bug comes up.
 * **Sailor VROM** &ndash; V ROM/.PCM file builder and manager. 25%, but usable. ([https://github.com/freem/freemlib-neogeo/tree/master/tools/sailorvrom/lua](Lua version available))
 * **4BPP SMS/GG/WSC to Neo-Geo ".c0" Format tool** &ndash; 100% for the time being. ([https://github.com/freem/NeoSpriteConv](project repository))
+
+#### WIP ###
+* **FM Studio** &ndash; On-console utility for testing and developing FM sounds. 1% (earliest stages of development)
 * **NeoGeoTracker** &ndash; On-console tracker and sound driver testbench. 0% (mockups and planning stage, might take a while)
 * and others not listed here...
- * A tool for Fix layer layout, similar to Shiru's NES Screen Tool
- * A tool for animation data (various tools exist already, I'm aware.)
- * A tool for converting Tiled map data
- * PC version of NeoGeoTracker
- * Various sound tools (ADPCM-A/B conversion; tools exist, but need unification.)
+ * A tool for Fix layer layout, similar to Shiru's NES Screen Tool. 0%
+ * A tool for animation data (various tools exist already, I'm aware.) 0%
+ * A tool for converting Tiled map data. 0%
+ * PC version of NeoGeoTracker. 0%
+ * Various sound tools (ADPCM-A/B conversion; tools exist, but need unification.) ?%
 
 ### Documentation ###
 The black sheep of any programming project, but also necessary because who the hell
@@ -63,6 +67,11 @@ Navigation
 * `tools/` &ndash; Various tools.
 
 You should read `doc/usage.txt` for how to setup a project with the freemlib.
+
+Filing Bugs/Issues
+------------------
+Please use the [GitHub bug tracker](https://github.com/freem/freemlib-neogeo/issues)
+to file any errors, issues, and/or feature requests.
 
 License
 -------
