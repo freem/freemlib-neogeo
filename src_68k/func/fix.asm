@@ -154,6 +154,13 @@ fix_DrawString:
 	rts
 
 ;==============================================================================;
+; todo: fix_DrawStringJP (8x8, horizontal version)
+; The major difference between this and fix_DrawString is the ability to draw
+; dakuten and handakuten (Japanese modifier marks) "properly".
+; This was originally coded for FM Studio, but for a more portable solution,
+; the IDs of the tenten and maru (dakuten/handakuten) need to be configurable.
+
+;==============================================================================;
 ; fix_Draw8x16
 ; Draws "normal" 8x16 text to the screen horizontally. End code is $FF.
 
