@@ -160,6 +160,18 @@ fix_DrawString:
 ; This was originally coded for FM Studio, but for a more portable solution,
 ; the IDs of the tenten and maru (dakuten/handakuten) need to be configurable.
 
+; (Params)
+; d0		[word] Combined cell location (x,y) or raw VRAM address ($7000-$74FF)
+; d1		[word] Palette index and tile number MSB
+; a0		[long] Pointer to string to draw
+
+; (Clobbers)
+; d2		Byte for writing
+; d3		Used for temporary tile assembly
+
+fix_DrawStringJP:
+	rts
+
 ;==============================================================================;
 ; fix_Draw8x16
 ; Draws "normal" 8x16 text to the screen horizontally. End code is $FF.

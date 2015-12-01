@@ -13,8 +13,6 @@ have a different configuration.
 Technically, these are inputs, but I consider them a part of the system, since
 they change how the system reacts.
 
-* Does Pop'n Bounce have different dips?
-
 <Default Hard Dips>
 76543210
 ||||||||
@@ -112,6 +110,6 @@ The beginning of this is pointed to in the Neo-Geo header as well...
 See memcard.txt
 
 ================================================================================
-[BIOS]
+[BIOS/System ROM]
 The Neo-Geo BIOS is considered a part of the system :p
 What's available depends on both the system type and BIOS version.

@@ -202,6 +202,7 @@ sprmac_SpriteData:	macro
 ;------------------------------------------------------------------------------;
 ; mspr_Load
 ; Loads a Metasprite into the VRAM.
+; Uses spr_LoadDirect, forces sticky bit.
 
 ; (Params)
 ; d0			[word] Metasprite starting sprite index
