@@ -1,0 +1,6 @@
+freemlib for Neo-Geo - Sprite Pool functionality
+================================================
+The Sprite Pool is meant to remove the burden of having to manually juggle
+sprite numbers when allocating and de-allocating sprites.
+
+(todo: see src_68k/func/spritepool.asm)
