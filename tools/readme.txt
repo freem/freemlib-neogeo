@@ -13,3 +13,4 @@ genSSGSquareTable.lua	Lua (5.1) script for generating a SSG tone period table.
 ================================================================================
 [Notes]
 Tools in here may have a different license than the main library.
+I will try and be better about being consistent with licenses.
