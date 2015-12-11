@@ -6,8 +6,8 @@ _op2.dmp			Operator 2 Test Dump (1/0)		Slot 3
 _op3.dmp			Operator 3 Test Dump (0/1)		Slot 2
 _op4.dmp			Operator 4 Test Dump (1/1)		Slot 4
 --------------------------------------------------------------------------------
-DMP_fm.txt			DMP_SPECS.txt but reduced to the FM values
-DMP_SPECS.txt		Specs for DMP (DefleMask Preset, for DefleMask 9 and above)
+DMP_fm.txt			DMP_SPECS.txt (v9) but reduced to the FM values
+DMP_SPECS.txt		Specs for DMP (DefleMask Preset, for DefleMask 11 and above)
 ================================================================================
 $00			FILE_VERSION, must be 8 for DefleMask 9c
 $01			Instrument Mode (1=FM)

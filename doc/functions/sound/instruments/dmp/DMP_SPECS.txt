@@ -1,50 +1,54 @@
-Delek @ 2013. Demartino Leonardo.
+Delek @ 2015. Leonardo Demartino.
+Specs for DMP (DefleMask Preset Format, for DefleMask 11 and above)
 
-Specs for DMP (DefleMask Preset, for DefleMask 9 and above)
-
-I wrote this text file looking at the source code, there could be some mistakes.
-If you think so, please contact me at:
+I wrote this text file looking at the source code, any suggestion or request can be done at:
 - http://www.delek.com.ar/forum
 - http://www.facebook.com/Delek.Page
 - http://www.twitter.com/_Delek
 - http://www.soundcloud.com/Delek_Music
-- deeleek@gmail.com
+- deeleek (at) gmail (.) com
 
 ------------------------------------------------------------------------------------------------
 
 "//" means a comment line, not actual information of the format.
+// I added tabulations for better reading, also you will find IF statements that you should follow. Systems have different things to read and save.
 
 //START OF DMP FORMAT
 
-	1 Byte:   FILE_VERSION, must be 8 for DefleMask 9c (@06/09/13)
+	1 Byte:   FILE_VERSION, must be 10 (0x0A) for DefleMask 11
 	1 Byte:   Instrument Mode (1=FM, 0=STANDARD)
 	//PER INSTRUMENT MODE DATA
 		//IF INSTRUMENT MODE IS STANDARD ( = 0)
-			//VOLUME MACRO
-			1 Byte: ENVELOPE_SIZE (0 - 127)
-			Repeat this ENVELOPE_SIZE times
-				4 Bytes: ENVELOPE_VALUE
-			1 Byte: LOOP_POSITION (-1 = NO LOOP)
+			//IF NOT SYSTEM_GAMEBOY (Game Boy uses STD instruments but has internal ADSR Volume, do not read VOLUME MACRO for it)
+				//VOLUME MACRO
+				1 Byte: ENVELOPE_SIZE (0 - 127)
+				Repeat this ENVELOPE_SIZE times
+					4 Bytes: ENVELOPE_VALUE
+				//IF ENVELOPE_SIZE > 0
+					1 Byte: LOOP_POSITION (-1 = NO LOOP)
 
 			//ARPEGGIO MACRO
 			1 Byte: ENVELOPE_SIZE (0 - 127)
 			Repeat this ENVELOPE_SIZE times
-				4 Bytes: ENVELOPE_VALUE
-			1 Byte: LOOP_POSITION (-1 = NO LOOP)
+				4 Bytes: ENVELOPE_VALUE (signed int, offset=12)
+			//IF ENVELOPE_SIZE > 0
+				1 Byte: LOOP_POSITION (-1 = NO LOOP)
 			1 Byte: ARPEGGIO MACRO MODE (0 = Normal, 1 = Fixed)
 
 			//DUTY/NOISE MACRO
 			1 Byte: ENVELOPE_SIZE (0 - 127)
 			Repeat this ENVELOPE_SIZE times
 				4 Bytes: ENVELOPE_VALUE
-			1 Byte: LOOP_POSITION (-1 = NO LOOP)
+			//IF ENVELOPE_SIZE > 0
+				1 Byte: LOOP_POSITION (-1 = NO LOOP)
 
 
 			//WAVETABLE MACRO
 			1 Byte: ENVELOPE_SIZE (0 - 127)
 			Repeat this ENVELOPE_SIZE times
 				4 Bytes: ENVELOPE_VALUE
-			1 Byte: LOOP_POSITION (-1 = NO LOOP)
+			//IF ENVELOPE_SIZE > 0
+				1 Byte: LOOP_POSITION (-1 = NO LOOP)
 
 			//PER SYSTEM DATA
 				//IF SYSTEM IS C64
@@ -68,15 +72,16 @@ If you think so, please contact me at:
 					1 Byte: Filter High Pass
 					1 Byte: Filter Low Pass
 					1 Byte: Filter CH2 Off
+				//IF SYSTEM_GAMEBOY
+					1 Byte: Envelope Volume
+					1 Byte: Envelope Direction
+					1 Byte: Envelope Length
+					1 Byte: Sound Length
 		//IF INSTRUMENT MODE IS FM ( = 1)
-			1 Byte: TOTAL_OPERATORS (0 = 2 OPERATORS, 1 = 4 OPERATORS)
-			1 Byte: LFO (FMS on SEGA Genesis)
+			1 Byte: LFO (FMS on YM2612, PMS on YM2151)
 			1 Byte: FB
 			1 Byte: ALG
-			
-			//PER SYSTEM DATA
-				//IF SYSTEM IS GENESIS
-					1 Byte: LFO2
+			1 Byte: LFO2 (AMS on YM2612, AMS on YM2151)
 
 			Repeat this TOTAL_OPERATORS times
 				1 Byte: MULT
@@ -86,20 +91,8 @@ If you think so, please contact me at:
 				1 Byte: SL
 				1 Byte: RR
 				1 Byte: AM
-				
-				//PER SYSTEM DATA
-				//IF SYSTEM IS YMU759
-					1 Byte: WS
-					1 Byte: KSL
-					1 Byte: VIB
-					1 Byte: EGT
-					1 Byte: SUS
-					1 Byte: KSR
-					1 Byte: DVB
-					1 Byte: DAM
-				//IF SYSTEM IS GENESIS
-					1 Byte: KSR
-					1 Byte: DT
-					1 Byte: D2R
-					1 Byte: SSGEG_Enabled <<3 | SSGEG
+				1 Byte: RS
+				1 Byte: DT (DT2<<4 | DT on YM2151)
+				1 Byte: D2R
+				1 Byte: SSGEG_Enabled <<3 | SSGEG
 //END OF DMP FORMAT
