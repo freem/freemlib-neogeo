@@ -14,7 +14,7 @@ sr			Sustain Rate ("d2r" in DefleMask docs)
 rr			Release Rate
 sl			Sustain Level
 am			AM enable
-rs			Rate Scaling ("ksr" in DefleMask docs)
+rs			Rate Scaling ("ksr" in older DefleMask docs)
 dt			DeTune
 ssg			SSG envelope generator
 ams			AM Sense
@@ -25,16 +25,15 @@ algo		ALGOrithm/connection
 ================================================================================
 DMP (DefleMask Preset)
 ----------------------
-[DMP (DefleMask 9 and above)] from "DMP_SPECS.txt"
-$00			DMP version >= 0x08
+[DMP (DefleMask 11 and above)] from "DMP_SPECS.txt"
+$00			DMP version >= 0x0A (deflemask 11)
 $01			Instrument Type (1=FM, 0=standard)
-$02			Total Operators (0=2 operators, 1=4 operators)
-$03			lfo (fms on genesis/megadrive)
-$04			feedback
-$05			algo
-if genesis/megadrive, next byte ($06) is LFO2, otherwise...
+$02			lfo (fms on genesis/megadrive. pms on ym2151)
+$03			feedback
+$04			algo
+$05			lfo2 (AMS on YM2612 and YM2151)
 
-per-operator: (increment the offsets by 1 if using LFO2)
+per-operator:
 {
 $06...		mul
 $07...		tl
@@ -43,36 +42,10 @@ $09...		dr
 $0A...		sl
 $0B...		rr
 $0C...		am
-
-if genesis/megadrive:
 $0D...		rs
-$0E...		dt
+$0E...		dt (ym2151: DT2<<4 | DT)
 $0F...		sr
 $10...		ssg_enabled << 3 | ssg
-}
-
-[DMP Version 7 (older Deflemask)] from vgm2pre
-$00			DMP version == 0x07
-$01			Instrument Type (1=FM, 0=standard)
-$02			Total Operators (0=2 operators, 1=4 operators)
-$03			pms
-$04			feedback
-$05			algo
-$06			ams
-
-per-operator:
-{
-$07...		mul
-$08...		tl
-$09...		ar
-$0A...		dr
-$0B...		sl
-$0C...		rr
-$0D...		am
-$0E...		rs
-$0F...		detune+3
-$10...		sr
-$11...		ssg
 }
 
 ================================================================================
