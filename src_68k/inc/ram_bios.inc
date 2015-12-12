@@ -11,12 +11,10 @@
 ;==============================================================================;
 BIOS_WORKRAM			equ $10F300
 
-;SSP_END:					; supervisor stack
-;	ds.b $900				; ends up at $10FC00
-;	ds.b $180				; ends up at $10FD80
-
 ;===================================;
 ; $10F688 "decremented each time a sector is read until it's 0" on CD systems
+; $10F6..
+BIOS_CD_LOADPROGRESS	equ $10F690 ; (word) current progress bar state
 
 ;===================================;
 ; $10FC24	; (word)
