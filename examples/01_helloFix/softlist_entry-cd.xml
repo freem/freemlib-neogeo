@@ -8,7 +8,7 @@
 	<publisher>freemco</publisher>
 	<part name="cdrom" interface="neocd_cdrom">
 		<diskarea name="cdrom">
-			<disk name="HelloFix" sha1="473c20b53b79be651f48fe54a14e1714d8ee037b"/>
+			<disk name="HelloFix" sha1="4d7bc17aedf9336c3c51cbf9a5bcc95ce1d516aa"/>
 		</diskarea>
 	</part>
 </software>

@@ -44,6 +44,7 @@ sprtiles/
 (Included from outside the directory)
 ../../src_68k/inc/neogeo.inc		Neo-Geo hardware defines
 ../../src_68k/inc/ram_bios.inc		Neo-Geo BIOS RAM location defines
+../../src_68k/inc/mess_defs.inc		Character definitions (for use with MESS_OUT)
 
 ================================================================================
 [Setup]
@@ -189,3 +190,6 @@ The ISO for the CD version is known to work on:
 MESS and Final Burn Alpha 0.2.97.29 treat the ISO the same; they can't load it.
 Perhaps my image is messed up?
 
+<CHD>
+There is a "chd" target for building a .chd file for use in MAME. Be sure to
+add the entry from softlist_entry-cd.xml into the neocdz.xml hash file.

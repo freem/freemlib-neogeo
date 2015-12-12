@@ -3,6 +3,7 @@
 	; defines
 	include "../../src_68k/inc/neogeo.inc"
 	include "../../src_68k/inc/ram_bios.inc"
+	include "../../src_68k/inc/mess_defs.inc" ; used for Japanese text
 ;------------------------------------------------------------------------------;
 	; headers
 	include "header_68k.inc"
@@ -70,12 +71,12 @@ userReq_Game:
 
 	; set up palettes
 	move.b	d0,PALETTE_BANK1	; use palette bank 1
-	lea		paletteData,a0
-	lea		PALETTES,a1
-	move.l	#(16*NUM_PALETTES)-1,d7
+	lea		paletteData,a0		; load palette data start address into a0
+	lea		PALETTES,a1			; load palette RAM start address into a1
+	move.l	#(16*NUM_PALETTES)-1,d7 ; each palette is 16 colors; the -1 is for loop logic to work
 .ldpal:
-	move.w	(a0)+,(a1)+
-	dbra	d7,.ldpal
+	move.w	(a0)+,(a1)+			; copy palette data from ROM to RAM
+	dbra	d7,.ldpal			; loop logic; d7 is decremented and .ldpal loops
 
 	jsr		FIX_CLEAR			; clear fix layer, add borders on sides
 	jsr		LSP_1st				; clear first sprite
@@ -174,11 +175,11 @@ IRQ3:
 ; Waits for VBlank to finish (via a flag cleared at the end).
 
 WaitVBlank:
-	move.b	#1,flag_VBlank
+	move.b	#1,flag_VBlank		; set our flag, which gets unset in our vblank
 
 .waitLoop
-	tst.b	flag_VBlank
-	bne.s	.waitLoop
+	tst.b	flag_VBlank			; test the flag
+	bne.s	.waitLoop			; if it's not cleared, keep looping until vblank finishes
 
 	rts
 
@@ -202,7 +203,7 @@ Display_Raw:
 	; situations like this instead.
 	bset.b	#0,BIOS_MESS_BUSY
 
-	move.w	#$7024,LSPC_ADDR	; set vram address to $7024
+	move.w	#$7044,LSPC_ADDR	; set vram address to $7044
 	move.w	#$20,LSPC_INCR		; set auto-increment to $20 (horizontal writing)
 
 	; write string data
@@ -234,18 +235,18 @@ Display_MessOut:
 
 	move.l	#0,(a0)+			; raw commands
 
-	; command 01: data format
+	; command $01: data format
 	move.w	#$0001,(a0)+		; data in bytes, uses end code.
 	move.w	#$10FF,(a0)+		; upper byte=$10, end code=$FF
 
-	; command 02: VRAM auto-increment
-	move.w	#$2002,(a0)+		; (xx02; xx=number of bytes)
+	; command $02: VRAM auto-increment
+	move.w	#$2002,(a0)+		; (xx02; xx=number of bytes; $20 = one column/horizontal writing)
 
-	; command 03: VRAM address ($7000-$74FF ...bankswitching?)
+	; command $03: VRAM address ($7000-$74FF ...bankswitching?)
 	move.w	#$0003,(a0)+
-	move.w	#$7046,(a0)+		; VRAM address $7046
+	move.w	#$7066,(a0)+		; VRAM address $7066
 
-	; 8x8 text (via sub-command list)
+	; command $0A: sub-command list (8x8 text)
 	move.w	#$000A,(a0)+
 	move.l	#string_HelloMess8,(a0)+
 
@@ -253,7 +254,7 @@ Display_MessOut:
 	move.w	#$0005,(a0)+
 	move.w	#$0022,(a0)+
 
-	; 8x16 text (via sub-command list)
+	; command $0A: sub-command list (8x16 text)
 	move.w	#$000A,(a0)+
 	move.l	#string_HelloMess16,(a0)+
 
@@ -261,7 +262,7 @@ Display_MessOut:
 	move.w	#$0005,(a0)+
 	move.w	#$0022,(a0)+
 
-	; Japanese text (via sub-command list)
+	; command $0A: sub-command list (Japanese text)
 	move.w	#$000A,(a0)+
 	move.l	#string_HelloMessJP,(a0)+
 
@@ -282,9 +283,11 @@ string_HelloMess16:
 	dc.b	"Hello World (8x16 MESS OUT)",$FF
 	dc.w	$000B				; return to command list
 
+; todo: use 
 string_HelloMessJP:
 	dc.w	$3109				; command 09: 8x16 output (Japanese)
-	dc.b	$D9,$EA,$F9,$EB,$F9,$E8,$6E," (8X16 MESS OUT ",$95,$9D,$AD,$04,")",$FF,$00
+	dc.b	KANA_HA,KANA_RO,KANA_CHOU, KANA_WA,KANA_CHOU,KANA_RU,KANA_DO
+	dc.b	" (8X16 MESS OUT ",HIRA_NI,HIRA_HO,HIRA_N,HIRA_GO,")",$FF,$00
 	dc.w	$000B				; return to command list
 
 ;==============================================================================;
