@@ -7,7 +7,10 @@ screens (e.g. Samurai Shodown IV) do.
 Since this is a PRG file, and the format depends on various 68K data widths,
 it's typically best/easiest to use an assembler to generate the LOGO_*.PRG file.
 
+================================================================================
 [Basic Layout]
+The basic layout of a LOGO_*.PRG file is as follows:
+
 +--------+------+------+-------------+
 | Offset | Type | Size | Description |
 +--------+------+------+-------------+
@@ -16,6 +19,7 @@ it's typically best/easiest to use an assembler to generate the LOGO_*.PRG file.
 |(later) |(var.)|(var.)| Entry Data  |
 +--------+------+------+-------------+
 
+================================================================================
 [Header Data]
 The default header data only has three bits worth of control.
 Custom loaders may be able to interpret this word differently.
@@ -33,14 +37,16 @@ When set to 1, this will disable the built-in blue/green "Now Loading" graphic.
 When set to 1, this will disable the built-in progress indicator.
 
 <Disable animation>
-When set to 1, this will disable all animation commands.
+When set to 1, this will disable all animation commands. Don't set this if
+you're going to use any animations, or you'll wonder why they don't show up. :p
 
+================================================================================
 [Entry Index]
-Each entry is two longword values: the data type, and the start address. It
-appears that you should structure the file list in the order of the data types,
-so the fix tiles should come first, then palettes, etc. However, this has not
-been confirmed to be true. (Just some anecdotal stuff from when I made my first
-LOGO_x.PRG file... :p)
+The entry index holds a number of entries. Each entry is two longword values:
+the data type, and the start address. It appears that you should structure the
+file list in the order of the data types, so the fix tiles should come first,
+then palettes, etc. However, this has not been confirmed to be true.
+(Just some anecdotal stuff from when I made my first LOGO_x.PRG file.)
 
 <Data Type>
 $00000000: ?????????
@@ -48,16 +54,18 @@ $00000001: Fix tiles
 $00000002: Palette data
 $00000003: Fix map
 $00000004: Animation map
+$FFFFFFFF: Entry list terminator
 (Custom loaders might be able to handle different types?)
 
 <Start Address>
-These values are meant to be absolute addresses, starting at $120000. What's at
-$120000, you might ask? The file you're creating! This is why I told you to use
-an assembler for this, since making labels for the data and adding $120000 to
-them works just fine.
+These values are meant to be absolute addresses, starting at $120000. What's
+loaded at $120000, you might ask? The file you're creating! This is why I
+suggested using an assembler, since making labels for the data and adding
+$120000 to them works just fine.
 
+================================================================================
 [Entry Data]
-This is the fun part, since each data type has different.
+This is the fun part, since each data type has different setups.
 
 <Fix Tiles>
 +--------+------+------+-------------+
@@ -65,14 +73,13 @@ This is the fun part, since each data type has different.
 +--------+------+------+-------------+
 | $0000  | Word |    1 | Load Offset |
 | $0002  | Word |    1 | Fix Size    |
-|$0004...| Fix  |(var.)| Fix tiles*  |
+|$0004...| Fix  |(var.)| Fix tiles^  |
 +--------+------+------+-------------+
-
-* Fix tile data is byteswapped from the original format.
+^ Fix tile data is byteswapped from the normal format.
 
 Examples:
-when the Load Offset is $4000, the first fix tile is loaded at position $100.
-when the Fix Size is $4000, 512 ($200) tiles of Fix data are loaded.
+* when the Load Offset is $4000, the first fix tile is loaded at position $100.
+* when the Fix Size is $4000, 512 ($200) tiles of Fix data are loaded.
 
 <Palette Data>
 +--------+------+------+-------------+
@@ -89,10 +96,41 @@ default BIOS loading screen, you might be able to get away with trashing them.
 The Color Data is the same format as the regular palette colors.
 
 <Fix Map>
-(todo)
++--------+------+------+----------------+
+| Offset | Type | Size | Description    |
++--------+------+------+----------------+
+| $0000  | Word |    1 | VRAM address   |
+| $0002  | Word |    1 | Width (tiles)  |
+| $0004  | Word |    1 | Height (tiles) |
+|$0006...| Word |(var.)| Fix Mapping    |
++--------+------+------+----------------+
+
+VRAM address is the starting position for the fix data.
+Width and height are measured in number of tiles.
+
+The fix mapping data is mapped from left to right, top to bottom.
 
 <Animation Map>
-(todo)
+The animation map is similar to the fix map, but with more data to handle.
++--------+------+------+----------------+
+| Offset | Type | Size | Description    |
++--------+------+------+----------------+
+| $0000  | Word |    1 | VRAM address   |
+| $0002  | Word |    1 | Width (tiles)  |
+| $0004  | Word |    1 | Height (tiles) |
+| $0006  | Word |    1 | Num. of Frames |
+| $0008  | Word |    1 | Anim. Speed    |
+|$000A...| Word |(var.)| Anim. Mapping  |
++--------+------+------+----------------+
 
-[Custom Loaders]
+Animation speed is measured in number of frames.
+
+================================================================================
+[Custom Load Screen]
+This is where you'll REALLY need to be using a 68K assembler.
+
 (super todo)
+
+- Write new loading screen data to $120000.
+- $11C80C holds the address of the progress drawing bar routine.
+- $10F690 holds the current progress bar status 
