@@ -155,7 +155,30 @@ $0007		8x8 Output
 $0008		8x16 Output
 
 (Command 1: Data Format)
-; todo
+This command defines how the rest of the data is to be interpreted.
+
+FEDCBA98 76543210
+xxxxxx|| |______|
+      ||     |
+      ||     +_____ $01 (command part)
+      |+___________ End code (0)/Data size (1)
+      +____________ Byte (0)/Word (1)
+
+The primary bit to check here is "Byte/Word" (bit 9).
+
+* If bit 9 is set to 0, the data is in bytes.
+ * The upper byte of the next word (XX--) determines the constant upper byte
+   for VRAM writes.
+ * The purpose of the lower byte of the next word (--XX) changes depending on
+   "End code/Data size" (bit 8):
+  * When bit 8=0 ("end code"), the next word's lower byte is the end code value.
+  * When bit 8=1 ("data size"), the next word's lower byte is the data length.
+    (maximum $FF)
+
+* If bit 9 is set to 1, the data is in words.
+ * The purpose of the next word depends on "End code/Data size" (bit 8):
+  * When bit 8=0 ("end code"), the next word is the end code value.
+  * When bit 8=1 ("data size"), the next word is the data length (maximum $FFFF)
 
 (Command 7: 8x8 Output)
 Command $07 writes 8x8 tiles to the Fix layer.
