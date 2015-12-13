@@ -44,9 +44,9 @@ you're going to use any animations, or you'll wonder why they don't show up. :p
 [Entry Index]
 The entry index holds a number of entries. Each entry is two longword values:
 the data type, and the start address. It appears that you should structure the
-file list in the order of the data types, so the fix tiles should come first,
-then palettes, etc. However, this has not been confirmed to be true.
-(Just some anecdotal stuff from when I made my first LOGO_x.PRG file.)
+file list in the order of the data types, so the fix tile data (if you're using
+it) should come first, then palettes, etc. However, this has not been confirmed
+to be true. (Just some anecdotal stuff from when I made my first LOGO_x.PRG file.)
 
 <Data Type>
 $00000000: ?????????
@@ -133,4 +133,20 @@ This is where you'll REALLY need to be using a 68K assembler.
 
 - Write new loading screen data to $120000.
 - $11C80C holds the address of the progress drawing bar routine.
-- $10F690 holds the current progress bar status 
+- $10F690 holds the current progress bar status. It seems to be read as a word
+  by the NGCD system ROM?
+
+================================================================================
+[Other Notes]
+* Samurai Shodown IV and Samurai Spirits RPG use many custom loading screens.
+
+* It's assumed that the vs. screen loading pics from KOF96 (and other games) are
+  using a custom loading screen as well.
+
+* The following games don't contain Fix data in their LOGO_*.PRG files:
+ * Street Hoop/Dunk Dream/whatever the third name for the game was
+ * Metal Slug
+ * Metal Slug 2
+ * Aero Fighters/Sonic Wings 2
+ * Aero Fighters/Sonic Wings 3
+ * Twinkle Star Sprites
