@@ -46,6 +46,6 @@ TRAP_CODE:
 	dc.l	$0C0100FF,$671A3010,$B02D0ACE,$66123028
 	dc.l	$0002E048,$B02D0ACF,$6606B22D,$0AD06708
 	dc.l	$588851CF,$FFD83607
-	dc.w	$4e75
+	dc.w	$4E75
 
 	.include "softdips.inc"
