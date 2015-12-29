@@ -48,4 +48,4 @@ TRAP_CODE:
 	dc.l	$588851CF,$FFD83607
 	dc.w	$4E75
 
-	.include "softdips.inc"
+	include "softdips.inc"
