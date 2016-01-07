@@ -43,7 +43,7 @@ j_write67:
 ; It's noted that "MAME doesn't care". The hardware does, however.
 
 CheckBusyFlag:
-	in		a,(4)			; read Status 0 (busy flag in bit 7)
+	in		a,(YM_Status0) ; read Status 0 (busy flag in bit 7)
 	add		a
 	jr		C,CheckBusyFlag
 	ret
@@ -133,7 +133,7 @@ IRQ:
 	push	iy
 
 	; update internal Status 1 register
-	in		a, (6)
+	in		a, (YM_Status1)
 	ld		(intStatus1),a
 
 	; check status of ADPCM channels
@@ -146,7 +146,7 @@ IRQ:
 	;bit 0 - ADPCM-A 1
 
 	; update internal Status 0 register
-	in		a, (4)
+	in		a, (YM_Status0)
 	ld		(intStatus0),a
 
 	; Check Timer B
@@ -822,12 +822,12 @@ play_ADPCM_A:
 ;==============================================================================;
 ; ADPCM-A Channel masks
 tbl_ChanMasksPCMA:
-	byte	0x01			; Ch.1
-	byte	0x02			; Ch.2
-	byte	0x04			; Ch.3
-	byte	0x08			; Ch.4
-	byte	0x10			; Ch.5
-	byte	0x20			; Ch.6
+	byte ADPCMA_CH1
+	byte ADPCMA_CH2
+	byte ADPCMA_CH3
+	byte ADPCMA_CH4
+	byte ADPCMA_CH5
+	byte ADPCMA_CH6
 
 ;==============================================================================;
 ; play_ADPCM_B

@@ -164,3 +164,15 @@ FM2_SSGEG_Op4		equ 0x9E
 ; YM2610 ports
 YM_Status0			equ 4			; YM2610 Status 0 (read from port 4)
 YM_Status1			equ 6			; YM2610 Status 1 (read from port 6)
+
+YM_NMI_On			equ 8			; YM2610 NMI enable
+YM_NMI_Off			equ 0x18		; YM2610 NMI disable
+
+;==============================================================================;
+; ADPCM-A Channel Masks
+ADPCMA_CH1		equ 1
+ADPCMA_CH2		equ 2
+ADPCMA_CH3		equ 4
+ADPCMA_CH4		equ 8
+ADPCMA_CH5		equ 16
+ADPCMA_CH6		equ 32
