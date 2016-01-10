@@ -11,31 +11,31 @@ rst_BusyWait	= $28
 	include "sounddef.inc"
 	include "sysmacro.inc"
 ;==============================================================================;
-	org $0000
+	section start
 ; $0000: Disable interrupts and jump to the real entry point
 Start:
 	di						; Disable interrupts (Z80)
 	jp		EntryPoint
 ;==============================================================================;
-	org $0008
+	section delay1
 ; Port Delay Write for Addresses
 portWriteDelayPart1:
 	jp		portWriteDelayPart2
 ;==============================================================================;
-	org $0010
+	section delay2
 ; Port Delay Write for Data
 portWriteDelayPart3:
 	jp		portWriteDelayPart4
 ;==============================================================================;
-	org $0018
+	section write45
 j_write45:
 	jp		write_45
 ;==============================================================================;
-	org $0020
+	section write67
 j_write67:
 	jp		write_67
 ;==============================================================================;
-	org $0028
+	section ymwait
 ; Keep checking the busy flag in Status 0 until it's clear.
 
 ; Code from smkdan's example M1 driver (adpcma_demo2/sound_M1.asm), where he
@@ -50,13 +50,13 @@ CheckBusyFlag:
 ;==============================================================================;
 	;org $0030
 ;==============================================================================;
-	org $0038
+	section IRQ
 ; the IRQ belongs here.
 j_IRQ:
 	di
 	jp		IRQ
 ;==============================================================================;
-	org $0040
+	section idstr
 ; driver signature; subject to change.
 driverSig:
 	asc "freemlib "
@@ -68,7 +68,7 @@ driverSig:
 
 	asc	" SoundDriver v000"
 ;==============================================================================;
-	org $0066
+	section NMI
 ; NMI
 ; Inter-processor communications.
 
@@ -111,6 +111,8 @@ endNMI:
 	pop		af
 	retn
 
+;==============================================================================;
+	section code
 ;==============================================================================;
 ; IRQ (called from $0038)
 ; Handle an interrupt request.
