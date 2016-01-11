@@ -61,12 +61,12 @@ j_IRQ:
 driverSig:
 	asc "freemlib "
 	ifd TARGET_CD
-		asc	"Neo-CD"
+		asc "NG-CDA"
 	else
-		asc	"NG-ROM"
+		asc "NG-ROM"
 	endif
 
-	asc	" SoundDriver v000"
+	asc " SoundDriver v000"
 ;==============================================================================;
 	section NMI
 ; NMI
