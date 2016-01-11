@@ -9,6 +9,9 @@
 # ignore this ripped data
 doc/functions/sound/instruments/level_complete_0/
 
+# ignore vlink objects
+*.vobj
+
 # ignore binary sound drivers
 src/sound/*.m1
 src/sound/*.z80
