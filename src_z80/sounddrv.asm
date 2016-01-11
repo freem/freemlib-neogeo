@@ -2,11 +2,11 @@
 ; assemble with vasm z80 (oldstyle syntax)
 ;==============================================================================;
 ; Defines for RST usage, in case the locations change later.
-rst_PortDelay1	= $08
-rst_PortDelay2	= $10
-rst_Write45		= $18
-rst_Write67		= $20
-rst_BusyWait	= $28
+rst_PortDelay1 = $08
+rst_PortDelay2 = $10
+rst_Write45    = $18
+rst_Write67    = $20
+rst_BusyWait   = $28
 ;==============================================================================;
 	include "sounddef.inc"
 	include "sysmacro.inc"
@@ -14,26 +14,26 @@ rst_BusyWait	= $28
 	section start
 ; $0000: Disable interrupts and jump to the real entry point
 Start:
-	di						; Disable interrupts (Z80)
-	jp		EntryPoint
+	di ; Disable interrupts (Z80)
+	jp EntryPoint
 ;==============================================================================;
 	section delay1
 ; Port Delay Write for Addresses
 portWriteDelayPart1:
-	jp		portWriteDelayPart2
+	jp portWriteDelayPart2
 ;==============================================================================;
 	section delay2
 ; Port Delay Write for Data
 portWriteDelayPart3:
-	jp		portWriteDelayPart4
+	jp portWriteDelayPart4
 ;==============================================================================;
 	section write45
 j_write45:
-	jp		write_45
+	jp write_45
 ;==============================================================================;
 	section write67
 j_write67:
-	jp		write_67
+	jp write_67
 ;==============================================================================;
 	section ymwait
 ; Keep checking the busy flag in Status 0 until it's clear.
@@ -43,9 +43,9 @@ j_write67:
 ; It's noted that "MAME doesn't care". The hardware does, however.
 
 CheckBusyFlag:
-	in		a,(YM_Status0) ; read Status 0 (busy flag in bit 7)
-	add		a
-	jr		C,CheckBusyFlag
+	in a,(YM_Status0) ; read Status 0 (busy flag in bit 7)
+	add a
+	jr C,CheckBusyFlag
 	ret
 ;==============================================================================;
 	;org $0030
@@ -54,7 +54,7 @@ CheckBusyFlag:
 ; the IRQ belongs here.
 j_IRQ:
 	di
-	jp		IRQ
+	jp IRQ
 ;==============================================================================;
 	section idstr
 ; driver signature; subject to change.
@@ -76,39 +76,39 @@ driverSig:
 
 NMI:
 	; save registers
-	push	af
-	push	bc
-	push	de
-	push	hl
+	push af
+	push bc
+	push de
+	push hl
 
-	in		a,(0)			; Acknowledge NMI, get command from 68K via Port 0
-	ld		b,a				; save command into b for later
+	in a,(0) ; Acknowledge NMI, get command from 68K via Port 0
+	ld b,a ; save command into b for later
 
 	; "Commands $01 and $03 are always expected to be implemented as they
 	; are used by the BIOSes for initialization purposes." - NeoGeoDev Wiki
-	cp		1				; Command 1 (Slot Switch)
-	jp		Z,doCmd01
-	cp		3				; Command 3 (Soft Reset)
-	jp		Z,doCmd03
-	or		a				; check if Command is 0
-	jp		Z,endNMI		; exit if Command 0
+	cp 1 ; Command 1 (Slot Switch)
+	jp Z,doCmd01
+	cp 3 ; Command 3 (Soft Reset)
+	jp Z,doCmd03
+	or a ; check if Command is 0
+	jp Z,endNMI ; exit if Command 0
 
 	; do NMI crap/handle communication... I'm not fully sure what to do yet.
-	ld		(curCommand),a	; update curCommand
-	call	HandleCommand
+	ld (curCommand),a ; update curCommand
+	call HandleCommand
 
 	; update previous command
-	ld		a,(curCommand)
-	ld		(prevCommand),a
+	ld a,(curCommand)
+	ld (prevCommand),a
 
-	out		(0xC),a			; Reply to 68K with something.
-	out		(0),a			; Write to port 0 (Clear sound code)
+	out (0xC),a ; Reply to 68K with something.
+	out (0),a ; Write to port 0 (Clear sound code)
 endNMI:
 	; restore registers
-	pop		hl
-	pop		de
-	pop		bc
-	pop		af
+	pop hl
+	pop de
+	pop bc
+	pop af
 	retn
 
 ;==============================================================================;
@@ -127,16 +127,16 @@ endNMI:
 
 IRQ:
 	; save registers
-	push	af
-	push	bc
-	push	de
-	push	hl
-	push	ix
-	push	iy
+	push af
+	push bc
+	push de
+	push hl
+	push ix
+	push iy
 
 	; update internal Status 1 register
-	in		a, (YM_Status1)
-	ld		(intStatus1),a
+	in a,(YM_Status1)
+	ld (intStatus1),a
 
 	; check status of ADPCM channels
 	;bit 7 - ADPCM-B
@@ -148,8 +148,8 @@ IRQ:
 	;bit 0 - ADPCM-A 1
 
 	; update internal Status 0 register
-	in		a, (YM_Status0)
-	ld		(intStatus0),a
+	in a,(YM_Status0)
+	ld (intStatus0),a
 
 	; Check Timer B
 	; Check Timer A
@@ -166,16 +166,16 @@ IRQ:
 
 endIRQ:
 	; restore registers
-	pop		iy
-	pop		ix
-	pop		hl
-	pop		de
-	pop		bc
-	pop		af
+	pop iy
+	pop ix
+	pop hl
+	pop de
+	pop bc
+	pop af
 
 	; enable interrupts and return
 	ei
-	ret						; was "reti", see note below.
+	ret ; was "reti", see note below.
 
 ; note:
 ; "In an IRQ, RETI is only useful if you have something like a Z80 PIO to support
@@ -187,61 +187,61 @@ endIRQ:
 ; The entry point for the sound driver.
 
 EntryPoint:
-	ld		sp,0xFFFC		; Set stack pointer ($FFFD-$FFFE is used for other purposes)
-	im		1				; Set Interrupt Mode 1 (IRQ at $38)
+	ld sp,0xFFFC ; Set stack pointer ($FFFD-$FFFE is used for other purposes)
+	im 1 ; Set Interrupt Mode 1 (IRQ at $38)
 
 	; Clear RAM at $F800-$FFFF
-	xor		a				; make value in A = 0
-	ld		(0xF800),a		; set $F800 = 0
-	ld		hl,0xF800		; 00 value is at $F800
-	ld		de,0xF801		; write sequence begins at $F801
-	ld		bc,0x7FF		; end at $FFFF
-	ldir					; clear out memory
+	xor a ; make value in A = 0
+	ld (0xF800),a ; set $F800 = 0
+	ld hl,0xF800 ; 00 value is at $F800
+	ld de,0xF801 ; write sequence begins at $F801
+	ld bc,0x7FF ; end at $FFFF
+	ldir ; clear out memory
 
 	;-------------------------------------------;
 	; Initialize variables (todo)
 
 	;-------------------------------------------;
 	; Silence SSG, FM(, and ADPCM?)
-	call	ssg_Silence
-	call	fm_Silence
+	call ssg_Silence
+	call fm_Silence
 	; "various writes to ports 4/5 and 6/7"
 
 	;-------------------------------------------;
 	; write 1 to port $C0 (what is the purpose?)
-	ld		a,1
-	out		(0xC0),a
+	ld a,1
+	out (0xC0),a
 
 	;-------------------------------------------;
 	; continue setting up the hardware, etc.
 
-	ld		de,FM_TimerMode<<8|0x30		; Reset Timer flags, Disable Timer IRQs
-	write45					; write to ports 4 and 5
-	ld		de,PCMB_Control<<8|1	; Reset ADPCM-B
-	write45					; write to ports 4 and 5
-	ld		de,PCMB_Flags<<8|0		; Unmask ADPCM-A and B flag controls
-	write45					; write to ports 4 and 5
+	ld de,FM_TimerMode<<8|0x30 ; Reset Timer flags, Disable Timer IRQs
+	write45 ; write to ports 4 and 5
+	ld de,PCMB_Control<<8|1 ; Reset ADPCM-B
+	write45 ; write to ports 4 and 5
+	ld de,PCMB_Flags<<8|0 ; Unmask ADPCM-A and B flag controls
+	write45 ; write to ports 4 and 5
 
 	;-------------------------------------------;
 	; Initialize more variables
 
-	call	SetDefaultBanks	; Set default program banks
+	call SetDefaultBanks ; Set default program banks
 
 ; this section subject to further review
 ;{
 	; set timer values??
 
 	; Start Timers ($27,$3F to ports 4 and 5)
-	ld		de,FM_TimerMode<<8|0x3F		; Reset Timer flags, Enable Timer IRQs, Load Timers
-	write45					; write to ports 4 and 5
+	ld de,FM_TimerMode<<8|0x3F ; Reset Timer flags, Enable Timer IRQs, Load Timers
+	write45 ; write to ports 4 and 5
 
 	; (ADPCM-A shared volume)
-	ld		de,PCMA_MasterVol<<8|0x3F	; Set ADPCM-A volume to Maximum
-	write67					; write to ports 6 and 7
+	ld de,PCMA_MasterVol<<8|0x3F ; Set ADPCM-A volume to Maximum
+	write67 ; write to ports 6 and 7
 ;}
 
 	; (Enable interrupts)
-	ei						; Enable interrupts (Z80)
+	ei ; Enable interrupts (Z80)
 
 	; execution continues into the main loop.
 ;------------------------------------------------------------------------------;
@@ -250,21 +250,21 @@ EntryPoint:
 
 MainLoop:
 	; handle the buffer...
-	jp		MainLoop
+	jp MainLoop
 
 ;==============================================================================;
 ; write_45
 ; Writes data (from registers de) to ports 4 and 5. (YM2610 A1 line=0)
 
 write_45:
-	push	af
-	ld		a,d
-	out		(4),a			; write to port 4 (address 1)
-	rst		rst_PortDelay1	; Write delay 1 (17 cycles)
-	ld		a,e
-	out		(5),a			; write to port 5 (data 1)
-	rst		rst_PortDelay2	; Write delay 2 (83 cycles)
-	pop		af
+	push af
+	ld a,d
+	out (4),a ; write to port 4 (address 1)
+	rst rst_PortDelay1 ; Write delay 1 (17 cycles)
+	ld a,e
+	out (5),a ; write to port 5 (data 1)
+	rst rst_PortDelay2 ; Write delay 2 (83 cycles)
+	pop af
 	ret
 
 ;------------------------------------------------------------------------------;
@@ -272,14 +272,14 @@ write_45:
 ; Writes data (from registers de) to ports 6 and 7. (YM2610 A1 line=1)
 
 write_67:
-	push	af
-	ld		a,d
-	out		(6),a			; write to port 6 (address 2)
-	rst		rst_PortDelay1	; Write delay 1 (17 cycles)
-	ld		a,e
-	out		(7),a			; write to port 7 (data 2)
-	rst		rst_PortDelay2	; Write delay 2 (83 cycles)
-	pop		af
+	push af
+	ld a,d
+	out (6),a ; write to port 6 (address 2)
+	rst rst_PortDelay1 ; Write delay 1 (17 cycles)
+	ld a,e
+	out (7),a ; write to port 7 (data 2)
+	rst rst_PortDelay2 ; Write delay 2 (83 cycles)
+	pop af
 	ret
 
 ;------------------------------------------------------------------------------;
@@ -296,12 +296,12 @@ portWriteDelayPart2:
 ; (burns 83 cycles on YM2610)
 
 portWriteDelayPart4:
-	push	bc
-	push	de
-	push	hl
-	pop		hl
-	pop		de
-	pop		bc
+	push bc
+	push de
+	push hl
+	pop hl
+	pop de
+	pop bc
 	ret
 
 ;==============================================================================;
@@ -309,14 +309,14 @@ portWriteDelayPart4:
 ; Performs setup work for Command $01 (Slot Change).
 
 doCmd01:
-	ld		a,0
-	out		(0xC),a			; write 0 to port 0xC (Respond to 68K)
-	out		(0),a			; write to port 0 (Clear sound code)
-	ld		sp,0xFFFC		; set stack pointer
+	ld a,0
+	out (0xC),a ; write 0 to port 0xC (Respond to 68K)
+	out (0),a ; write to port 0 (Clear sound code)
+	ld sp,0xFFFC ; set stack pointer
 
 	; call Command 01
-	ld		hl,command_01
-	push	hl
+	ld hl,command_01
+	push hl
 	retn
 
 ;==============================================================================;
@@ -324,14 +324,14 @@ doCmd01:
 ; Performs setup work for Command $03 (Soft Reset).
 
 doCmd03:
-	ld		a,0
-	out		(0xC),a			; write 0 to port 0xC (Respond to 68K)
-	out		(0),a			; write to port 0 (Clear sound code)
-	ld		sp,0xFFFC		; set stack pointer
+	ld a,0
+	out (0xC),a ; write 0 to port 0xC (Respond to 68K)
+	out (0),a ; write to port 0 (Clear sound code)
+	ld sp,0xFFFC ; set stack pointer
 
 	; call Command 03
-	ld		hl,command_03
-	push	hl
+	ld hl,command_03
+	push hl
 	retn
 
 ;==============================================================================;
@@ -340,10 +340,10 @@ doCmd03:
 ; This setup treats the M1 ROM as linear space. (no bankswitching needed)
 
 SetDefaultBanks:
-	SetBank	0x1E,8			; Set $F000-$F7FF bank to bank $1E (30 *  2K)
-	SetBank	0xE,9			; Set $E000-$EFFF bank to bank $0E (14 *  4K)
-	SetBank	6,0xA			; Set $C000-$DFFF bank to bank $06 ( 6 *  8K)
-	SetBank	2,0xB			; Set $8000-$BFFF bank to bank $02 ( 2 * 16K)
+	SetBank 0x1E,8 ; Set $F000-$F7FF bank to bank $1E (30 *  2K)
+	SetBank 0xE,9  ; Set $E000-$EFFF bank to bank $0E (14 *  4K)
+	SetBank 6,0xA  ; Set $C000-$DFFF bank to bank $06 ( 6 *  8K)
+	SetBank 2,0xB  ; Set $8000-$BFFF bank to bank $02 ( 2 * 16K)
 	ret
 
 ;==============================================================================;
@@ -358,29 +358,29 @@ SetDefaultBanks:
 ; 7->4 cycles for each switch.
 
 fm_Silence:
-	push	af
+	push af
 
-	ld		a,FM_KeyOnOff	; Slot and Key On/Off
-	out		(4),a			; write to port 4 (address 1)
-	rst		8				; Write delay 1 (17 cycles)
+	ld a,FM_KeyOnOff ; Slot and Key On/Off
+	out (4),a        ; write to port 4 (address 1)
+	rst 8            ; Write delay 1 (17 cycles)
 	;---------------------------------------------------;
-	ld		a,FM_Chan1		; FM Channel 1
-	out		(5),a			; write to port 5 (data 1)
-	rst		0x10			; Write delay 2 (83 cycles)
+	ld a,FM_Chan1 ; FM Channel 1
+	out (5),a     ; write to port 5 (data 1)
+	rst 0x10      ; Write delay 2 (83 cycles)
 	;---------------------------------------------------;
-	ld		a,FM_Chan2		; FM Channel 2
-	out		(5),a			; write to port 5 (data 1)
-	rst		0x10			; Write delay 2 (83 cycles)
+	ld a,FM_Chan2 ; FM Channel 2
+	out (5),a     ; write to port 5 (data 1)
+	rst 0x10      ; Write delay 2 (83 cycles)
 	;---------------------------------------------------;
-	ld		a,FM_Chan3		; FM Channel 3
-	out		(5),a			; write to port 5 (data 1)
-	rst		0x10			; Write delay 2 (83 cycles)
+	ld a,FM_Chan3 ; FM Channel 3
+	out (5),a     ; write to port 5 (data 1)
+	rst 0x10      ; Write delay 2 (83 cycles)
 	;---------------------------------------------------;
-	ld		a,FM_Chan4		; FM Channel 4
-	out		(5),a			; write to port 5 (data 1)
-	rst		0x10			; Write delay 2 (83 cycles)
+	ld a,FM_Chan4 ; FM Channel 4
+	out (5),a     ; write to port 5 (data 1)
+	rst 0x10      ; Write delay 2 (83 cycles)
 
-	pop		af
+	pop af
 	ret
 
 ;------------------------------------------------------------------------------;
@@ -398,23 +398,23 @@ fm_Silence:
 
 	if 0
 fm_Silence2:
-	ld		de,FM_KeyOnOff<<8|FM_Chan1		; FM Channel 1
-	write45					; write to ports 4 and 5
+	ld de,FM_KeyOnOff<<8|FM_Chan1 ; FM Channel 1
+	write45 ; write to ports 4 and 5
 	;----------------------------------------------;
 	; FM Channel 2
-	inc		e				; 4 cycles (de = 0x2802)
-	;ld		de,0x2802		; (10 cycles)
-	write45					; write to ports 4 and 5
+	inc e ; 4 cycles (de = 0x2802)
+	;ld de,0x2802 ; (10 cycles)
+	write45 ; write to ports 4 and 5
 	;----------------------------------------------;
 	; FM Channel 3
-	ld		e,FM_Chan3		; 7 cycles (de = 0x2805)
-	;ld		de,0x2805		; (10 cycles)
-	write45					; write to ports 4 and 5
+	ld e,FM_Chan3 ; 7 cycles (de = 0x2805)
+	;ld de,0x2805 ; (10 cycles)
+	write45 ; write to ports 4 and 5
 	;----------------------------------------------;
 	; FM Channel 4
-	inc		e				; 4 cycles (de = 0x2806)
-	;ld		de,0x2806		; (10 cycles)
-	write45					; write to ports 4 and 5
+	inc e ; 4 cycles (de = 0x2806)
+	;ld de,0x2806 ; (10 cycles)
+	write45 ; write to ports 4 and 5
 	ret
 	endif
 
@@ -423,13 +423,13 @@ fm_Silence2:
 ; Silences all SSG channels.
 
 ssg_Silence:
-	ld		de,SSG_VolumeA<<8|0
+	ld de,SSG_VolumeA<<8|0
 	write45
 
-	ld		de,SSG_VolumeB<<8|0
+	ld de,SSG_VolumeB<<8|0
 	write45
 
-	ld		de,SSG_VolumeC<<8|0
+	ld de,SSG_VolumeC<<8|0
 	write45
 	ret
 
@@ -446,11 +446,11 @@ pcma_Silence:
 
 pcmb_Silence:
 	; Force ADPCM-B to stop synthesizing with a $1001 write (set Reset bit)
-	ld		de,PCMB_Control<<8|1	; $1001: ADPCM-B Control 1: Reset bit = 1
+	ld de,PCMB_Control<<8|1 ; $1001: ADPCM-B Control 1: Reset bit = 1
 	write45
 
 	; Stop ADPCM-B output by clearing the Reset bit ($1000 write)
-	dec		e					; $1000: ADPCM-B Control 1: All bits = 0
+	dec e ; $1000: ADPCM-B Control 1: All bits = 0
 	write45
 
 	ret
@@ -462,7 +462,7 @@ pcmb_Silence:
 ; Set all Timer flags (0x273F)
 
 timer_SetAll:
-	ld		de,FM_TimerMode<<8|0x3F
+	ld de,FM_TimerMode<<8|0x3F
 	write45
 	ret
 
@@ -471,7 +471,7 @@ timer_SetAll:
 ; Clear all Timer flags (0x2700)
 
 timer_ClearAll:
-	ld		de,FM_TimerMode<<8|0
+	ld de,FM_TimerMode<<8|0
 	write45
 	ret
 
@@ -480,7 +480,7 @@ timer_ClearAll:
 ; Reset A/B flags, Load and Enable Timer B (0x273A)
 
 timer_LoadEnable_B:
-	ld		de,FM_TimerMode<<8|0x3A
+	ld de,FM_TimerMode<<8|0x3A
 	write45
 	ret
 
@@ -489,7 +489,7 @@ timer_LoadEnable_B:
 ; Reset A/B flags, Load and Enable Timer A (0x2735)
 
 timer_LoadEnable_A:
-	ld		de,FM_TimerMode<<8|0x35
+	ld de,FM_TimerMode<<8|0x35
 	write45
 	ret
 
@@ -498,7 +498,7 @@ timer_LoadEnable_A:
 ; Reset Timer A flag, Enable and Load Timers A/B (0x271F)
 
 timer_Reset_A:
-	ld		de,FM_TimerMode<<8|0x1F
+	ld de,FM_TimerMode<<8|0x1F
 	write45
 	ret
 
@@ -507,7 +507,7 @@ timer_Reset_A:
 ; Reset Timer B flag, Enable and Load Timers A/B (0x272F)
 
 timer_Reset_B:
-	ld		de,FM_TimerMode<<8|0x2F
+	ld de,FM_TimerMode<<8|0x2F
 	write45
 	ret
 
@@ -516,8 +516,8 @@ timer_Reset_B:
 ; Handles any command that isn't already dealt with separately (e.g. $01, $03).
 
 HandleCommand:
-	ld		a,(curCommand)	; get current command
-	ld		b,a				; save in b
+	ld a,(curCommand) ; get current command
+	ld b,a ; save in b
 
 	; check what the command falls under
 	; in SNK drivers, this is done using a table of values that map between 0-5:
@@ -527,8 +527,8 @@ HandleCommand:
 	; might want to have different configurations.
 
 	; However, commands $00-$1F are always reserved for system use.
-	cp		0x20
-	jp		C,HandleSystemCommand
+	cp 0x20
+	jp C,HandleSystemCommand
 
 	; commands $20-$FF are up to you, for now...
 
@@ -541,57 +541,57 @@ HandleCommand_end:
 
 HandleSystemCommand:
 	; use command as index into tbl_SysCmdPointers
-	ld		e,a
-	ld		d,0
-	ld		hl,tbl_SysCmdPointers
-	add		hl,de
-	add		hl,de
+	ld e,a
+	ld d,0
+	ld hl,tbl_SysCmdPointers
+	add hl,de
+	add hl,de
 
 	; get routine location and jump to it
-	ld		e,(hl)
-	inc		hl
-	ld		d,(hl)
-	push	de
-	pop		hl
-	jp		(hl)
+	ld e,(hl)
+	inc hl
+	ld d,(hl)
+	push de
+	pop hl
+	jp (hl)
 
 ;------------------------------------------------------------------------------;
 ; Table of system command routine pointers
 ; Commands marked with a * are required by the BIOS
 
 tbl_SysCmdPointers:
-	word	command_00		; $00 - nop/do nothing
-	word	command_01		; $01* - Slot switch
-	word	command_02		; $02* - Play eyecatch music
-	word	command_03		; $03* - Soft Reset
-	word	command_04		; $04 - Disable All (Music & Sounds)
-	word	command_05		; $05 - Disable Music
-	word	command_06		; $06 - Disable Sounds
-	word	command_07		; $07 - Enable All (Music & Sounds)
-	word	command_08		; $08 - Enable Music
-	word	command_09		; $09 - Enable Sounds
-	word	command_0A		; $0A - Silence SSG channels
-	word	fm_Silence		; $0B - Silence FM channels
-	word	command_0C		; $0C - Stop all ADPCM-A samples
-	word	pcmb_Silence	; $0D - Stop current ADPCM-B sample
-	word	command_0E		; $0E - (tempo-related)
-	word	command_0F		; $0F - (tempo-related)
-	word	command_10		; $10 - Fade Out (1 argument; fade speed)
-	word	command_11		; $11 - Stop Fade In/Out
-	word	command_12		; $12 - Fade In (1 argument; fade speed)
-	word	command_00		; $13 - (currently unassigned)
-	word	command_00		; $14 - (currently unassigned)
-	word	command_00		; $15 - (currently unassigned)
-	word	command_00		; $16 - (currently unassigned)
-	word	command_00		; $17 - (currently unassigned)
-	word	command_00		; $18 - (currently unassigned)
-	word	command_00		; $19 - (currently unassigned)
-	word	command_00		; $1A - (currently unassigned)
-	word	command_00		; $1B - (currently unassigned)
-	word	command_00		; $1C - (currently unassigned)
-	word	command_00		; $1D - (currently unassigned)
-	word	command_00		; $1E - (currently unassigned)
-	word	command_00		; $1F - (currently unassigned)
+	word command_00   ; $00 - nop/do nothing
+	word command_01   ; $01* - Slot switch
+	word command_02   ; $02* - Play eyecatch music
+	word command_03   ; $03* - Soft Reset
+	word command_04   ; $04 - Disable All (Music & Sounds)
+	word command_05   ; $05 - Disable Music
+	word command_06   ; $06 - Disable Sounds
+	word command_07   ; $07 - Enable All (Music & Sounds)
+	word command_08   ; $08 - Enable Music
+	word command_09   ; $09 - Enable Sounds
+	word command_0A   ; $0A - Silence SSG channels
+	word fm_Silence   ; $0B - Silence FM channels
+	word command_0C   ; $0C - Stop all ADPCM-A samples
+	word pcmb_Silence ; $0D - Stop current ADPCM-B sample
+	word command_0E   ; $0E - (tempo-related)
+	word command_0F   ; $0F - (tempo-related)
+	word command_10   ; $10 - Fade Out (1 argument; fade speed)
+	word command_11   ; $11 - Stop Fade In/Out
+	word command_12   ; $12 - Fade In (1 argument; fade speed)
+	word command_00   ; $13 - (currently unassigned)
+	word command_00   ; $14 - (currently unassigned)
+	word command_00   ; $15 - (currently unassigned)
+	word command_00   ; $16 - (currently unassigned)
+	word command_00   ; $17 - (currently unassigned)
+	word command_00   ; $18 - (currently unassigned)
+	word command_00   ; $19 - (currently unassigned)
+	word command_00   ; $1A - (currently unassigned)
+	word command_00   ; $1B - (currently unassigned)
+	word command_00   ; $1C - (currently unassigned)
+	word command_00   ; $1D - (currently unassigned)
+	word command_00   ; $1E - (currently unassigned)
+	word command_00   ; $1F - (currently unassigned)
 
 ;==============================================================================;
 ; temporary system command holding cell.
@@ -610,57 +610,57 @@ command_00:
 
 command_01:
 	di
-	xor		a
-	out		(0xC),a			; Write 0 to port 0xC (Reply to 68K)
-	out		(0),a			; Reset sound code
+	xor a
+	out (0xC),a ; Write 0 to port 0xC (Reply to 68K)
+	out (0),a ; Reset sound code
 
-	call	SetDefaultBanks	; initialize banks to default config
+	call SetDefaultBanks ; initialize banks to default config
 
 	; (FM) turn off Left/Right, AM Sense and PM Sense
-	ld		de,FM1_LeftRightAMPM<<8|0	; $B500: turn off for channels 1/3
+	ld de,FM1_LeftRightAMPM<<8|0 ; $B500: turn off for channels 1/3
 	write45
 	write67
-	ld		de,FM2_LeftRightAMPM<<8|0	; $B600: turn off for channels 2/4
+	ld de,FM2_LeftRightAMPM<<8|0 ; $B600: turn off for channels 2/4
 	write45
 	write67
 
 	; (ADPCM-A, ADPCM-B) Reset ADPCM channels
-	ld		de,PCMA_Control<<8|0xBF		; $00BF: ADPCM-A Dump=1, all channels=1
+	ld de,PCMA_Control<<8|0xBF ; $00BF: ADPCM-A Dump=1, all channels=1
 	write67
-	ld		de,PCMB_Control<<8|1	; $1001: ADPCM-B Reset=1
+	ld de,PCMB_Control<<8|1 ; $1001: ADPCM-B Reset=1
 	write45
 
 	; (ADPCM-A, ADPCM-B) Poke ADPCM channel flags (write 1, then 0)
-	ld		de,PCMB_Flags<<8|0xBF	; $1CBF: Reset flags for ADPCM-A 1-6 and ADPCM-B
+	ld de,PCMB_Flags<<8|0xBF ; $1CBF: Reset flags for ADPCM-A 1-6 and ADPCM-B
 	write45
-	ld		de,PCMB_Flags<<8|0		; $1C00: Enable flags for ADPCM-A 1-6 and ADPCM-B
+	ld de,PCMB_Flags<<8|0 ; $1C00: Enable flags for ADPCM-A 1-6 and ADPCM-B
 	write45
 
 	; silence FM channels
-	ld		de,FM_KeyOnOff<<8|1		; FM channel 1 (1/4)
+	ld de,FM_KeyOnOff<<8|1 ; FM channel 1 (1/4)
 	write45
-	ld		de,FM_KeyOnOff<<8|2		; FM channel 2 (2/4)
+	ld de,FM_KeyOnOff<<8|2 ; FM channel 2 (2/4)
 	write45
-	ld		de,FM_KeyOnOff<<8|5		; FM channel 5 (3/4)
+	ld de,FM_KeyOnOff<<8|5 ; FM channel 5 (3/4)
 	write45
-	ld		de,FM_KeyOnOff<<8|6		; FM channel 6 (4/4)
+	ld de,FM_KeyOnOff<<8|6 ; FM channel 6 (4/4)
 	write45
 
 	; silence SSG channels
-	ld		de,SSG_VolumeA<<8|0		;SSG Channel A
+	ld de,SSG_VolumeA<<8|0 ;SSG Channel A
 	write45
-	ld		de,SSG_VolumeB<<8|0		;SSG Channel B
+	ld de,SSG_VolumeB<<8|0 ;SSG Channel B
 	write45
-	ld		de,SSG_VolumeC<<8|0		;SSG Channel C
+	ld de,SSG_VolumeC<<8|0 ;SSG Channel C
 	write45
 
 	; set up infinite loop in RAM
-	ld		hl,0xFFFD
-	ld		(hl),0xC3		; Set 0xFFFD = 0xC3 ($C3 is opcode for "jp")
-	ld		(0xFFFE),hl		; Set 0xFFFE = 0xFFFD (making "jp $FFFD")
-	ld		a,1
-	out		(0xC),a			; Write 1 to port 0xC (Reply to 68K)
-	jp		0xFFFD			; jump to infinite loop in RAM
+	ld hl,0xFFFD
+	ld (hl),0xC3 ; Set 0xFFFD = 0xC3 ($C3 is opcode for "jp")
+	ld (0xFFFE),hl ; Set 0xFFFE = 0xFFFD (making "jp $FFFD")
+	ld a,1
+	out (0xC),a ; Write 1 to port 0xC (Reply to 68K)
+	jp 0xFFFD ; jump to infinite loop in RAM
 
 ;------------------------------------------------------------------------------;
 ; command_02
@@ -675,21 +675,21 @@ command_02:
 
 command_03:
 	di
-	xor		a
-	out		(0xC),a			; Write to port 0xC (Reply to 68K)
-	out		(0),a			; Reset sound code
-	ld		sp,0xFFFF		; Set stack pointer location
+	xor a
+	out (0xC),a ; Write to port 0xC (Reply to 68K)
+	out (0),a ; Reset sound code
+	ld sp,0xFFFF ; Set stack pointer location
 
 	; disable FM channels
-	ld		d, 0xB5
-	ld		e, 0			; $B500: Clear L/R output, AM Sense, PM Sense
-	call	write_45		; (for channel 1)
-	call	write_67		; (for channel 3)
-	ld		d, 0xB6		; $B600: Clear L/R output, AM Sense, PM Sense
-	call	write_45		; (for channel 2)
-	call	write_67		; (for channel 4)
+	ld d, 0xB5
+	ld e, 0 ; $B500: Clear L/R output, AM Sense, PM Sense
+	call write_45 ; (for channel 1)
+	call write_67 ; (for channel 3)
+	ld d, 0xB6 ; $B600: Clear L/R output, AM Sense, PM Sense
+	call write_45 ; (for channel 2)
+	call write_67 ; (for channel 4)
 
-	jp		Start			; Go back to the top.
+	jp Start ; Go back to the top.
 
 ;------------------------------------------------------------------------------;
 ; command_04
@@ -748,10 +748,10 @@ command_09:
 command_0A:
 	; xxx: deal with typeToggle?
 	; xxx: ssg toggle register uses active low (e.g. 0=on)
-	;xor		a
-	;ld		(ssgToggle),a
+	;xor a
+	;ld (ssgToggle),a
 
-	call	ssg_Silence
+	call ssg_Silence
 	ret
 
 ;------------------------------------------------------------------------------;
@@ -801,8 +801,8 @@ command_12:
 ; Play an ADPCM-A sample.
 
 ; (Params)
-; d				ADPCM-A Channel Number
-; e				ADPCM-A Sample Number
+; d      ADPCM-A Channel Number
+; e      ADPCM-A Sample Number
 
 play_ADPCM_A:
 	; check Status 1 for channel end?
@@ -836,7 +836,7 @@ tbl_ChanMasksPCMA:
 ; Play an ADPCM-B sample.
 
 ; (Params)
-; d				ADPCM-B Sample Number
+; d      ADPCM-B Sample Number
 
 play_ADPCM_B:
 	; $1C80		; Flag Control ($1C on ports 4/5)
@@ -865,18 +865,18 @@ play_ADPCM_B:
 ; Handles an ADPCM-A channel ending.
 
 ; (Params)
-; ?				ADPCM-A channel number
+; ?      ADPCM-A channel number
 
 chanEnd_ADPCMA:
 	ret
 
 ;==============================================================================;
 ; Driver tables
-	include "freqtables.inc"	; FM and SSG frequency tables
+	include "freqtables.inc" ; FM and SSG frequency tables
 
 ;==[begin to edit stuff below this line]======================================;
-	include "instruments.inc"	; Instrument Data
-	include "samples.inc"		; ADPCM Sample Data
+	include "instruments.inc" ; Instrument Data
+	include "samples.inc" ; ADPCM Sample Data
 
 ;==============================================================================;
 ; Sound Effects Library
