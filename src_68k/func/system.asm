@@ -12,12 +12,12 @@
 ; or the two Count values (BIOS_GAMEDIP_COUNT1, BIOS_GAMEDIP_COUNT2).
 
 ; (Params)
-; \1			Soft DIP number to read (0-9)
+; \1     Soft DIP number to read (0-9)
 ; (Returns)
-; d0			Value of requested Soft DIP
+; d0     Value of requested Soft DIP
 
-macr_GetSoftDipNum:	macro
-	move.b	BIOS_GAMEDIP_01+\1,d0
+macr_GetSoftDipNum: macro
+	move.b BIOS_GAMEDIP_01+\1,d0
 	endm
 ;------------------------------------------------------------------------------;
 
@@ -37,24 +37,24 @@ macr_GetSoftDipNum:	macro
 ; If we are not on MVS, the routine ends early.
 
 ; (Returns)
-; d0			(word) Day number 1-366, or 0 if routine not run (e.g. home system)
+; d0     (word) Day number 1-366, or 0 if routine not run (e.g. home system)
 
 ; (Thrashes)
-; d0			Used for return value
+; d0     Used for return value
 
 mvsCal_GetDayNum:
-	moveq	#0,d0
+	moveq #0,d0
 	ifd TARGET_CD
-		rts					; short circuit when building for CD systems
+		rts ; short circuit when building for CD systems
 	else
 
 	; check for MVS
-	move.b	REG_STATUS_B,d0
-	andi.b	#$80
-	beq		.mvsCal_GetDayNum_end	; not MVS, skip this.
+	move.b REG_STATUS_B,d0
+	andi.b #$80
+	beq .mvsCal_GetDayNum_end ; not MVS, skip this.
 
 	; MVS mode, get the calendar values
-	jsr		READ_CALENDAR
+	jsr READ_CALENDAR
 
 	; (rest of this routine is WIP)
 	; Check for leap year
