@@ -5,16 +5,20 @@
 ; Word	$0000-$FFFF         (0-65535)
 ; Long	$00000000-$FFFFFFFF (0-4294967295)
 ;==============================================================================;
-; todo: Neo-Geo CD uses some ram locations differently. Needs research.
-; Anything between $10F300 and $10FD80 is typically unexamined, but double check
-; the NeoGeo dev wiki and existing software/BIOSes first.
+; todo: NGCD system ROMs uses some RAM locations differently. Needs research.
+; Anything and everything between $10F300 and $10FD80 is typically unexamined,
+; but double check the NeoGeo dev wiki, existing software, and system ROMs first.
 ;==============================================================================;
 BIOS_WORKRAM equ $10F300
 
 ;===================================;
-; $10F688 "decremented each time a sector is read until it's 0" on CD systems
+; $10F650 ; (byte)
+
+; $10F688 ; (word) "decremented each time a sector is read until it's 0" on CD systems
 ; $10F6..
 BIOS_CD_LOADPROGRESS equ $10F690 ; (word) current progress bar state
+
+; $10F6DC ; (byte)
 
 ;===================================;
 ; $10FC24 ; (word)
@@ -175,8 +179,8 @@ BIOS_MINUTE equ $10FDD7 ; (byte) Current Minute
 BIOS_SECOND equ $10FDD8 ; (byte) Current Second
 ;BIOS_?????????? equ $10FDD9 ; (byte) ?
 ;-----------------------------------;
-BIOS_SELECT_TIMER equ $10FDDA ; (word) (a.k.a. "BIOS_COMPULSION_TIMER")
-BIOS_START_TEST equ $10FDDC ; (word) ??
+BIOS_SELECT_TIMER equ $10FDDA ; (word) (a.k.a. "compulsion timer", "select timer"...)
+BIOS_START_TEST equ $10FDDC ; (word) ?? (might be used differently on CD systems)
 BIOS_COIN_LEVER equ $10FDDE ; (word) ??
 
 ;-------------------------------------------------------------------;
