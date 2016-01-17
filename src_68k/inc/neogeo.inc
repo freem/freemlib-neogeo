@@ -25,10 +25,9 @@ CONTROLLER_SETUP	equ $C004D4 ; Initializes controllers
 ;------------------------------------------------------------------------------;
 ; [CD systems-only BIOS thunk calls]
 BIOSF_HBLANK		equ $C004DA ; HBlank handler (replaces SYSTEM_INT2)
-BIOSF_LOADFILE		equ $C00522 ; Load file from CD, with animation
 BIOSF_UPLOAD		equ $C00546 ; Upload data to DRAM
 ;$C0054C ? (CDZ)
-;$C00552 ? (CDZ)
+BIOSF_LOADFILE		equ $C00552 ; Load file from CD, with animation
 ;$C00558 ? (CDZ)
 BIOSF_CDPLAYER		equ $C0055E ; Reset to CD Player
 BIOSF_LOADFILEX		equ $C00564 ; Load file from CD, no animation
@@ -193,7 +192,7 @@ UPLOAD				equ $E00000 ; Upload Zone ($E00000-$EFFFFF)
 
 ;$FF0101	(byte) "nLC8951Register (4 LSB)"
 ; $FF0102??		start cd transfer when 0xF0 according to mess
-;$FF0103	(byte) "nLC8951Register value"
+;$FF0103	(byte) "nLC8951Register value" (read 4x)
 ; $FF0104??
 ;$FF0105	(byte) nActiveTransferArea = byteValue ("area selector")
 ; $FF0106??
