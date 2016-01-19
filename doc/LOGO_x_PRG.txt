@@ -4,8 +4,8 @@ These types of files represent data for the Neo-Geo CD loading screen. Simple
 loading screens don't require much in the way of code, while custom loading
 screens (e.g. Samurai Shodown IV) do.
 
-Since this is a PRG file, and the format depends on various 68K data widths,
-it's typically best/easiest to use an assembler to generate the LOGO_*.PRG file.
+Since this is a PRG file and the format depends on various 68K data widths, it's
+typically best/easiest to use a 68K assembler to generate the LOGO_*.PRG file.
 
 ================================================================================
 [Basic Layout]

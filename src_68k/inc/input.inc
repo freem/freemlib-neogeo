@@ -102,6 +102,5 @@ INBIT_STATC_SELECT3 equ 5
 INBIT_STATC_START4  equ 6
 INBIT_STATC_SELECT4 equ 7
 
-; todo: mahjong controller, trackball
-
 ;==============================================================================;
+; todo: mahjong controller, trackball

@@ -226,7 +226,7 @@ BIOS_GD_STORE equ $10FE26 ; (byte) 32 bytes
 ;===================================;
 BIOS_WORK2 equ $10FE80
 
-BIOS_DEVMODE equ $10FE80 ; (byte)
+BIOS_DEVMODE equ $10FE80 ; (byte) nonzero value = enabled
 ;$10FE81-$10FE87 "Power on ID code"??; typically, code checks for "1streset"
 BIOS_FRAMECOUNT equ $10FE88 ; (long) (a.k.a. "SYS_INT1_TIMER")
 BIOS_SYS_STOPPER equ $10FE8C ; (byte) "system stopper", actually BIOS VBlank flag

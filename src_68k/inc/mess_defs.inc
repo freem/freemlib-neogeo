@@ -8,8 +8,8 @@ SYMB_RIGHT = $11 ; ▶ Right arrow
 SYMB_UP    = $12 ; ▲ Up arrow
 SYMB_DOWN  = $13 ; ▼ Down arrow
 ;-------;
-SYMB_01 = $5F ; 00 1/2 (see NAM-1975)
-SYMB_02 = $60 ; 00 2/2 (see NAM-1975)
+SYMB_01 = $5F ; 00 1/2 (see NAM-1975 soft dips)
+SYMB_02 = $60 ; 00 2/2 (see NAM-1975 soft dips)
 ;-------;
 SYMB_COPYRIGHT = $7B ; © Copyright symbol
 ;-------;
@@ -225,75 +225,83 @@ KANA_PO  = $78 ; ポ
 
 ; [Kanji]
 ; 難易度時間分秒有
-; 無設定??数
-; ?び
+; 無設定持機数
+; 遊び
 ; 方説
 ; 明
 
-; 難
-;KANJI_x_1 = $00 ; 難 1/2
-;KANJI_x_2 = $01 ; 難 2/2
+; 難 (Nan/"Difficulty")
+;KANJI_NAN_1 = $00 ; 難 1/2
+;KANJI_NAN_2 = $01 ; 難 2/2
 ;--------;
-; 易
-;KANJI_x_1 = $02 ; 易 1/2
-;KANJI_x_2 = $03 ; 易 2/2
+; 易 (Eki/"Easy")
+;KANJI_EKI_1 = $02 ; 易 1/2
+;KANJI_EKI_2 = $03 ; 易 2/2
 ;--------;
-; 度
-;KANJI_x_1 = $04 ; 度 1/2
-;KANJI_x_2 = $05 ; 度 2/2
+; 度 (Do/"Degree")
+;KANJI_DO_1 = $04 ; 度 1/2
+;KANJI_DO_2 = $05 ; 度 2/2
 ;--------;
-; 時/ji
-;KANJI_JI_1 = $06 ; 時 1/2
-;KANJI_JI_2 = $07 ; 時 2/2
+; 時 (Toki/"Time")
+;KANJI_TOKI_1 = $06 ; 時 1/2
+;KANJI_TOKI_2 = $07 ; 時 2/2
 ;--------;
-; 間/kan
+; 間 (kan?)
 ;KANJI_KAN_1 = $08 ; 間 1/2
 ;KANJI_KAN_2 = $09 ; 間 2/2
 ;--------;
-; 分/bun (minute)
+; 分 (bun/"Minute")
 ;KANJI_BUN_1 = $0A ; 分 1/2
 ;KANJI_BUN_2 = $0B ; 分 2/2
 ;--------;
-; 秒/byō (second)
+; 秒 (byō/"Second")
 ;KANJI_BYO_1 = $0C ; 秒 1/2
 ;KANJI_BYO_2 = $0D ; 秒 2/2
 ;--------;
-; 有/yū (yes)
+; 有 (yū/"Yes")
 ;KANJI_YU_1 = $0E ; 有 1/2
 ;KANJI_YU_2 = $0F ; 有 2/2
 ;--------;
-; 無/mu (nothing/no)
+; 無 (mu/"Nothing","No")
+;KANJI_MU_1 = $14 ; 無 1/2
+;KANJI_MU_2 = $15 ; 無 2/2
+;--------;
+; 設 (?/"Setting")
+;KANJI_x_1 = $16 ; 設 1/2
+;KANJI_x_2 = $17 ; 設 2/2
+;--------;
+; 定 (Jō/"Constant")
+;KANJI_x_1 = $18 ; 定 1/2
+;KANJI_x_2 = $19 ; 定 2/2
+;--------;
+; 持? (Ji)
+;KANJI_x_1 = $1A
+;KANJI_x_2 = $1B
+;--------;
+; 機 (Ki/"Machine"?)
+;KANJI_x_1 = $1C
+;KANJI_x_2 = $1D
+;--------;
+; 数 (Kazu/"Number")
+;KANJI_KAZU_1 = $1E
+;KANJI_KAZU_2 = $1F
+;--------;
+; 遊? (Yū)
+;KANJI_x_1 = $7C
+;KANJI_x_2 = $7D
+;--------;
+; び, but not really??
+;KANJI_x_1 = $7E
+;KANJI_x_2 = $7F
+;--------;
+; 方 (Hō/"Person")
 ;KANJI_x_1 =
 ;KANJI_x_2 =
 ;--------;
-; 設
+; 説 (Setsu?)
 ;KANJI_x_1 =
 ;KANJI_x_2 =
 ;--------;
-; 定
-;KANJI_x_1 =
-;KANJI_x_2 =
-;--------;
-;KANJI_x_1 =
-;KANJI_x_2 =
-;--------;
-;KANJI_x_1 =
-;KANJI_x_2 =
-;--------;
-;KANJI_x_1 =
-;KANJI_x_2 =
-;--------;
-;KANJI_x_1 =
-;KANJI_x_2 =
-;--------;
-;KANJI_x_1 =
-;KANJI_x_2 =
-;--------;
-;KANJI_x_1 =
-;KANJI_x_2 =
-;--------;
-;KANJI_x_1 =
-;KANJI_x_2 =
-;--------;
+; 明 (Akira?)
 ;KANJI_x_1 =
 ;KANJI_x_2 =

@@ -10,6 +10,7 @@
 	dc.w $0FFF ; NGH number ($0000 is prohibited)
 
 	dc.l $00080000 ; game prog size in bytes
+	; $00040000 =  2Mbits/256KB
 	; $00080000 =  4Mbits/512KB
 	; $00100000 = 16Mbits/1MB
 	; etc.
@@ -20,8 +21,8 @@
 	dc.b $00 ; Eye catcher anim flag (0=BIOS,1=game,2=nothing)
 	dc.b $00 ; Sprite bank for eyecatch if done by BIOS
 
-	dc.l softDips_Japan ; Software dips for Japan
-	dc.l softDips_USA ; Software dips for USA
+	dc.l softDips_Japan  ; Software dips for Japan
+	dc.l softDips_USA    ; Software dips for USA
 	dc.l softDips_Europe ; Software dips for Europe
 
 	jmp USER ; $122

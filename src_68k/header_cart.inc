@@ -5,6 +5,7 @@
 	dc.w $0FFF ; NGH number ($0000 is prohibited)
 
 	dc.l $00080000 ; game prog size in bytes
+	; $00040000 =  2Mbits/256KB
 	; $00080000 =  4Mbits/512KB
 	; $00100000 =  8Mbits/1MB
 	; etc.
