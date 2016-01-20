@@ -103,4 +103,41 @@ INBIT_STATC_START4  equ 6
 INBIT_STATC_SELECT4 equ 7
 
 ;==============================================================================;
-; todo: mahjong controller, trackball
+; "expanded" controller (Do any games use this?)
+; INPUT_1/BIOS_P1* = Controller 1A
+; INPUT_2/BIOS_P2* = Controller 1B
+; INPUT_3/BIOS_P3* = Controller 2A
+; INPUT_4/BIOS_P4* = Controller 2B
+
+;==============================================================================;
+; mahjong controller (WIP)
+
+; INPUT_1/2 has raw mahjong data (?); INPUT_3/4 has active-edge mahjong data.
+; Both use this table:
+; of.| 7 6 5 4 3 2 1 0 | BIOS RAM equiv.
+; ---+-----------------+-----------------+
+; +1 | x G F E D C B A | BIOS_P*PREVIOUS
+; +2 | x N M L K J I H | BIOS_P*CURRENT
+; +3 | x x x R r k c P | BIOS_P*CHANGE
+
+; R = Reach
+; r = Ron
+; k = Kan
+; c = Chi
+; P = Pong
+
+
+; INPUT_5, INPUT_6 table:
+; Mahjong | Normal
+; --------+--------
+;    A    |  d4/A
+;    B    |  d5/B
+;    C    |  d6/C
+;    D    |  d7/D
+;    E    |  d0/Up
+;    F    |  d1/Down
+;    G    |  d2/Left
+;    H    |  d3/Right
+
+;==============================================================================;
+; todo: trackball
