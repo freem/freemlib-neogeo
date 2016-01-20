@@ -211,7 +211,7 @@ BIOS_COIN2_CONT_CRED equ $10FE16 ; (word)
 ;-----------------------------------;
 BIOS_SELECT_FREE equ $10FE18 ; (byte)
 ;??? equ $10FE19 ; (byte)
-BIOS_NON_LIMIT equ $10FE1A ; (word)
+BIOS_NON_LIMIT equ $10FE1A ; (byte/word?)
 BIOS_DEMO_SOUND equ $10FE1C ; (byte)
 BIOS_INIT_MARK equ $10FE1E ; (word)
 BIOS_SR_STORE equ $10FE20 ; (word)
