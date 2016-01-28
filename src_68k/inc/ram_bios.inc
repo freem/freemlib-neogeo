@@ -179,7 +179,7 @@ BIOS_MINUTE equ $10FDD7 ; (byte) Current Minute
 BIOS_SECOND equ $10FDD8 ; (byte) Current Second
 ;BIOS_?????????? equ $10FDD9 ; (byte) ?
 ;-----------------------------------;
-BIOS_SELECT_TIMER equ $10FDDA ; (word) (a.k.a. "compulsion timer", "select timer"...)
+BIOS_SELECT_TIMER equ $10FDDA ; (word) (a.k.a. "compulsion timer")
 BIOS_START_TEST equ $10FDDC ; (word) ?? (might be used differently on CD systems)
 BIOS_COIN_LEVER equ $10FDDE ; (word) ??
 
