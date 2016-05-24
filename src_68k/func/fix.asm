@@ -38,7 +38,7 @@
 fixmac_CalcVRAMAddr: macro
 	; 1) do check for vram addr or cell location (d0 >= $7000)
 	cmpi.w #$7000,d0
-	bge .fm_CVA_End ; no need to process values $7000 or greater
+	bge .fm_CVA_end\@ ; no need to process values $7000 or greater
 
 	; 2) Calculate VRAM address from cell location
 	move.w d0,d7 ; put combined cell location in d7
@@ -56,7 +56,7 @@ fixmac_CalcVRAMAddr: macro
 	addi.w #$7000,d6 ; add $7000
 	move.w d6,d0 ; = new value in d0 (other fix functions depend on this)
 
-.fm_CVA_End:
+.fm_CVA_end\@:
 	endm
 
 ;==============================================================================;
