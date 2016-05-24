@@ -21,7 +21,7 @@ $0B			Disable/Silence FM
 $0C			Stop all ADPCM-A samples
 $0D			Stop ADPCM-B sample
 $0E			@ Tempo Change LSB [1 arg; $00-$FF = 0-255bpm]
-$0F			  Tempo Change MSB [1 arg; $00-$FF = 256-511bpm]
+$0F			--currently unassigned--
 $10			Fade Out [1 arg; speed $00-$FF]
 $11			@ Stop Fade In/Out
 $12			Fade In [1 arg; speed $00-$FF]
@@ -129,18 +129,14 @@ Stops the playback of all ADPCM-A samples.
 Stops the playback of the current ADPCM-B sample.
 
 ================================================================================
-[System Command $0E: Tempo Change 1] (Shares slot with SNK drivers)
+[System Command $0E: Tempo Change] (Shares slot with SNK drivers)
 Handles tempos between 0-255.
 
 (Params)
 1 byte			New tempo ($00-$FF as 0-255bpm)
 
 ================================================================================
-[System Command $0F: Tempo Change 2]
-Handles tempos between 256-511.
-
-(Params)
-1 byte			New tempo ($00-$FF as 256-511bpm)
+[System Command $0F: ]
 
 ================================================================================
 [System Command $10: Fade Out]
