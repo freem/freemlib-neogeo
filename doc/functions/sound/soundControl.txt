@@ -10,24 +10,23 @@ Control Channel Commands are similar to Effects in that they're two bytes long.
 b1 b2		Command Name							Origin/Equivalent Effect
 --------------------------------------------------------------------------------
 00 00		No Command/nop
-01 xx		Tempo 1 (0x00-0xFF = 0-255)				(NeoTracker)
-02 xx		Tempo 2 (0x00-0xFF = 256-511)			(NeoTracker)
-03 xx		Song Speed (0x00-0x1F)					ProTracker Fxx
-04 xx		Set Timer A value LSB					(NeoTracker)
-05 xx		Set Timer A value MSB (0-3 only)		(NeoTracker)
-06 xx		Set Timer B value						(NeoTracker)
-07 xx		SSG /Enable flags (xxNNNCBA)			(NeoTracker)
-08 xx		SSG Volume Envelope Period LSB			(NeoTracker)
-09 xx		SSG Volume Envelope Period MSB			(NeoTracker)
-0A xx		SSG Volume Envelope Shape				(NeoTracker)
-0B xx		Position Jump							ProTracker Bxx
-0C xx		Stop Song								FamiTracker/DefleMask Cxx
-0D xx		Pattern Break							ProTracker Dxx
-0E xx		Pattern Delay							ProTracker EEx
-0F xx		ADPCM-A Master Volume (6 bits; 0-63)	(NeoTracker)
-10 xx		ADPCM-A Key On/Off (multiple channels)	(NeoTracker)
-11 xx		Global Volume (all channels; scaled)	(NeoTracker)
-12 xx		Global Volume Slide (all ch.; scaled)	(NeoTracker)
+01 xx		Tempo (0x00-0xFF = 0-255)				(NeoTracker)
+02 xx		Song Speed (0x00-0x1F)					ProTracker Fxx
+03 xx		Set Timer A value LSB					(NeoTracker)
+04 xx		Set Timer A value MSB (0-3 only)		(NeoTracker)
+05 xx		Set Timer B value						(NeoTracker)
+06 xx		SSG /Enable flags (xxNNNCBA)			(NeoTracker)
+07 xx		SSG Volume Envelope Period LSB			(NeoTracker)
+08 xx		SSG Volume Envelope Period MSB			(NeoTracker)
+09 xx		SSG Volume Envelope Shape				(NeoTracker)
+0A xx		Position Jump							ProTracker Bxx
+0B xx		Stop Song								FamiTracker/DefleMask Cxx
+0C xx		Pattern Break							ProTracker Dxx
+0D xx		Pattern Delay							ProTracker EEx
+0E xx		ADPCM-A Master Volume (6 bits; 0-63)	(NeoTracker)
+0F xx		ADPCM-A Key On/Off (multiple channels)	(NeoTracker)
+10 xx		Global Volume (all channels; scaled)	(NeoTracker)
+11 xx		Global Volume Slide (all ch.; scaled)	(NeoTracker)
 
 (Notes)
 Though the SSG Volume Envelope commands change all channels, perhaps they could

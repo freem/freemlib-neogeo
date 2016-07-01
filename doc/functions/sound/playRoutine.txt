@@ -16,7 +16,7 @@ actions are needed.
 Check if either timer (A or B) has ended, and react accordingly.
 
 3) ...?
-This is where the problems begin, as I am no playback routine writer. :s
+This is where the problems begin, as I am not a playback routine writer. :s
 
 * play FM channels 1-4 and update curPos_FM* for each
 * play SSG channels A-C and update curPos_SSG_* for each
@@ -36,7 +36,7 @@ The steps in the NMI are roughly as follows:
 ================================================================================
 [Main Loop]
 A number of sound drivers handle a buffer of commands in their main loop.
-The freemlib Sound Driver currently does not do this.
+The freemlib Sound Driver currently does not do this, but it probably should.
 
 ================================================================================
 [What happens on "play a sound effect"?]

@@ -8,7 +8,7 @@ the MVSTracker driver doesn't work on original hardware:
 
 "For the 'homebrew' scene, we had a very basic sound driver that Ivan (MVS Tracker)
 and myself worked on many years ago. Ivan did a very good job of implementing
-FM music but the driver didn’t work on real hardware."
+FM music but the driver didn't work on real hardware."
 src: http://www.archaic.fr/articles/interview-jeff-kurtz-repond-a-nos-questions/3/
 
 However, after looking at smkdan's M1 driver, it seems this is an easily fixable
@@ -72,7 +72,7 @@ The data that was here is now in sound/soundCommands.txt.
 
 ================================================================================
 <Functionality>
-The sound driver's total functionality depends on the hardware.
+The sound driver's functionality depends on the sound hardware itself.
 
 Z80 I/O ports:
 $00			(read) Sound Code input (Communication from 68K to Z80)
@@ -91,6 +91,7 @@ Banking is also done via the I/O ports, see "Z80 Banking" section below.
 $80			(write) ???
 $C1			(write) ???
 $C2			(write) ???
+
 
 The YM2610 gives us:
 * Timers	(2 timers, A and B)
@@ -212,14 +213,14 @@ Driver Stuff
 
 * Current Command
 * Previous Command
-* Command buffer (How many bytes?)
+* Command buffer (How many bytes is enough?)
 
 * Channel Enable/Disable Flags
 
 --------------------------------------------------------------------------------
 Song Attributes/Playback
 * Current Song number
-* Current Song Tempo (0-511)
+* Current Song Tempo (0-255)
 * Channel Use flags (2 bytes)
 
 * Song loop flag?

@@ -5,36 +5,36 @@ When stored, it might be compressed. I don't know.
 
 ================================================================================
 [Channel order]
-$00		FM 1
-$01		FM 2
-$02		FM 3
-$03		FM 4
-$04		SSG A
-$05		SSG B
-$06		SSG C
-$07		PCMA 1
-$08		PCMA 2
-$09		PCMA 3
-$0A		PCMA 4
-$0B		PCMA 5
-$0C		PCMA 6
-$0D		PCMB
+$00  FM 1
+$01  FM 2
+$02  FM 3
+$03  FM 4
+$04  SSG A
+$05  SSG B
+$06  SSG C
+$07  PCMA 1
+$08  PCMA 2
+$09  PCMA 3
+$0A  PCMA 4
+$0B  PCMA 5
+$0C  PCMA 6
+$0D  PCMB
 
 ================================================================================
 [Row Data]
 without volume column:
 {
-$00		Note
-$01		Instrument/Sample Number
-$02		Effect Type
-$03		Effect Data
+$00  Note/Command
+$01  Instrument/Sample Number
+$02  Effect Type
+$03  Effect Data
 }
 
 with volume column (later version):
 {
-$00		Note
-$01		Instrument/Sample Number
-$02		Volume
-$03		Effect Type
-$04		Effect Data
+$00  Note/Command
+$01  Instrument/Sample Number
+$02  Volume
+$03  Effect Type
+$04  Effect Data
 }

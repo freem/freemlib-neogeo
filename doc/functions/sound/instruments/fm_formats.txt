@@ -4,6 +4,7 @@ FM Patches exist in many different formats.
 * "DMP_SPECS.txt" by Delek
 * vgm2pre "sub.ym2612.cpp"
 * MVSTracker source code
+* https://github.com/sikthehedgehog/Echo/blob/master/doc/eif.txt
 
 <Definitions>
 mul			MULtiple

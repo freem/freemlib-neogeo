@@ -30,14 +30,16 @@ $1F			currently 0x00 (reserved for future expansion)
 A SSG "instrument" is a collection of frames that determine the values used for
 one of the SSG channels.
 
-The SSG instrument format (todo)
+The SSG instrument format's design could be similar to one of two things:
 
-(todo: possibly use *.afx format from AY Sound FX Editor)
+1) .afx format from AY Sound FX Editor
+2) .eef format from Echo
 
-Offset		Description
---------------------------------------------------------------------------------
-$00			Number of frames in instrument
+The .afx format is a bit more complex, but allows for both tone and noise
+manipulation. On the other hand, the .eef format is just volumes with loop
+commands.
 
+I have not decided which of the two would be a better fit.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <ADPCM-B Instruments>

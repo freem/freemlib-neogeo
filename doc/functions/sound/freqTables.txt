@@ -11,7 +11,7 @@ The algorithm for deriving a F-Number is as follows:
 F-Number = (144 * fnote * 2^20 / M) / 2^B-1
 
  fnote: pronounciation frequency (in Hertz)
- M: master clock (8MHz = 8*10^6 = 8000000)
+ M: master clock (8MHz = 8 * 10^6 = 8000000)
  B: block data
 
 Note       | Hertz   -> F-Number           | Dec.    Hex
