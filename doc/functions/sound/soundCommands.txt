@@ -6,38 +6,38 @@
 Commands marked with a * are used by the BIOS, and are out of my hands.
 Commands marked with @ are in slots that are compatible with SNK drivers.
 
-$00			No Command
-$01			*Slot change
-$02			*Play eyecatch BGM (typically $5F)
-$03			*Soft reset
-$04			@ Disable All (Music & Sounds)
-$05			@ Disable Music
-$06			@ Disable Sounds
-$07			@ Enable All (Music & Sounds)
-$08			@ Enable Music
-$09			@ Enable Sounds
-$0A			Disable/Silence SSG (equiv. to SNK Command $0F)
-$0B			Disable/Silence FM
-$0C			Stop all ADPCM-A samples
-$0D			Stop ADPCM-B sample
-$0E			@ Tempo Change [1 arg; $00-$FF = 0-255bpm]
-$0F			--currently unassigned--
-$10			Fade Out [1 arg; speed $00-$FF]
-$11			@ Stop Fade In/Out
-$12			Fade In [1 arg; speed $00-$FF]
-$13			--currently unassigned--
-$14			--currently unassigned--
-$15			--currently unassigned--
-$16			--currently unassigned--
-$17			--currently unassigned--
-$18			--currently unassigned--
-$19			--currently unassigned--
-$1A			--currently unassigned--
-$1B			--currently unassigned--
-$1C			(Data Collect (Z80 -> 68K)?)
-$1D			(Data Transfer (68K -> Z80)?)
-$1E			--currently unassigned--
-$1F			--currently unassigned--
+$00    No Command
+$01    *Slot change
+$02    *Play eyecatch BGM (typically $5F)
+$03    *Soft reset
+$04    @ Disable All (Music & Sounds)
+$05    @ Disable Music
+$06    @ Disable Sounds
+$07    @ Enable All (Music & Sounds)
+$08    @ Enable Music
+$09    @ Enable Sounds
+$0A    Disable/Silence SSG (equiv. to SNK Command $0F)
+$0B    Disable/Silence FM
+$0C    Stop all ADPCM-A samples
+$0D    Stop ADPCM-B sample
+$0E    @ Tempo Change [1 arg; $00-$FF = 0-255bpm]
+$0F    --currently unassigned--
+$10    Fade Out [1 arg; speed $00-$FF]
+$11    @ Stop Fade In/Out
+$12    Fade In [1 arg; speed $00-$FF]
+$13    --currently unassigned--
+$14    --currently unassigned--
+$15    --currently unassigned--
+$16    --currently unassigned--
+$17    --currently unassigned--
+$18    --currently unassigned--
+$19    --currently unassigned--
+$1A    --currently unassigned--
+$1B    --currently unassigned--
+$1C    (Data Collect (Z80 -> 68K)?)
+$1D    (Data Transfer (68K -> Z80)?)
+$1E    --currently unassigned--
+$1F    --currently unassigned--
 
 Extended details for system commands follow.
 ================================================================================

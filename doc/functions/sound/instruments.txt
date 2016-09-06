@@ -10,19 +10,19 @@ FM instruments are meant to be similar to .TYI format.
 In fact, they are similar enough that for the time being, you can just blindly
 import .TYI files into the code and they should work.
 
-Offset		Description
+Offset      Description
 --------------------------------------------------------------------------------
-$00-$03		Detune/Multiple (Ops 1-4)				_DDDMMMM (D=detune, M=multiple)
-$04-$07		Total Level (Ops 1-4)					_VVVVVVV (V=total level/volume)
-$08-$0B		Key Scale/Attack Rate (Ops 1-4)			SS_RRRRR (S=key scale, R=attack rate)
-$0C-$0F		AM On/Decay Rate (Ops 1-4)				A__DDDDD (A=AM on, D=decay rate)
-$10-$13		Sustain Rate (Ops 1-4)					___SSSSS (S=sustain rate)
-$14-$17		Sustain Level/Release Rate (Ops 1-4)	SSSSRRRR (S=sustain level, R=release rate)
-$18-$1B		SSG-EG value (Ops 1-4)					____EEEE (E=SSG-EG value)
-$1C			Feedback/Algorithm						__FFFAAA (F=feedback, A=algorithm)
-$1D			AM Sense/PM Sense						__AA_PPP (A=AM sense, P=PM sense)
-$1E			currently 0x00 (reserved for future expansion)
-$1F			currently 0x00 (reserved for future expansion)
+$00-$03     Detune/Multiple (Ops 1-4)               _DDDMMMM (D=detune, M=multiple)
+$04-$07     Total Level (Ops 1-4)                   _VVVVVVV (V=total level/volume)
+$08-$0B     Key Scale/Attack Rate (Ops 1-4)         SS_RRRRR (S=key scale, R=attack rate)
+$0C-$0F     AM On/Decay Rate (Ops 1-4)              A__DDDDD (A=AM on, D=decay rate)
+$10-$13     Sustain Rate (Ops 1-4)                  ___SSSSS (S=sustain rate)
+$14-$17     Sustain Level/Release Rate (Ops 1-4)    SSSSRRRR (S=sustain level, R=release rate)
+$18-$1B     SSG-EG value (Ops 1-4)                  ____EEEE (E=SSG-EG value)
+$1C	        Feedback/Algorithm                      __FFFAAA (F=feedback, A=algorithm)
+$1D	        AM Sense/PM Sense                       __AA_PPP (A=AM sense, P=PM sense)
+$1E	        currently 0x00 (reserved for future expansion)
+$1F	        currently 0x00 (reserved for future expansion)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <SSG Instruments>
@@ -47,8 +47,8 @@ I have not decided which of the two would be a better fit.
 Still under construction, since some samples might require tables for Delta-N
 differences (as opposed to just adding/subtracting a fixed number)...
 
-Offset		Description
+Offset      Description
 --------------------------------------------------------------------------------
-$00			ADPCM-B Sample Number (1 byte); index into samples_PCMB
-$01,$02		Delta-N Sampling Rate +- difference per tone (2 bytes)
-$03			currently 0x00 (reserved for future expansion)
+$00         ADPCM-B Sample Number (1 byte); index into samples_PCMB
+$01,$02     Delta-N Sampling Rate +- difference per tone (2 bytes)
+$03         currently 0x00 (reserved for future expansion)

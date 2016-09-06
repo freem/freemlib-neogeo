@@ -40,8 +40,20 @@ The freemlib Sound Driver currently does not do this, but it probably should.
 
 ================================================================================
 [What happens on "play a sound effect"?]
-(todo)
+Many sound effects can be played at once. Typically, these effects are played on
+the ADPCM-A channels. A few PCMA channels are reserved for music (typically 1 or
+2), leaving four channels for effects.
+
+Care needs to be taken to not interrupt samples unless absolutely necessary.
+Playing a sound should therefore take the following into effect:
+* Which channels are active/playing sounds, and which aren't.
+* Will this sound cancel out another sound?
+  (e.g. a player attack canceling out an enemy attack)
 
 ================================================================================
 [What happens on "play a new song"?]
-(todo)
+Since only one song can play at a time, playing a new song stops the current one.
+
+It should be noted that "songs" are typically different from "jingles" (sound
+effects that are musical in nature). An example of the opposite behavior is
+Sonic the Hedgehog, where the music will stop for the 1up jingle and others.

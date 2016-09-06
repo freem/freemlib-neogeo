@@ -34,38 +34,38 @@ actually do with various commands.
 
 Commands marked with a * are used by the BIOS.
 
-$00			No command
-$01			*Slot change
-$02			*Play eyecatch BGM ($5F)
-$03			*Soft reset
-$04			ALL DI	(disable music & sound effects; $7F excepted)
-$05			MUSIC DI	(disable music)
-$06			EFFECT DI	(disable sound effects)
-$07			ALL EI	(enable music & sound effects)
-$08			MUSIC EI	(enable music)
-$09			EFFECT EI	(enable sound effects)
-$0A			Fade Out									[1 arg, fade out speed]
-$0B				(undocumented)
-$0C				(undocumented)
-$0D				(undocumented)
-$0E			Tempo Change								[1 arg, new tempo]
-$0F			SSG Stop
-$10			ROM/RAM check ("Please do not send this code.")
-$11			Fade Out Stop
-$12				(undocumented)
-$13				(undocumented)
-$14			ADPCMA(TBL_KEY_PCMA) sound effect stop		[1 arg, sound to silence]
-$15			ADPCMA(TBL_KEY_PCMA2) sound effect stop		[1 arg, sound to silence]
-$16				(undocumented)
-$17				(undocumented)
-$18			ADPCMA(TBL_KEY_PCMA) sound effect start		[1 arg, sound to start]
-$19			ADPCMA(TBL_KEY_PCMB) sound effect start		[1 arg, sound to start]
-$1A			ADPCMA(TBL_KEY_PCMA2) sound effect start	[1 arg, sound to start]
-$1B			ADPCMA(TBL_KEY_PCMB2) sound effect start	[1 arg, sound to start]
-$1C			ADPCMA(TBL_KEY_PCMA3) sound effect start	[1 arg, sound to start]
-$1D				(undocumented)
-$1E				(undocumented)
-$1F				(undocumented)
+$00    No command
+$01    *Slot change
+$02    *Play eyecatch BGM ($5F)
+$03    *Soft reset
+$04    ALL DI (disable music & sound effects; $7F excepted)
+$05    MUSIC DI (disable music)
+$06    EFFECT DI (disable sound effects)
+$07    ALL EI (enable music & sound effects)
+$08    MUSIC EI (enable music)
+$09    EFFECT EI (enable sound effects)
+$0A    Fade Out [1 arg, fade out speed]
+$0B    (undocumented)
+$0C    (undocumented)
+$0D    (undocumented)
+$0E    Tempo Change [1 arg, new tempo]
+$0F    SSG Stop
+$10    ROM/RAM check ("Please do not send this code.")
+$11    Fade Out Stop
+$12    (undocumented)
+$13    (undocumented)
+$14    ADPCMA(TBL_KEY_PCMA) sound effect stop  [1 arg, sound to silence]
+$15    ADPCMA(TBL_KEY_PCMA2) sound effect stop [1 arg, sound to silence]
+$16    (undocumented)
+$17    (undocumented)
+$18    ADPCMA(TBL_KEY_PCMA) sound effect start  [1 arg, sound to start]
+$19    ADPCMA(TBL_KEY_PCMB) sound effect start  [1 arg, sound to start]
+$1A    ADPCMA(TBL_KEY_PCMA2) sound effect start [1 arg, sound to start]
+$1B    ADPCMA(TBL_KEY_PCMB2) sound effect start [1 arg, sound to start]
+$1C    ADPCMA(TBL_KEY_PCMA3) sound effect start [1 arg, sound to start]
+$1D    (undocumented)
+$1E    (undocumented)
+$1F    (undocumented)
 
 <freemlib System Commands>
 The data that was here is now in sound/soundCommands.txt.
@@ -75,59 +75,59 @@ The data that was here is now in sound/soundCommands.txt.
 The sound driver's functionality depends on the sound hardware itself.
 
 Z80 I/O ports:
-$00			(read) Sound Code input (Communication from 68K to Z80)
-$00			(write) Clear Sound Code input
-$04			(read) [YM] Status 0 (Busy, Timer A and B flags)
-$05			(read) [YM] SSG registers
-$06			(read) [YM] Status 1 (ADPCM flags for samples reaching end address)
-$08			(write) Enable NMI
-$0C			(write) Sound Code output (Communication from Z80 to 68K)
-$18			(write) Disable NMI
-$C0			(write) ???
+$00    (read) Sound Code input (Communication from 68K to Z80)
+$00    (write) Clear Sound Code input
+$04    (read) [YM] Status 0 (Busy, Timer A and B flags)
+$05    (read) [YM] SSG registers
+$06    (read) [YM] Status 1 (ADPCM flags for samples reaching end address)
+$08    (write) Enable NMI
+$0C    (write) Sound Code output (Communication from Z80 to 68K)
+$18    (write) Disable NMI
+$C0    (write) ???
 
 Banking is also done via the I/O ports, see "Z80 Banking" section below.
 
 (CD-specific?)
-$80			(write) ???
-$C1			(write) ???
-$C2			(write) ???
+$80    (write) ???
+$C1    (write) ???
+$C2    (write) ???
 
 
 The YM2610 gives us:
-* Timers	(2 timers, A and B)
-* SSG		(3 channels)
-* FM		(4 channels)
-* ADPCM-A	(6 channels, 18.5kHz sampling rate)
+* Timers   (2 timers, A and B)
+* SSG      (3 channels)
+* FM       (4 channels)
+* ADPCM-A  (6 channels, 18.5kHz sampling rate)
 ------------------------------------------------------
-* ADPCM-B	(1 channel, 1.8kHz~55.5kHz sampling rate); cart systems only
-* CDDA		(CD audio, 44.1kHz sampling rate); CD systems only
+* ADPCM-B  (1 channel, 1.8kHz~55.5kHz sampling rate); cart systems only
+* CDDA     (CD audio, 44.1kHz sampling rate); CD systems only
 
 [Timers]
 Writes to ports $04 (addr) and $05 (data)
 
-$24			Timer A counter (upper 8 bits)
-$25			Timer A counter (lower 2 bits)
-$26			Timer B counter
-$27			Control/Flags/etc.
+$24    Timer A counter (upper 8 bits)
+$25    Timer A counter (lower 2 bits)
+$26    Timer B counter
+$27    Control/Flags/etc.
 
 (Timer A musings)
 8333 microsec: 98/$62 (~120.0048 times/second)
 8325 microsec: 99/$63 (~120.120 times/second)
 
 Some SNK drivers have a set of values for Timer A:
-* $01E	(30)   (72*(1024-30))/8000000  = 0.008946 sec | 8946 microsec (~112 times/second)
-* $028	(40)   (72*(1024-40))/8000000  = 0.008856 sec | 8856 microsec (~113 times/second)
-* $032	(50)   (72*(1024-50))/8000000  = 0.008766 sec | 8766 microsec (~114 times/second)
-* $051	(81)   (72*(1024-81))/8000000  = 0.008487 sec | 8487 microsec (~118 times/second; typically set as default)
-* $0C0	(192)  (72*(1024-192))/8000000 = 0.007488 sec | 7488 microsec (~134 times/second)
-* $1D5	(469)  (72*(1024-469))/8000000 = 0.004995 sec | 4995 microsec (~200 times/second)
-* $2EB	(747)  (72*(1024-747))/8000000 = 0.002493 sec | 2493 microsec (~401 times/second)
+* $01E (30)   (72*(1024-30))/8000000  = 0.008946 sec | 8946 microsec (~112 times/second)
+* $028 (40)   (72*(1024-40))/8000000  = 0.008856 sec | 8856 microsec (~113 times/second)
+* $032 (50)   (72*(1024-50))/8000000  = 0.008766 sec | 8766 microsec (~114 times/second)
+* $051 (81)   (72*(1024-81))/8000000  = 0.008487 sec | 8487 microsec (~118 times/second; typically set as default)
+* $0C0 (192)  (72*(1024-192))/8000000 = 0.007488 sec | 7488 microsec (~134 times/second)
+* $1D5 (469)  (72*(1024-469))/8000000 = 0.004995 sec | 4995 microsec (~200 times/second)
+* $2EB (747)  (72*(1024-747))/8000000 = 0.002493 sec | 2493 microsec (~401 times/second)
 
 SNK drivers seem to use Timer A as the sound effect playback timer...
 
 (Timer B musings)
-* $46	(70)   (1152*(256-76)/8) = 26784 microsec
-* $47	(71)   (1152*(256-71)/8) = 26640 microsec
+* $46 (70)   (1152*(256-70)/8) = 26784 microsec
+* $47 (71)   (1152*(256-71)/8) = 26640 microsec
 
 SNK drivers typically use Timer B as the tempo (for music playback).
 
@@ -135,74 +135,74 @@ SNK drivers typically use Timer B as the tempo (for music playback).
 Writes to ports $04 (addr) and $05 (data)
 
 Overall Operation:
-$06			Noise period			> 5 bits
-$07			/EN flags for A,B,C, and noise A,B,C. (CBA order, noise then tone)
-$0B			Volume envelope period fine tune
-$0C			Volume envelope period coarse tune
-$0D			Volume envelope shape
+$06    Noise period (> 5 bits)
+$07    /EN flags for A,B,C, and noise A,B,C. (CBA order, noise then tone)
+$0B    Volume envelope period fine tune
+$0C    Volume envelope period coarse tune
+$0D    Volume envelope shape
 
 per-Channel (all channels listed)
-$00			Channel A fine tune		\ 12 bits
-$01			Channel A coarse tune	/
-$02			Channel B fine tune		\ 12 bits
-$03			Channel B coarse tune	/
-$04			Channel C fine tune		\ 12 bits
-$05			Channel C coarse tune	/
-$08			Channel A Mode/Volume
-$09			Channel B Mode/Volume
-$0A			Channel C Mode/Volume
+$00    Channel A fine tune     \ 12 bits
+$01    Channel A coarse tune   /
+$02    Channel B fine tune     \ 12 bits
+$03    Channel B coarse tune   /
+$04    Channel C fine tune     \ 12 bits
+$05    Channel C coarse tune   /
+$08    Channel A Mode/Volume
+$09    Channel B Mode/Volume
+$0A    Channel C Mode/Volume
 
 [ADPCM-A]
 Writes to ports $06 (addr) and $07 (data).
 Note that ADPCM-A flag control is with the ADPCM-B registers.
 
-$00			Key On/Off + Channel bits (0=play, 1=stop)
-$01			Master Volume
+$00    Key On/Off + Channel bits (0=play, 1=stop)
+$01    Master Volume
 
 One value for each channel out of these sets:
-$08-$0D		L/R and Channel Volume
-$10-$15		Sample start address/256 (LSB)
-$18-$1D		Sample start address/256 (MSB)
-$20-$25		Sample end address/256 (LSB)
-$28-$2D		Sample end address/256 (MSB)
+$08-$0D  L/R and Channel Volume
+$10-$15  Sample start address/256 (LSB)
+$18-$1D  Sample start address/256 (MSB)
+$20-$25  Sample end address/256 (LSB)
+$28-$2D  Sample end address/256 (MSB)
 
 [ADPCM-B]
 Writes to ports $04 (addr) and $05 (data)
 
-$10			Start/Repeat/Reset flags?
-$11			L/R flags?
-$12			Sample start address/256 (LSB)
-$13			Sample start address/256 (MSB)
-$14			Sample end address/256 (LSB)
-$15			Sample end address/256 (MSB)
-$19			Delta-N (L) \ these two determine
-$1A			Delta-N (H) / sample playback rate
-$1B			ADPCM-B channel volume
-$1C			ADPCM-A & B channels flag control 
+$10    Start/Repeat/Reset flags?
+$11    L/R flags?
+$12    Sample start address/256 (LSB)
+$13    Sample start address/256 (MSB)
+$14    Sample end address/256 (LSB)
+$15    Sample end address/256 (MSB)
+$19    Delta-N (L) \ these two determine
+$1A    Delta-N (H) / sample playback rate
+$1B    ADPCM-B channel volume
+$1C    ADPCM-A & B channels flag control 
 
 [FM]
 FM is the most complex.
 Channels 1 and 2 live on ports $04/$05. Channels 3 and 4 live on ports $06/$07.
 Channels 3 and 4 are actually internally known as channels 5 and 6.
 
-$22			LFO Frequency Control
-$28			Key On/Off
+$22    LFO Frequency Control
+$28    Key On/Off
 
-$A1,$A2		F-Num 1
-$A5,$A6		Block and F-Num 2
-$A9,$AA		2CH * F-Num 1
-$AD,$AE		2CH * Block and 2CH * F-Num 2
-$B1,$B2		Self Feedback (FB) and Connection (ALGO?)
-$B5,$B6		L/R, AMS, PMS
+$A1,$A2    F-Num 1
+$A5,$A6    Block and F-Num 2
+$A9,$AA    2CH * F-Num 1
+$AD,$AE    2CH * Block and 2CH * F-Num 2
+$B1,$B2    Self Feedback (FB) and Connection (ALGO?)
+$B5,$B6    L/R, AMS, PMS
 
 per-channel variables (4 operators per channel):
-$31-$3E		Detune (DT)/Multiple (MULTI)
-$41-$4E		Total Level (TL)
-$51-$5E		Key Scale (KS)/Attack Rate (AR)
-$61-$6E		AM ON (AM)/Decay Rate (DR)
-$71-$7E		Sustain Rate (SR)
-$81-$8E		Sustain Level (SL)/Release Rate (RR)
-$91-$9E		SSG-Type Envelope control
+$31-$3E    Detune (DT)/Multiple (MULTI)
+$41-$4E    Total Level (TL)
+$51-$5E    Key Scale (KS)/Attack Rate (AR)
+$61-$6E    AM ON (AM)/Decay Rate (DR)
+$71-$7E    Sustain Rate (SR)
+$81-$8E    Sustain Level (SL)/Release Rate (RR)
+$91-$9E    SSG-Type Envelope control
 
 ================================================================================
 <RAM>
@@ -238,11 +238,10 @@ Hardware Stuff
  * 1 byte for Timer Control and 2CH Mode ($27)
 
 2CH Mode Settings:
-00		Normal				Normal output
-01		CSM					CSM voice synth; each slot can have its own frequency.
-							Key on/off is done with timer A.
-10		Effect sound		Separate frequency number and CSM can be set in each slot.
-11		Illegal?
+00    Normal       | Normal output
+01    CSM          | CSM voice synth; each slot can have its own frequency. Key on/off is done with timer A.
+10    Effect sound |Separate frequency number and CSM can be set in each slot.
+11    Illegal?
 
 CSM = Composite Sinusoidal Modeling
 http://en.wikipedia.org/wiki/Formant
@@ -251,9 +250,9 @@ http://en.wikipedia.org/wiki/Formant
 Looks like 14 bytes based on the following:
 
 Overall Status>
-	* 1 byte for value at $07 (Channels A,B,C,Noise)
-	* 2 bytes for volume envelope period tuning
-	* 1 byte for volume envelope shape ($0D)
+ * 1 byte for value at $07 (Channels A,B,C,Noise)
+ * 2 bytes for volume envelope period tuning
+ * 1 byte for volume envelope shape ($0D)
 If you wanted to be clever, you could combine $07 and $0D...
 
 Pulse (x3)>
@@ -290,7 +289,8 @@ Overall Status>
  * 1 byte for channel volume ($1B)
 
 ADPCM-B Sampling Rate>
-	[(Delta-N(H) + Delta-N(L)) / 256] x 55.5 KHz
+[(Delta-N(H) + Delta-N(L)) / 256] x 55.5 KHz
+
 Examples:
  * Delta-N (H) = 85 (0x55), Delta-N (L) = 33 (0x21); Frequency = 18,050 KHz
   * [(85 + 33) / 256] = 0.4609375; x55.5 = 25.58203125
@@ -380,66 +380,65 @@ InstrAddr2: ; Neo 2 (FM2 on 4/5, FM4 on 6/7)
 <Z80 Banking>
 Needing to deal with this at some point.
 
-$8000-$BFFF		16KiB	Switchable bank 3 [default $02] (I/O port 0xB)
-$C000-$DFFF		 8KiB	Switchable bank 2 [default $06] (I/O port 0xA)
-$E000-$EFFF		 4KiB	Switchable bank 1 [default $0E] (I/O port 9)
-$F000-$F7FF		 2KiB	Switchable bank 0 [default $1E] (I/O port 8)
+$8000-$BFFF    16KiB    Switchable bank 3 [default $02] (I/O port 0xB)
+$C000-$DFFF     8KiB    Switchable bank 2 [default $06] (I/O port 0xA)
+$E000-$EFFF     4KiB    Switchable bank 1 [default $0E] (I/O port 9)
+$F000-$F7FF     2KiB    Switchable bank 0 [default $1E] (I/O port 8)
 
 Examples from Art of Fighting (MAKOTO v3 driver)
 
 Bank 0:
- * $02 = $8000, original	(16*2=32K, or $8000 raw address)
- * $04 = $8000, second bank	(16*4=64K, or $10000 raw address)
+ * $02 = $8000, original    (16*2=32K, or $8000 raw address)
+ * $04 = $8000, second bank (16*4=64K, or $10000 raw address)
 
 Bank 1:
- * $06 = $C000, original	(8*6=48K, or $C000 raw address)
- * $0A = $C000, second bank	(8*10=80K, or $14000 raw address)
+ * $06 = $C000, original    (8*6=48K, or $C000 raw address)
+ * $0A = $C000, second bank (8*10=80K, or $14000 raw address)
 
 Bank 2:
- * $0E = $E000, original	(4*14=56K, or $E000 raw address)
- * $16 = $E000, second bank	(4*22=88K, or $16000 raw address)
+ * $0E = $E000, original    (4*14=56K, or $E000 raw address)
+ * $16 = $E000, second bank (4*22=88K, or $16000 raw address)
 
 Bank 3:
- * $1E = $F000, original	(2*30=60K, or $F000 raw address)
- * $2E = $F000, second bank	(2*46=92K, or $17000 raw address)
+ * $1E = $F000, original    (2*30=60K, or $F000 raw address)
+ * $2E = $F000, second bank (2*46=92K, or $17000 raw address)
 
 Examples from COUGH NINETY EIGHT
 
-.db 0x1E		$F000, original		(2*30=60K,   or $F000 raw address)
-.db 0xE			$E000, original		(4*14=56K,   or $E000 raw address)
-.db 6			$C000, original		( 8*6=48K,   or $C000 raw address)
-.db 2			$8000, original		(16*2=32K,   or $8000 raw address)
+.db 0x1E    $F000, original     (2*30=60K,   or $F000 raw address)
+.db 0xE     $E000, original     (4*14=56K,   or $E000 raw address)
+.db 6       $C000, original     ( 8*6=48K,   or $C000 raw address)
+.db 2       $8000, original     (16*2=32K,   or $8000 raw address)
 --------------------------------------------------------------------------------
-.db 0x2E		$F000, second bank	(2*46=92K,   or $17000 raw address)
-.db 0x16		$E000, second bank	(4*22=88K,   or $16000 raw address)
-.db 0xA			$C000, second bank	(8*10=80K,   or $14000 raw address)
-.db 4			$8000, second bank	(16*4=64K,   or $10000 raw address)
+.db 0x2E    $F000, second bank  (2*46=92K,   or $17000 raw address)
+.db 0x16    $E000, second bank  (4*22=88K,   or $16000 raw address)
+.db 0xA     $C000, second bank  (8*10=80K,   or $14000 raw address)
+.db 4       $8000, second bank  (16*4=64K,   or $10000 raw address)
 --------------------------------------------------------------------------------
-.db 0x3E		$F000, third bank	(2*62=124K,  or $1F000 raw address)
-.db 0x1E		$E000, third bank	(4*30=120K,  or $1E000 raw address)
-.db 0xE			$C000, third bank	(8*14=112K,  or $1C000 raw address)
-.db 6			$8000, third bank	( 16*6=96K,  or $18000 raw address)
+.db 0x3E    $F000, third bank   (2*62=124K,  or $1F000 raw address)
+.db 0x1E    $E000, third bank   (4*30=120K,  or $1E000 raw address)
+.db 0xE     $C000, third bank   (8*14=112K,  or $1C000 raw address)
+.db 6       $8000, third bank   ( 16*6=96K,  or $18000 raw address)
 --------------------------------------------------------------------------------
-.db 0x4E		$F000, fourth bank	(2*78=156K,  or $27000 raw address)
-.db 0x26		$E000, fourth bank	(4*38=152K,  or $26000 raw address)
-.db 0x12		$C000, fourth bank	(8*18=144K,  or $24000 raw address)
-.db 8			$8000, fourth bank	(16*8=128K,  or $20000 raw address)
+.db 0x4E    $F000, fourth bank  (2*78=156K,  or $27000 raw address)
+.db 0x26    $E000, fourth bank  (4*38=152K,  or $26000 raw address)
+.db 0x12    $C000, fourth bank  (8*18=144K,  or $24000 raw address)
+.db 8       $8000, fourth bank  (16*8=128K,  or $20000 raw address)
 --------------------------------------------------------------------------------
-.db 0x5E		$F000, fifth bank	( 2*94=188K, or $2F000 raw address)
-.db 0x2E		$E000, fifth bank	( 4*46=184K, or $2E000 raw address)
-.db 0x16		$C000, fifth bank	( 8*22=176K, or $2C000 raw address)
-.db 0xA			$8000, fifth bank	(16*10=160K, or $28000 raw address)
+.db 0x5E    $F000, fifth bank   ( 2*94=188K, or $2F000 raw address)
+.db 0x2E    $E000, fifth bank   ( 4*46=184K, or $2E000 raw address)
+.db 0x16    $C000, fifth bank   ( 8*22=176K, or $2C000 raw address)
+.db 0xA     $8000, fifth bank   (16*10=160K, or $28000 raw address)
 --------------------------------------------------------------------------------
-.db 0x6E		$F000, sixth bank	(2*110=220K, or $37000 raw address)
-.db 0x36		$E000, sixth bank	( 4*54=216K, or $36000 raw address)
-.db 0x1A		$C000, sixth bank	( 8*26=208K, or $34000 raw address)
-.db 0xC			$8000, sixth bank	(16*12=192K, or $30000 raw address)
+.db 0x6E    $F000, sixth bank   (2*110=220K, or $37000 raw address)
+.db 0x36    $E000, sixth bank   ( 4*54=216K, or $36000 raw address)
+.db 0x1A    $C000, sixth bank   ( 8*26=208K, or $34000 raw address)
+.db 0xC     $8000, sixth bank   (16*12=192K, or $30000 raw address)
 --------------------------------------------------------------------------------
-.db 0x7E		$F000, seventh bank	(2*126=252K, or $3F000 raw address)
-.db 0x3E		$E000, seventh bank	( 4*62=248K, or $3E000 raw address)
-.db 0x1E		$C000, seventh bank	( 8*30=240K, or $3C000 raw address)
-.db 0xE			$8000, seventh bank	(16*14=224K, or $38000 raw address)
-
+.db 0x7E    $F000, seventh bank (2*126=252K, or $3F000 raw address)
+.db 0x3E    $E000, seventh bank ( 4*62=248K, or $3E000 raw address)
+.db 0x1E    $C000, seventh bank ( 8*30=240K, or $3C000 raw address)
+.db 0xE     $8000, seventh bank (16*14=224K, or $38000 raw address)
 
 ================================================================================
 <Thought Sketchpad>
