@@ -7,33 +7,40 @@ rst_PortDelay2 = $10
 rst_Write45    = $18
 rst_Write67    = $20
 rst_BusyWait   = $28
+
 ;==============================================================================;
 	include "sounddef.inc"
 	include "sysmacro.inc"
+
 ;==============================================================================;
 	section start
 ; $0000: Disable interrupts and jump to the real entry point
 Start:
 	di ; Disable interrupts (Z80)
 	jp EntryPoint
+
 ;==============================================================================;
 	section delay1
 ; Port Delay Write for Addresses
 portWriteDelayPart1:
 	jp portWriteDelayPart2
+
 ;==============================================================================;
 	section delay2
 ; Port Delay Write for Data
 portWriteDelayPart3:
 	jp portWriteDelayPart4
+
 ;==============================================================================;
 	section write45
 j_write45:
 	jp write_45
+
 ;==============================================================================;
 	section write67
 j_write67:
 	jp write_67
+
 ;==============================================================================;
 	section ymwait
 ; Keep checking the busy flag in Status 0 until it's clear.
@@ -47,6 +54,7 @@ CheckBusyFlag:
 	add a
 	jr C,CheckBusyFlag
 	ret
+
 ;==============================================================================;
 	;org $0030
 ;==============================================================================;
@@ -55,6 +63,7 @@ CheckBusyFlag:
 j_IRQ:
 	di
 	jp IRQ
+
 ;==============================================================================;
 	section idstr
 ; driver signature; subject to change.
@@ -67,6 +76,7 @@ driverSig:
 	endif
 
 	asc " SoundDriver v000"
+
 ;==============================================================================;
 	section NMI
 ; NMI
@@ -313,11 +323,7 @@ doCmd01:
 	out (0xC),a ; write 0 to port 0xC (Respond to 68K)
 	out (0),a ; write to port 0 (Clear sound code)
 	ld sp,0xFFFC ; set stack pointer
-
-	; call Command 01
-	ld hl,command_01
-	push hl
-	retn
+	pushCall command_01
 
 ;==============================================================================;
 ; doCmd03
@@ -328,11 +334,7 @@ doCmd03:
 	out (0xC),a ; write 0 to port 0xC (Respond to 68K)
 	out (0),a ; write to port 0 (Clear sound code)
 	ld sp,0xFFFC ; set stack pointer
-
-	; call Command 03
-	ld hl,command_03
-	push hl
-	retn
+	pushCall command_03
 
 ;==============================================================================;
 ; SetDefaultBanks
@@ -438,6 +440,29 @@ ssg_Silence:
 ; Silences all ADPCM-A channels.
 
 pcma_Silence:
+	; dump all PCMA channels
+	ld de,PCMA_Control<<8|%10111111
+	write67
+
+	; silence all channels as well
+	ld de,PCMA_Chan1VolLR<<8|0
+	write67
+
+	ld de,PCMA_Chan1VolLR+1<<8|0
+	write67
+
+	ld de,PCMA_Chan1VolLR+2<<8|0
+	write67
+
+	ld de,PCMA_Chan1VolLR+3<<8|0
+	write67
+
+	ld de,PCMA_Chan1VolLR+4<<8|0
+	write67
+
+	ld de,PCMA_Chan1VolLR+5<<8|0
+	write67
+
 	ret
 
 ;==============================================================================;

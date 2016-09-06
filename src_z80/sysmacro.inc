@@ -42,6 +42,19 @@
 	endm
 
 ;==============================================================================;
+; pushCall
+; Call a command by pushing it onto the stack and returning.
+
+; Params:
+; \1     Address to jump to
+
+	macro pushCall
+	ld hl,\1
+	push hl
+	retn
+	endm
+
+;==============================================================================;
 ; FM Instrument Definition Macros
 ;==============================================================================;
 ; fmInst_DetuneMult

@@ -1,7 +1,7 @@
 ; Neo-Geo freemlib Sound Driver RAM
 ;==============================================================================;
 ; Usable RAM exists from 0xF800 to 0xFFFF.
- section bss
+	section bss
 ;==============================================================================;
 ; 2015/06/02: this is going to need a major restructuring. -f
 ;==============================================================================;
@@ -12,22 +12,22 @@
 dummyByte   ds 1  ; dummy byte used for RAM clearing, etc.
 ;------------------------------------------------------------------------------;
 ; [Commands]
-curCommand   ds 1  ; Current command to handle
+curCommand    ds 1  ; Current command to handle
 prevCommand   ds 1  ; Previous command handled
-commandBuffer  ds 64  ; 64 byte command buffer (todo: is this enough? too much?)
+commandBuffer ds 64  ; 64 byte command buffer (todo: is this enough? too much?)
 
 ; unsure if I'm keeping this idea...
-dataMode   ds 1  ; (0=normal, 1=send to 68k, 2=receive from 68k)
-dataBuffer   ds 64  ; buffer for data transfer
+dataMode    ds 1  ; (0=normal, 1=send to 68k, 2=receive from 68k)
+dataBuffer  ds 64  ; buffer for data transfer
 
 ;------------------------------------------------------------------------------;
 ; [Channel Playback]
-musicToggle   ds 1  ; Master Toggle for Music (0=off, nonzero=on)
-soundToggle   ds 1  ; Master Toggle for Sound Effects (0=off, nonzero=on)
+musicToggle ds 1  ; Master Toggle for Music (0=off, nonzero=on)
+soundToggle ds 1  ; Master Toggle for Sound Effects (0=off, nonzero=on)
 
-typeToggle   ds 1  ; Overall toggle for SSG, FM, and PCM (1 bit each)
+typeToggle  ds 1  ; Overall toggle for SSG, FM, and PCM (1 bit each)
 ssgToggle   ds 1  ; Specific SSG channel toggles ($07 p4/5)
-fmToggle   ds 1  ; Specific FM channel toggles (matches FM register $28 - Key On/Off)
+fmToggle    ds 1  ; Specific FM channel toggles (matches FM register $28 - Key On/Off)
 pcmToggle   ds 1  ; Specific ADPCM channel toggles (matches ADPCM-B register $1C - Flag Control)
 
 ;------------------------------------------------------------------------------;
@@ -36,28 +36,28 @@ curSong    ds 1  ; Current Song number
 curSpeed   ds 1  ; Current Song Speed (0x00-0x1F)
 curTempo   ds 2  ; Current Song Tempo (0-511, for now...)
 
-songLoops   ds 1  ; Does the song loop?
-loopPoint   ds 2  ; Pointer to loop point (shared between channels for now)
+songLoops  ds 1  ; Does the song loop?
+loopPoint  ds 2  ; Pointer to loop point (shared between channels for now)
 
 ;------------------------------------------------------------------------------;
 ; Pattern Playback
 
-curPos_FM1   ds 2  ; pointer to current FM Channel 1 data
-curPos_FM2   ds 2  ; pointer to current FM Channel 2 data
-curPos_FM3   ds 2  ; pointer to current FM Channel 3 data
-curPos_FM4   ds 2  ; pointer to current FM Channel 4 data
+curPos_FM1   ds 2  ; pointer to current FM Channel 1 pattern data
+curPos_FM2   ds 2  ; pointer to current FM Channel 2 pattern data
+curPos_FM3   ds 2  ; pointer to current FM Channel 3 pattern data
+curPos_FM4   ds 2  ; pointer to current FM Channel 4 pattern data
 
-curPos_SSG_A  ds 2  ; pointer to current SSG Channel A data
-curPos_SSG_B  ds 2  ; pointer to current SSG Channel B data
-curPos_SSG_C  ds 2  ; pointer to current SSG Channel C data
+curPos_SSG_A ds 2  ; pointer to current SSG Channel A pattern data
+curPos_SSG_B ds 2  ; pointer to current SSG Channel B pattern data
+curPos_SSG_C ds 2  ; pointer to current SSG Channel C pattern data
 
-;curPos_PCMA1
-;curPos_PCMA2
-;curPos_PCMA3
-;curPos_PCMA4
-;curPos_PCMA5
-;curPos_PCMA6
-;curPos_PCMB
+;curPos_PCMA1 ds 2  ; pointer to current ADPCM-A Channel 1 pattern data
+;curPos_PCMA2 ds 2  ; pointer to current ADPCM-A Channel 2 pattern data
+;curPos_PCMA3 ds 2  ; pointer to current ADPCM-A Channel 3 pattern data
+;curPos_PCMA4 ds 2  ; pointer to current ADPCM-A Channel 4 pattern data
+;curPos_PCMA5 ds 2  ; pointer to current ADPCM-A Channel 5 pattern data
+;curPos_PCMA6 ds 2  ; pointer to current ADPCM-A Channel 6 pattern data
+;curPos_PCMB ds 2 ; pointer to current ADPCM-B Channel pattern data
 
 ;==============================================================================;
 ; <YM2610 Section>
@@ -69,9 +69,9 @@ intStatus1   ds 1  ; Status 1 (ADPCM A and B status)
 ;==============================================================================;
 ; [Timer variables]
 intTimerControl  ds 1  ; ($27) Timer Control and Mode
-intTimerA_Hi  ds 1  ; ($24) Timer A value, upper 8 bits
-intTimerA_Lo  ds 1  ; ($25) Timer A value, lower 2 bits
-intTimerB   ds 1  ; ($26) Timer B value
+intTimerA_Hi     ds 1  ; ($24) Timer A value, upper 8 bits
+intTimerA_Lo     ds 1  ; ($25) Timer A value, lower 2 bits
+intTimerB        ds 1  ; ($26) Timer B value
 
 ;==============================================================================;
 ; [SSG variables] (Ports 4/5)
@@ -80,8 +80,8 @@ intSSG_Enable  ds 1  ; ($07) SSG channel enable
 ; shared between channels:
 intSSG_EnvPeriodL ds 1  ; ($0B) Envelope Period Fine Tune
 intSSG_EnvPeriodH ds 1  ; ($0C) Envelope Period Coarse Tune
-intSSG_EnvShape  ds 1  ; ($0D) Envelope Shape Cycle
-intSSG_Noise  ds 1  ; ($06) Noise Period
+intSSG_EnvShape   ds 1  ; ($0D) Envelope Shape Cycle
+intSSG_Noise      ds 1  ; ($06) Noise Period
 
 ;--[SSG Channel A]-------------------------------------------------------------;
 intSSG_A_PeriodL ds 1  ; ($00) Tone Period Fine Tune
@@ -100,7 +100,7 @@ intSSG_C_Volume  ds 1  ; ($0A) Volume and Mode
 
 ;==============================================================================;
 ; [ADPCM-A variables ](Ports 6/7)
-intPCMA_Dump  ds 1  ; ($00) Dump (Key On/Off) and Channel toggle
+intPCMA_Dump      ds 1  ; ($00) Dump (Key On/Off) and Channel toggle
 intPCMA_MasterVol ds 1  ; ($01) Master Volume
 
 ;------------------------------------------------------------------------------;
@@ -108,38 +108,38 @@ intPCMA_MasterVol ds 1  ; ($01) Master Volume
 intPCMA1_Volume  ds 1  ; ($08) Channel volume
 intPCMA1_StartL  ds 1  ; ($10) Sample Start Address/256 (LSB)
 intPCMA1_StartH  ds 1  ; ($18) Sample Start Address/256 (MSB)
-intPCMA1_EndL  ds 1  ; ($20) Sample End Address/256 (xSB)
-intPCMA1_EndH  ds 1  ; ($28) Sample End Address/256 (xSB)
+intPCMA1_EndL    ds 1  ; ($20) Sample End Address/256 (xSB)
+intPCMA1_EndH    ds 1  ; ($28) Sample End Address/256 (xSB)
 ;-------------------------------;
 intPCMA2_Volume  ds 1  ; ($09) Channel volume
 intPCMA2_StartL  ds 1  ; ($11) Sample Start Address/256 (LSB)
 intPCMA2_StartH  ds 1  ; ($19) Sample Start Address/256 (MSB)
-intPCMA2_EndL  ds 1  ; ($21) Sample End Address/256 (LSB)
-intPCMA2_EndH  ds 1  ; ($29) Sample End Address/256 (MSB)
+intPCMA2_EndL    ds 1  ; ($21) Sample End Address/256 (LSB)
+intPCMA2_EndH    ds 1  ; ($29) Sample End Address/256 (MSB)
 ;-------------------------------;
 intPCMA3_Volume  ds 1  ; ($0A) Channel volume
 intPCMA3_StartL  ds 1  ; ($12) Sample Start Address/256 (LSB)
 intPCMA3_StartH  ds 1  ; ($1A) Sample Start Address/256 (MSB)
-intPCMA3_EndL  ds 1  ; ($22) Sample End Address/256 (LSB)
-intPCMA3_EndH  ds 1  ; ($2A) Sample End Address/256 (MSB)
+intPCMA3_EndL    ds 1  ; ($22) Sample End Address/256 (LSB)
+intPCMA3_EndH    ds 1  ; ($2A) Sample End Address/256 (MSB)
 ;-------------------------------;
 intPCMA4_Volume  ds 1  ; ($0B) Channel volume
 intPCMA4_StartL  ds 1  ; ($13) Sample Start Address/256 (LSB)
 intPCMA4_StartH  ds 1  ; ($1B) Sample Start Address/256 (MSB)
-intPCMA4_EndL  ds 1  ; ($23) Sample End Address/256 (LSB)
-intPCMA4_EndH  ds 1  ; ($2B) Sample End Address/256 (MSB)
+intPCMA4_EndL    ds 1  ; ($23) Sample End Address/256 (LSB)
+intPCMA4_EndH    ds 1  ; ($2B) Sample End Address/256 (MSB)
 ;-------------------------------;
 intPCMA5_Volume  ds 1  ; ($0C) Channel volume
 intPCMA5_StartL  ds 1  ; ($14) Sample Start Address/256 (LSB)
 intPCMA5_StartH  ds 1  ; ($1C) Sample Start Address/256 (MSB)
-intPCMA5_EndL  ds 1  ; ($24) Sample End Address/256 (LSB)
-intPCMA5_EndH  ds 1  ; ($2C) Sample End Address/256 (MSB)
+intPCMA5_EndL    ds 1  ; ($24) Sample End Address/256 (LSB)
+intPCMA5_EndH    ds 1  ; ($2C) Sample End Address/256 (MSB)
 ;-------------------------------;
 intPCMA6_Volume  ds 1  ; ($0D) Channel volume
 intPCMA6_StartL  ds 1  ; ($15) Sample Start Address/256 (LSB)
 intPCMA6_StartH  ds 1  ; ($1D) Sample Start Address/256 (MSB)
-intPCMA6_EndL  ds 1  ; ($25) Sample End Address/256 (LSB)
-intPCMA6_EndH  ds 1  ; ($2D) Sample End Address/256 (MSB)
+intPCMA6_EndL    ds 1  ; ($25) Sample End Address/256 (LSB)
+intPCMA6_EndH    ds 1  ; ($2D) Sample End Address/256 (MSB)
 
 ;==============================================================================;
 ; [ADPCM-B variables] (ports 4/5) (Only available on cart systems.)
@@ -147,30 +147,30 @@ intPCM_ChanFlags ds 1  ; ($1C) *ADPCM-A and B flags control*
 
 ;------------------------------------------------------------------------------;
 ; * ADPCM-B
-intPCMB_Status  ds 1  ; ($10) Start, Repeat, Reset
+intPCMB_Status    ds 1  ; ($10) Start, Repeat, Reset
 intPCMB_LeftRight ds 1  ; ($11) Left and Right channel output
-intPCMB_StartLo  ds 1  ; ($12) Sample Start Address/256 (LSB)
-intPCMB_StartHi  ds 1  ; ($13) Sample Start Address/256 (MSB)
-intPCMB_EndLo  ds 1  ; ($14) Sample End Address/256 (LSB)
-intPCMB_EndHi  ds 1  ; ($15) Sample End Address/256 (MSB)
+intPCMB_StartLo   ds 1  ; ($12) Sample Start Address/256 (LSB)
+intPCMB_StartHi   ds 1  ; ($13) Sample Start Address/256 (MSB)
+intPCMB_EndLo     ds 1  ; ($14) Sample End Address/256 (LSB)
+intPCMB_EndHi     ds 1  ; ($15) Sample End Address/256 (MSB)
 intPCMB_SampRateL ds 1  ; ($19) Delta-N Sampling Rate (L)
 intPCMB_SampRateH ds 1  ; ($1A) Delta-N Sampling Rate (H)
-intPCMB_Volume  ds 1  ; ($1B) Channel volume
+intPCMB_Volume    ds 1  ; ($1B) Channel volume
 
 ;==============================================================================;
 ; [FM variables]
 ;intFM_LSITest  ds 1  ; ($21, 4/5) LSI test data
-intFM_LFOFreq  ds 1  ; ($22, 4/5) LFO Frequency Control
+intFM_LFOFreq   ds 1  ; ($22, 4/5) LFO Frequency Control
 intFM_KeyOnOff  ds 1  ; ($28, 4/5) Key On/Off, Slot
 
 ;------------------------------------------------------------------------------;
 ; * FM Channel 1
-intFM1_Freq1  ds 1  ; ($A1, 4/5) Frequency (LSB)
-intFM1_Freq2  ds 1  ; ($A5, 4/5) Block, Frequency (MSB)
-intFM1_2Freq1  ds 1  ; ($A9, 4/5) 2 CH*Frequency (LSB)
-intFM1_2Freq2  ds 1  ; ($AD, 4/5) 2 CH*Block, 2CH*Frequency (MSB)
+intFM1_Freq1     ds 1  ; ($A1, 4/5) Frequency (LSB)
+intFM1_Freq2     ds 1  ; ($A5, 4/5) Block, Frequency (MSB)
+intFM1_2Freq1    ds 1  ; ($A9, 4/5) 2 CH*Frequency (LSB)
+intFM1_2Freq2    ds 1  ; ($AD, 4/5) 2 CH*Block, 2CH*Frequency (MSB)
 intFM1_FbackAlgo ds 1  ; ($B1, 4/5) Self Feedback/Algorithm
-intFM1_LRAMPM  ds 1  ; ($B5, 4/5) L/R select, AM and PM values
+intFM1_LRAMPM    ds 1  ; ($B5, 4/5) L/R select, AM and PM values
 
 ; Detune (DT1) and Multiple (MUL)
 intFM1_DetuneMult1 ds 1  ; ($31, 4/5) Op1 Detune/Multiple
@@ -216,12 +216,12 @@ intFM1_SSGEnvel4 ds 1  ; ($9D, 4/5) Op4 SSG-type Envelope control
 
 ;------------------------------------------------------------------------------;
 ; * FM Channel 2
-intFM2_Freq1  ds 1  ; ($A2, 4/5) Frequency (LSB)
-intFM2_Freq2  ds 1  ; ($A6, 4/5) Block, Frequency (MSB)
-intFM2_2Freq1  ds 1  ; ($AA, 4/5) 2 CH*Frequency (LSB)
-intFM2_2Freq2  ds 1  ; ($AE, 4/5) 2 CH*Block, 2CH*Frequency (MSB)
+intFM2_Freq1     ds 1  ; ($A2, 4/5) Frequency (LSB)
+intFM2_Freq2     ds 1  ; ($A6, 4/5) Block, Frequency (MSB)
+intFM2_2Freq1    ds 1  ; ($AA, 4/5) 2 CH*Frequency (LSB)
+intFM2_2Freq2    ds 1  ; ($AE, 4/5) 2 CH*Block, 2CH*Frequency (MSB)
 intFM2_FbackAlgo ds 1  ; ($B2, 4/5) Self Feedback/Algorithm
-intFM2_LRAMPM  ds 1  ; ($B6, 4/5) L/R select, AM and PM values
+intFM2_LRAMPM    ds 1  ; ($B6, 4/5) L/R select, AM and PM values
 
 intFM2_DetuneMult1 ds 1  ; ($32, 4/5) Op1 Detune/Multiple
 intFM2_DetuneMult2 ds 1  ; ($36, 4/5) Op2 Detune/Multiple
@@ -260,12 +260,12 @@ intFM2_SSGEnvel4 ds 1  ; ($9E, 4/5) Op4 SSG-type Envelope control
 
 ;------------------------------------------------------------------------------;
 ; * FM Channel 3
-intFM3_Freq1  ds 1  ; ($A1, 6/7) Frequency (LSB)
-intFM3_Freq2  ds 1  ; ($A5, 6/7) Block, Frequency (MSB)
-intFM3_2Freq1  ds 1  ; ($A9, 6/7) 2 CH*Frequency (LSB)
-intFM3_2Freq2  ds 1  ; ($AD, 6/7) 2 CH*Block, 2CH*Frequency (MSB)
+intFM3_Freq1     ds 1  ; ($A1, 6/7) Frequency (LSB)
+intFM3_Freq2     ds 1  ; ($A5, 6/7) Block, Frequency (MSB)
+intFM3_2Freq1    ds 1  ; ($A9, 6/7) 2 CH*Frequency (LSB)
+intFM3_2Freq2    ds 1  ; ($AD, 6/7) 2 CH*Block, 2CH*Frequency (MSB)
 intFM3_FbackAlgo ds 1  ; ($B1, 6/7) Self Feedback/Algorithm
-intFM3_LRAMPM  ds 1  ; ($B5, 6/7) L/R select, AM and PM values
+intFM3_LRAMPM    ds 1  ; ($B5, 6/7) L/R select, AM and PM values
 
 intFM3_DetuneMult1 ds 1  ; ($31, 6/7) Op1 Detune/Multiple
 intFM3_DetuneMult2 ds 1  ; ($35, 6/7) Op2 Detune/Multiple
@@ -304,12 +304,12 @@ intFM3_SSGEnvel4 ds 1  ; ($9D, 6/7) Op4 SSG-type Envelope control
 
 ;------------------------------------------------------------------------------;
 ; * FM Channel 4
-intFM4_Freq1  ds 1  ; ($A2, 6/7) Frequency 1 (LSB)
-intFM4_Freq2  ds 1  ; ($A6, 6/7) Block, Frequency 2 (MSB)
-intFM4_2Freq1  ds 1  ; ($AA, 6/7) 2 CH*Frequency 1 (LSB)
-intFM4_2Freq2  ds 1  ; ($AE, 6/7) 2 CH*Block, 2CH*Frequency 2 (MSB)
+intFM4_Freq1     ds 1  ; ($A2, 6/7) Frequency 1 (LSB)
+intFM4_Freq2     ds 1  ; ($A6, 6/7) Block, Frequency 2 (MSB)
+intFM4_2Freq1    ds 1  ; ($AA, 6/7) 2 CH*Frequency 1 (LSB)
+intFM4_2Freq2    ds 1  ; ($AE, 6/7) 2 CH*Block, 2CH*Frequency 2 (MSB)
 intFM4_FbackAlgo ds 1  ; ($B2, 6/7) Self Feedback/Algorithm
-intFM4_LRAMPM  ds 1  ; ($B6, 6/7) L/R select, AM and PM values
+intFM4_LRAMPM    ds 1  ; ($B6, 6/7) L/R select, AM and PM values
 
 intFM4_DetuneMult1 ds 1  ; ($32, 6/7) Op1 Detune/Multiple
 intFM4_DetuneMult2 ds 1  ; ($36, 6/7) Op2 Detune/Multiple
