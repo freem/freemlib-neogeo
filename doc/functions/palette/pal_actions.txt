@@ -12,12 +12,12 @@ persistent data will need to exist for some effects (e.g. how many frames a
 certain effect has run).
 
 (Command List)
-$FF		Stop All Actions
-$00		No Action
-$01		Palette Index Cycling
-$02		Color Animation
-$03		Color Pulse
-$04		Color Ramp
+$FF    Stop All Actions
+$00    No Action
+$01    Palette Index Cycling
+$02    Color Animation
+$03    Color Pulse
+$04    Color Ramp
 
 --------------------------------------------------------------------------------
 ($FF) Stop Actions
@@ -28,17 +28,17 @@ $04		Color Ramp
 
 ($01) Palette Index Cycling (palsetNum, startIdx, numColors, frameTime, animTime)
   Create a color cycling effect.
-  * palsetNum		[byte] Palette set number (0-255/$00-$FF)
-  * startIdx		[byte] Starting index (1-15/$1-$F)
-  * numColors		[byte] Number of colors in cycle (2-15)
-  * frameTime		[????] Frames before switching colors
-  * animTime		[????] Time to loop palette cycling. (0=loop forever?)
+  * palsetNum       [byte] Palette set number (0-255/$00-$FF)
+  * startIdx        [byte] Starting index (1-15/$1-$F)
+  * numColors       [byte] Number of colors in cycle (2-15)
+  * frameTime       [????] Frames before switching colors
+  * animTime        [????] Time to loop palette cycling. (0=loop forever?)
 
 ($02) Color Animation (palsetNum, startIdx, colorAnimPtr)
   Play back a set of colors, similar to an animation.
-  * palsetNum		[byte] Palette set number (0-255/$00-$FF)
-  * startIdx		[byte] Starting index (1-15/$1-$F)
-  * colorAnimPtr	[long] Color animation data pointer
+  * palsetNum       [byte] Palette set number (0-255/$00-$FF)
+  * startIdx        [byte] Starting index (1-15/$1-$F)
+  * colorAnimPtr    [long] Color animation data pointer
 
 ($03) Color Pulse
   (0->1->0; repeat)
@@ -53,13 +53,13 @@ $04		Color Ramp
 ================================================================================
 <Color Animations>
 (Main Data)
-$00				(byte) Number of colors in animation frame (1-15)
-$01				(byte) Frame Count (0-255)
+$00      (byte) Number of colors in animation frame (1-15)
+$01      (byte) Frame Count (0-255)
 
 (Frame Data)
 Repeat as many times as requested by Frame Count above.
-$00				(word)	Number of frames to display this frame
-$02				(word)	Color data 1
-$04				(word)	Color data 2
-....................................
-$1E				(word)	Color data 15
+$00      (word) Number of frames to display this frame
+$02      (word) Color data 1
+$04      (word) Color data 2
+.............................
+$1E      (word) Color data 15

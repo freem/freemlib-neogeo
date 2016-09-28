@@ -2,13 +2,13 @@ freemlib for Neo-Geo - System functionality
 ===========================================
 The system functionality section of the freemlib deals with system-related items.
 This includes dealing with the hardware and software dipswitches (MVS only),
-the memory card, and BIOS functionality.
+the memory card, and system ROM functionality.
 
 ================================================================================
 [Hardware Dipswitches]
 The hardware dipswitches are only found on MVS systems. For the most part,
-they're consistent between hardware and BIOS versions, though some games may
-have a different configuration.
+they're consistent between hardware and system ROM versions, though some games
+may have a different configuration.
 
 Technically, these are inputs, but I consider them a part of the system, since
 they change how the system reacts.
@@ -48,8 +48,10 @@ Special Options:
 Over the years, there's been some standardization of settings; here's a list of
 what I can think of off the top of my head:
 
-Difficulty			"Level 1"-"Level 8"
-(integer counter)	0-99
+Difficulty        "Level 1"-"Level 8"
+(integer counter) 0-99
+
+(todo: the Japanese names for these settings)
 
 --------------------------------------------------------------------------------
 [macr_GetSoftDipNum]
@@ -69,8 +71,8 @@ d0			Value of requested Soft DIP
 Keep in mind: the location of the debug dips is pointed to in the Neo-Geo header.
 
 You get two bytes worth of values that are typically only available to people
-using the Debug/Developer BIOS, an emulator that supports memory hacking or
-direct debug dipswitch modification, or possibly an unofficial BIOS.
+using the Debug/Developer system ROM, an emulator that supports memory hacking or
+direct debug dipswitch modification, or possibly an unofficial system ROM.
 
 Debug Dip 1
 76543210
@@ -84,21 +86,21 @@ xxxxxxxx
 
 Possibly a set of macros for debug dipswitch related stuff?
 
-* debugDip_getValue		Read value of single debug dip
-* debugDip_setValue		Set value of single debug dip
-* debugDip_getAll		Read values of all debug dips
-* debugDip_setAll		Set values of all debug dips
-* debugDip_reset		Reset all debug dipswitches
+* debugDip_getValue     Read value of single debug dip
+* debugDip_setValue     Set value of single debug dip
+* debugDip_getAll       Read values of all debug dips
+* debugDip_setAll       Set values of all debug dips
+* debugDip_reset        Reset all debug dipswitches
 
 ================================================================================
 [MVS Calendar]
-Yeah you're not gonna be able to do this on a home system unless you manage to
-add a RTC chip on a cart and find a way to hook up register writes...
+Yeah, you're not gonna be able to do this on a home system unless you manage to
+add an RTC chip on a cart and find a way to hook up register writes...
 
 Art of Fighting 3 takes advantage of this, though. Do other games?
 
-* mvsCal_getDate		Get current date
-* mvsCal_getTime		Get current time
+* mvsCal_getDate        Get current date
+* mvsCal_getTime        Get current time
 
 ================================================================================
 [MVS Backup RAM]
@@ -112,4 +114,4 @@ See memcard.txt
 ================================================================================
 [BIOS/System ROM]
 The Neo-Geo BIOS is considered a part of the system :p
-What's available depends on both the system type and BIOS version.
+What's available depends on both the system type and System ROM version.

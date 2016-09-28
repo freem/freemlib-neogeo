@@ -6,11 +6,13 @@ SYSTEM_IO once every 1/60th of a second.
 However, I can't help but shake the feeling that this shouldn't be the only way
 of doing it... In any case, I need to experiment with the input system more before
 I can truly say what I really need.
+
 ================================================================================
 (sketchpad)
 * input buffers? (for things like moves in fighting games, codes, etc.)
 * Trackball (SIT board)
-* Mahjong Controller (note differences between MVS [1p only] and Home)
+* Mahjong Controller (note differences between MVS [1p only] and Home [up to 2p])
 * Kizuna 4P multiplayer board (NEO-FTC1B)
 * What the hell are the Keyboard (status==4) and Expanded controller (status==2)?
+
 ================================================================================

@@ -7,10 +7,10 @@ Each SCB section controls a different part of the sprite.
 {SCB1}
 SCB1 holds the tilemaps, palette, auto-animation, and flip bits.
 
-Tile number				0000|00000000
-Palette					00000000
-Auto-anim modes			2-bit/3-bit, one bit for each
-HFlip, VFlip			one bit each
+Tile number        0000|00000000
+Palette            00000000
+Auto-anim modes    2-bit/3-bit, one bit for each
+HFlip, VFlip       one bit each
 
 (actual formats)
 SCB1 first word:
@@ -32,8 +32,8 @@ H = horizontal flip
 
 {SCB2}
 SCB2 holds the shrinking coefficients.
-Horiz. Size				0000
-Vert.  Size				00000000
+Horiz. Size        0000
+Vert.  Size        00000000
 
 (actual format)
 FEDCBA98 76543210
@@ -47,9 +47,9 @@ V = vertical scale
 
 {SCB3}
 SCB3 holds the vertical positions, sticky/chain bit, and sprite tile size.
-Y Position				000000000
-Sticky Bit				one bit
-Sprite Size				000000
+Y Position         000000000
+Sticky Bit         one bit
+Sprite Size        000000
 
 (actual format)
 FEDCBA98 76543210
@@ -63,7 +63,7 @@ S = sprite size
 
 {SCB4}
 SCB4 has the horizontal position only.
-X position				000000000
+X position         000000000
 
 (actual format)
 FEDCBA98 76543210
@@ -76,10 +76,10 @@ X = X position
 
 After the SCB sections is the Sprite List. I'm not 100% sure how it operates.
 
-{Sprite List (Even Scanlines)}	$8600-$867F
-{Sprite List (Odd Scanlines)}	$8680-$86FF
-I think the system throws the sprite numbers into here, but I'm not sure how
-they map to the scanlines or whatever.
+{Sprite List (Even Scanlines)} $8600-$867F
+{Sprite List (Odd Scanlines)}  $8680-$86FF
+I think the system/LSPC throws the sprite numbers into here automatically,
+but I'm not sure how they map to the scanlines or whatever.
 
 ================================================================================
 <Brainstorming>
@@ -101,21 +101,21 @@ Sprites are usually transferred to the VRAM in VBlank...
 * "vramptr":  1 dword (current pointer into vramlist, reset every frame)
 
 vramlist entries:
-0		Number of words in this entry ("n")
-1		VRAM address
-2		VRAM increment
-3..n	data words
+0       Number of words in this entry ("n")
+1       VRAM address
+2       VRAM increment
+3..n    data words
 
 Main loop:
 * update previous scroll values
-* ControllerScroll	; scroll background
-* ClampScroll		; make sure scroll stays within bounds
-* CheckUpdate		; see if sprite VRAM needs to be updated
-* BufferSCB3		; yscroll, ysize, chain
-* BufferSCB4		; xscroll
+* ControllerScroll  ; scroll background
+* ClampScroll       ; make sure scroll stays within bounds
+* CheckUpdate       ; see if sprite VRAM needs to be updated
+* BufferSCB3        ; yscroll, ysize, chain
+* BufferSCB4        ; xscroll
 
 VBlank:
-* UpdateVRAM		; make VRAM changes based on commands in list
+* UpdateVRAM        ; make VRAM changes based on commands in list
 
 [DATLib]
 There are two buffers in DATLib:
@@ -138,10 +138,10 @@ The best formats are those that map to the LSPC...like smkdan's.
 
 VRAM Buffer:
 {
-$00		(w) data length (in words)
-$02		(w) vram address
-$04		(w) vram increment
-$06...	(w) vram data (in words)
+$00     (w) data length (in words)
+$02     (w) vram address
+$04     (w) vram increment
+$06...  (w) vram data (in words)
 }
 repeat until end of buffer (data length 0000)
 
@@ -171,11 +171,11 @@ SCB4{
 }
 
 <Sprite Data Block>
-$00			Sprite Height (tiles)				(word)	"spr_height"
-$02-$05		Pointer to SCB1 tilemap data		(long)	"spr_tilemap"
-$06			SCB2 data, native format			(word)	"spr_shrink"
-$08			SCB3 data, native format			(word)	"spr_ypp"
-$0A			SCB4 data, native format			(word)	"spr_x"
+$00      Sprite Height (tiles)         (word) "spr_height"
+$02-$05  Pointer to SCB1 tilemap data  (long) "spr_tilemap"
+$06      SCB2 data, native format      (word) "spr_shrink"
+$08      SCB3 data, native format      (word) "spr_ypp"
+$0A      SCB4 data, native format      (word) "spr_x"
 
 SCB1 data is stored in native format and is limited based on the value of
 Sprite Height. Real length of SCB1 data is 2x Sprite Height.
@@ -185,12 +185,12 @@ Sprite Height. Real length of SCB1 data is 2x Sprite Height.
 Each sprite in SCB1 has 64 values (32 possible "sub-sprites").
 Each spot in a sprite's SCB1 block is two values.
 
-* Tile Number LSB		16 bits > byte 1
+* Tile Number LSB       16 bits > byte 1
 -------------------------------
-* Palette				8 bits \
-* Tile Number MSB		4 bits | byte 2
-* Auto-Anim Flags		2 bits |
-* V/H Flip Flags		2 bits /
+* Palette               8 bits \
+* Tile Number MSB       4 bits  | byte 2
+* Auto-Anim Flags       2 bits  |
+* V/H Flip Flags        2 bits /
 
 Tile index is 20 bits (values 0-1048575/$00000-$FFFFF).
 
@@ -218,36 +218,36 @@ Neo-Geo sprite hardware, so I'm just going to plan this out before making
 any more changes.
 
 (Metasprite as a whole)
-* number of components	[byte]
+* number of components  [byte]
 
 (Metasprite components)
-* number of sprites		[byte]
-* sprite size (tiles)	[byte]
-* palette				[byte]
-* sticky bit			[byte] attach to previous sprite
-* offset x/y position	[word] one word each
-* scale value			[word]
-* pointer to tilemap	[long]
+* number of sprites     [byte]
+* sprite size (tiles)   [byte]
+* palette               [byte]
+* sticky bit            [byte] attach to previous sprite
+* offset x/y position   [word] one word each
+* scale value           [word]
+* pointer to tilemap    [long]
 
 Of course, this doesn't even factor animation in...
 
 --------------------------------------------------------------------------------
 <Metasprite Data Block (current, but deprecated)>
-$00			Number of Sprites in Metasprite		(word)
-$02...end	Pointers to Sprite data				(long)
+$00         Number of Sprites in Metasprite     (word)
+$02...end   Pointers to Sprite data             (long)
 
 --------------------------------------------------------------------------------
 <WIP new metasprite data block (not final; will change)>
-$00			Number of Metasprite components		(word)
+$00         Number of Metasprite components     (word)
 ------------
-$02			Number of sprites in Component 1	(byte)
-$03			Component 1 sprite size/height		(byte)
-$04			Component 1 palette					(byte)
-$05			Component 1 sticky bit				(byte)
-$06			Component 1 overall X offset		(word)
-$08			Component 1 overall Y offset		(word)
-$0A			Component 1 scale value				(word)
-$0C			Pointers to Component 1 Tilemaps	(long)
+$02         Number of sprites in Component 1    (byte)
+$03         Component 1 sprite size/height      (byte)
+$04         Component 1 palette                 (byte)
+$05         Component 1 sticky bit              (byte)
+$06         Component 1 overall X offset        (word)
+$08         Component 1 overall Y offset        (word)
+$0A         Component 1 scale value             (word)
+$0C         Pointers to Component 1 Tilemaps    (long)
 ............
 etc.
 

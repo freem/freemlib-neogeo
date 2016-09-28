@@ -11,8 +11,8 @@ used to display them in certain games (there are probably better names):
 (Defining collision data)
 Collision data is normally tied to animation frames.
 
-$00			Number of Boxes [for this frame] (byte)
-.....		Collision Box Data
+$00     Number of Boxes [for this frame] (byte)
+.....   Collision Box Data
 
 The number of boxes per frame is currently capped at 255, because having that
 many in a single frame sounds pretty unreasonable as-is.
@@ -20,11 +20,11 @@ many in a single frame sounds pretty unreasonable as-is.
 (Collision Box Data)
 Each entry follows this format:
 
-+$00	Type (word; 0=normal, 1=attack; other bytes for future/private expansion)
-+$02	Box X1 (word; start)
-+$04	Box Y1 (word; start)
-+$06	Box X2 (word; end)
-+$08	Box Y2 (word; end)
++$00    Type (word; 0=normal, 1=attack; other bytes for future/private expansion)
++$02    Box X1 (word; start)
++$04    Box Y1 (word; start)
++$06    Box X2 (word; end)
++$08    Box Y2 (word; end)
 
 X and Y locations are relative to the top left of the sprite (0,0).
 
