@@ -218,11 +218,6 @@ EntryPoint:
 	; "various writes to ports 4/5 and 6/7"
 
 	;-------------------------------------------;
-	; write 1 to port $C0 (what is the purpose?)
-	ld a,1
-	out (0xC0),a
-
-	;-------------------------------------------;
 	; continue setting up the hardware, etc.
 
 	ld de,FM_TimerMode<<8|0x30 ; Reset Timer flags, Disable Timer IRQs
