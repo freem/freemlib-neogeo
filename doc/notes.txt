@@ -19,5 +19,5 @@ flipped between the two architectures.
 
 e.g. Loading an 8-bit value from one register to another:
 (68K) move.b source,dest
-(Z80) ld	dest,source
+(Z80) ld     dest,source
 

@@ -37,8 +37,10 @@ Blue	000001
 The full range of color values for each channel is 00-3F.
 
 Warning: the following RGB values are approximations due to the fact that a
-resistor network is used to modify the actual color values. See MAME source for
-more information.
+resistor network is used to modify the actual color values.
+
+See MAME source for more information:
+https://github.com/mamedev/mame/blob/master/src/mame/video/neogeo.cpp
 
 RGB #FFFFFF = Neo-Geo $7FFF
 RGB #FEFEFE = Geo-Geo $FFFF

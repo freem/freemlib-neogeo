@@ -8,6 +8,9 @@ Palettes are stored first, there's space for 45 of them ($5A0 bytes).
 Following that are 45 sprite tiles in the regular SPR file format, making a 9*5
 tiles (144*80 pixels) logo. Tiles are mapped from left to right, top to bottom.
 
+Palette note: Index 0 is transparent, and the area behind the game logo in
+the CDZ menu screen is not entirely black. Proceed with caution.
+
 todo: Create a tool that can generate a TITLE_*.SYS file from a .SPR file and
 various .ngpal files. (blastar's NGFX can import from BMP/PNG/GIF files)
 

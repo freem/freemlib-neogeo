@@ -3,6 +3,9 @@ freemlib for Neo-Geo - Palette Actions
 Palette actions are in charge of handling effects for sections of the palette.
 This is different from full-palette effects (e.g. fading).
 
+"(You really should just load a pre baked palette entry instead of computing it)"
+- hpman, https://wiki.neogeodev.org/index.php?title=Palette_rotation&oldid=5087
+
 (Usage)
 Trying to figure out the best way to handle this...
 palAction_Handler runs through the Palette Action buffer every frame.
