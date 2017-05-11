@@ -16,7 +16,7 @@ VLINKFLAGS = -b rawbin1 -T $(LINKSCRIPT)
 # executable name for padding tool
 PAD = pad
 # flags for padding tool
-PADFLAGS_M1 = 131072
+PADFLAGS_M1 = 65536
 
 ################################################################################
 # [Output Settings]
