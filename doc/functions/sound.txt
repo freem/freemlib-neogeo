@@ -38,7 +38,7 @@ $00    No command
 $01    *Slot change
 $02    *Play eyecatch BGM ($5F)
 $03    *Soft reset
-$04    ALL DI (disable music & sound effects; $7F excepted)
+$04    ALL DI (disable music & sound effects; $7F/coin noise excepted)
 $05    MUSIC DI (disable music)
 $06    EFFECT DI (disable sound effects)
 $07    ALL EI (enable music & sound effects)
@@ -126,8 +126,10 @@ Some SNK drivers have a set of values for Timer A:
 SNK drivers seem to use Timer A as the sound effect playback timer...
 
 (Timer B musings)
-* $46 (70)   (1152*(256-70)/8) = 26784 microsec
-* $47 (71)   (1152*(256-71)/8) = 26640 microsec
+* $01 (1)    (1152*(256-1)/8)   = 36720 microsec | 0.036720 sec
+* $46 (70)   (1152*(256-70)/8)  = 26784 microsec | 0.026784 sec
+* $47 (71)   (1152*(256-71)/8)  = 26640 microsec | 0.026640 sec
+* $FF (255)  (1152*(256-255)/8) = 144 microsec   | 0.000144 sec
 
 SNK drivers typically use Timer B as the tempo (for music playback).
 
@@ -211,9 +213,11 @@ $FFFD and $FFFE are used for the infinite jump, and the stack's bottom is $FFFC.
 --------------------------------------------------------------------------------
 Driver Stuff
 
+todo: replace these two with indices into the command buffer
 * Current Command
 * Previous Command
-* Command buffer (How many bytes is enough?)
+
+* Command buffer (64 bytes is used in MAKOTO v3 and later; should be enough?)
 
 * Channel Enable/Disable Flags
 
@@ -299,8 +303,9 @@ Examples:
   * 0xC2BA??
 
 [FM]
-This part is going to take up the most space because FM synthesis is the result
-of a lot of fuckin' values and shit. Multiply that by 4 channels.
+This part is going to take up the most space because FM synthesis is the
+result of a lot of values (on this chip, each channel has four operators).
+Multiply that by 4 channels.
 
 Overall Status>
  * 1 byte for LFO, Freq. Control ($22)
