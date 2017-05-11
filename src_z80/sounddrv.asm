@@ -103,13 +103,22 @@ NMI:
 	or a ; check if Command is 0
 	jp Z,endNMI ; exit if Command 0
 
-	; do NMI crap/handle communication... I'm not fully sure what to do yet.
+	; old code{
 	ld (curCommand),a ; update curCommand
 	call HandleCommand
-
 	; update previous command
 	ld a,(curCommand)
 	ld (prevCommand),a
+	;}
+
+	; new code should...
+	; 1) load NMI buffer index and mask with 0x3F
+	; 2) add new NMI buffer index value to location of command buffer
+	; 3) store command in buffer
+	; 4) update NMI buffer index
+
+	; the main loop will detect a difference between the two indices
+	; and react accordingly.
 
 	out (0xC),a ; Reply to 68K with something.
 	out (0),a ; Write to port 0 (Clear sound code)
@@ -210,6 +219,11 @@ EntryPoint:
 
 	;-------------------------------------------;
 	; Initialize variables (todo)
+
+	; reset buffer indices
+	ld (mainBufIndex),a
+	ld (nmiBufIndex),a
+	call ClearCommandBuffer ; todo: is this needed here?
 
 	;-------------------------------------------;
 	; Silence SSG, FM(, and ADPCM?)
@@ -342,6 +356,25 @@ SetDefaultBanks:
 	SetBank 0xE,9  ; Set $E000-$EFFF bank to bank $0E (14 *  4K)
 	SetBank 6,0xA  ; Set $C000-$DFFF bank to bank $06 ( 6 *  8K)
 	SetBank 2,0xB  ; Set $8000-$BFFF bank to bank $02 ( 2 * 16K)
+	ret
+
+;==============================================================================;
+; ClearCommandBuffer
+; Clears the command buffer and resets indices into it.
+
+ClearCommandBuffer:
+	xor a
+	; clear indices into command buffer
+	ld (mainBufIndex),a
+	ld (nmiBufIndex),a
+
+	; clear command buffer contents
+	ld hl,commandBuffer
+	ld (hl),a
+	ld de,commandBuffer+1
+	ld bc,0x3F
+	ldir
+
 	ret
 
 ;==============================================================================;
