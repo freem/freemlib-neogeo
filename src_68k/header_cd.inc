@@ -2,7 +2,7 @@
 	dc.b "NEO-GEO"
 
 	; System Version/CDDA Flag
-	; On the Neo-Geo CD, this flag determines how audio commands are handled.
+	; On the Neo-Geo CD, this flag determines how CDDA commands are handled.
 	; If the value is 0 or 1, then Z80 RAM address $FEF8 contains the commands.
 	; Any other value will allow you to choose the Z80 address (see $13A below).
 	dc.b $00 ; System Version
