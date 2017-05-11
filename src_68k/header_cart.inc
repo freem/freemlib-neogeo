@@ -1,4 +1,5 @@
-; Neo-Geo Cart Header
+; Neo-Geo Cart Header [placed at $000100]
+;==============================================================================;
 	dc.b "NEO-GEO"
 	dc.b $00 ; System Version (0=cart; 1/2 are used for CD games)
 

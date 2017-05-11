@@ -1,4 +1,5 @@
-; Neo-Geo CD Header
+; Neo-Geo CD Header [placed at $000100]
+;==============================================================================;
 	dc.b "NEO-GEO"
 
 	; System Version/CDDA Flag

@@ -1,4 +1,7 @@
-	; setting up the soft dip (Japan)
+; Software Dip Switches (a.k.a. "soft dip")
+;==============================================================================;
+; setting up the soft dip (Japan)
+
 softDips_Japan:
 	dc.b "EXAMPLE SET J   " ; Game Name
 	dc.w $FFFF ; Special Option 1
@@ -12,7 +15,9 @@ softDips_Japan:
 	dc.b "CHOICE1 J   " ; Option choices
 	dc.b "CHOICE2 J   "
 
-	; setting up the soft dip (USA)
+;------------------------------------------------------------------------------;
+; setting up the soft dip (USA)
+
 softDips_USA:
 	dc.b "EXAMPLE SET U   " ; Game Name
 	dc.w $FFFF ; Special Option 1
@@ -26,7 +31,9 @@ softDips_USA:
 	dc.b "CHOICE1 U   " ; Option choices
 	dc.b "CHOICE2 U   "
 
-	; setting up the soft dip (Europe)
+;------------------------------------------------------------------------------;
+; setting up the soft dip (Europe)
+
 softDips_Europe:
 	dc.b "EXAMPLE SET E   " ; Game Name
 	dc.w $FFFF ; Special Option 1

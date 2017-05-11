@@ -1,4 +1,5 @@
-; 68000 Header (can handle Cart and CD development)
+; Neo-Geo 68000 Header (can handle Cart and CD development) [placed at $000000]
+;==============================================================================;
 	; Note: You must modify the "$????????" sections for your game.
 	dc.l $0010F300 ; Initial Supervisor Stack Pointer (SSP)
 	dc.l $00C00402 ; Initial PC (BIOS $C00402)
