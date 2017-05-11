@@ -30,6 +30,7 @@ instFM_01:
 	byte $00 ; AM Sense/PM sense
 	byte $00 ; (padding/future expansion)
 	byte $00 ; (padding/future expansion)
+
 ;------------------------------------------------------------------------------;
 ; example with macros
 instFM_02:
