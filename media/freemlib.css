@@ -1,0 +1,14 @@
+@import url("normalize.css");
+
+body {
+	background-color:#eef;
+	margin:0.5em;
+}
+
+#bottom{
+	border-top:1px solid #111;
+	padding-top:0.25em;
+	font-size:85%;
+	text-align:center;
+}
+
