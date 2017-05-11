@@ -103,19 +103,22 @@ NMI:
 	or a ; check if Command is 0
 	jp Z,endNMI ; exit if Command 0
 
-	; old code{
-	ld (curCommand),a ; update curCommand
-	call HandleCommand
-	; update previous command
-	ld a,(curCommand)
-	ld (prevCommand),a
-	;}
+	; 1) load NMI buffer index and mask with (buffer size-1) (in our case, 0x3F)
+	ld a,(nmiBufIndex)
+	and 0x3F
 
-	; new code should...
-	; 1) load NMI buffer index and mask with 0x3F
 	; 2) add new NMI buffer index value to location of command buffer
+	ld e,a
+	ld d,0
+	ld hl,commandBuffer
+	add hl,de
+
 	; 3) store command in buffer
-	; 4) update NMI buffer index
+	ld (hl),b ; store command
+
+	; 4) update NMI buffer index (nmiBufIndex++)
+	ld hl,nmiBufIndex
+	inc (hl)
 
 	; the main loop will detect a difference between the two indices
 	; and react accordingly.
@@ -193,7 +196,7 @@ endIRQ:
 	pop af
 
 	; enable interrupts and return
-	ei
+	;ei
 	ret ; was "reti", see note below.
 
 ; note:
@@ -260,16 +263,45 @@ EntryPoint:
 ;}
 
 	; (Enable interrupts)
-	ei ; Enable interrupts (Z80)
+	out (YM_NMI_On),a
 
 	; execution continues into the main loop.
 ;------------------------------------------------------------------------------;
 ; MainLoop
-; The code that handles the command buffer. I have no idea how it's gonna work yet.
+; The code that handles the command buffer.
 
 MainLoop:
-	; handle the buffer...
+	; handle the command buffer. this involves... 
+	; 1) enabling interrupts
+	ei
+	; 2) keep comparing mainBufIndex and nmiBufIndex until they differ
+	ld a,(nmiBufIndex)
+	ld b,a
+	ld a,(mainBufIndex)
+	cp b
+	jr Z,MainLoop
 
+	; 3) get new command from the buffer, replace the slot with a 0
+MainLoop_HandleCommand:
+	ld hl,mainBufIndex
+	inc (hl)
+	and 0x3F
+	ld e,a
+	ld d,0
+	add hl,de
+	ld a,(hl)
+	ld (hl),0
+
+	; 4) send that to the command handler
+	or a
+	call NZ,HandleCommand
+
+	; since a command could have disabled interrupts, re-enable them.
+	ei
+
+	; also figure out if a response needs to be sent to the 68k?
+
+MainLoop_end:
 	jp MainLoop
 
 ;==============================================================================;
@@ -569,16 +601,18 @@ timer_Reset_B:
 ; HandleCommand
 ; Handles any command that isn't already dealt with separately (e.g. $01, $03).
 
+; Params:
+; A - Command value to handle.
+
 HandleCommand:
-	ld a,(curCommand) ; get current command
 	ld b,a ; save in b
 
 	; check what the command falls under
 	; in SNK drivers, this is done using a table of values that map between 0-5:
 	; 0=unused, 1=system, 2=music, 3=pcm?, 4=pcm?, 5=SSG
 
-	; in the freemlib driver, this might be handled differently, since games
-	; might want to have different configurations.
+	; in the freemlib driver, this might be handled differently, since {games,
+	; tools/utilities, etc.} might want to have different configurations.
 
 	; However, commands $00-$1F are always reserved for system use.
 	cp 0x20
