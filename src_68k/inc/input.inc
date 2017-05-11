@@ -126,7 +126,6 @@ INBIT_STATC_SELECT4 equ 7
 ; c = Chi
 ; P = Pong
 
-
 ; INPUT_5, INPUT_6 table:
 ; Mahjong | Normal
 ; --------+--------
