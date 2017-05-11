@@ -13,11 +13,13 @@
 dummyByte   ds 1  ; dummy byte used for RAM clearing, etc.
 ;------------------------------------------------------------------------------;
 ; [Commands]
-; todo: indices into command buffer (general and NMI versions)
+; todo: these two are no longer needed, but code still references them:
 curCommand    ds 1  ; Current command to handle
 prevCommand   ds 1  ; Previous command handled
 
-commandBuffer ds 64  ; 64 byte command buffer
+mainBufIndex  ds 1   ; main loop copy of index into command buffer
+nmiBufIndex   ds 1   ; NMI copy of index into command buffer
+commandBuffer ds 64  ; 64 byte command buffer (mask indices with 0x3F)
 
 ; (these two only make sense for non-standard sound drivers)
 dataMode    ds 1  ; (0=normal, 1=send to 68k, 2=receive from 68k)
