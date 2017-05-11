@@ -4,6 +4,7 @@
 	section bss
 ;==============================================================================;
 ; 2015/06/02: this is going to need a major restructuring. -f
+; 2017/05/09: this STILL needs a major restructuring. -f
 ;==============================================================================;
 
 ;==============================================================================;
@@ -12,11 +13,13 @@
 dummyByte   ds 1  ; dummy byte used for RAM clearing, etc.
 ;------------------------------------------------------------------------------;
 ; [Commands]
+; todo: indices into command buffer (general and NMI versions)
 curCommand    ds 1  ; Current command to handle
 prevCommand   ds 1  ; Previous command handled
-commandBuffer ds 64  ; 64 byte command buffer (todo: is this enough? too much?)
 
-; unsure if I'm keeping this idea...
+commandBuffer ds 64  ; 64 byte command buffer
+
+; (these two only make sense for non-standard sound drivers)
 dataMode    ds 1  ; (0=normal, 1=send to 68k, 2=receive from 68k)
 dataBuffer  ds 64  ; buffer for data transfer
 
