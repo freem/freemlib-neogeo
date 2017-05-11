@@ -10,7 +10,7 @@ MEMORY
 	ymwait:  ORIGIN = 0x0028, LENGTH = 0x0006 /* 0x0028: YM2610 busy wait */
 	IRQ:     ORIGIN = 0x0038, LENGTH = 0x0004 /* 0x0038: IRQ trampoline */
 	idstr:   ORIGIN = 0x0040, LENGTH = 0x0020 /* 0x0040: driver identification */
-	NMI:     ORIGIN = 0x0066, LENGTH = 0x002B /* 0x0066: NMI routine */
+	NMI:     ORIGIN = 0x0066, LENGTH = 0x004A /* 0x0066: NMI routine */
 	rom:     ORIGIN = 0x00A0, LENGTH = 0xF760 /* 0x00A0: start of the rest of ROM */
 	ram:     ORIGIN = 0xF800, LENGTH = 0x0800 /* RAM at 0xF800-0xFFFF */
 }
