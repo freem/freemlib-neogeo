@@ -35,7 +35,7 @@ freqTable_FM:
 
 	; For quick ORing with F-Num 2/high byte
 blockTable_FM:
-	;        --BBB---
+	;     --BBB---
 	byte %00000000 ; Octave 0
 	byte %00001000 ; Octave 1
 	byte %00010000 ; Octave 2
