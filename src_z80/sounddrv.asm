@@ -223,10 +223,10 @@ EntryPoint:
 	;-------------------------------------------;
 	; Initialize variables (todo)
 
-	; reset buffer indices
+	; reset buffer indices and command buffer contents
 	ld (mainBufIndex),a
 	ld (nmiBufIndex),a
-	call ClearCommandBuffer ; todo: is this needed here?
+	call ClearCommandBuffer
 
 	;-------------------------------------------;
 	; Silence SSG, FM(, and ADPCM?)
@@ -285,14 +285,14 @@ MainLoop:
 MainLoop_HandleCommand:
 	ld hl,mainBufIndex
 	inc (hl)
-	and 0x3F
+	and 0x3F ; mask for buffer length (indices 0-63)
 	ld e,a
 	ld d,0
 	add hl,de
-	ld a,(hl)
-	ld (hl),0
+	ld a,(hl) ; get command from buffer
+	ld (hl),0 ; replace slot with 0
 
-	; 4) send that to the command handler
+	; 4) send command to the command handler
 	or a
 	call NZ,HandleCommand
 
@@ -605,7 +605,7 @@ timer_Reset_B:
 ; A - Command value to handle.
 
 HandleCommand:
-	ld b,a ; save in b
+	ld b,a ; save command in b
 
 	; check what the command falls under
 	; in SNK drivers, this is done using a table of values that map between 0-5:
@@ -889,7 +889,7 @@ command_12:
 ; Play an ADPCM-A sample.
 
 ; (Params)
-; d      ADPCM-A Channel Number
+; d      ADPCM-A Channel Number (0-5 for channels 1-6)
 ; e      ADPCM-A Sample Number
 
 play_ADPCM_A:
@@ -910,7 +910,9 @@ play_ADPCM_A:
 	ret
 
 ;==============================================================================;
+; tbl_ChanMasksPCMA
 ; ADPCM-A Channel masks
+
 tbl_ChanMasksPCMA:
 	byte ADPCMA_CH1
 	byte ADPCMA_CH2
@@ -927,9 +929,9 @@ tbl_ChanMasksPCMA:
 ; d      ADPCM-B Sample Number
 
 play_ADPCM_B:
-	; $1C80		; Flag Control ($1C on ports 4/5)
-	; $1C00		; Flag Control ($1C on ports 4/5)
-	; $1000		; Start/Repeat/Reset ($10 on ports 4/5)
+	; $1C80 ; Flag Control ($1C on ports 4/5)
+	; $1C00 ; Flag Control ($1C on ports 4/5)
+	; $1000 ; Start/Repeat/Reset ($10 on ports 4/5)
 	; Left/Right Output ($11 on ports 4/5)
 
 	; get the following values from samples_PCMB table:
