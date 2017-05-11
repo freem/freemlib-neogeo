@@ -295,7 +295,7 @@ BIOS_MESS_BUFFER equ $10FF00 ; 100 byte buffer
 
 BIOS_4P_REQUESTED equ $10FEF8 ; (bios) local copy of hard dip 2 (0=off; 2=on)
 BIOS_4P_MODE equ $10FEFA ; (bios) Main 4P flag (0=regular; $FF=4P ok)
-BIOS_4P_PLUGGED equ $10FEFB ; (bios) Is board present? (0=not found; $FF=plugged in)
+BIOS_4P_PLUGGED equ $10FEFB ; (bios) Is NEO-FTC1B board present? (0=not found; $FF=plugged in)
 
 ;==============================================================================;
 ; [CD system-specific]
