@@ -6,7 +6,8 @@
 ; IMPORTANT NOTE: It's up to you to ensure the memory card is inserted on cart
 ; systems before issuing most of these commands.
 
-; Developer note: Anything short should be a macro.
+; Developer note: Any "short" commands should be a macro. (Examples include
+; enabling/disabling memcard write, getting single bytes/words...)
 ;==============================================================================;
 ; memCard_Inserted
 ; Check if the memory card is inserted. Always true on CD systems.
