@@ -1,9 +1,9 @@
 ; BIOS RAM usage (begins at $10F300)
 ;==============================================================================;
 ; [Quick Glossary]
-; Byte	$00-$FF             (0-255)
-; Word	$0000-$FFFF         (0-65535)
-; Long	$00000000-$FFFFFFFF (0-4294967295)
+; Byte: $00-$FF             (0-255)
+; Word: $0000-$FFFF         (0-65535)
+; Long: $00000000-$FFFFFFFF (0-4294967295)
 ;==============================================================================;
 ; todo: NGCD system ROMs uses some RAM locations differently. Needs research.
 ; Anything and everything between $10F300 and $10FD80 is typically unexamined,
@@ -212,12 +212,23 @@ BIOS_COIN2_CONT_CRED equ $10FE16 ; (word)
 BIOS_SELECT_FREE equ $10FE18 ; (byte)
 ;??? equ $10FE19 ; (byte)
 BIOS_NON_LIMIT equ $10FE1A ; (byte/word?)
+
+; these are for normal System ROMs:
 BIOS_DEMO_SOUND equ $10FE1C ; (byte)
 BIOS_INIT_MARK equ $10FE1E ; (word)
 BIOS_SR_STORE equ $10FE20 ; (word)
 BIOS_VERSION_BASE equ $10FE22 ; (long)
 BIOS_GD_STORE equ $10FE26 ; (byte) 32 bytes
 
+; trackball System ROM ("236-bios.sp1") uses the above locations differently;
+; based on notes from https://wiki.neogeodev.org/index.php?title=SIT_board
+;$10FE1C: TIMER LAMP (word, 10 bits, 000000xx xxxxxxxx)
+;$10FE1F: TRACK BALL LAMP (flag)
+;$10FE20: SIDE LAMP (flag)
+;$10FE21: COLOR LAMP (2 bits, 000000xx)
+;$10FE22: FLASH LAMP (flag)
+
+; (back to normal?? usage)
 ;??? equ $10FE34 ; (byte?)
 ;??? equ $10FE35 ; (byte?)
 ;??? equ $10FE37 ; (byte?)
@@ -326,5 +337,5 @@ BIOS_4P_PLUGGED equ $10FEFB ; (bios) Is NEO-FTC1B board present? (0=not found; $
 BIOS_CD_UPZONE equ $10FEDA ; (byte) zone (0=PRG/TXT, 1=FIX, 2=SPR, 3=Z80, 4=PCM, 5=PAT, 6=???, 7=OBJ, 8=A**)
 BIOS_CD_UPBANK equ $10FEDB ; (byte) bank
 BIOS_CD_UPDEST equ $10FEF4 ; (long) destination address
-BIOS_CD_UPSRC equ $10FEF8 ; (long) source address
+BIOS_CD_UPSRC  equ $10FEF8 ; (long) source address
 BIOS_CD_UPSIZE equ $10FEFC ; (long) size
