@@ -36,7 +36,7 @@ pcmToggle   ds 1  ; Specific ADPCM channel toggles (matches ADPCM-B register $1C
 ; [Song Attributes/Playback]
 curSong    ds 1  ; Current Song number
 curSpeed   ds 1  ; Current Song Speed (0x00-0x1F)
-curTempo   ds 2  ; Current Song Tempo (0-511, for now...)
+curTempo   ds 1  ; Current Song Tempo (0-255; 0=pause??)
 
 songLoops  ds 1  ; Does the song loop?
 loopPoint  ds 2  ; Pointer to loop point (shared between channels for now)
@@ -77,6 +77,8 @@ intTimerB        ds 1  ; ($26) Timer B value
 
 ;==============================================================================;
 ; [SSG variables] (Ports 4/5)
+; todo: you can actually read the SSG regs; do I really need internal copies?
+
 intSSG_Enable  ds 1  ; ($07) SSG channel enable
 
 ; shared between channels:
@@ -107,35 +109,67 @@ intPCMA_MasterVol ds 1  ; ($01) Master Volume
 
 ;------------------------------------------------------------------------------;
 ; * ADPCM-A channels (1-6)
+; todo: add loop variables? (intPCMA*_Loop, intPCMA*_LoopStartL/H, intPCMA*_LoopEndL/H)
+
 intPCMA1_Volume  ds 1  ; ($08) Channel volume
 intPCMA1_StartL  ds 1  ; ($10) Sample Start Address/256 (LSB)
 intPCMA1_StartH  ds 1  ; ($18) Sample Start Address/256 (MSB)
-intPCMA1_EndL    ds 1  ; ($20) Sample End Address/256 (xSB)
-intPCMA1_EndH    ds 1  ; ($28) Sample End Address/256 (xSB)
+intPCMA1_EndL    ds 1  ; ($20) Sample End Address/256 (LSB)
+intPCMA1_EndH    ds 1  ; ($28) Sample End Address/256 (MSB)
+
+intPCMA1_Loop       ds 1 ; does channel loop?
+intPCMA1_LoopStartL ds 1 ; ($10) Loop Start Address/256 (LSB)
+intPCMA1_LoopStartH ds 1 ; ($18) Loop Start Address/256 (MSB)
+intPCMA1_LoopEndL   ds 1 ; ($20) Loop End Address/256 (LSB)
+intPCMA1_LoopEndH   ds 1 ; ($28) Loop End Address/256 (MSB)
 ;-------------------------------;
 intPCMA2_Volume  ds 1  ; ($09) Channel volume
 intPCMA2_StartL  ds 1  ; ($11) Sample Start Address/256 (LSB)
 intPCMA2_StartH  ds 1  ; ($19) Sample Start Address/256 (MSB)
 intPCMA2_EndL    ds 1  ; ($21) Sample End Address/256 (LSB)
 intPCMA2_EndH    ds 1  ; ($29) Sample End Address/256 (MSB)
+
+intPCMA2_Loop       ds 1 ; does channel loop?
+intPCMA2_LoopStartL ds 1 ; ($10) Loop Start Address/256 (LSB)
+intPCMA2_LoopStartH ds 1 ; ($18) Loop Start Address/256 (MSB)
+intPCMA2_LoopEndL   ds 1 ; ($20) Loop End Address/256 (LSB)
+intPCMA2_LoopEndH   ds 1 ; ($28) Loop End Address/256 (MSB)
 ;-------------------------------;
 intPCMA3_Volume  ds 1  ; ($0A) Channel volume
 intPCMA3_StartL  ds 1  ; ($12) Sample Start Address/256 (LSB)
 intPCMA3_StartH  ds 1  ; ($1A) Sample Start Address/256 (MSB)
 intPCMA3_EndL    ds 1  ; ($22) Sample End Address/256 (LSB)
 intPCMA3_EndH    ds 1  ; ($2A) Sample End Address/256 (MSB)
+
+intPCMA3_Loop       ds 1 ; does channel loop?
+intPCMA3_LoopStartL ds 1 ; ($10) Loop Start Address/256 (LSB)
+intPCMA3_LoopStartH ds 1 ; ($18) Loop Start Address/256 (MSB)
+intPCMA3_LoopEndL   ds 1 ; ($20) Loop End Address/256 (LSB)
+intPCMA3_LoopEndH   ds 1 ; ($28) Loop End Address/256 (MSB)
 ;-------------------------------;
 intPCMA4_Volume  ds 1  ; ($0B) Channel volume
 intPCMA4_StartL  ds 1  ; ($13) Sample Start Address/256 (LSB)
 intPCMA4_StartH  ds 1  ; ($1B) Sample Start Address/256 (MSB)
 intPCMA4_EndL    ds 1  ; ($23) Sample End Address/256 (LSB)
 intPCMA4_EndH    ds 1  ; ($2B) Sample End Address/256 (MSB)
+
+intPCMA4_Loop       ds 1 ; does channel loop?
+intPCMA4_LoopStartL ds 1 ; ($10) Loop Start Address/256 (LSB)
+intPCMA4_LoopStartH ds 1 ; ($18) Loop Start Address/256 (MSB)
+intPCMA4_LoopEndL   ds 1 ; ($20) Loop End Address/256 (LSB)
+intPCMA4_LoopEndH   ds 1 ; ($28) Loop End Address/256 (MSB)
 ;-------------------------------;
 intPCMA5_Volume  ds 1  ; ($0C) Channel volume
 intPCMA5_StartL  ds 1  ; ($14) Sample Start Address/256 (LSB)
 intPCMA5_StartH  ds 1  ; ($1C) Sample Start Address/256 (MSB)
 intPCMA5_EndL    ds 1  ; ($24) Sample End Address/256 (LSB)
 intPCMA5_EndH    ds 1  ; ($2C) Sample End Address/256 (MSB)
+
+intPCMA5_Loop       ds 1 ; does channel loop?
+intPCMA5_LoopStartL ds 1 ; ($10) Loop Start Address/256 (LSB)
+intPCMA5_LoopStartH ds 1 ; ($18) Loop Start Address/256 (MSB)
+intPCMA5_LoopEndL   ds 1 ; ($20) Loop End Address/256 (LSB)
+intPCMA5_LoopEndH   ds 1 ; ($28) Loop End Address/256 (MSB)
 ;-------------------------------;
 intPCMA6_Volume  ds 1  ; ($0D) Channel volume
 intPCMA6_StartL  ds 1  ; ($15) Sample Start Address/256 (LSB)
@@ -143,12 +177,18 @@ intPCMA6_StartH  ds 1  ; ($1D) Sample Start Address/256 (MSB)
 intPCMA6_EndL    ds 1  ; ($25) Sample End Address/256 (LSB)
 intPCMA6_EndH    ds 1  ; ($2D) Sample End Address/256 (MSB)
 
+intPCMA6_Loop       ds 1 ; does channel loop?
+intPCMA6_LoopStartL ds 1 ; ($10) Loop Start Address/256 (LSB)
+intPCMA6_LoopStartH ds 1 ; ($18) Loop Start Address/256 (MSB)
+intPCMA6_LoopEndL   ds 1 ; ($20) Loop End Address/256 (LSB)
+intPCMA6_LoopEndH   ds 1 ; ($28) Loop End Address/256 (MSB)
+
 ;==============================================================================;
-; [ADPCM-B variables] (ports 4/5) (Only available on cart systems.)
+; [ADPCM-B variables] (ports 4/5)
 intPCM_ChanFlags ds 1  ; ($1C) *ADPCM-A and B flags control*
 
 ;------------------------------------------------------------------------------;
-; * ADPCM-B
+; * ADPCM-B (Only available on cart systems.)
 intPCMB_Status    ds 1  ; ($10) Start, Repeat, Reset
 intPCMB_LeftRight ds 1  ; ($11) Left and Right channel output
 intPCMB_StartLo   ds 1  ; ($12) Sample Start Address/256 (LSB)
