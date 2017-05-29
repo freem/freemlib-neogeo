@@ -205,6 +205,22 @@ storing a bunch of the same value in a row, even when Neo P ROMs can be so huge.
 Thinking about this... Do I want to leverage the 68K's ability to read longwords
 at the cost of data possibly ballooning in size?
 
+Should the data length and flags even be larger than a byte?
+
+* Data Length and Config (word)
+00000000 00000000
+|||||||| |______|
+||||||||     |
+||||||||     |_________ Data length (byte)
+||||||||_______________ ???
+|||||||________________ ???
+||||||_________________ ???
+|||||__________________ ???
+||||___________________ ???
+|||____________________ ???
+||_____________________ ???
+|______________________ ???
+
 * Data Length and Config (long)
 00000000 00000000 00000000 00000000
 |||||||| |______| |_______________|

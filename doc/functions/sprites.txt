@@ -22,11 +22,11 @@ FEDCBA98 76543210
 pppppppp TTTTAAVH
 
 t = Tile number LSB
-p = palette
+p = Palette
 T = Tile number MSB
-A = auto-anim bits (2=2-bit, 3=3-bit)
-V = vertical flip
-H = horizontal flip
+A = Auto-animation bits (2=2-bit, 3=3-bit)
+V = Vertical flip
+H = Horizontal flip
 
 --------------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ V = vertical scale
 {SCB3}
 SCB3 holds the vertical positions, sticky/chain bit, and sprite tile size.
 Y Position         000000000
-Sticky Bit         one bit
+Sticky/Chain Bit   one bit
 Sprite Size        000000
 
 (actual format)
