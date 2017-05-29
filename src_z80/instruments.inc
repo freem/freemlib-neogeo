@@ -34,10 +34,10 @@ instFM_01:
 ;------------------------------------------------------------------------------;
 ; example with macros
 instFM_02:
-	fmInst_DetuneMult 0,0
-	fmInst_DetuneMult 0,0
-	fmInst_DetuneMult 0,0
-	fmInst_DetuneMult 0,0
+	fmInst_DetuneMult 0,0 ; operator 1
+	fmInst_DetuneMult 0,0 ; operator 2
+	fmInst_DetuneMult 0,0 ; operator 3
+	fmInst_DetuneMult 0,0 ; operator 4
 	;--------------------------;
 	fmInst_TotalLevel 0
 	fmInst_TotalLevel 0
