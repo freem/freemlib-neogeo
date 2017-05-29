@@ -1,10 +1,11 @@
 The PLAYER_START subroutine and You
 ===================================
-The PLAYER_START subroutine is called by the BIOS if one of the start buttons
-are pressed while the corresponding player has enough credits or when the time
-runs out while the game's title is being displayed.
+The PLAYER_START subroutine is called by the System ROM if one of the Start
+buttons is pressed while the corresponding player has enough credits or when
+the time runs out while the game's title is being displayed.
 
-(If doing your own logic for starting the game, use CREDIT_CHECK and CREDIT_DOWN.)
+(If using custom logic for starting the game, use CREDIT_CHECK and CREDIT_DOWN.
+More information on this will be necessary, but I don't know it yet.)
 
 The player who pressed Start is noted in the BIOS_START_FLAG ($10FDD2, byte):
 76543210
@@ -25,12 +26,12 @@ corresponding bytes for each player:
 
 The values in BIOS_START_FLAG are dependent on the BIOS_COUNTRY_CODE ($10FD83):
 
-				  | Lower 4 bits of START_FLAG
-BIOS_COUNTRY_CODE | P1 Start	P2 Start
-------------------+---------------------------
-0 (Japan)		  | 0001		0011
-1 (USA)			  | 0001		0010
-2 (Europe)		  | 0001		0011
+                  | START_FLAG Lower 4 bits
+BIOS_COUNTRY_CODE | P1 Start | P2 Start
+------------------+----------+-------------
+0 (Japan)         | 0001     | 0011
+1 (USA)           | 0001     | 0010
+2 (Europe)        | 0001     | 0011
 
 Japanese and European cabinets will join both players if P2 Start is pressed.
 US cabinets will only join Player 2.
@@ -38,7 +39,7 @@ US cabinets will only join Player 2.
 In a situation where joining mid-game isn't possible (e.g. a vs. sports title),
 a machine running in USA mode requires a way to select the number of players.
 
-After returning, the BIOS deducts credits according to BIOS_START_FLAG.
+After returning, the System ROM deducts credits according to BIOS_START_FLAG.
 
 SNK docs:
 "When the game is in progress, an extension of play time or the addition of lives
