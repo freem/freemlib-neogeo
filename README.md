@@ -34,8 +34,8 @@ should be made for Linux (and OS X) compatibility whenever possible.
 
 #### Available and/or Finished ####
 * **NeoFixFormat** &ndash; Fix format tiles plugin for YY-CHR.NET. 100%, unless a bug comes up.
-* **Sailor VROM** &ndash; V ROM/.PCM file builder and manager. 25%, but usable. ([https://github.com/freem/freemlib-neogeo/tree/master/tools/sailorvrom/lua](Lua version available))
-* **4BPP SMS/GG/WSC to Neo-Geo ".c0" Format tool** &ndash; 100% for the time being. ([https://github.com/freem/NeoSpriteConv](project repository))
+* **Sailor VROM** &ndash; V ROM/.PCM file builder and manager. 25%, but usable. ([Lua version available](https://github.com/freem/freemlib-neogeo/tree/master/tools/sailorvrom/lua))
+* **4BPP SMS/GG/WSC to Neo-Geo ".c0" Format tool** &ndash; 100% for the time being. ([project repository](https://github.com/freem/NeoSpriteConv))
 
 #### WIP ###
 * **FM Studio** &ndash; On-console utility for testing and developing FM sounds. 1% (earliest stages of development)
