@@ -103,6 +103,8 @@ NMI:
 	or a ; check if Command is 0
 	jp Z,endNMI ; exit if Command 0
 
+	;--------------------------------------------------------------------------;
+	; If we reach this point, add the command we just got to the buffer.
 	; 1) load NMI buffer index and mask with (buffer size-1) (in our case, 0x3F)
 	ld a,(nmiBufIndex)
 	and 0x3F
@@ -120,9 +122,10 @@ NMI:
 	ld hl,nmiBufIndex
 	inc (hl)
 
-	; the main loop will detect a difference between the two indices
-	; and react accordingly.
+	; the main loop will detect a difference between
+	; the two indices and react accordingly.
 
+	; todo: is a reply always required?
 	out (0xC),a ; Reply to 68K with something.
 	out (0),a ; Write to port 0 (Clear sound code)
 endNMI:
@@ -173,8 +176,8 @@ IRQ:
 	in a,(YM_Status0)
 	ld (intStatus0),a
 
-	; Check Timer B
-	; Check Timer A
+	; Check Timer B flag
+	; Check Timer A flag
 
 	; keep the music and sound effects going.
 
@@ -185,6 +188,7 @@ IRQ:
 	; SSG Channel A (curPos_SSG_A)
 	; SSG Channel B (curPos_SSG_B)
 	; SSG Channel C (curPos_SSG_C)
+	; later: ADPCM-A music channels, ADPCM-B channel
 
 endIRQ:
 	; restore registers
@@ -195,21 +199,22 @@ endIRQ:
 	pop bc
 	pop af
 
-	; enable interrupts and return
-	;ei
+	; it's up to the main loop to re-enable interrupts at the relevant moments,
+	; according to other Neo-Geo sound drivers.
 	ret ; was "reti", see note below.
 
 ; note:
 ; "In an IRQ, RETI is only useful if you have something like a Z80 PIO to support
 ; daisy-chaining: queuing interrupts. The PIO can detect that the routine has
 ; ended by the opcode of RETI, and let another device generate an interrupt."
+; I don't believe the Neo-Geo has something like this, but I could be wrong.
 
 ;==============================================================================;
 ; EntryPoint
 ; The entry point for the sound driver.
 
 EntryPoint:
-	ld sp,0xFFFC ; Set stack pointer ($FFFD-$FFFE is used for other purposes)
+	ld sp,0xFFFC ; Set stack pointer ($FFFD-$FFFE used by Command $01)
 	im 1 ; Set Interrupt Mode 1 (IRQ at $38)
 
 	; Clear RAM at $F800-$FFFF
@@ -361,7 +366,7 @@ portWriteDelayPart4:
 ; Performs setup work for Command $01 (Slot Change).
 
 doCmd01:
-	ld a,0
+	xor a
 	out (0xC),a ; write 0 to port 0xC (Respond to 68K)
 	out (0),a ; write to port 0 (Clear sound code)
 	ld sp,0xFFFC ; set stack pointer
@@ -372,7 +377,7 @@ doCmd01:
 ; Performs setup work for Command $03 (Soft Reset).
 
 doCmd03:
-	ld a,0
+	xor a
 	out (0xC),a ; write 0 to port 0xC (Respond to 68K)
 	out (0),a ; write to port 0 (Clear sound code)
 	ld sp,0xFFFC ; set stack pointer
@@ -662,8 +667,8 @@ tbl_SysCmdPointers:
 	word fm_Silence   ; $0B - Silence FM channels
 	word command_0C   ; $0C - Stop all ADPCM-A samples
 	word pcmb_Silence ; $0D - Stop current ADPCM-B sample
-	word command_0E   ; $0E - (tempo-related)
-	word command_0F   ; $0F - (tempo-related)
+	word command_0E   ; $0E - Tempo Change (1 argument; new tempo)
+	word command_00   ; $0F - (currently unassigned)
 	word command_10   ; $10 - Fade Out (1 argument; fade speed)
 	word command_11   ; $11 - Stop Fade In/Out
 	word command_12   ; $12 - Fade In (1 argument; fade speed)
@@ -851,21 +856,14 @@ command_0C:
 
 ;------------------------------------------------------------------------------;
 ; command_0E
-; tempo change 1/2??
+; Tempo Change (one parameter; new tempo)
 
 command_0E:
 	ret
 
 ;------------------------------------------------------------------------------;
-; command_0F
-; tempo change 2/2??
-
-command_0F:
-	ret
-
-;------------------------------------------------------------------------------;
 ; command_10
-; Fade out
+; Fade out (one parameter; fade speed)
 
 command_10:
 	ret
@@ -879,7 +877,7 @@ command_11:
 
 ;------------------------------------------------------------------------------;
 ; command_12
-; Fade in
+; Fade in (one parameter; fade speed)
 
 command_12:
 	ret
@@ -892,8 +890,11 @@ command_12:
 ; d      ADPCM-A Channel Number (0-5 for channels 1-6)
 ; e      ADPCM-A Sample Number
 
+; todo: should there be a parameter for forcing a sound
+; to play if the specified channel hasn't finished?
+
 play_ADPCM_A:
-	; check Status 1 for channel end?
+	; check intStatus1 for channel end?
 
 	; set channel volume and left/right output ($08-$0D on ports 6/7)
 	; * default is full volume and both channels
