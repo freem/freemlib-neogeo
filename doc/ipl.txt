@@ -1,12 +1,18 @@
 (no, don't copy this file into the CD as IPL.TXT, it'll kill you.)
 
-IPL.TXT is an important file for Neo-Geo CD games, as it contains the initial
-files to load.
+IPL.TXT is an important file for Neo-Geo CD games, as it contains the list of
+initial files to load.
 
 https://wiki.neogeodev.org/index.php?title=IPL_file
 
 [File List]
-The FIX file is often the first one defined.
+"There must not be more than 32 files to load."
+
+from https://wiki.neogeodev.org/index.php?title=Game_CD_structure
+"It seems that the NeoGeo CD wants at least a PRG, FIX, SPR, Z80 and PCM
+loaded in IPL.TXT, or else it will simply reset after loading."
+
+The FIX file is often the first one defined. This is not a hard requirement.
 
 Each line:
 Filename,Bank,Offset
@@ -15,9 +21,10 @@ newlines are CR+LF
 
 So far, all known IPL.TXT files end with an 0x1A byte.
 
-Last Blade 2's IPL.TXT has filenames in lowercase.
+Last Blade 2's IPL.TXT has filenames in lowercase; most games use uppercase.
+Not sure if this makes a difference or not.
 
-The simplest possible IPL.TXT (as long as you change the '*') consists of:
+The simplest possible IPL.TXT (replacing '*' with proper filenames) consists of:
 *.FIX,0,0
 *.SPR,0,0
 *.Z80,0,0
