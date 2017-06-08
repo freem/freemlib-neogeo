@@ -62,7 +62,7 @@ CheckBusyFlag:
 ; the IRQ belongs here.
 j_IRQ:
 	di
-	jp IRQ
+	jr IRQ
 
 ;==============================================================================;
 	section idstr
@@ -101,7 +101,7 @@ NMI:
 	cp 3 ; Command 3 (Soft Reset)
 	jp Z,doCmd03
 	or a ; check if Command is 0
-	jp Z,endNMI ; exit if Command 0
+	jr Z,endNMI ; exit if Command 0
 
 	;--------------------------------------------------------------------------;
 	; If we reach this point, add the command we just got to the buffer.
@@ -307,7 +307,7 @@ MainLoop_HandleCommand:
 	; also figure out if a response needs to be sent to the 68k?
 
 MainLoop_end:
-	jp MainLoop
+	jr MainLoop
 
 ;==============================================================================;
 ; write_45
