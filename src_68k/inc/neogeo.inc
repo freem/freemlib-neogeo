@@ -39,6 +39,21 @@ BIOSF_VIDEOEN		equ $C00570 ; Enable/Disable video layers
 ; All I/O registers are bytes, apparently.
 
 REG_P1CNT			equ $300000 ; Player 1 Controls (DCBArldu)/Trackball data [active low]
+;00000000
+;||||||||
+;||||||||_ Up
+;|||||||__ Down
+;||||||___ Left
+;|||||____ Right
+;||||_____ A
+;|||______ B
+;||_______ C
+;|________ D
+
+; Trackball data uses counter values for X and Y movement.
+; The active direction depends on the value of REG_POUTPUT:
+; - If REG_POUTPUT bit 0 is 0, this is the X counter value.
+; - If REG_POUTPUT bit 0 is 1, this is the Y counter value.
 
 REG_DIPSW			equ $300001 ; Read Hardware DIPs [active low], Kick watchdog (a.k.a. "WATCH_DOG")
 ; Hardware DIPs
@@ -52,11 +67,12 @@ REG_DIPSW			equ $300001 ; Read Hardware DIPs [active low], Kick watchdog (a.k.a.
 ; ||________ Free Play
 ; |_________ Freeze
 
-;REG_?????			equ $300081
+REG_SYSTYPE			equ $300081 ; Read a normally-unpopulated set of dip switches on MV4 boards.
+; "Used for system ID on other boards", though said boards are unidentified?
 ;00xxxxxx
 ;|||____|
 ;||  |
-;||  |____ "unused"
+;||  |____ ?
 ;||_______ Type value; MAME: "If ACTIVE_LOW, MVS-6 slot detected, when ACTIVE_HIGH MVS-1 slot (AES) detected"
 ;|________ Test switch (IN01; active low)
 
@@ -73,6 +89,16 @@ REG_STATUS_A		equ $320001 ; uPD4990 bits, Coin switches [switches active low]
 ;|________ NEC D4990 data bit
 
 REG_P2CNT			equ $340000 ; Player 2 Controls (DCBArldu) [active low]
+;00000000
+;||||||||
+;||||||||_ Up
+;|||||||__ Down
+;||||||___ Left
+;|||||____ Right
+;||||_____ A
+;|||______ B
+;||_______ C
+;|________ D
 
 REG_STATUS_B		equ $380000 ; Aux inputs (Start/Select, Memory Card...) [active low]
 ;00000000
