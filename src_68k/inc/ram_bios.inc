@@ -210,11 +210,12 @@ BIOS_COIN1_CONT_CRED equ $10FE14 ; (word)
 BIOS_COIN2_CONT_CRED equ $10FE16 ; (word)
 ;-----------------------------------;
 BIOS_SELECT_FREE equ $10FE18 ; (byte)
-;??? equ $10FE19 ; (byte)
-BIOS_NON_LIMIT equ $10FE1A ; (byte/word?)
+BIOS_NON_LIMIT equ $10FE19 ; (byte)
+BIOS_SELECT_LIMIT equ $10FE1A ; (word)
 
 ; these are for normal System ROMs:
 BIOS_DEMO_SOUND equ $10FE1C ; (byte)
+;??? equ $10FE1D ; (byte)
 BIOS_INIT_MARK equ $10FE1E ; (word)
 BIOS_SR_STORE equ $10FE20 ; (word)
 BIOS_VERSION_BASE equ $10FE22 ; (long)
@@ -238,7 +239,8 @@ BIOS_GD_STORE equ $10FE26 ; (byte) 32 bytes
 BIOS_WORK2 equ $10FE80
 
 BIOS_DEVMODE equ $10FE80 ; (byte) nonzero value = enabled
-;$10FE81-$10FE87 "Power on ID code"??; typically, code checks for "1streset"
+;$10FE81-$10FE87 "Power on ID code"; typically, code checks for "1streset"
+
 BIOS_FRAMECOUNT equ $10FE88 ; (long) (a.k.a. "SYS_INT1_TIMER")
 BIOS_SYS_STOPPER equ $10FE8C ; (byte) "system stopper", actually BIOS VBlank flag
 BIOS_Z80_BANK equ $10FE8D ; (byte)
@@ -279,7 +281,9 @@ BIOS_KYOUSEI_MODE equ $10FEE0 ; (byte) a.k.a. "KYOUSEI_MODE" (Game start compuls
 BIOS_SYS_STOP equ $10FEE1 ; (byte) (a.k.a. "BIOS_FRAME_SKIP","SYS_STOP")
 BIOS_CS_REMAIN equ $10FEE2 ; (byte) (a.k.a. "CS_REMAIN")
 BIOS_INT_OFF equ $10FEE3 ; (byte) (a.k.a. "BIOS_INT1_SKIP", "INT_OFF")
-BIOS_INT1_TIMER2 equ $10FEE4 ; (word?) (a.k.a. "BIOS_INT1_FRAME_COUNTER", "INT1_TIMER2")
+BIOS_INT1_TIMER2 equ $10FEE4 ; (word) (a.k.a. "BIOS_INT1_FRAME_COUNTER", "INT1_TIMER2")
+BIOS_MAJ_NOR equ $10FEE6 ; (byte) ??
+;BIOS_?????????? equ $10FEE7 (byte)
 ;-----------------------------------;
 ;INPUT_5
 BIOS_P5STATUS equ $10FEE8 ; (byte) Input 5 status
