@@ -82,10 +82,9 @@ Tools may be licensed differently from the main library, see each project for li
 Contact
 -------
 The best way to reach me about this project is via IRC:
-* chat.freenode.org &ndash; #neogeodev
-* irc.clearimagery.net &ndash; #ssc
+* irc.libera.chat &ndash; #neogeodev
 
 but if IRC isn't your thing, you might want to try one (or more) of these options:
-* [Yaronet forums](http://www.yaronet.com/en/sujets.php?f=417)
+* [Yaronet forums](https://www.yaronet.com/sections/417-programmation-homebrew-sur-neo-geo)
 * via e-mail: ajk187 at gmail (bad for attachments; contact me first without them
 if you want to send any)
