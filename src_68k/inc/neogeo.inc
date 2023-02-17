@@ -39,16 +39,16 @@ BIOSF_VIDEOEN		equ $C00570 ; Enable/Disable video layers
 ; All I/O registers are bytes, apparently.
 
 REG_P1CNT			equ $300000 ; Player 1 Controls (DCBArldu)/Trackball data [active low]
-;00000000
+;76543210
 ;||||||||
-;||||||||_ Up
-;|||||||__ Down
-;||||||___ Left
-;|||||____ Right
-;||||_____ A
-;|||______ B
-;||_______ C
-;|________ D
+;|||||||+--- Up
+;||||||+---- Down
+;|||||+----- Left
+;||||+------ Right
+;|||+------- A
+;||+-------- B
+;|+--------- C
+;+---------- D
 
 ; Trackball data uses counter values for X and Y movement.
 ; The active direction depends on the value of REG_POUTPUT:
@@ -57,75 +57,107 @@ REG_P1CNT			equ $300000 ; Player 1 Controls (DCBArldu)/Trackball data [active lo
 
 REG_DIPSW			equ $300001 ; Read Hardware DIPs [active low], Kick watchdog (a.k.a. "WATCH_DOG")
 ; Hardware DIPs
-; 0000 0000
+; 7654 3210
 ; ||||_||||
-; ||| | |||_ Settings/Service Mode
-; ||| | ||__ Number of coin chutes (0=1 chute, 1=2 chutes)
-; ||| | |___ Controller Type (0=normal, 1=mahjong)
-; ||| |_____ Communication ID code (00,01,10,11)
-; |||_______ Multiplayer enable
-; ||________ Free Play
-; |_________ Freeze
+; ||| | ||+--- Settings/Service Mode
+; ||| | |+---- Number of coin chutes (0=1 chute, 1=2 chutes)
+; ||| | +----- Controller Type (0=normal, 1=mahjong)
+; ||| +------- Communication ID code (00,01,10,11)
+; ||+--------- Multiplayer enable
+; |+---------- Free Play
+; +----------- Freeze
 
 REG_SYSTYPE			equ $300081 ; Read a normally-unpopulated set of dip switches on MV4 boards.
 ; "Used for system ID on other boards", though said boards are unidentified?
-;00xxxxxx
-;|||____|
-;||  |
-;||  |____ ?
-;||_______ Type value; MAME: "If ACTIVE_LOW, MVS-6 slot detected, when ACTIVE_HIGH MVS-1 slot (AES) detected"
-;|________ Test switch (IN01; active low)
+; 76543210
+; |||____|
+; ||  |
+; ||  +------ ?
+; |+--------- Type value; MAME: "If ACTIVE_LOW, MVS-6 slot detected, when ACTIVE_HIGH MVS-1 slot (AES) detected"
+; +---------- Test switch (IN01; active low)
 
 REG_STATUS_A		equ $320001 ; uPD4990 bits, Coin switches [switches active low]
-;00000000
-;||||||||
-;||||||||_ Coin 1
-;|||||||__ Coin 2
-;||||||___ Service
-;|||||____ Coin 3
-;||||_____ Coin 4
-;|||______ (0 on 4slot, 1 on 6slot)
-;||_______ NEC D4990 time pulse
-;|________ NEC D4990 data bit
+; 76543210
+; ||||||||
+; |||||||+--- Coin 1
+; ||||||+---- Coin 2
+; |||||+----- Service
+; ||||+------ Coin 3
+; |||+------- Coin 4
+; ||+-------- (0 on 4slot, 1 on 6slot)
+; |+--------- NEC D4990 (RTC) time pulse
+; +---------- NEC D4990 (RTC) data bit
 
 REG_P2CNT			equ $340000 ; Player 2 Controls (DCBArldu) [active low]
-;00000000
-;||||||||
-;||||||||_ Up
-;|||||||__ Down
-;||||||___ Left
-;|||||____ Right
-;||||_____ A
-;|||______ B
-;||_______ C
-;|________ D
+; 76543210
+; ||||||||
+; |||||||+--- Up
+; ||||||+---- Down
+; |||||+----- Left
+; ||||+------ Right
+; |||+------- A
+; ||+-------- B
+; |+--------- C
+; +---------- D
 
 REG_STATUS_B		equ $380000 ; Aux inputs (Start/Select, Memory Card...) [active low]
-;00000000
-;||||||||
-;||||||||_ Start P1
-;|||||||__ Select P1
-;||||||___ Start P2
-;|||||____ Select P2
-;||\/_____ Memory Card inserted if both are 0
-;||_______ Memory Card write protected
-;|________ System Type (0: AES/Home, 1: MVS)
+; 76543210
+; ||||||||
+; |||||||+--- Start P1
+; ||||||+---- Select P1
+; |||||+----- Start P2
+; ||||+------ Select P2
+; ||++------- Memory Card inserted if both are 0
+; |+--------- Memory Card write protected
+; +---------- System Type (0: AES/Home, 1: MVS)
 
 ; (Writes)
+
 REG_POUTPUT			equ $380001 ; Joypad port outputs
+; 76543210
+; |||_||_|
+; || |  |
+; || |  +--- P1 joypad output bits 0-2
+; || +------ P2 joypad output bits 0-2
+; ++-------- ?
+
 REG_SLOT			equ $380021 ; Slot Number (MVS)/REG_POUTPUT mirror (home)
+; 76543210
+; |___||_|
+;   |   |
+;   |   +--- Slot number
+;   +------- ?
+
 REG_LEDLATCHES		equ $380031 ; LED Latches (latched on 1->0/falling edge transition)
-REG_LEDDATA			equ $380041 ; LED Output Data
+; 76543210
+; ||||||||
+; |||||+++--- ?
+; ||||+------ Latch Marquee data
+; |||+------- Latch LED1 data
+; ||+-------- Latch LED2 data
+; ++--------- ?
+
+REG_LEDDATA			equ $380041 ; LED/Marquee Output Data
+
 REG_RTCCTRL			equ $380051 ; Strobe/Clock/DIN for uPD4990
-REG_COIN1COUNT_HI	equ $380061 ; Chute 1 coin counter -> High
-REG_COIN2COUNT_HI	equ $380063 ; Chute 2 coin counter -> High
-REG_COIN1LOCK_HI	equ $380065 ; Chute 1 coin lockout -> High
-REG_COIN2LOCK_HI	equ $380067 ; Chute 2 coin lockout -> High
+; 76543210
+; ||||||||
+; |||||||+--- RTC DIN
+; ||||||+---- RTC Clock
+; |||||+----- RTC Strobe
+; +++++------ ?
+
+REG_COIN1COUNT_HI	equ $380061 ; Chute 1 coin counter -> High; REG_RESETCC1
+REG_COIN2COUNT_HI	equ $380063 ; Chute 2 coin counter -> High; REG_RESETCC2
+REG_COIN1LOCK_HI	equ $380065 ; Chute 1 coin lockout -> High; REG_RESETCL1
+REG_COIN2LOCK_HI	equ $380067 ; Chute 2 coin lockout -> High; REG_RESETCL2
+
 REG_RTCWRITE		equ $3800D1 ; Write to RTC
-REG_COIN1COUNT_LO	equ $3800E1 ; Chute 1 coin counter -> Low
-REG_COIN2COUNT_LO	equ $3800E3 ; Chute 2 coin counter -> Low
-REG_COIN1LOCK_LO	equ $3800E5 ; Chute 1 coin lockout -> Low
-REG_COIN2LOCK_LO	equ $3800E7 ; Chute 2 coin lockout -> Low
+
+REG_COIN1COUNT_LO	equ $3800E1 ; Chute 1 coin counter -> Low; REG_SETCC1
+REG_COIN2COUNT_LO	equ $3800E3 ; Chute 2 coin counter -> Low; REG_SETCC2
+REG_COIN1LOCK_LO	equ $3800E5 ; Chute 1 coin lockout -> Low; REG_SETCL1
+REG_COIN2LOCK_LO	equ $3800E7 ; Chute 2 coin lockout -> Low; REG_SETCL2
 
 ;==============================================================================;
 ; [Sound Reg]
@@ -170,11 +202,41 @@ CARD_BANK			equ $380011 ; Memory Card bank select
 LSPC_ADDR			equ $3C0000 ; VRAM Address
 LSPC_DATA			equ $3C0002 ; VRAM Data
 LSPC_INCR			equ $3C0004 ; VRAM Increment
+
 LSPC_MODE			equ $3C0006 ; LSPC Mode
-LSPC_TIMER_HI		equ $3C0008 ; Timer MSB
-LSPC_TIMER_LO		equ $3C000A ; Timer LSB
+; (Read)
+; FEDCBA9876543210
+; |_______|000||_|
+;     |       | |
+;     |       | +--- Auto-animation counter
+;     |       +----- NTSC (0)/PAL (1), on LSPC2 only
+;     +------------- Raster line counter
+
+; (Write)
+; FEDCBA9876543210
+; |______|||||||_|
+;     |   ||||| |
+;     |   ||||| +--- Unused
+;     |   ||||+----- Disable auto-animation
+;     |   |||+------ Timer interrupt enable
+;     |   ||+------- Reload counter when writing to LSPC_TIMER_LO
+;     |   |+-------- Reload counter at beginning of hblank of the first vblank line (start of each frame)
+;     |   +--------- Reload counter when it reaches 0
+;     +------------- Auto-animation speed (in frames)
+
+LSPC_TIMER_HI		equ $3C0008 ; Timer MSB/16 high bits
+LSPC_TIMER_LO		equ $3C000A ; Timer LSB/16 low bits
+
 LSPC_IRQ_ACK		equ $3C000C ; Interrupt acknowlege
-LSPC_TIMER_STOP		equ $3C000E ; Stop timer for 32 lines in PAL mode? (LSPC2 only, apparently)
+; (Write)
+; 76543210
+; |___||||
+;   |  ||+--- IRQ3
+;   |  |+---- IRQ2/Timer/"HBlank"
+;   |  +----- IRQ1/VBlank
+;   +-------- Unused
+
+LSPC_TIMER_STOP		equ $3C000E ; When bit 0 is set, Stop timer for 32 lines in PAL mode? (LSPC2 only, apparently)
 
 ;==============================================================================;
 ; [Palette]
@@ -210,10 +272,12 @@ UPLOAD				equ $E00000 ; Upload Zone ($E00000-$EFFFFF)
 ; $FF0016??
 ;$FF0017	(byte) "nNeoCDMode"
 ;.......
+
+; DMA-related
 ;$FF0061	(byte) Writing with bit 6 set executes DMA microcode
 ; $FF0062??
 ; $FF0063??
-;$FF0064-$FF0073	Registers used by microcode (NeoRaine upload_param)
+;$FF0064-$FF0073	Registers used by microcode (NeoRaine upload_param) (todo: split out)
 ;$FF007E-$FF008F	Microcode (16x9bit instructions ?)
 
 ;$FF0101	(byte) "nLC8951Register (4 LSB)"
