@@ -47,7 +47,10 @@ j_write67:
 
 ; Code from smkdan's example M1 driver (adpcma_demo2/sound_M1.asm), where he
 ; uses this instead of portWriteDelayPart2 and portWriteDelayPart4.
-; It's noted that "MAME doesn't care". The hardware does, however.
+
+; Previously, it was noted that "MAME doesn't care". This comment is true for
+; versions before v0.230, when the FM emulation started to be replaced with a
+; new implementation.
 
 CheckBusyFlag:
 	in a,(YM_Status0) ; read Status 0 (busy flag in bit 7)
