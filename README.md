@@ -10,7 +10,7 @@ Status
 The primary goal right now is to get the library coded, as well as provide
 examples that use the library. Overall, the tasks can be broken down as follows:
 
-(All percentage completions are estimates as of 2015/11/13. No project is ever truly finished. :wink:)
+(All percentage completions are estimates as of 2023/04/02. No project is ever truly finished. :wink:)
 
 ### Library ###
 These elements form the core of the freemlib for Neo-Geo.
@@ -39,12 +39,10 @@ should be made for Linux (and OS X) compatibility whenever possible.
 
 #### WIP ###
 * **FM Studio** &ndash; On-console utility for testing and developing FM sounds. 1% (earliest stages of development)
-* **NeoGeoTracker** &ndash; On-console tracker and sound driver testbench. 0% (mockups and planning stage, might take a while)
 * and others not listed here...
- * A tool for Fix layer layout, similar to Shiru's NES Screen Tool. 0%
+ * A tool for Fix layer layout, similar to Shiru's NES Screen Tool. 10%
  * A tool for animation data (various tools exist already, I'm aware.) 0%
  * A tool for converting Tiled map data. 0%
- * PC version of NeoGeoTracker. 0%
  * Various sound tools (ADPCM-A/B conversion; tools exist, but need unification.) ?%
 
 ### Documentation ###
