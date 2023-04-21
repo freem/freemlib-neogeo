@@ -296,7 +296,16 @@ UPLOAD				equ $E00000 ; Upload Zone ($E00000-$EFFFFF)
 REG_DISABLESPR		equ $FF0111 ; (byte) Disable Sprite toggle (1=disable,0=enable)
 REG_DISABLEFIX		equ $FF0115 ; (byte) Disable Fix toggle (1=disable,0=enable) 
 REG_ENVIDEO			equ $FF0119 ; (byte) Video output toggle (1=enable,0=disable)
+
 REG_CDCONFIG		equ $FF011C ; (byte) read config
+; FEDCBA9876543210
+; |||||__||______|
+; ||||  |     |
+; ||||  |     +----- unknown
+; ||||  +----------- "Configuration Jumpers" (system region)
+; |||+-------------- Lid Status ("opposite on CDZ")
+; ||+--------------- CD Mechanism (0=top loader and CDZ, 1=front loader)
+; ++---------------- 1
 
 ; these values are from the neo geo dev wiki; ng_aes.c has them off by 1...
 ; which one is right??
